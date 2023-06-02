@@ -1,5 +1,3 @@
-import { cn } from '@/lib/cn';
-import Navbar from './Navbar';
 import './globals.css';
 import { Poppins } from 'next/font/google';
 
@@ -20,14 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={cn(
-          'flex flex-col md:flex-row bg-violet-100',
-          poppins.className
-        )}
-      >
-        {children}
-      </body>
+      <body className={poppins.className}>{children}</body>
     </html>
   );
 }
