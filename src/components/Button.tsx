@@ -1,3 +1,4 @@
+'use client';
 import { cn } from '@/lib/cn';
 import { SVGProps } from 'react';
 
@@ -9,6 +10,7 @@ export default function Button({
   Icon,
   shape = 'rounded',
   disabled = false,
+  onClick,
 }: {
   children?: React.ReactNode;
   mode?: 'primary' | 'secondary';
@@ -16,6 +18,7 @@ export default function Button({
   Icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
   shape?: 'pill' | 'rounded';
   disabled?: boolean;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
 }) {
   const sizes = {
     huge: 'px-8 py-5 gap-4 text-lg rounded-2xl',
@@ -45,6 +48,7 @@ export default function Button({
         disabled && 'opacity-50',
       ])}
       disabled={disabled}
+      onClick={onClick}
     >
       {Icon && (
         <Icon

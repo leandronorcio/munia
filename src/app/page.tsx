@@ -1,8 +1,10 @@
-import Button from '@/components/Button';
-import SvgLogInSquare from '@/svg_components/LogInSquare';
 import SvgLogo from '@/svg_components/Logo';
-import SvgTwoPeople from '@/svg_components/TwoPeople';
-export default function Home() {
+import { getServerSession } from 'next-auth';
+import { authOptions } from './api/auth/[...nextauth]/route';
+import OnboardingButtonsContainer from './OnboardingButtonsContainer';
+
+export default async function Home() {
+  const session = await getServerSession(authOptions);
   return (
     <main
       className="flex flex-col min-h-screen w-full justify-center items-center relative bg-black"
@@ -11,14 +13,8 @@ export default function Home() {
         boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
       }}
     >
-      <div className="flex flex-row gap-4 absolute top-10 right-10">
-        <Button size="medium" shape="pill" Icon={SvgLogInSquare}>
-          Login
-        </Button>
-        <Button size="medium" shape="pill" Icon={SvgTwoPeople}>
-          Sign Up
-        </Button>
-      </div>
+      <h1>{session ? 'Logged In' : 'Not Logged In'}</h1>
+      <OnboardingButtonsContainer></OnboardingButtonsContainer>
       <div
         className="flex flex-row items-center justify-center gap-4 w-4/5 md:w-[700px] h-56 rounded-3xl backdrop:blur-md"
         style={{ background: 'rgba(239, 240, 246, 0.25)' }}
