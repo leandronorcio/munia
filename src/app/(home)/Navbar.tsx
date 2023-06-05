@@ -15,7 +15,7 @@ export default function Navbar() {
         {
           title: 'News Feed',
           Icon: GridFeedCards,
-          route: '',
+          route: '/',
         },
         { title: 'Messages', Icon: Mail, route: '/messages' },
         {

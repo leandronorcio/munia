@@ -5,5 +5,9 @@ import Onboarding from './Onboarding';
 export default async function Home() {
   const session = await getServerSession(authOptions);
 
-  return <>{!session && <Onboarding />}</>;
+  if (!session) {
+    return <Onboarding />;
+  } else {
+    return <h1>News Feed</h1>;
+  }
 }
