@@ -1,23 +1,47 @@
+'use client';
+import {
+  GridFeedCards,
+  LogOutCircle,
+  Mail,
+  NotificationBell,
+  TwoPeople,
+} from '@/svg_components';
 import SidebarMenuItem from './SidebarMenuItem';
 
 export default function Navbar() {
   return (
     <div className="flex flex-col w-72 py-9 px-8 last-child:mt-auto">
       {[
-        { src: '/grid-feed-cards.svg', title: 'News Feed' },
-        { src: '/mail.svg', title: 'Messages' },
         {
-          src: '/notification-bell.svg',
+          title: 'News Feed',
+          Icon: GridFeedCards,
+          route: '',
+        },
+        { title: 'Messages', Icon: Mail, route: '/messages' },
+        {
           title: 'Notifications',
+          Icon: NotificationBell,
+          route: '/notifications',
         },
         {
-          src: '/two-people.svg',
-          title: 'Meetups',
+          title: 'Discover',
           className: 'mb-auto',
+          Icon: TwoPeople,
+          route: '/discover',
         },
-        { src: '/log-out-circle.svg', title: 'Logout', className: 'mt-auto' },
+        {
+          title: 'Logout',
+          className: 'mt-auto',
+          Icon: LogOutCircle,
+          route: '/api/auth/signout',
+        },
       ].map((item, i) => (
-        <SidebarMenuItem src={item.src} className={item.className} key={i}>
+        <SidebarMenuItem
+          Icon={item.Icon}
+          className={item.className}
+          route={item.route}
+          key={i}
+        >
           {item.title}
         </SidebarMenuItem>
       ))}
