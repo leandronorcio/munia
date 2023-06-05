@@ -1,7 +1,7 @@
 import SessionProviderContext from '@/contexts/SessionProviderContext';
 import './globals.css';
 import { Poppins } from 'next/font/google';
-import RootLayoutWrapper from './RootLayoutWrapper';
+import RootLayoutWrapper from './(home)/RootLayoutWrapper';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],

@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth';
 import Navbar from './Navbar';
-import { authOptions } from './api/auth/[...nextauth]/route';
+import { authOptions } from '../api/auth/[...nextauth]/route';
 import { cn } from '@/lib/cn';
 
 export default async function RootLayoutWrapper({

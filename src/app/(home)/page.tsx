@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth';
-import { authOptions } from './api/auth/[...nextauth]/route';
+import { authOptions } from '../api/auth/[...nextauth]/route';
 import Onboarding from './Onboarding';
 
 export default async function Home() {
