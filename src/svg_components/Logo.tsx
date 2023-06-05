@@ -3,9 +3,10 @@ import { SVGProps } from "react";
 const SvgLogo = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={88}
-    height={87}
+    width="1em"
+    height="1em"
     fill="none"
+    viewBox="0 0 88 87"
     {...props}
   >
     <g filter="url(#logo_svg__a)">

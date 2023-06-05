@@ -1,15 +1,16 @@
-import * as React from 'react';
-import { SVGProps } from 'react';
+import * as React from "react";
+import { SVGProps } from "react";
 const SvgNotificationBell = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={26}
-    height={24}
+    width="1em"
+    height="1em"
     fill="none"
+    viewBox="0 0 26 24"
     {...props}
   >
     <path
-      stroke={props.stroke}
+      stroke="#14142B"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={2}

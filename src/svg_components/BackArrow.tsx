@@ -3,9 +3,10 @@ import { SVGProps } from "react";
 const SvgBackArrow = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={19}
-    height={16}
+    width="1em"
+    height="1em"
     fill="none"
+    viewBox="0 0 19 16"
     {...props}
   >
     <path

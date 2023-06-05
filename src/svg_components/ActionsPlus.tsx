@@ -1,15 +1,16 @@
-import * as React from 'react';
-import { SVGProps } from 'react';
+import * as React from "react";
+import { SVGProps } from "react";
 const SvgActionsPlus = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={16}
-    height={16}
+    width="1em"
+    height="1em"
     fill="none"
+    viewBox="0 0 16 16"
     {...props}
   >
     <path
-      stroke={props.stroke}
+      stroke="#FCFCFC"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={2}
