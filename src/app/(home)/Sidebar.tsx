@@ -4,11 +4,13 @@ import {
   LogOutCircle,
   Mail,
   NotificationBell,
+  Profile,
+  Search,
   TwoPeople,
 } from '@/svg_components';
 import SidebarMenuItem from './SidebarMenuItem';
 
-export default function Navbar() {
+export default function Sidebar() {
   return (
     <div className="flex flex-col w-72 py-9 px-8 last-child:mt-auto">
       {[
@@ -17,6 +19,7 @@ export default function Navbar() {
           Icon: GridFeedCards,
           route: '/',
         },
+        { title: 'Profile', Icon: Profile, route: '/profile' },
         { title: 'Messages', Icon: Mail, route: '/messages' },
         {
           title: 'Notifications',
@@ -26,7 +29,7 @@ export default function Navbar() {
         {
           title: 'Discover',
           className: 'mb-auto',
-          Icon: TwoPeople,
+          Icon: Search,
           route: '/discover',
         },
         {

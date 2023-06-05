@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth';
-import Navbar from './Navbar';
+import Sidebar from './Sidebar';
 import { authOptions } from '../api/auth/[...nextauth]/route';
 import { cn } from '@/lib/cn';
 
@@ -15,7 +15,7 @@ export default async function RootLayoutWrapper({
         session && 'h-screen flex flex-col md:flex-row bg-violet-100'
       )}
     >
-      {session && <Navbar />}
+      {session && <Sidebar />}
       {children}
     </div>
   );
