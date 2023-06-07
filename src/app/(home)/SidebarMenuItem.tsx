@@ -21,7 +21,7 @@ export default function SidebarMenuItem({
   return (
     <div
       className={cn([
-        'flex flex-row gap-4 items-center h-14 p-6 mt-2 w-52 cursor-pointer relative group duration-300 hover:bg-violet-200',
+        'flex flex-row gap-4 items-center h-14 px-4 mt-2 cursor-pointer relative group duration-300 hover:bg-violet-200',
         className,
         isActive && 'bg-violet-200',
       ])}

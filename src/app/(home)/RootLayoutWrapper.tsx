@@ -17,7 +17,9 @@ export default async function RootLayoutWrapper({
       {session ? (
         <div className="h-full w-full flex flex-col md:flex-row">
           {session && <Sidebar />}
-          <div className="flex-grow">{children}</div>
+          <div className="bg-green-200 flex-grow flex justify-center">
+            <div className="w-full lg:w-[850px] xl:w-[950px]">{children}</div>
+          </div>
           {session && <BottomMenu />}
         </div>
       ) : (
