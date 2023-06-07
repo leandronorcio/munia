@@ -12,7 +12,7 @@ import SidebarMenuItem from './SidebarMenuItem';
 
 export default function Sidebar() {
   return (
-    <div className="flex flex-col w-72 pt-8 px-8 last-child:mt-auto">
+    <div className="hidden md:flex flex-col w-72 py-8 px-8 last-child:mt-auto">
       {[
         {
           title: 'News Feed',

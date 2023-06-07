@@ -1,5 +1,5 @@
-import * as React from "react";
-import { SVGProps } from "react";
+import * as React from 'react';
+import { SVGProps } from 'react';
 const SvgLogInSquare = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -10,7 +10,7 @@ const SvgLogInSquare = (props: SVGProps<SVGSVGElement>) => (
     {...props}
   >
     <path
-      stroke="#FCFCFC"
+      stroke={props.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={2}

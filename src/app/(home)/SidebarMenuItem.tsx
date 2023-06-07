@@ -1,6 +1,7 @@
 'use client';
+import { useActiveRouteChecker } from '@/hooks/useActiveRouteChecker';
 import { cn } from '@/lib/cn';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { SVGProps } from 'react';
 
 export default function SidebarMenuItem({
@@ -15,9 +16,8 @@ export default function SidebarMenuItem({
   route: string;
 }) {
   const router = useRouter();
-  const pathname = usePathname();
-  const isActive =
-    route.length === 1 ? pathname === route : pathname.search(route) !== -1;
+  const [isActive] = useActiveRouteChecker(route);
+
   return (
     <div
       className={cn([

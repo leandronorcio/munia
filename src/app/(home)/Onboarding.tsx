@@ -15,7 +15,7 @@ export default async function Onboarding() {
         className="flex flex-row items-center justify-center gap-4 w-4/5 md:w-[700px] h-56 rounded-3xl backdrop:blur-md"
         style={{ background: 'rgba(239, 240, 246, 0.25)' }}
       >
-        <SvgLogo />
+        <SvgLogo width={88} height={88} />
         <h1
           className="text-6xl font-bold bg-clip-text text-transparent"
           style={{
