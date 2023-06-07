@@ -6,7 +6,6 @@ import {
   NotificationBell,
   Profile,
   Search,
-  TwoPeople,
 } from '@/svg_components';
 import SidebarMenuItem from './SidebarMenuItem';
 import { useSession } from 'next-auth/react';

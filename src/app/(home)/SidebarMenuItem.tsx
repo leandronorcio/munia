@@ -29,7 +29,7 @@ export default function SidebarMenuItem({
     >
       <div
         className={cn(
-          'w-[4px] h-0 group-hover:h-10 transition-height absolute left-0 rounded-r-lg duration-300 bg-black',
+          'w-[4px] h-0 group-hover:h-10 transition-height absolute left-0 rounded-r-lg duration-300 bg-violet-700',
           isActive && 'h-10'
         )}
       ></div>
