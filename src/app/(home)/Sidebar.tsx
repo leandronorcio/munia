@@ -15,7 +15,7 @@ export default function Sidebar() {
   const id = session?.user ? session.user.id : '/usernotfound';
 
   return (
-    <div className="hidden md:flex flex-col py-8 px-6 last-child:mt-auto">
+    <div className="transition-all duration-500 pt-28 w-[240px] h-screen fixed -left-[240px] md:left-0 flex flex-col py-8 px-6 last-child:mt-auto">
       {[
         {
           title: 'News Feed',
