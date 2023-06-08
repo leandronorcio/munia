@@ -15,6 +15,7 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     session: async ({ session, user }) => {
+      // Add user to the session.
       return {
         ...session,
         user: user,

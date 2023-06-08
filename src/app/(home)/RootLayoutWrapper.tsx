@@ -10,7 +10,6 @@ export default async function RootLayoutWrapper({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
-  console.log(session);
   return (
     <div className="h-screen flex flex-col bg-violet-100">
       {session && <Navbar />}
