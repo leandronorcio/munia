@@ -1,6 +1,4 @@
 'use client';
-import { useActiveRouteChecker } from '@/hooks/useActiveRouteChecker';
-import { cn } from '@/lib/cn';
 import {
   GridFeedCards,
   Mail,
@@ -8,49 +6,14 @@ import {
   Profile,
   Search,
 } from '@/svg_components';
-import { useRouter } from 'next/navigation';
-import { SVGProps } from 'react';
+import { useSession } from 'next-auth/react';
+import { BottomMenuButton } from './BottomMenuButton';
+import { BottomMenuIcon } from './BottomMenuIcon';
 
-function BottomMenuButton({
-  children,
-  route,
-}: {
-  children: React.ReactNode;
-  route: string;
-}) {
-  const [isActive] = useActiveRouteChecker(route);
-  const router = useRouter();
-  return (
-    <div
-      className={cn(
-        'flex-1 flex justify-center items-center cursor-pointer group hover:bg-violet-700',
-        isActive && 'bg-violet-700'
-      )}
-      onClick={() => router.push(route)}
-    >
-      {children}
-    </div>
-  );
-}
-function BottomMenuIcon({
-  Icon,
-  route,
-}: {
-  Icon: (props: SVGProps<SVGSVGElement>) => JSX.Element;
-  route: string;
-}) {
-  const [isActive] = useActiveRouteChecker(route);
-  return (
-    <Icon
-      className={cn(
-        'stroke-white w-6 h-6 group-hover:stroke-violet-200 group-hover:scale-125 transition-all',
-        isActive && 'stroke-violet-200 scale-125'
-      )}
-    />
-  );
-}
+export function BottomMenu() {
+  const { data: session } = useSession();
+  const id = session?.user ? session.user.id : '/usernotfound';
 
-export async function BottomMenu() {
   return (
     <div className="w-full h-16 flex flex-row md:hidden bg-violet-400">
       {[
@@ -58,7 +21,7 @@ export async function BottomMenu() {
           Icon: GridFeedCards,
           route: '/',
         },
-        { Icon: Profile, route: '/profile' },
+        { Icon: Profile, route: `/${id}` },
         { title: 'Messages', Icon: Mail, route: '/messages' },
         {
           Icon: NotificationBell,

@@ -12,8 +12,8 @@ import { useSession } from 'next-auth/react';
 
 export default function Sidebar() {
   const { data: session } = useSession();
-
   const id = session?.user ? session.user.id : '/usernotfound';
+
   return (
     <div className="hidden md:flex flex-col py-8 px-6 last-child:mt-auto">
       {[
