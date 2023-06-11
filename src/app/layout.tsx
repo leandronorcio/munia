@@ -2,6 +2,7 @@ import SessionProviderContext from '@/contexts/SessionProviderContext';
 import './globals.css';
 import { Poppins } from 'next/font/google';
 import RootLayoutWrapper from './(home)/RootLayoutWrapper';
+import { BasicModalContextProvider } from '@/contexts/BasicModalContext';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
@@ -28,7 +29,9 @@ export default function RootLayout({
       </head>
       <body className={poppins.className}>
         <SessionProviderContext>
-          <RootLayoutWrapper>{children}</RootLayoutWrapper>
+          <BasicModalContextProvider>
+            <RootLayoutWrapper>{children}</RootLayoutWrapper>
+          </BasicModalContextProvider>
         </SessionProviderContext>
       </body>
     </html>

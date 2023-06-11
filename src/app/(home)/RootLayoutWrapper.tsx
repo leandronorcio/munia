@@ -16,7 +16,7 @@ export default async function RootLayoutWrapper({
       {session && <Sidebar />}
       {session && <BottomMenu />}
       {session ? (
-        <div className="transition-all overflow-y-scroll pb-20 duration-500 ml-0 md:ml-[240px]">
+        <div className="transition-all overflow-y-scroll  duration-500 ml-0 md:ml-[240px]">
           <div className="flex justify-center">
             <div className="w-full h-full lg:w-[800px] xl:w-[950px] transition-all duration-500 md:px-4 md:pt-8">
               {children}

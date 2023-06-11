@@ -1,3 +1,30 @@
+'use client';
+import { BasicModalContext } from '@/contexts/BasicModalContext';
+import { useContext } from 'react';
+
 export default function Messages() {
-  return <h1>Messages</h1>;
+  const { alert, confirm } = useContext(BasicModalContext);
+  return (
+    <>
+      <h1>Messages</h1>
+      <button
+        onClick={() => alert({ title: 'Alert', message: 'Hello there mate.' })}
+      >
+        Alert
+      </button>
+      <button
+        onClick={() =>
+          confirm({
+            title: 'Testing',
+            message: 'Hello there mate.',
+            actionOnConfirm: () => {
+              console.log('confirmed');
+            },
+          })
+        }
+      >
+        Confirm
+      </button>
+    </>
+  );
 }
