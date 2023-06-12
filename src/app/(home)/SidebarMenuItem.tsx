@@ -1,8 +1,10 @@
 'use client';
+import { BasicModalContext } from '@/contexts/BasicModalContext';
 import { useActiveRouteChecker } from '@/hooks/useActiveRouteChecker';
 import { cn } from '@/lib/cn';
+import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { SVGProps } from 'react';
+import { SVGProps, useContext } from 'react';
 
 export default function SidebarMenuItem({
   children,
@@ -17,6 +19,7 @@ export default function SidebarMenuItem({
 }) {
   const router = useRouter();
   const [isActive] = useActiveRouteChecker(route);
+  const { confirm } = useContext(BasicModalContext);
 
   return (
     <div
@@ -25,7 +28,17 @@ export default function SidebarMenuItem({
         className,
         isActive && 'bg-violet-200',
       ])}
-      onClick={() => router.push(route)}
+      onClick={() => {
+        if (route === '/api/auth/signout') {
+          confirm({
+            title: 'Confirm Logout',
+            message: 'Do you really wish to logout?',
+            actionOnConfirm: () => signOut({ callbackUrl: '/' }),
+          });
+        } else {
+          router.push(route);
+        }
+      }}
     >
       <div
         className={cn(
