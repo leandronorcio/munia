@@ -1,9 +1,12 @@
 'use client';
 import { BasicModalContext } from '@/contexts/BasicModalContext';
+import { ToastContext } from '@/contexts/ToastContext';
 import { useContext } from 'react';
 
 export default function Messages() {
   const { alert, confirm } = useContext(BasicModalContext);
+  const { toastify } = useContext(ToastContext);
+
   return (
     <>
       <h1>Messages</h1>
@@ -24,6 +27,16 @@ export default function Messages() {
         }
       >
         Confirm
+      </button>
+      <button
+        onClick={() =>
+          toastify({
+            title: 'Successfully updated.',
+            type: 'success',
+          })
+        }
+      >
+        Show Toast
       </button>
     </>
   );

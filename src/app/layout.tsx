@@ -3,6 +3,7 @@ import './globals.css';
 import { Poppins } from 'next/font/google';
 import RootLayoutWrapper from './(home)/RootLayoutWrapper';
 import { BasicModalContextProvider } from '@/contexts/BasicModalContext';
+import { ToastContextProvider } from '@/contexts/ToastContext';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
@@ -28,11 +29,13 @@ export default function RootLayout({
         />
       </head>
       <body className={poppins.className}>
-        <SessionProviderContext>
-          <BasicModalContextProvider>
-            <RootLayoutWrapper>{children}</RootLayoutWrapper>
-          </BasicModalContextProvider>
-        </SessionProviderContext>
+        <ToastContextProvider>
+          <SessionProviderContext>
+            <BasicModalContextProvider>
+              <RootLayoutWrapper>{children}</RootLayoutWrapper>
+            </BasicModalContextProvider>
+          </SessionProviderContext>
+        </ToastContextProvider>
       </body>
     </html>
   );
