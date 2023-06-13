@@ -45,6 +45,9 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  photos        Photo[]
+  profilePhoto  String?
+  coverPhoto    String?
 }
 
 model VerificationToken {
@@ -53,4 +56,12 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Photo {
+  id         Int      @id @default(autoincrement())
+  url        String
+  uploadedAt DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
 }
