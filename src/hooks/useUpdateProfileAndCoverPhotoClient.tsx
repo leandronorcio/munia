@@ -1,18 +1,17 @@
 'use client';
 
 import { BasicModalContext } from '@/contexts/BasicModalContext';
-import { useContext, useRef, useState } from 'react';
+import { ToastContext } from '@/contexts/ToastContext';
+import { useRouter } from 'next/navigation';
+import { useContext, useRef } from 'react';
 
 export function useUpdateProfileAndCoverPhotoClient(
-  toUpdate: 'profilePhoto' | 'coverPhoto',
-  initialPhotoUrl: string | null
+  toUpdate: 'profile' | 'cover'
 ) {
-  const [photoUrl, setPhotoUrl] = useState(
-    initialPhotoUrl ||
-      (toUpdate === 'profilePhoto' ? '/default-profile-photo.jpg' : '')
-  );
+  const router = useRouter();
 
   const { alert } = useContext(BasicModalContext);
+  const { toastify } = useContext(ToastContext);
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   const openInput = () => {
@@ -30,7 +29,7 @@ export function useUpdateProfileAndCoverPhotoClient(
     formData.append(name, file, file.name);
 
     const res = await fetch(
-      `/api/${toUpdate === 'profilePhoto' ? 'profile-photo' : 'cover-photo'}`,
+      `/api/${toUpdate === 'profile' ? 'profile-photo' : 'cover-photo'}`,
       {
         method: 'POST',
         body: formData,
@@ -38,8 +37,13 @@ export function useUpdateProfileAndCoverPhotoClient(
     );
 
     if (res.ok) {
-      const response: Response & { uploadedTo: string } = await res.json();
-      setPhotoUrl(response.uploadedTo);
+      // const response: Response & { uploadedTo: string } = await res.json();
+      toastify({
+        title: 'Success!',
+        message: `Your ${toUpdate} photo has been updated.`,
+        type: 'success',
+      });
+      router.refresh();
     } else {
       alert({
         title: 'Upload Error',
@@ -51,5 +55,5 @@ export function useUpdateProfileAndCoverPhotoClient(
     inputFileRef.current.value = '';
   };
 
-  return { inputFileRef, openInput, handleChange, photoUrl };
+  return { inputFileRef, openInput, handleChange };
 }

@@ -11,14 +11,14 @@ export default function ProfilePhoto({
   isOwnProfile: boolean;
   profile: User;
 }) {
-  const { inputFileRef, openInput, handleChange, photoUrl } =
-    useUpdateProfileAndCoverPhotoClient('profilePhoto', profile.profilePhoto);
+  const { inputFileRef, openInput, handleChange } =
+    useUpdateProfileAndCoverPhotoClient('profile');
 
   return (
     <div
       className="absolute -bottom-24 bg-cover w-48 h-48 rounded-full border-8 border-white"
       style={{
-        backgroundImage: `url("${photoUrl}")`,
+        backgroundImage: `url("${profile.profilePhoto}")`,
       }}
     >
       {isOwnProfile && (

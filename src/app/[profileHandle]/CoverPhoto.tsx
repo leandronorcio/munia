@@ -1,7 +1,7 @@
 'use client';
 import Button from '@/components/Button';
 import { useUpdateProfileAndCoverPhotoClient } from '@/hooks/useUpdateProfileAndCoverPhotoClient';
-import { Camera } from '@/svg_components';
+import { Image } from '@/svg_components';
 import { User } from '@prisma/client';
 
 export default function CoverPhoto({
@@ -11,15 +11,15 @@ export default function CoverPhoto({
   isOwnProfile: boolean;
   profile: User;
 }) {
-  const { inputFileRef, openInput, handleChange, photoUrl } =
-    useUpdateProfileAndCoverPhotoClient('coverPhoto', profile.coverPhoto);
+  const { inputFileRef, openInput, handleChange } =
+    useUpdateProfileAndCoverPhotoClient('cover');
 
   return (
     <div
       className="h-72 md:rounded-3xl transition-all bg-cover bg-center"
       style={{
-        backgroundImage: photoUrl
-          ? `url("${photoUrl}")`
+        backgroundImage: profile.coverPhoto
+          ? `url("${profile.coverPhoto}")`
           : 'linear-gradient(95.08deg, #AF45DB 2.49%, #EB7B96 97.19%)',
       }}
     >
@@ -34,7 +34,7 @@ export default function CoverPhoto({
               className="hidden"
               accept="image/png, image/jpg, image/jpeg"
             />
-            <Button Icon={Camera} onClick={openInput} shape="pill" />
+            <Button Icon={Image} onClick={openInput} shape="pill" />
           </div>
         </label>
       )}
