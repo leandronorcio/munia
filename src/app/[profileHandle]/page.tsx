@@ -3,8 +3,8 @@ import { authOptions } from '../api/auth/[...nextauth]/route';
 import { redirect } from 'next/navigation';
 import { ProfileActionButtons } from './ProfileActionButtons';
 import { PrismaClient } from '@prisma/client';
-import { EditCoverPhotoButton } from './EditCoverPhotoButton';
-import { EditProfilePhotoButton } from './EditProfilePhotoButton';
+import ProfilePhoto from './ProfilePhoto';
+import CoverPhoto from './CoverPhoto';
 const prisma = new PrismaClient();
 
 async function getProfile(identifier: string) {
@@ -30,9 +30,10 @@ export default async function Page({
   params: { profileHandle: string };
 }) {
   const session = await getServerSession(authOptions);
+  if (!session?.user) return redirect('/');
 
-  if (!session) return redirect('/');
   const profile = await getProfile(params.profileHandle);
+  if (profile === null) return redirect('/usernotfound');
   const isOwnProfile = profile?.id === session.user?.id;
 
   return (
@@ -45,11 +46,9 @@ export default async function Page({
               'linear-gradient(95.08deg, #AF45DB 2.49%, #EB7B96 97.19%)',
           }}
         >
-          {isOwnProfile && <EditCoverPhotoButton />}
+          <CoverPhoto isOwnProfile={isOwnProfile} profile={profile} />
         </div>
-        <div className="absolute -bottom-24 bg-red-200 w-48 h-48 rounded-full border-8 border-white">
-          {isOwnProfile && <EditProfilePhotoButton />}
-        </div>
+        <ProfilePhoto isOwnProfile={isOwnProfile} profile={profile} />
         {!isOwnProfile && <ProfileActionButtons />}
       </div>
 

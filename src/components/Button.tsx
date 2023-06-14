@@ -52,6 +52,7 @@ export default function Button({
       ])}
       disabled={disabled}
       onClick={onClick}
+      type="button"
     >
       {Icon && (
         <Icon
