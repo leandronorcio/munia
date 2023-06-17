@@ -15,7 +15,7 @@ export default function Post() {
       </div>
       <div className="bg-violet-50">
         <img
-          src="/uploads/clilwgdr00002xylvrkxq87r9-1686749752730-profilePhoto.png"
+          src="/uploads/clilwgdr00002xylvrkxq87r9-1686752886613-coverPhoto.jpeg"
           className="object-contain max-h-[480px] w-full"
         />
       </div>
