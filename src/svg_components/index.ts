@@ -23,6 +23,7 @@ export { default as NotificationBell } from "./NotificationBell";
 export { default as Profile } from "./Profile";
 export { default as Search } from "./Search";
 export { default as Send } from "./Send";
+export { default as ShareBack } from "./ShareBack";
 export { default as TwoPeople } from "./TwoPeople";
 export { default as Video } from "./Video";
 export { default as View } from "./View";
