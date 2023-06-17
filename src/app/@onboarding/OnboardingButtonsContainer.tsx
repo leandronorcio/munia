@@ -1,5 +1,5 @@
 'use client';
-import Button from '@/components/Button';
+import Button from '@/components/ui/Button';
 import SvgLogInSquare from '@/svg_components/LogInSquare';
 import SvgTwoPeople from '@/svg_components/TwoPeople';
 import { useRouter } from 'next/navigation';

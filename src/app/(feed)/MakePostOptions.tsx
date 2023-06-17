@@ -1,6 +1,6 @@
 'use client';
 
-import Button from '@/components/Button';
+import Button from '@/components/ui/Button';
 import { EmojiHappySmile, Image, Video } from '@/svg_components';
 
 export default function MakePostOptions() {

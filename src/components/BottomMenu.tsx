@@ -10,7 +10,7 @@ import { useSession } from 'next-auth/react';
 import { BottomMenuButton } from './BottomMenuButton';
 import { BottomMenuIcon } from './BottomMenuIcon';
 
-export function BottomMenu() {
+export default function BottomMenu() {
   const { data: session } = useSession();
   const id = session?.user ? session.user.id : '/usernotfound';
 

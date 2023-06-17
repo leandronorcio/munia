@@ -1,5 +1,5 @@
 'use client';
-import Button from '@/components/Button';
+import Button from '@/components/ui/Button';
 import { ActionsPlus, Mail } from '@/svg_components';
 
 export function ProfileActionButtons() {

@@ -1,6 +1,6 @@
 'use client';
 
-import Button from '@/components/Button';
+import Button from '@/components/ui/Button';
 import { cn } from '@/lib/cn';
 import { Close } from '@/svg_components';
 import { createContext, useState } from 'react';

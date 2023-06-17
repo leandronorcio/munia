@@ -1,7 +1,7 @@
 import SvgLogo from '@/svg_components/Logo';
 import OnboardingButtonsContainer from './OnboardingButtonsContainer';
 
-export default async function Onboarding() {
+export default async function Page() {
   return (
     <main
       className="flex flex-col min-h-screen w-full justify-center items-center relative bg-black"
