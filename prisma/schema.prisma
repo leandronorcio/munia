@@ -1,6 +1,6 @@
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // Only needed when using a cloud provider that doesn't support the creation of new databases, like Heroku. Learn more: https://pris.ly/d/migrate-shadow
 }
 
@@ -10,18 +10,18 @@ generator client {
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -45,9 +45,12 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  photos        Photo[]
   profilePhoto  String?
   coverPhoto    String?
+  post          Post[]
+  photos        Photo[]
+  postLikes     PostLike[]
+  comments      Comment[]
 }
 
 model VerificationToken {
@@ -58,10 +61,42 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model Post {
+  id         Int      @id @default(autoincrement())
+  content    String?
+  createdAt  DateTime @default(now())
+  photos     Photo[]
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  postLikes  PostLike[]
+  comments   Comment[]
+}
+
+model PostLike {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  post       Post     @relation(fields: [postId], references: [id])
+  postId     Int
+}
+
+model Comment {
+  id         Int      @id @default(autoincrement())
+  content    String
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  post       Post     @relation(fields: [postId], references: [id])
+  postId     Int
+}
+
 model Photo {
   id         Int      @id @default(autoincrement())
   url        String
   uploadedAt DateTime @default(now())
   user       User     @relation(fields: [userId], references: [id])
   userId     String
+  post       Post     @relation(fields: [postId], references: [id])
+  postId     Int
 }
