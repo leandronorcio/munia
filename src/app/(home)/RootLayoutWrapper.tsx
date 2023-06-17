@@ -18,7 +18,7 @@ export default async function RootLayoutWrapper({
       {session ? (
         <div className="transition-[margin] duration-500 overflow-y-auto ml-0 md:ml-[240px]">
           <div className="flex justify-center">
-            <div className="w-full h-full lg:w-[800px] xl:w-[950px] transition-all duration-500 md:px-4 md:pt-8">
+            <div className="w-full h-full lg:w-[650px] xl:w-[800px] transition-all duration-500 md:px-4 md:pt-8">
               {children}
             </div>
           </div>
