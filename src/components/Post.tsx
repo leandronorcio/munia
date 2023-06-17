@@ -13,11 +13,35 @@ export default function Post() {
       <div className="px-4 py-4 sm:px-8 sm:py-6">
         <ProfileBlock />
       </div>
-      <div className="bg-violet-50">
-        <img
-          src="/uploads/clilwgdr00002xylvrkxq87r9-1686752886613-coverPhoto.jpeg"
+      <div className="bg-violet-50 flex flex-wrap justify-center">
+        <div className="w-1/2 max-h-[360px]">
+          <img
+            src="/uploads/clilwgdr00002xylvrkxq87r9-1686758589464-profilePhoto.png"
+            className="object-cover w-full h-full"
+          />
+        </div>
+        <div className="w-1/2 max-h-[360px]">
+          <img
+            src="/uploads/clilwgdr00002xylvrkxq87r9-1686758589464-profilePhoto.png"
+            className="object-cover  w-full h-full"
+          />
+        </div>
+        <div className="w-1/2 max-h-[360px]">
+          <img
+            src="/uploads/clilwgdr00002xylvrkxq87r9-1686984032833-coverPhoto.jpeg"
+            className="object-cover  w-full h-full"
+          />
+        </div>
+        <div className="w-1/2 max-h-[360px]">
+          <img
+            src="/uploads/clilwgdr00002xylvrkxq87r9-1686984032833-coverPhoto.jpeg"
+            className="object-cover  w-full h-full"
+          />
+        </div>
+        {/* <img
+          src="/uploads/clilwgdr00002xylvrkxq87r9-1686758589464-profilePhoto.png"
           className="object-contain max-h-[480px] w-full"
-        />
+        /> */}
       </div>
       <div className="px-8 py-4">
         <p className="text-lg text-gray-700 mb-8">
