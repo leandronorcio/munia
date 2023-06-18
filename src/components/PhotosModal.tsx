@@ -16,7 +16,7 @@ export default function PhotosModal({
   initialSlide?: number;
   close: Function;
 }) {
-  const [isBeginning, setIsBeginning] = useState(false);
+  const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   const [animation, setAnimation] = useState<'from' | 'to'>('from');
 
