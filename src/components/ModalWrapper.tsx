@@ -5,7 +5,7 @@ export default function ModalWrapper({
   animationState,
 }: {
   children: React.ReactNode;
-  animationState: 'from' | 'to';
+  animationState: AnimationState;
 }) {
   return (
     <div

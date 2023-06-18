@@ -30,7 +30,7 @@ function BasicModalContextProvider({
   children: React.ReactNode;
 }) {
   const [shown, setShown] = useState(false);
-  const [animation, setAnimation] = useState<'from' | 'to'>('from');
+  const [animation, setAnimation] = useState<AnimationState>('from');
   const [dialog, setDialog] = useState<{
     type: 'alert' | 'confirm';
     title: string;

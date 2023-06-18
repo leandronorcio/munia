@@ -7,18 +7,26 @@ export function PhotosModalNavigationButton({
   type,
   isBeginning,
   isEnd,
+  animationState,
 }: {
   type: 'prev' | 'next';
   isBeginning: boolean;
   isEnd: boolean;
+  animationState: AnimationState;
 }) {
   const swiper = useSwiper();
 
   return (
     <div
       className={cn(
-        'custom-swiper-button-prev fixed z-20 top-[50%] translate-y-[-50%] bg-violet-700 p-3 rounded-full cursor-pointer transition-transform',
-        type === 'prev' ? 'left-6' : 'right-6',
+        'custom-swiper-button-prev fixed z-20 top-[50%] translate-y-[-50%] bg-violet-700 p-3 rounded-full cursor-pointer transition-all duration-500',
+        type === 'prev'
+          ? animationState === 'from'
+            ? '-left-12'
+            : 'left-4'
+          : animationState === 'from'
+          ? '-right-12'
+          : 'right-4',
         type === 'prev'
           ? 'hover:translate-x-[-4px]'
           : 'hover:translate-x-[4px]',

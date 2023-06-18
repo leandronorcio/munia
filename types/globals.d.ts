@@ -6,4 +6,5 @@ declare global {
     profilePhoto: string;
     coverPhoto: string;
   }
+  type AnimationState = 'from' | 'to';
 }

@@ -18,7 +18,7 @@ export default function PhotosModal({
 }) {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
-  const [animation, setAnimation] = useState<'from' | 'to'>('from');
+  const [animation, setAnimation] = useState<AnimationState>('from');
 
   useEffect(() => {
     setAnimation('to');
@@ -32,10 +32,7 @@ export default function PhotosModal({
           setIsEnd(swiper.isEnd);
         }}
         onSwiper={(swiper) => console.log(swiper)}
-        className={cn(
-          'w-full h-full transition-opacity duration-500',
-          animation === 'from' ? 'opacity-0' : 'opacity-100'
-        )}
+        className="w-full h-full"
         zoom={true}
         pagination={{
           clickable: true,
@@ -45,7 +42,10 @@ export default function PhotosModal({
         initialSlide={initialSlide}
       >
         <div
-          className="fixed z-20 top-6 right-6 bg-red-400 hover:bg-red-600 p-3 rounded-full cursor-pointer transition-transform hover:scale-110"
+          className={cn(
+            'fixed z-20 right-4 bg-red-400 hover:bg-red-600 p-3 rounded-full cursor-pointer transition-all duration-500 hover:scale-110',
+            animation === 'from' ? '-top-14' : 'top-4'
+          )}
           onClick={() => {
             setAnimation('from');
             setTimeout(() => close(), 500);
@@ -59,11 +59,13 @@ export default function PhotosModal({
               type="prev"
               isBeginning={isBeginning}
               isEnd={isEnd}
+              animationState={animation}
             />
             <PhotosModalNavigationButton
               type="next"
               isBeginning={isBeginning}
               isEnd={isEnd}
+              animationState={animation}
             />
           </>
         )}
@@ -72,7 +74,13 @@ export default function PhotosModal({
           return (
             <SwiperSlide key={photo}>
               <div className="swiper-zoom-container">
-                <img src={photo} className="max-h-full" />
+                <img
+                  src={photo}
+                  className={cn(
+                    'max-h-full transition-opacity duration-500',
+                    animation === 'from' ? 'opacity-0' : 'opacity-100'
+                  )}
+                />
               </div>
             </SwiperSlide>
           );

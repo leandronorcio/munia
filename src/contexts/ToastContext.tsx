@@ -78,7 +78,7 @@ function ToastContextProvider({ children }: { children: React.ReactNode }) {
     duration: 5000,
     type: 'default',
   });
-  const [animation, setAnimation] = useState<'from' | 'to'>('from');
+  const [animation, setAnimation] = useState<AnimationState>('from');
 
   const toastify = ({
     title,
