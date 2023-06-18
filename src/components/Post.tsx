@@ -8,14 +8,19 @@ import ProfileBlock from './ProfileBlock';
 import Comment from './Comment';
 import { useState } from 'react';
 import PhotosModal from './PhotosModal';
+import PostPhoto from './PostPhoto';
 
 export default function Post() {
+  const [photos, setPhotos] = useState<string[]>([
+    '/uploads/clilwgdr00002xylvrkxq87r9-1686758589464-profilePhoto.png',
+    '/uploads/clilwgdr00002xylvrkxq87r9-1686758589464-profilePhoto.png',
+    '/uploads/clilwgdr00002xylvrkxq87r9-1686984032833-coverPhoto.jpeg',
+    '/uploads/clilwgdr00002xylvrkxq87r9-1686984032833-coverPhoto.jpeg',
+  ]);
   const [photosModal, setPhotosModal] = useState<{
-    photos: string[];
     initialSlide: number;
     shown: boolean;
   }>({
-    photos: [],
     initialSlide: 0,
     shown: false,
   });
@@ -24,7 +29,7 @@ export default function Post() {
     <>
       {photosModal.shown && (
         <PhotosModal
-          photos={photosModal.photos}
+          photos={photos}
           initialSlide={photosModal.initialSlide}
           close={() =>
             setPhotosModal((prev) => ({
@@ -39,48 +44,20 @@ export default function Post() {
           <ProfileBlock />
         </div>
         <div className="bg-violet-50 flex flex-wrap justify-center">
-          <div
-            className="w-1/2 max-h-[360px] cursor-pointer"
-            onClick={() =>
-              setPhotosModal((prev) => ({
-                ...prev,
-                photos: [
-                  '/uploads/clilwgdr00002xylvrkxq87r9-1686758589464-profilePhoto.png',
-                  '/uploads/clilwgdr00002xylvrkxq87r9-1686758589464-profilePhoto.png',
-                  '/uploads/clilwgdr00002xylvrkxq87r9-1686984032833-coverPhoto.jpeg',
-                  '/uploads/clilwgdr00002xylvrkxq87r9-1686984032833-coverPhoto.jpeg',
-                ],
-                shown: true,
-              }))
-            }
-          >
-            <img
-              src="/uploads/clilwgdr00002xylvrkxq87r9-1686758589464-profilePhoto.png"
-              className="object-cover w-full h-full"
-            />
-          </div>
-          <div className="w-1/2 max-h-[360px]">
-            <img
-              src="/uploads/clilwgdr00002xylvrkxq87r9-1686758589464-profilePhoto.png"
-              className="object-cover  w-full h-full"
-            />
-          </div>
-          <div className="w-1/2 max-h-[360px]">
-            <img
-              src="/uploads/clilwgdr00002xylvrkxq87r9-1686984032833-coverPhoto.jpeg"
-              className="object-cover  w-full h-full"
-            />
-          </div>
-          <div className="w-1/2 max-h-[360px]">
-            <img
-              src="/uploads/clilwgdr00002xylvrkxq87r9-1686984032833-coverPhoto.jpeg"
-              className="object-cover  w-full h-full"
-            />
-          </div>
-          {/* <img
-          src="/uploads/clilwgdr00002xylvrkxq87r9-1686758589464-profilePhoto.png"
-          className="object-contain max-h-[480px] w-full"
-        /> */}
+          {photos.length > 0 &&
+            photos.map((photo, i) => (
+              <PostPhoto
+                key={i}
+                photoUrl={photo}
+                onClick={() =>
+                  setPhotosModal((prev) => ({
+                    ...prev,
+                    initialSlide: i,
+                    shown: true,
+                  }))
+                }
+              />
+            ))}
         </div>
         <div className="px-8 py-4">
           <p className="text-lg text-gray-700 mb-8">
