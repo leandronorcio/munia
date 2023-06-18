@@ -7,4 +7,8 @@ declare global {
     coverPhoto: string;
   }
   type AnimationState = 'from' | 'to';
+  interface VisualMedia {
+    type: 'photo' | 'video';
+    url: string;
+  }
 }

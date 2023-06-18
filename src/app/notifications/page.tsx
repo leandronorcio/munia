@@ -1,6 +1,6 @@
 'use client';
 
-import PhotosModal from '@/components/PhotosModal';
+import PhotosModal from '@/components/VisualMediaModal';
 import { useState } from 'react';
 export default function Notifications() {
   const [shown, setShown] = useState(false);

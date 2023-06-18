@@ -22,6 +22,7 @@ export { default as Mail } from "./Mail";
 export { default as More } from "./More";
 export { default as Next } from "./Next";
 export { default as NotificationBell } from "./NotificationBell";
+export { default as Play } from "./Play";
 export { default as Profile } from "./Profile";
 export { default as Search } from "./Search";
 export { default as Send } from "./Send";

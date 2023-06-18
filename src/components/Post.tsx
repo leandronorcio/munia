@@ -7,15 +7,27 @@ import SvgComment from '@/svg_components/Comment';
 import ProfileBlock from './ProfileBlock';
 import Comment from './Comment';
 import { useState } from 'react';
-import PhotosModal from './PhotosModal';
-import PostPhoto from './PostPhoto';
+import PostVisualMedia from './PostVisualMedia';
+import VisualMediaModal from './VisualMediaModal';
 
 export default function Post() {
-  const [photos, setPhotos] = useState<string[]>([
-    '/uploads/clilwgdr00002xylvrkxq87r9-1686758589464-profilePhoto.png',
-    '/uploads/clilwgdr00002xylvrkxq87r9-1686758589464-profilePhoto.png',
-    '/uploads/clilwgdr00002xylvrkxq87r9-1686984032833-coverPhoto.jpeg',
-    '/uploads/clilwgdr00002xylvrkxq87r9-1686984032833-coverPhoto.jpeg',
+  const [visualMedia, setVisualMedia] = useState<VisualMedia[]>([
+    {
+      type: 'photo',
+      url: '/uploads/clilwgdr00002xylvrkxq87r9-1686758589464-profilePhoto.png',
+    },
+    {
+      type: 'video',
+      url: '/uploads/coverr-dandelions-7795-1080p.mp4',
+    },
+    {
+      type: 'photo',
+      url: '/uploads/clilwgdr00002xylvrkxq87r9-1686984032833-coverPhoto.jpeg',
+    },
+    {
+      type: 'video',
+      url: '/uploads/coverr-woman-taking-photos-of-flowers-5278-1080p.mp4',
+    },
   ]);
   const [photosModal, setPhotosModal] = useState<{
     initialSlide: number;
@@ -28,8 +40,8 @@ export default function Post() {
   return (
     <>
       {photosModal.shown && (
-        <PhotosModal
-          photos={photos}
+        <VisualMediaModal
+          visualMedia={visualMedia}
           initialSlide={photosModal.initialSlide}
           close={() =>
             setPhotosModal((prev) => ({
@@ -43,12 +55,13 @@ export default function Post() {
         <div className="px-4 py-4 sm:px-8 sm:py-6">
           <ProfileBlock />
         </div>
-        <div className="bg-violet-50 flex flex-wrap justify-center">
-          {photos.length > 0 &&
-            photos.map((photo, i) => (
-              <PostPhoto
+        <div className="bg-violet-50 flex flex-wrap justify-center items-center">
+          {visualMedia.length > 0 &&
+            visualMedia.map((media, i) => (
+              <PostVisualMedia
                 key={i}
-                photoUrl={photo}
+                type={media.type}
+                url={media.url}
                 onClick={() =>
                   setPhotosModal((prev) => ({
                     ...prev,

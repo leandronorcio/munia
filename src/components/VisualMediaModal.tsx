@@ -7,12 +7,12 @@ import ModalWrapper from './ModalWrapper';
 import { Close } from '@/svg_components';
 import { cn } from '@/lib/cn';
 
-export default function PhotosModal({
-  photos,
+export default function VisualMediaModal({
+  visualMedia,
   initialSlide = 0,
   close,
 }: {
-  photos: string[];
+  visualMedia: VisualMedia[];
   initialSlide?: number;
   close: Function;
 }) {
@@ -53,7 +53,7 @@ export default function PhotosModal({
         >
           <Close stroke="white" strokeWidth={4} width={24} height={24} />
         </div>
-        {photos.length > 1 && (
+        {visualMedia.length > 1 && (
           <>
             <PhotosModalNavigationButton
               type="prev"
@@ -70,17 +70,34 @@ export default function PhotosModal({
           </>
         )}
 
-        {photos.map((photo) => {
+        {visualMedia.map((visualMedia, i) => {
+          const { type, url } = visualMedia;
           return (
-            <SwiperSlide key={photo}>
+            <SwiperSlide key={i}>
               <div className="swiper-zoom-container">
-                <img
-                  src={photo}
-                  className={cn(
-                    'max-h-full transition-opacity duration-500',
-                    animation === 'from' ? 'opacity-0' : 'opacity-100'
-                  )}
-                />
+                {type === 'photo' ? (
+                  <img
+                    src={visualMedia.url}
+                    className={cn(
+                      'max-h-full transition-opacity duration-500',
+                      animation === 'from' ? 'opacity-0' : 'opacity-100'
+                    )}
+                  />
+                ) : (
+                  <div className="swiper-zoom-container">
+                    <video
+                      className={cn(
+                        'max-h-[75%] h-auto transition-opacity duration-500',
+                        animation === 'from' ? 'opacity-0' : 'opacity-100'
+                      )}
+                      autoPlay
+                      controls
+                    >
+                      <source src={url} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                )}
               </div>
             </SwiperSlide>
           );
