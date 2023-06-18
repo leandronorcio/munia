@@ -1,7 +1,8 @@
 'use client';
 
+import ModalContentWrapper from '@/components/ModalContentWrapper';
+import ModalWrapper from '@/components/ModalWrapper';
 import Button from '@/components/ui/Button';
-import { cn } from '@/lib/cn';
 import { Close } from '@/svg_components';
 import { createContext, useState } from 'react';
 
@@ -81,19 +82,8 @@ function BasicModalContextProvider({
   return (
     <BasicModalContext.Provider value={{ shown: shown, alert, confirm }}>
       {shown && (
-        <div
-          className={cn(
-            'fixed top-0 left-0 transition-all duration-500 w-full h-screen flex justify-center items-end md:items-center z-10',
-            animation === 'from' ? 'backdrop-blur-none' : 'backdrop-blur-sm'
-          )}
-        >
-          <div
-            className={cn(
-              'transition-all duration-500 w-full px-5 md:px-32 py-14 md:py-24 md:w-3/5 lg:w-1/2 xl:w-2/5 rounded-t-3xl md:rounded-3xl bg-white flex flex-col items-center gap-6 relative',
-              animation === 'from' ? '-mt-24' : 'mt-0',
-              animation === 'from' ? 'opacity-0' : 'opacity-1'
-            )}
-          >
+        <ModalWrapper animationState={animation}>
+          <ModalContentWrapper animationState={animation}>
             <Close
               className="absolute top-6 md:top-8 right-6 md:right-8 cursor-pointer stroke-gray-900 hover:stroke-gray-500"
               width={24}
@@ -123,8 +113,8 @@ function BasicModalContextProvider({
                 Cancel
               </Button>
             )}
-          </div>
-        </div>
+          </ModalContentWrapper>
+        </ModalWrapper>
       )}
       {children}
     </BasicModalContext.Provider>
