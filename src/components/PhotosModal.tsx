@@ -1,10 +1,11 @@
 'use client';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Zoom, Navigation, Pagination, Keyboard } from 'swiper';
-
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PhotosModalNavigationButton } from './PhotosModalNavigationButton';
-import { PhotosModalCloseButton } from './PhotosModalCloseButton';
+import ModalWrapper from './ModalWrapper';
+import { Close } from '@/svg_components';
+import { cn } from '@/lib/cn';
 
 export default function PhotosModal({
   photos,
@@ -17,16 +18,24 @@ export default function PhotosModal({
 }) {
   const [isBeginning, setIsBeginning] = useState(false);
   const [isEnd, setIsEnd] = useState(false);
+  const [animation, setAnimation] = useState<'from' | 'to'>('from');
+
+  useEffect(() => {
+    setAnimation('to');
+  }, []);
 
   return (
-    <div className="fixed z-10 top-0 left-0 w-screen h-screen transition-all backdrop-blur-sm">
+    <ModalWrapper animationState={animation}>
       <Swiper
         onSlideChange={(swiper) => {
           setIsBeginning(swiper.isBeginning);
           setIsEnd(swiper.isEnd);
         }}
         onSwiper={(swiper) => console.log(swiper)}
-        className="w-full h-full"
+        className={cn(
+          'w-full h-full transition-opacity duration-500',
+          animation === 'from' ? 'opacity-0' : 'opacity-100'
+        )}
         zoom={true}
         pagination={{
           clickable: true,
@@ -35,7 +44,15 @@ export default function PhotosModal({
         modules={[Zoom, Navigation, Pagination, Keyboard]}
         initialSlide={initialSlide}
       >
-        <PhotosModalCloseButton close={close} />
+        <div
+          className="fixed z-20 top-6 right-6 bg-red-400 hover:bg-red-600 p-3 rounded-full cursor-pointer transition-transform hover:scale-110"
+          onClick={() => {
+            setAnimation('from');
+            setTimeout(() => close(), 500);
+          }}
+        >
+          <Close stroke="white" strokeWidth={4} width={24} height={24} />
+        </div>
         {photos.length > 1 && (
           <>
             <PhotosModalNavigationButton
@@ -61,6 +78,6 @@ export default function PhotosModal({
           );
         })}
       </Swiper>
-    </div>
+    </ModalWrapper>
   );
 }
