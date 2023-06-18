@@ -8,6 +8,10 @@ import { authOptions } from './api/auth/[...nextauth]/route';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import BottomMenu from '../components/BottomMenu';
+import 'swiper/css';
+import 'swiper/css/zoom';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],

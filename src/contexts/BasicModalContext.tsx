@@ -83,7 +83,7 @@ function BasicModalContextProvider({
       {shown && (
         <div
           className={cn(
-            'fixed top-0 left-0 transition-all duration-500 w-full h-screen flex justify-center items-end md:items-center z-10 shadow-lg',
+            'fixed top-0 left-0 transition-all duration-500 w-full h-screen flex justify-center items-end md:items-center z-10',
             animation === 'from' ? 'backdrop-blur-none' : 'backdrop-blur-sm'
           )}
         >

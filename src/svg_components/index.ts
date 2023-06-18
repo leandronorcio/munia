@@ -1,4 +1,6 @@
 export { default as ActionsPlus } from "./ActionsPlus";
+export { default as ArrowChevronBack } from "./ArrowChevronBack";
+export { default as ArrowChevronForward } from "./ArrowChevronForward";
 export { default as BackArrow } from "./BackArrow";
 export { default as Camera } from "./Camera";
 export { default as CircleActionsAlertInfo } from "./CircleActionsAlertInfo";

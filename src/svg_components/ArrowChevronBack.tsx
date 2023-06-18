@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
-const SvgClose = (props: SVGProps<SVGSVGElement>) => (
+const SvgArrowChevronBack = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="1em"
@@ -10,10 +10,12 @@ const SvgClose = (props: SVGProps<SVGSVGElement>) => (
     {...props}
   >
     <path
+      stroke={props.stroke}
+      strokeLinecap="round"
+      strokeLinejoin="round"
       strokeWidth={props.strokeWidth || 2}
-      d="m6 6 6.387 6.387m0 0 6.387 6.387m-6.387-6.387L6 18.774m6.387-6.387L18.774 6"
-      className="close_svg__close-svg"
+      d="M14.963 5 8 11.963l6.963 6.963"
     />
   </svg>
 );
-export default SvgClose;
+export default SvgArrowChevronBack;
