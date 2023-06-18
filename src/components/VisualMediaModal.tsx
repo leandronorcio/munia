@@ -32,7 +32,10 @@ export default function VisualMediaModal({
           setIsEnd(swiper.isEnd);
         }}
         onSwiper={(swiper) => console.log(swiper)}
-        className="w-full h-full"
+        className={cn(
+          'w-full h-full transition-opacity duration-500',
+          animation === 'from' ? 'opacity-0' : 'opacity-100'
+        )}
         zoom={true}
         pagination={{
           clickable: true,
@@ -76,27 +79,12 @@ export default function VisualMediaModal({
             <SwiperSlide key={i}>
               <div className="swiper-zoom-container">
                 {type === 'photo' ? (
-                  <img
-                    src={visualMedia.url}
-                    className={cn(
-                      'max-h-full transition-opacity duration-500',
-                      animation === 'from' ? 'opacity-0' : 'opacity-100'
-                    )}
-                  />
+                  <img src={visualMedia.url} className="max-h-full" />
                 ) : (
-                  <div className="swiper-zoom-container">
-                    <video
-                      className={cn(
-                        'max-h-[75%] h-auto transition-opacity duration-500',
-                        animation === 'from' ? 'opacity-0' : 'opacity-100'
-                      )}
-                      autoPlay
-                      controls
-                    >
-                      <source src={url} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
+                  <video className="max-h-[75%]" autoPlay controls>
+                    <source src={url} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
                 )}
               </div>
             </SwiperSlide>
