@@ -3,6 +3,7 @@ import SessionProviderContext from '@/contexts/SessionProviderContext';
 import { Poppins } from 'next/font/google';
 import { BasicModalContextProvider } from '@/contexts/BasicModalContext';
 import { ToastContextProvider } from '@/contexts/ToastContext';
+import { VisualMediaModalContextProvider } from '@/contexts/VisualMediaModalContext';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]/route';
 import Navbar from '../components/Navbar';
@@ -43,24 +44,26 @@ export default async function RootLayout({
         <ToastContextProvider>
           <SessionProviderContext>
             <BasicModalContextProvider>
-              <div className="h-screen flex flex-col bg-violet-100">
-                {session ? (
-                  <>
-                    <Navbar />
-                    <Sidebar />
-                    <BottomMenu />
-                    <div className="transition-[margin] duration-500 overflow-y-auto ml-0 md:ml-[240px]">
-                      <div className="flex justify-center">
-                        <div className="w-full h-full lg:w-[650px] xl:w-[800px] transition-all duration-500 md:px-4 md:pt-8 mb-20">
-                          {children}
+              <VisualMediaModalContextProvider>
+                <div className="h-screen flex flex-col bg-violet-100">
+                  {session ? (
+                    <>
+                      <Navbar />
+                      <Sidebar />
+                      <BottomMenu />
+                      <div className="transition-[margin] duration-500 overflow-y-auto ml-0 md:ml-[240px]">
+                        <div className="flex justify-center">
+                          <div className="w-full h-full lg:w-[650px] xl:w-[800px] transition-all duration-500 md:px-4 md:pt-8 mb-20">
+                            {children}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </>
-                ) : (
-                  onboarding
-                )}
-              </div>
+                    </>
+                  ) : (
+                    onboarding
+                  )}
+                </div>
+              </VisualMediaModalContextProvider>
             </BasicModalContextProvider>
           </SessionProviderContext>
         </ToastContextProvider>

@@ -6,9 +6,9 @@ import Button from './ui/Button';
 import SvgComment from '@/svg_components/Comment';
 import ProfileBlock from './ProfileBlock';
 import Comment from './Comment';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import PostVisualMedia from './PostVisualMedia';
-import VisualMediaModal from './VisualMediaModal';
+import { VisualMediaModalContext } from '@/contexts/VisualMediaModalContext';
 
 export default function Post() {
   const [visualMedia, setVisualMedia] = useState<VisualMedia[]>([
@@ -29,28 +29,11 @@ export default function Post() {
       url: '/uploads/coverr-woman-taking-photos-of-flowers-5278-1080p.mp4',
     },
   ]);
-  const [photosModal, setPhotosModal] = useState<{
-    initialSlide: number;
-    shown: boolean;
-  }>({
-    initialSlide: 0,
-    shown: false,
-  });
+
+  const { showVisualMediaModal } = useContext(VisualMediaModalContext);
 
   return (
     <>
-      {photosModal.shown && (
-        <VisualMediaModal
-          visualMedia={visualMedia}
-          initialSlide={photosModal.initialSlide}
-          close={() =>
-            setPhotosModal((prev) => ({
-              ...prev,
-              shown: false,
-            }))
-          }
-        />
-      )}
       <div className="rounded-2xl bg-slate-50 overflow-hidden">
         <div className="px-4 py-4 sm:px-8 sm:py-6">
           <ProfileBlock />
@@ -63,11 +46,7 @@ export default function Post() {
                 type={media.type}
                 url={media.url}
                 onClick={() =>
-                  setPhotosModal((prev) => ({
-                    ...prev,
-                    initialSlide: i,
-                    shown: true,
-                  }))
+                  showVisualMediaModal({ visualMedia, initialSlide: i })
                 }
               />
             ))}
