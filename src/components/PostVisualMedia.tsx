@@ -11,7 +11,7 @@ export default function PostVisualMedia({
 }) {
   return (
     <div
-      className="w-1/2 max-h-[360px] cursor-pointer overflow-hidden relative group p-4"
+      className="w-1/2 max-h-[400px] cursor-pointer overflow-hidden relative group"
       onClick={onClick}
     >
       {type === 'photo' ? (
