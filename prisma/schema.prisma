@@ -48,7 +48,7 @@ model User {
   profilePhoto  String?
   coverPhoto    String?
   post          Post[]
-  photos        Photo[]
+  visualMedia   VisualMedia[]
   postLikes     PostLike[]
   comments      Comment[]
 }
@@ -62,14 +62,14 @@ model VerificationToken {
 }
 
 model Post {
-  id         Int      @id @default(autoincrement())
-  content    String?
-  createdAt  DateTime @default(now())
-  photos     Photo[]
-  user       User     @relation(fields: [userId], references: [id])
-  userId     String
-  postLikes  PostLike[]
-  comments   Comment[]
+  id          Int      @id @default(autoincrement())
+  content     String?
+  createdAt   DateTime @default(now())
+  visualMedia VisualMedia[]
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  postLikes   PostLike[]
+  comments    Comment[]
 }
 
 model PostLike {
@@ -91,12 +91,18 @@ model Comment {
   postId     Int
 }
 
-model Photo {
-  id         Int      @id @default(autoincrement())
+model VisualMedia {
+  id         Int             @id @default(autoincrement())
+  type       VisualMediaType @default(PHOTO)
   url        String
-  uploadedAt DateTime @default(now())
-  user       User     @relation(fields: [userId], references: [id])
+  uploadedAt DateTime        @default(now())
+  user       User            @relation(fields: [userId], references: [id])
   userId     String
-  post       Post     @relation(fields: [postId], references: [id])
+  post       Post            @relation(fields: [postId], references: [id])
   postId     Int
+}
+
+enum VisualMediaType {
+  PHOTO
+  VIDEO
 }
