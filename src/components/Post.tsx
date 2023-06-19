@@ -6,9 +6,8 @@ import Button from './ui/Button';
 import SvgComment from '@/svg_components/Comment';
 import ProfileBlock from './ProfileBlock';
 import Comment from './Comment';
-import { useContext, useState } from 'react';
-import PostVisualMedia from './PostVisualMedia';
-import { VisualMediaModalContext } from '@/contexts/VisualMediaModalContext';
+import { useState } from 'react';
+import PostVisualMediaContainer from './PostVisualMediaContainer';
 
 export default function Post() {
   const [visualMedia, setVisualMedia] = useState<VisualMedia[]>([
@@ -30,27 +29,13 @@ export default function Post() {
     },
   ]);
 
-  const { showVisualMediaModal } = useContext(VisualMediaModalContext);
-
   return (
     <>
       <div className="rounded-2xl bg-slate-50 overflow-hidden">
         <div className="px-4 py-4 sm:px-8 sm:py-6">
           <ProfileBlock />
         </div>
-        <div className="bg-violet-50 flex flex-wrap justify-center items-center">
-          {visualMedia.length > 0 &&
-            visualMedia.map((media, i) => (
-              <PostVisualMedia
-                key={i}
-                type={media.type}
-                url={media.url}
-                onClick={() =>
-                  showVisualMediaModal({ visualMedia, initialSlide: i })
-                }
-              />
-            ))}
-        </div>
+        <PostVisualMediaContainer visualMedia={visualMedia} />
         <div className="px-8 py-4">
           <p className="text-lg text-gray-700 mb-8">
             Lorem ipsum dolor sit amet.
