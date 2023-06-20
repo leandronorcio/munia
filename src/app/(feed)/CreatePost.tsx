@@ -3,22 +3,45 @@ import Button from '@/components/ui/Button';
 import ProfilePhoto from '@/components/ui/ProfilePhoto';
 import TextArea from '@/components/ui/TextArea';
 import CreatePostOptions from './CreatePostOptions';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import PostVisualMediaContainer from '@/components/PostVisualMediaContainer';
+import { ToastContext } from '@/contexts/ToastContext';
 
 export default function CreatePost() {
   const [content, setContent] = useState('');
   const [visualMediaFiles, setVisualMediaFiles] = useState<File[]>([]);
+  const { toastify } = useContext(ToastContext);
 
-  const handleVisualMediaChange: React.ChangeEventHandler<HTMLInputElement> = (
-    e
-  ) => {
+  const handleVisualMediaChange: React.ChangeEventHandler<
+    HTMLInputElement
+  > = async (e) => {
     const { name, files } = e.target;
 
     if (files === null) return;
     const filesArr = [...files];
-    console.log(filesArr);
     setVisualMediaFiles((prev) => [...prev, ...filesArr]);
+  };
+
+  const submitPost = async () => {
+    const formData = new FormData();
+    formData.append('content', content);
+
+    /**
+     * https://developer.mozilla.org/en-US/docs/Web/API/FormData/append
+     * The difference between set() and append() is that if the specified key already exists, set() will overwrite all existing values with the new one, whereas append() will append the new value onto the end of the existing set of values.
+     */
+    for (const visualMediaFile of visualMediaFiles) {
+      formData.append('files', visualMediaFile, visualMediaFile.name);
+    }
+
+    const res = await fetch('/api/post', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (res.ok) {
+      toastify({ title: 'Successfully Posted', type: 'success' });
+    }
   };
 
   return (
@@ -37,9 +60,9 @@ export default function CreatePost() {
         <div>
           <Button
             mode="secondary"
-            onClick={() => {}}
+            onClick={submitPost}
             size="small"
-            disabled={content === ''}
+            disabled={content === '' && visualMediaFiles.length === 0}
           >
             Post
           </Button>
@@ -51,7 +74,7 @@ export default function CreatePost() {
         <div className="mt-6">
           <PostVisualMediaContainer
             visualMedia={visualMediaFiles.map((file) => ({
-              type: file.type.startsWith('image/') ? 'photo' : 'video',
+              type: file.type.startsWith('image/') ? 'PHOTO' : 'VIDEO',
               url: URL.createObjectURL(file),
             }))}
           />

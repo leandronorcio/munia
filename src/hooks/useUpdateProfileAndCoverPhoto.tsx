@@ -18,29 +18,30 @@ export async function useUpdateProfileAndCoverPhoto(
     );
   }
 
-  const allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-  const fileType = file.type.split('/')[1];
-  if (!allowedFileTypes.includes(file.type)) {
-    return NextResponse.json(
-      { error: 'Unsupported file type.' },
-      { status: 400 }
-    );
-  }
-
   try {
+    const allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    const extension = file.type.split('/')[1];
+    if (!allowedFileTypes.includes(file.type)) {
+      return NextResponse.json(
+        { error: 'Unsupported file type.' },
+        { status: 400 }
+      );
+    }
     const buffer = Buffer.from(await file.arrayBuffer());
-    const fileName = `${user.id}-${Date.now()}-${toUpdate}.${fileType}`;
-    const fullURL = `./public/uploads/${fileName}`;
+    const filePath = `./uploads/${
+      user.id
+    }-${Date.now()}-${toUpdate}.${extension}`;
+    await writeFile(`./public/${filePath}`, buffer);
 
     const updateUser = await prisma.user.update({
       where: {
         id: user.id,
       },
       data: {
-        [toUpdate]: fullURL.replace('./public', ''),
+        [toUpdate]: filePath,
       },
     });
-    await writeFile(fullURL, buffer);
+
     return NextResponse.json(
       { uploadedTo: updateUser[toUpdate] },
       { status: 200 }
