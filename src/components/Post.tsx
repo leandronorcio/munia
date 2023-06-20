@@ -12,19 +12,19 @@ import PostVisualMediaContainer from './PostVisualMediaContainer';
 export default function Post() {
   const [visualMedia, setVisualMedia] = useState<VisualMedia[]>([
     {
-      type: 'photo',
+      type: 'PHOTO',
       url: '/uploads/clilwgdr00002xylvrkxq87r9-1686758589464-profilePhoto.png',
     },
     {
-      type: 'video',
+      type: 'VIDEO',
       url: '/uploads/coverr-dandelions-7795-1080p.mp4',
     },
     {
-      type: 'photo',
+      type: 'PHOTO',
       url: '/uploads/clilwgdr00002xylvrkxq87r9-1686984032833-coverPhoto.jpeg',
     },
     {
-      type: 'video',
+      type: 'VIDEO',
       url: '/uploads/coverr-woman-taking-photos-of-flowers-5278-1080p.mp4',
     },
   ]);

@@ -1,11 +1,12 @@
 import { Play } from '@/svg_components';
+import { VisualMediaType } from '@prisma/client';
 
 export default function PostVisualMedia({
   type,
   url,
   onClick,
 }: {
-  type: 'photo' | 'video';
+  type: VisualMediaType;
   url: string;
   onClick: React.MouseEventHandler<HTMLDivElement>;
 }) {
@@ -14,7 +15,7 @@ export default function PostVisualMedia({
       className="w-1/2 max-h-[400px] cursor-pointer overflow-hidden relative group"
       onClick={onClick}
     >
-      {type === 'photo' ? (
+      {type === 'PHOTO' ? (
         <img
           src={url}
           className="object-cover w-full h-full transition-transform hover:scale-110"

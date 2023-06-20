@@ -78,7 +78,7 @@ export default function VisualMediaModal({
           return (
             <SwiperSlide key={i}>
               <div className="swiper-zoom-container">
-                {type === 'photo' ? (
+                {type === 'PHOTO' ? (
                   <img src={visualMedia.url} className="max-h-full" />
                 ) : (
                   <video className="max-h-[75%]" autoPlay controls>

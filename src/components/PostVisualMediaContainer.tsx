@@ -11,11 +11,11 @@ export default function PostVisualMediaContainer({
   return (
     <div className="bg-violet-50 flex flex-wrap justify-center items-center">
       {visualMedia.length > 0 &&
-        visualMedia.map((media, i) => (
+        visualMedia.map((item, i) => (
           <PostVisualMedia
             key={i}
-            type={media.type}
-            url={media.url}
+            type={item.type}
+            url={item.url}
             onClick={() =>
               showVisualMediaModal({ visualMedia, initialSlide: i })
             }

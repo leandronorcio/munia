@@ -1,3 +1,4 @@
+import { VisualMediaType } from '@prisma/client';
 import type { DefaultUser } from 'next-auth';
 
 declare global {
@@ -8,7 +9,7 @@ declare global {
   }
   type AnimationState = 'from' | 'to';
   interface VisualMedia {
-    type: 'photo' | 'video';
+    type: VisualMediaType;
     url: string;
   }
 }
