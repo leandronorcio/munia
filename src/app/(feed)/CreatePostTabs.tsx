@@ -15,7 +15,7 @@ export function CreatePostTabs({
   return (
     <>
       {visualMediaFiles.length > 0 && (
-        <div className="overflow-x-hidden">
+        <div className="overflow-x-hidden border-t-2 mt-4">
           <div className="flex justify-center">
             {['preview', 'sort'].map((item, i) => {
               // Hide the Sort tab when there is only one selected file.

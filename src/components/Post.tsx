@@ -13,19 +13,31 @@ export default function Post() {
   const [visualMedia, setVisualMedia] = useState<VisualMedia[]>([
     {
       type: 'PHOTO',
-      url: '/uploads/clilwgdr00002xylvrkxq87r9-1686758589464-profilePhoto.png',
-    },
-    {
-      type: 'VIDEO',
-      url: '/uploads/coverr-dandelions-7795-1080p.mp4',
+      url: '/uploads/clilwgdr00002xylvrkxq87r9-1687321485180-0-photo.jpeg',
     },
     {
       type: 'PHOTO',
-      url: '/uploads/clilwgdr00002xylvrkxq87r9-1686984032833-coverPhoto.jpeg',
+      url: '/uploads/clilwgdr00002xylvrkxq87r9-1687321485180-1-photo.jpeg',
+    },
+    {
+      type: 'PHOTO',
+      url: '/uploads/clilwgdr00002xylvrkxq87r9-1687321485181-2-photo.jpeg',
     },
     {
       type: 'VIDEO',
-      url: '/uploads/coverr-woman-taking-photos-of-flowers-5278-1080p.mp4',
+      url: '/uploads/clilwgdr00002xylvrkxq87r9-1687278136538-1-video.mp4',
+    },
+    {
+      type: 'PHOTO',
+      url: '/uploads/clilwgdr00002xylvrkxq87r9-1687321485180-0-photo.jpeg',
+    },
+    {
+      type: 'PHOTO',
+      url: '/uploads/clilwgdr00002xylvrkxq87r9-1687321485180-1-photo.jpeg',
+    },
+    {
+      type: 'PHOTO',
+      url: '/uploads/clilwgdr00002xylvrkxq87r9-1687321485181-2-photo.jpeg',
     },
   ]);
 
