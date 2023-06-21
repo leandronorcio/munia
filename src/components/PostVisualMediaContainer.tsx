@@ -11,6 +11,7 @@ export default function PostVisualMediaContainer({
 }) {
   const { showVisualMediaModal } = useContext(VisualMediaModalContext);
   const len = visualMedia.length;
+  console.log('PostVisualMediaContainer rendered');
   return (
     <div
       className={cn('grid relative', len > 2 ? 'grid-cols-2' : 'grid-cols-1')}
