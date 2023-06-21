@@ -4,8 +4,8 @@ import ProfilePhoto from '@/components/ui/ProfilePhoto';
 import TextArea from '@/components/ui/TextArea';
 import CreatePostOptions from './CreatePostOptions';
 import { useContext, useState } from 'react';
-import PostVisualMediaContainer from '@/components/PostVisualMediaContainer';
 import { ToastContext } from '@/contexts/ToastContext';
+import { CreatePostTabs } from './CreatePostTabs';
 
 export default function CreatePost() {
   const [content, setContent] = useState('');
@@ -69,17 +69,7 @@ export default function CreatePost() {
         </div>
       </div>
       <CreatePostOptions handleVisualMediaChange={handleVisualMediaChange} />
-
-      {visualMediaFiles.length > 0 && (
-        <div className="mt-6">
-          <PostVisualMediaContainer
-            visualMedia={visualMediaFiles.map((file) => ({
-              type: file.type.startsWith('image/') ? 'PHOTO' : 'VIDEO',
-              url: URL.createObjectURL(file),
-            }))}
-          />
-        </div>
-      )}
+      <CreatePostTabs visualMediaFiles={visualMediaFiles} />
     </div>
   );
 }
