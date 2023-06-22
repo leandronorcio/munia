@@ -8,6 +8,7 @@ export { default as CircleActionsClose } from "./CircleActionsClose";
 export { default as CircleActionsSuccess } from "./CircleActionsSuccess";
 export { default as Close } from "./Close";
 export { default as Comment } from "./Comment";
+export { default as Delete } from "./Delete";
 export { default as Ellipse } from "./Ellipse";
 export { default as EmojiHappySmile } from "./EmojiHappySmile";
 export { default as ForwardArrow } from "./ForwardArrow";

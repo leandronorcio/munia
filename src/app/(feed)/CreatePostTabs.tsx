@@ -3,26 +3,25 @@ import { capitalizeFirstLetter } from '@/lib/capitalizeFirstLettet';
 import { cn } from '@/lib/cn';
 import { Ellipse } from '@/svg_components';
 import { memo, useState } from 'react';
+import { CreatePostSort } from './CreatePostSort';
 
 const CreatePostTabs = memo(
-  function CreatePostTabs({ visualMedia }: { visualMedia: VisualMedia[] }) {
+  function CreatePostTabs({
+    visualMedia,
+    setVisualMedia,
+  }: {
+    visualMedia: VisualMedia[];
+    setVisualMedia: React.Dispatch<React.SetStateAction<VisualMedia[]>>;
+  }) {
     const [activeCreatePostTab, setActiveCreatePostTab] = useState<
       'preview' | 'sort'
     >('preview');
 
-    console.log('rendered');
     return (
       <>
-        <div
-          className={cn(
-            'overflow-x-hidden border-t-2 mt-4',
-            visualMedia.length > 0 ? 'block' : 'hidden'
-          )}
-        >
+        <div className={cn('border-t-2 mt-4')}>
           <div className="flex justify-center">
             {['preview', 'sort'].map((item, i) => {
-              // Hide the Sort tab when there is only one selected file.
-              if (visualMedia.length === 1 && i === 1) return false;
               const isActive = item === activeCreatePostTab;
               return (
                 <div
@@ -48,16 +47,23 @@ const CreatePostTabs = memo(
             })}
           </div>
 
-          <div
-            className={cn(
-              'flex w-[200%] transition-transform duration-500',
-              activeCreatePostTab === 'sort' && 'translate-x-[-50%]'
-            )}
-          >
-            <div className="basis-1/2">
-              <PostVisualMediaContainer visualMedia={visualMedia} />
+          <div className="overflow-hidden">
+            <div
+              className={cn(
+                'grid grid-cols-2 w-[200%] transition-transform duration-500',
+                activeCreatePostTab === 'sort' && 'translate-x-[-50%]'
+              )}
+            >
+              <div className="basis-1/2">
+                <PostVisualMediaContainer visualMedia={visualMedia} />
+              </div>
+              <div className="basis-1/2">
+                <CreatePostSort
+                  visualMedia={visualMedia}
+                  setVisualMedia={setVisualMedia}
+                />
+              </div>
             </div>
-            <div className="basis-1/2"></div>
           </div>
         </div>
       </>

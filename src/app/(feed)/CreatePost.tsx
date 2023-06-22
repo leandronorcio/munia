@@ -3,7 +3,7 @@ import Button from '@/components/ui/Button';
 import ProfilePhoto from '@/components/ui/ProfilePhoto';
 import TextArea from '@/components/ui/TextArea';
 import CreatePostOptions from './CreatePostOptions';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ToastContext } from '@/contexts/ToastContext';
 import { CreatePostTabs } from './CreatePostTabs';
 
@@ -27,6 +27,10 @@ export default function CreatePost() {
     setVisualMedia((prev) => [...prev, ...newVisualMediaArr]);
   };
 
+  useEffect(() => {
+    console.log(visualMedia);
+  }, [visualMedia]);
+
   const submitPost = async () => {
     const formData = new FormData();
     formData.append('content', content);
@@ -46,6 +50,8 @@ export default function CreatePost() {
     });
 
     if (res.ok) {
+      setContent('');
+      setVisualMedia([]);
       toastify({ title: 'Successfully Posted', type: 'success' });
     }
   };
@@ -75,7 +81,12 @@ export default function CreatePost() {
         </div>
       </div>
       <CreatePostOptions handleVisualMediaChange={handleVisualMediaChange} />
-      <CreatePostTabs visualMedia={visualMedia} />
+      {visualMedia.length > 0 && (
+        <CreatePostTabs
+          visualMedia={visualMedia}
+          setVisualMedia={setVisualMedia}
+        />
+      )}
     </div>
   );
 }

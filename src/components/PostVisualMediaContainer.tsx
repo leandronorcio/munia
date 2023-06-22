@@ -13,7 +13,6 @@ const PostVisualMediaContainer = memo(
     const { showVisualMediaModal } = useContext(VisualMediaModalContext);
     const len = visualMedia.length;
 
-    console.log('rendered');
     return (
       <div
         className={cn('grid relative', len > 2 ? 'grid-cols-2' : 'grid-cols-1')}
