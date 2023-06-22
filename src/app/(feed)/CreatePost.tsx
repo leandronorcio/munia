@@ -9,7 +9,7 @@ import { CreatePostTabs } from './CreatePostTabs';
 
 export default function CreatePost() {
   const [content, setContent] = useState('');
-  const [visualMediaFiles, setVisualMediaFiles] = useState<File[]>([]);
+  const [visualMedia, setVisualMedia] = useState<VisualMedia[]>([]);
   const { toastify } = useContext(ToastContext);
 
   const handleVisualMediaChange: React.ChangeEventHandler<
@@ -19,7 +19,12 @@ export default function CreatePost() {
 
     if (files === null) return;
     const filesArr = [...files];
-    setVisualMediaFiles((prev) => [...prev, ...filesArr]);
+    const newVisualMediaArr: VisualMedia[] = filesArr.map((file) => ({
+      type: file.type.startsWith('image/') ? 'PHOTO' : 'VIDEO',
+      url: URL.createObjectURL(file),
+    }));
+
+    setVisualMedia((prev) => [...prev, ...newVisualMediaArr]);
   };
 
   const submitPost = async () => {
@@ -30,8 +35,9 @@ export default function CreatePost() {
      * https://developer.mozilla.org/en-US/docs/Web/API/FormData/append
      * The difference between set() and append() is that if the specified key already exists, set() will overwrite all existing values with the new one, whereas append() will append the new value onto the end of the existing set of values.
      */
-    for (const visualMediaFile of visualMediaFiles) {
-      formData.append('files', visualMediaFile, visualMediaFile.name);
+    for (const item of visualMedia) {
+      const file = await fetch(item.url).then((r) => r.blob());
+      formData.append('files', file, file.name);
     }
 
     const res = await fetch('/api/post', {
@@ -62,14 +68,14 @@ export default function CreatePost() {
             mode="secondary"
             onClick={submitPost}
             size="small"
-            disabled={content === '' && visualMediaFiles.length === 0}
+            disabled={content === '' && visualMedia.length === 0}
           >
             Post
           </Button>
         </div>
       </div>
       <CreatePostOptions handleVisualMediaChange={handleVisualMediaChange} />
-      <CreatePostTabs visualMediaFiles={visualMediaFiles} />
+      <CreatePostTabs visualMedia={visualMedia} />
     </div>
   );
 }

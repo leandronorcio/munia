@@ -2,35 +2,27 @@ import PostVisualMediaContainer from '@/components/PostVisualMediaContainer';
 import { capitalizeFirstLetter } from '@/lib/capitalizeFirstLettet';
 import { cn } from '@/lib/cn';
 import { Ellipse } from '@/svg_components';
-import { memo, useMemo, useState } from 'react';
+import { memo, useState } from 'react';
 
 const CreatePostTabs = memo(
-  function CreatePostTabs({ visualMediaFiles }: { visualMediaFiles: File[] }) {
+  function CreatePostTabs({ visualMedia }: { visualMedia: VisualMedia[] }) {
     const [activeCreatePostTab, setActiveCreatePostTab] = useState<
       'preview' | 'sort'
     >('preview');
 
-    // Memoize the generated VisualMedia[] because <URL.createObjectURL> keeps creating a new URL every render.
-    const visualMedia: VisualMedia[] = useMemo(
-      () =>
-        visualMediaFiles.map((file) => ({
-          type: file.type.startsWith('image/') ? 'PHOTO' : 'VIDEO',
-          url: URL.createObjectURL(file),
-        })),
-      [visualMediaFiles]
-    );
+    console.log('rendered');
     return (
       <>
         <div
           className={cn(
             'overflow-x-hidden border-t-2 mt-4',
-            visualMediaFiles.length > 0 ? 'block' : 'hidden'
+            visualMedia.length > 0 ? 'block' : 'hidden'
           )}
         >
           <div className="flex justify-center">
             {['preview', 'sort'].map((item, i) => {
               // Hide the Sort tab when there is only one selected file.
-              if (visualMediaFiles.length === 1 && i === 1) return false;
+              if (visualMedia.length === 1 && i === 1) return false;
               const isActive = item === activeCreatePostTab;
               return (
                 <div
@@ -73,8 +65,8 @@ const CreatePostTabs = memo(
   },
   (oldProps, newProps) => {
     // Memoize this component to prevent expensive rerenders everytime the <CreatePost>'s <content> state changes.
-    const oldFiles = oldProps.visualMediaFiles;
-    const newFiles = newProps.visualMediaFiles;
+    const oldFiles = oldProps.visualMedia;
+    const newFiles = newProps.visualMedia;
 
     if (oldFiles.length !== newFiles.length) return false;
 
@@ -82,14 +74,9 @@ const CreatePostTabs = memo(
       const oldFile = oldFiles[i];
       const newFile = newFiles[i];
 
-      if (!(oldFile instanceof File) || !(newFile instanceof File)) {
-        return false;
-      }
-
       // Check if the properties of the files match
-      if (oldFile.name !== newFile.name) return false;
-      if (oldFile.size !== newFile.size) return false;
       if (oldFile.type !== newFile.type) return false;
+      if (oldFile.url !== newFile.url) return false;
     }
 
     return true;
