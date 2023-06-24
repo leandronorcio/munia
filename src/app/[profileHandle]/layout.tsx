@@ -1,28 +1,19 @@
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../api/auth/[...nextauth]/route';
 import { redirect } from 'next/navigation';
 import { ProfileActionButtons } from './ProfileActionButtons';
-import { PrismaClient } from '@prisma/client';
 import ProfilePhoto from './ProfilePhoto';
 import CoverPhoto from './CoverPhoto';
 import Tabs from './Tabs';
-const prisma = new PrismaClient();
+import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 
-async function getProfile(identifier: string) {
-  const profile = await prisma.user.findFirst({
-    where: {
-      OR: [
-        {
-          id: identifier,
-        },
-        {
-          handle: identifier,
-        },
-      ],
-    },
-  });
+async function getProfile(id: string) {
+  const res = await fetch(`http://localhost:3000/api/users/${id}`);
 
-  return profile;
+  if (!res.ok) {
+    throw new Error('Failed to fetch user profile.');
+  }
+
+  const data = await res.json();
+  return data.user;
 }
 
 export default async function Layout({
@@ -32,12 +23,12 @@ export default async function Layout({
   children: React.ReactNode;
   params: { profileHandle: string };
 }) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) return redirect('/');
+  const [user] = await useProtectApiRoute();
+  if (!user) return redirect('/');
 
   const profile = await getProfile(params.profileHandle);
-  if (profile === null) return redirect('/usernotfound');
-  const isOwnProfile = profile?.id === session.user?.id;
+  if (profile === null) return redirect('/not-found');
+  const isOwnProfile = profile?.id === user?.id;
 
   return (
     <>
