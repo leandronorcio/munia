@@ -2,6 +2,7 @@
 
 import { BasicModalContext } from '@/contexts/BasicModalContext';
 import { ToastContext } from '@/contexts/ToastContext';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useContext, useRef } from 'react';
 
@@ -13,6 +14,8 @@ export function useUpdateProfileAndCoverPhotoClient(
   const { alert } = useContext(BasicModalContext);
   const { toastify } = useContext(ToastContext);
   const inputFileRef = useRef<HTMLInputElement>(null);
+  const { data: session } = useSession();
+  const user = session?.user;
 
   const openInput = () => {
     if (inputFileRef.current == null) return;
@@ -29,7 +32,9 @@ export function useUpdateProfileAndCoverPhotoClient(
     formData.append(name, file, file.name);
 
     const res = await fetch(
-      `/api/${toUpdate === 'profile' ? 'profile-photo' : 'cover-photo'}`,
+      `/api/users/${user?.id}/${
+        toUpdate === 'profile' ? 'profile-photo' : 'cover-photo'
+      }`,
       {
         method: 'POST',
         body: formData,
