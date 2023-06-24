@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { writeFile } from 'fs/promises';
-import { listOfKeyValuesToObject } from '@/app/libs/listOfKeyValuesToObject';
+import { listOfKeyValuesToObject } from '@/lib/listOfKeyValuesToObject';
 const prisma = new PrismaClient();
 
 interface PostRequestBody {
@@ -10,9 +10,13 @@ interface PostRequestBody {
   files?: Blob | Blob[];
 }
 
-export async function POST(request: Request) {
+export async function POST(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
   const [user] = await useProtectApiRoute();
-  if (!user) return NextResponse.json({}, { status: 401 });
+  if (!user || user.id !== params.id)
+    return NextResponse.json({}, { status: 401 });
 
   const formData = await request.formData();
   const body = listOfKeyValuesToObject(formData) as PostRequestBody;
@@ -20,7 +24,6 @@ export async function POST(request: Request) {
   const savedFiles: VisualMedia[] = [];
 
   try {
-    console.log(files);
     if (files) {
       await new Promise<void>((resolve) => {
         // Convert 'files' field to an array if it is not.
@@ -36,9 +39,10 @@ export async function POST(request: Request) {
             url: filePath,
           });
 
-          const buffer = Buffer.from(await file.arrayBuffer());
-          await writeFile(`./public/${filePath}`, buffer);
-
+          await writeFile(
+            `./public/${filePath}`,
+            Buffer.from(await file.arrayBuffer())
+          );
           if (i === filesArr.length - 1) resolve();
         });
       });

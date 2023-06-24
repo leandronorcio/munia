@@ -6,11 +6,14 @@ import CreatePostOptions from './CreatePostOptions';
 import { useContext, useEffect, useState } from 'react';
 import { ToastContext } from '@/contexts/ToastContext';
 import { CreatePostTabs } from './CreatePostTabs';
+import { useSession } from 'next-auth/react';
 
 export default function CreatePost() {
   const [content, setContent] = useState('');
   const [visualMedia, setVisualMedia] = useState<VisualMedia[]>([]);
   const { toastify } = useContext(ToastContext);
+  const { data: session } = useSession();
+  const user = session?.user;
 
   const handleVisualMediaChange: React.ChangeEventHandler<
     HTMLInputElement
@@ -44,7 +47,7 @@ export default function CreatePost() {
       formData.append('files', file, file.name);
     }
 
-    const res = await fetch('/api/post', {
+    const res = await fetch(`/api/users/${user?.id}/posts`, {
       method: 'POST',
       body: formData,
     });
