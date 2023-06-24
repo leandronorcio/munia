@@ -6,7 +6,7 @@ import Tabs from './Tabs';
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 
 async function getProfile(id: string) {
-  const res = await fetch(`http://localhost:3000/api/users/${id}`);
+  const res = await fetch(`${process.env.URL}/api/users/${id}`);
 
   if (!res.ok) {
     throw new Error('Failed to fetch user profile.');
