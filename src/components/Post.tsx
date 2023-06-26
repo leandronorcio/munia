@@ -6,69 +6,36 @@ import Button from './ui/Button';
 import SvgComment from '@/svg_components/Comment';
 import ProfileBlock from './ProfileBlock';
 import Comment from './Comment';
-import { useState } from 'react';
 import PostVisualMediaContainer from './PostVisualMediaContainer';
 
-export default function Post() {
-  const [visualMedia, setVisualMedia] = useState<VisualMedia[]>([
-    {
-      type: 'PHOTO',
-      url: '/uploads/clilwgdr00002xylvrkxq87r9-1687321485180-0-photo.jpeg',
-    },
-    {
-      type: 'PHOTO',
-      url: '/uploads/clilwgdr00002xylvrkxq87r9-1687321485180-1-photo.jpeg',
-    },
-    {
-      type: 'PHOTO',
-      url: '/uploads/clilwgdr00002xylvrkxq87r9-1687321485181-2-photo.jpeg',
-    },
-    {
-      type: 'VIDEO',
-      url: '/uploads/clilwgdr00002xylvrkxq87r9-1687278136538-1-video.mp4',
-    },
-    {
-      type: 'PHOTO',
-      url: '/uploads/clilwgdr00002xylvrkxq87r9-1687321485180-0-photo.jpeg',
-    },
-    {
-      type: 'PHOTO',
-      url: '/uploads/clilwgdr00002xylvrkxq87r9-1687321485180-1-photo.jpeg',
-    },
-    {
-      type: 'PHOTO',
-      url: '/uploads/clilwgdr00002xylvrkxq87r9-1687321485181-2-photo.jpeg',
-    },
-  ]);
-
+export default function Post({
+  id,
+  content,
+  createdAt,
+  user,
+  visualMedia,
+  _count,
+}: PostType) {
   return (
     <>
       <div className="rounded-2xl bg-slate-50 overflow-hidden">
         <div className="px-4 py-4 sm:px-8 sm:py-6">
-          <ProfileBlock />
+          <ProfileBlock name={user.name!} photoUrl={user.profilePhoto!} />
         </div>
         <PostVisualMediaContainer visualMedia={visualMedia} />
         <div className="px-8 py-4">
-          <p className="text-lg text-gray-700 mb-8">
-            Lorem ipsum dolor sit amet.
-          </p>
-          <div className="flex justify-between">
+          <p className="text-lg text-gray-700 mb-8">{content}</p>
+          <div className="flex justify-start gap-6">
             <div className="flex items-center gap-3 cursor-pointer">
               <Heart stroke="black" width={24} height={24} />
               <p className="font-semibold text-lg text-gray-700 hidden sm:block">
-                10 Likes
+                {_count.postLikes} Likes
               </p>
             </div>
             <div className="flex items-center gap-3 cursor-pointer">
               <SvgComment stroke="black" width={24} height={24} />
               <p className="font-semibold text-lg text-gray-700 hidden sm:block">
-                10 Comments
-              </p>
-            </div>
-            <div className="flex items-center gap-3 cursor-pointer">
-              <ShareBack stroke="black" width={24} height={24} />
-              <p className="font-semibold text-lg text-gray-700 hidden sm:block">
-                10 Shares
+                {_count.comments} Comments
               </p>
             </div>
           </div>

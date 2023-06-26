@@ -17,9 +17,24 @@ export async function GET(
       userId: params.id,
     },
     include: {
-      comments: true,
-      postLikes: true,
-      visualMedia: true,
+      user: {
+        select: {
+          name: true,
+          profilePhoto: true,
+        },
+      },
+      visualMedia: {
+        select: {
+          type: true,
+          url: true,
+        },
+      },
+      _count: {
+        select: {
+          postLikes: true,
+          comments: true,
+        },
+      },
     },
     orderBy: {
       createdAt: 'desc',
