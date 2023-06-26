@@ -1,5 +1,5 @@
 /**
- * Use this function instead of `Object.entries` when converting
+ * Use this function instead of `Object.fromEntries` when converting
  * a list of key-value pairs that contains duplicate keys. Those
  * with duplicate keys will be grouped into one key as an array.
  *
