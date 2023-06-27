@@ -1,11 +1,10 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/lib/prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import NextAuth, { AuthOptions } from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import FacebookProvider from 'next-auth/providers/facebook';
 import { Adapter } from 'next-auth/adapters';
 
-const prisma = new PrismaClient();
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma) as Adapter,
   providers: [

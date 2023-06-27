@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { writeFile } from 'fs/promises';
 import { listOfKeyValuesToObject } from '@/lib/listOfKeyValuesToObject';
-const prisma = new PrismaClient();
+import prisma from '@/lib/prisma';
 
 interface UserPostsPostRequestBody {
   content?: string;
