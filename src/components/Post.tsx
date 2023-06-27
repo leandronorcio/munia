@@ -9,6 +9,7 @@ import Comment from './Comment';
 import PostVisualMediaContainer from './PostVisualMediaContainer';
 import { memo } from 'react';
 import { areObjectsEqual } from '@/lib/areObjectsEqual';
+import { sortVisualMedia } from '@/lib/sortVisualMedia';
 
 export const Post = memo(
   function Post({
@@ -26,7 +27,9 @@ export const Post = memo(
           <div className="px-4 py-4 sm:px-8 sm:py-6">
             <ProfileBlock name={user.name!} photoUrl={user.profilePhoto!} />
           </div>
-          <PostVisualMediaContainer visualMedia={visualMedia} />
+          <PostVisualMediaContainer
+            visualMedia={sortVisualMedia(visualMedia)}
+          />
           <div className="px-8 py-4">
             <p className="text-lg text-gray-700 mb-8">{content}</p>
             <div className="flex justify-start gap-6">
