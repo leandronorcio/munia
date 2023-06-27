@@ -2,34 +2,23 @@
 import { useSwiper } from 'swiper/react';
 import { ArrowChevronBack, ArrowChevronForward } from '@/svg_components';
 import { cn } from '@/lib/cn';
+import { motion } from 'framer-motion';
 
 export function PhotosModalNavigationButton({
   type,
   isBeginning,
   isEnd,
-  animationState,
 }: {
   type: 'prev' | 'next';
   isBeginning: boolean;
   isEnd: boolean;
-  animationState: AnimationState;
 }) {
   const swiper = useSwiper();
 
   return (
-    <div
+    <motion.div
       className={cn(
-        'custom-swiper-button-prev fixed z-20 top-[50%] translate-y-[-50%] bg-violet-700 p-3 rounded-full cursor-pointer transition-all duration-500',
-        type === 'prev'
-          ? animationState === 'from'
-            ? '-left-12'
-            : 'left-4'
-          : animationState === 'from'
-          ? '-right-12'
-          : 'right-4',
-        type === 'prev'
-          ? 'hover:translate-x-[-4px]'
-          : 'hover:translate-x-[4px]',
+        'custom-swiper-button-prev fixed z-20 top-[50%] translate-y-[-50%] bg-violet-700 active:bg-violet-800 p-3 rounded-full cursor-pointer',
         type === 'prev'
           ? isBeginning
             ? 'opacity-50'
@@ -38,6 +27,10 @@ export function PhotosModalNavigationButton({
           ? 'opacity-50'
           : 'opacity-100'
       )}
+      initial={{ [type === 'prev' ? 'left' : 'right']: '-48px' }}
+      animate={{ [type === 'prev' ? 'left' : 'right']: '16px' }}
+      exit={{ [type === 'prev' ? 'left' : 'right']: '-48px' }}
+      whileHover={{ [type === 'prev' ? 'left' : 'right']: '12px' }}
       onClick={() => {
         if (type === 'prev') {
           if (isBeginning) return;
@@ -63,6 +56,6 @@ export function PhotosModalNavigationButton({
           height={24}
         />
       )}
-    </div>
+    </motion.div>
   );
 }

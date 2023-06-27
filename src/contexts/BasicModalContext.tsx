@@ -82,7 +82,7 @@ function BasicModalContextProvider({
       <AnimatePresence>
         {shown && (
           <ModalWrapper key="modal-wrapper">
-            <ModalContentWrapper key="modal-content-wrapper">
+            <ModalContentWrapper>
               <Close
                 className="absolute top-6 md:top-8 right-6 md:right-8 cursor-pointer stroke-gray-900 hover:stroke-gray-500"
                 width={24}
