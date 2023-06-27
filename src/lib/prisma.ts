@@ -1,7 +1,7 @@
 // https://github.com/prisma/prisma/issues/5007#issuecomment-618433162
 import { PrismaClient } from '@prisma/client';
 
-let prisma: any;
+let prisma: PrismaClient;
 
 if (process.env.NODE_ENV === 'production') {
   prisma = new PrismaClient();
