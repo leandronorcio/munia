@@ -3,7 +3,7 @@ import Button from '@/components/ui/Button';
 import ProfilePhoto from '@/components/ui/ProfilePhoto';
 import TextArea from '@/components/ui/TextArea';
 import CreatePostOptions from './CreatePostOptions';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { ToastContext } from '@/contexts/ToastContext';
 import { CreatePostTabs } from './CreatePostTabs';
 import { useSession } from 'next-auth/react';
@@ -30,11 +30,8 @@ export default function CreatePost() {
     }));
 
     setVisualMedia((prev) => [...prev, ...newVisualMediaArr]);
+    e.target.value = '';
   };
-
-  useEffect(() => {
-    console.log(visualMedia);
-  }, [visualMedia]);
 
   const submitPost = async () => {
     const formData = new FormData();
