@@ -7,6 +7,8 @@ import { useContext, useEffect, useState } from 'react';
 import { ToastContext } from '@/contexts/ToastContext';
 import { CreatePostTabs } from './CreatePostTabs';
 import { useSession } from 'next-auth/react';
+import { AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 export default function CreatePost() {
   const [content, setContent] = useState('');
@@ -84,12 +86,21 @@ export default function CreatePost() {
         </div>
       </div>
       <CreatePostOptions handleVisualMediaChange={handleVisualMediaChange} />
-      {visualMedia.length > 0 && (
-        <CreatePostTabs
-          visualMedia={visualMedia}
-          setVisualMedia={setVisualMedia}
-        />
-      )}
+      <AnimatePresence>
+        {visualMedia.length > 0 && (
+          <motion.div
+            initial={{ height: 0 }}
+            animate={{ height: 'auto' }}
+            exit={{ height: 0 }}
+            className="overflow-hidden"
+          >
+            <CreatePostTabs
+              visualMedia={visualMedia}
+              setVisualMedia={setVisualMedia}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
