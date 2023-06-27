@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
-const SvgMore = (props: SVGProps<SVGSVGElement>) => (
+const SvgMoreVert = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="1em"
@@ -11,8 +11,8 @@ const SvgMore = (props: SVGProps<SVGSVGElement>) => (
   >
     <path
       fill={props.fill}
-      d="M7 10a2 2 0 1 1 0 4 2 2 0 0 1 0-4ZM17 10a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"
+      d="M14 7a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM14 17a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"
     />
   </svg>
 );
-export default SvgMore;
+export default SvgMoreVert;

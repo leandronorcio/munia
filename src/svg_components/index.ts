@@ -20,6 +20,7 @@ export { default as LogInSquare } from "./LogInSquare";
 export { default as LogOutCircle } from "./LogOutCircle";
 export { default as Logo } from "./Logo";
 export { default as Mail } from "./Mail";
+export { default as MoreVert } from "./MoreVert";
 export { default as More } from "./More";
 export { default as Next } from "./Next";
 export { default as NotificationBell } from "./NotificationBell";
