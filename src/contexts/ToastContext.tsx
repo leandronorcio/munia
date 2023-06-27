@@ -7,7 +7,8 @@ import {
   NotificationBell,
 } from '@/svg_components';
 import { SVGProps, createContext, useState } from 'react';
-import { createPortal } from 'react-dom';
+import { AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 interface Toast {
   title: string;
@@ -78,7 +79,6 @@ function ToastContextProvider({ children }: { children: React.ReactNode }) {
     duration: 5000,
     type: 'default',
   });
-  const [animation, setAnimation] = useState<AnimationState>('from');
 
   const toastify = ({
     title,
@@ -88,23 +88,23 @@ function ToastContextProvider({ children }: { children: React.ReactNode }) {
   }: Toast) => {
     setToast({ title, message, duration, type });
     setShown(true);
-    setTimeout(() => setAnimation('to'), 1);
     setTimeout(() => {
-      setAnimation('from');
-      setTimeout(() => setShown(false), 500);
+      setTimeout(() => setShown(false));
     }, duration);
   };
 
   return (
     <ToastContext.Provider value={{ toastify }}>
-      {shown &&
-        createPortal(
-          <div
+      <AnimatePresence>
+        {shown && (
+          <motion.div
             className={cn(
-              'transition-opacity duration-500 w-80 fixed bottom-20 md:bottom-6 right-6 p-6 rounded-xl',
-              colors[toast.type].bg,
-              animation === 'from' ? 'opacity-0' : 'opacity-100'
+              'w-80 fixed bottom-20 md:bottom-6 right-6 p-6 rounded-xl',
+              colors[toast.type].bg
             )}
+            initial={{ opacity: 0, x: 48 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 48 }}
           >
             <div className="flex items-center gap-4">
               {icons[toast.type].renderComponent({
@@ -121,9 +121,9 @@ function ToastContextProvider({ children }: { children: React.ReactNode }) {
             {toast.message && (
               <p className="text-sm text-gray-700 ml-10">{toast.message}</p>
             )}
-          </div>,
-          document.body
+          </motion.div>
         )}
+      </AnimatePresence>
       {children}
     </ToastContext.Provider>
   );
