@@ -1,5 +1,5 @@
 'use client';
-import { BasicModalContext } from '@/contexts/BasicModalContext';
+import { BasicDialogsContext } from '@/contexts/BasicDialogsContext';
 import { useActiveRouteChecker } from '@/hooks/useActiveRouteChecker';
 import { cn } from '@/lib/cn';
 import { signOut } from 'next-auth/react';
@@ -19,7 +19,7 @@ export default function SidebarMenuItem({
 }) {
   const router = useRouter();
   const [isActive] = useActiveRouteChecker(route);
-  const { confirm } = useContext(BasicModalContext);
+  const { confirm } = useContext(BasicDialogsContext);
 
   return (
     <div

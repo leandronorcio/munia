@@ -7,7 +7,7 @@ import { Close } from '@/svg_components';
 import { AnimatePresence } from 'framer-motion';
 import { createContext, useState } from 'react';
 
-const BasicModalContext = createContext<{
+const BasicDialogsContext = createContext<{
   shown: boolean;
   alert: ({ title, message }: { title: string; message: string }) => void;
   confirm: ({
@@ -25,7 +25,7 @@ const BasicModalContext = createContext<{
   confirm: () => {},
 });
 
-function BasicModalContextProvider({
+function BasicDialogsContextProvider({
   children,
 }: {
   children: React.ReactNode;
@@ -78,7 +78,7 @@ function BasicModalContextProvider({
   };
 
   return (
-    <BasicModalContext.Provider value={{ shown: shown, alert, confirm }}>
+    <BasicDialogsContext.Provider value={{ shown: shown, alert, confirm }}>
       <AnimatePresence>
         {shown && (
           <ModalWrapper key="modal-wrapper">
@@ -117,8 +117,8 @@ function BasicModalContextProvider({
         )}
       </AnimatePresence>
       {children}
-    </BasicModalContext.Provider>
+    </BasicDialogsContext.Provider>
   );
 }
 
-export { BasicModalContext, BasicModalContextProvider };
+export { BasicDialogsContext, BasicDialogsContextProvider };

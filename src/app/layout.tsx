@@ -1,7 +1,7 @@
 import './globals.css';
 import SessionProviderContext from '@/contexts/SessionProviderContext';
 import { Poppins } from 'next/font/google';
-import { BasicModalContextProvider } from '@/contexts/BasicModalContext';
+import { BasicDialogsContextProvider } from '@/contexts/BasicDialogsContext';
 import { ToastContextProvider } from '@/contexts/ToastContext';
 import { VisualMediaModalContextProvider } from '@/contexts/VisualMediaModalContext';
 import { getServerSession } from 'next-auth';
@@ -43,7 +43,7 @@ export default async function RootLayout({
       <body className={poppins.className}>
         <ToastContextProvider>
           <SessionProviderContext>
-            <BasicModalContextProvider>
+            <BasicDialogsContextProvider>
               <VisualMediaModalContextProvider>
                 <div className="h-screen flex flex-col bg-violet-100">
                   {session ? (
@@ -64,7 +64,7 @@ export default async function RootLayout({
                   )}
                 </div>
               </VisualMediaModalContextProvider>
-            </BasicModalContextProvider>
+            </BasicDialogsContextProvider>
           </SessionProviderContext>
         </ToastContextProvider>
       </body>

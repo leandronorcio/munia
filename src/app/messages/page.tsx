@@ -1,10 +1,10 @@
 'use client';
-import { BasicModalContext } from '@/contexts/BasicModalContext';
+import { BasicDialogsContext } from '@/contexts/BasicDialogsContext';
 import { ToastContext } from '@/contexts/ToastContext';
 import { useContext } from 'react';
 
 export default function Messages() {
-  const { alert, confirm } = useContext(BasicModalContext);
+  const { alert, confirm } = useContext(BasicDialogsContext);
   const { toastify } = useContext(ToastContext);
 
   return (
