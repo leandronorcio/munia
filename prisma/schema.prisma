@@ -6,7 +6,6 @@ datasource db {
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["referentialActions"] // You won't need this in Prisma 3.X or higher.
 }
 
 model Account {
@@ -79,6 +78,8 @@ model PostLike {
   userId     String
   post       Post     @relation(fields: [postId], references: [id])
   postId     Int
+
+  @@unique([userId, postId])
 }
 
 model Comment {
