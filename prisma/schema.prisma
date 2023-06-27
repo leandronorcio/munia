@@ -79,7 +79,7 @@ model PostLike {
   post       Post     @relation(fields: [postId], references: [id])
   postId     Int
 
-  @@unique([userId, postId])
+  @@unique([id, userId, postId])
 }
 
 model Comment {
