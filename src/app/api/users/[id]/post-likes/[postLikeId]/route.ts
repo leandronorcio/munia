@@ -2,28 +2,17 @@ import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-export async function POST(
+export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string; postLikeId: string } }
 ) {
   const [user] = await useProtectApiRoute();
   if (!user || user.id !== params.id)
     return NextResponse.json({}, { status: 401 });
 
-  const { postId } = (await request.json()) as PostLikePostRequestBody;
-
-  const res = await prisma.postLike.create({
-    data: {
-      post: {
-        connect: {
-          id: postId,
-        },
-      },
-      user: {
-        connect: {
-          id: user.id,
-        },
-      },
+  const res = await prisma.postLike.delete({
+    where: {
+      id: parseInt(params.postLikeId),
     },
   });
 

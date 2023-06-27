@@ -1,23 +1,26 @@
 import { NextResponse } from 'next/server';
+import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import prisma from '@/lib/prisma';
 
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
+  const [user] = await useProtectApiRoute();
+  if (!user) return NextResponse.json({}, { status: 401 });
+
   const { searchParams } = new URL(request.url);
   const limit = parseInt(searchParams.get('limit') || '5');
   const offset = parseInt(searchParams.get('offset') || '0');
 
   const res = await prisma.post.findMany({
-    take: limit,
-    skip: offset,
-    where: {
-      userId: params.id,
-    },
-    include: {
+    select: {
+      id: true,
+      content: true,
+      createdAt: true,
       user: {
         select: {
+          id: true,
           name: true,
           profilePhoto: true,
         },
@@ -28,6 +31,16 @@ export async function GET(
           url: true,
         },
       },
+      // Use postLikes to store the <PostLike>'s id if the user has like the post.
+      postLikes: {
+        select: {
+          id: true,
+        },
+        where: {
+          userId: user.id,
+        },
+      },
+      comments: true,
       _count: {
         select: {
           postLikes: true,
@@ -35,6 +48,11 @@ export async function GET(
         },
       },
     },
+    where: {
+      userId: params.id,
+    },
+    take: limit,
+    skip: offset,
     orderBy: {
       createdAt: 'desc',
     },

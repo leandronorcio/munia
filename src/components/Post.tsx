@@ -1,15 +1,14 @@
 'use client';
-import ProfilePhoto from './ui/ProfilePhoto';
-import { Heart, ShareBack } from '@/svg_components';
-import TextArea from './ui/TextArea';
-import Button from './ui/Button';
+import { Heart } from '@/svg_components';
 import SvgComment from '@/svg_components/Comment';
 import ProfileBlock from './ProfileBlock';
-import Comment from './Comment';
 import PostVisualMediaContainer from './PostVisualMediaContainer';
-import { memo } from 'react';
+import { memo, useContext, useState } from 'react';
 import { areObjectsEqual } from '@/lib/areObjectsEqual';
 import { sortVisualMedia } from '@/lib/sortVisualMedia';
+import { useSession } from 'next-auth/react';
+import { cn } from '@/lib/cn';
+import { ToastContext } from '@/contexts/ToastContext';
 
 export const Post = memo(
   function Post({
@@ -18,9 +17,53 @@ export const Post = memo(
     createdAt,
     user,
     visualMedia,
+    postLikes,
+    comments,
     _count,
   }: PostType) {
-    console.log('rerendered');
+    const { data: session } = useSession();
+    const sessionUserId = session?.user?.id;
+    // The postLikes prop contains zero or one item i.e. the <PostLike>'s id.
+    const [likedId, setLikedId] = useState(postLikes[0]?.id || 0);
+    // The numberOfLikes is not real-time, it only reacts to likePost and unLikePost.
+    const [numberOfLikes, setNumberOfLikes] = useState(_count.postLikes);
+    const [numberOfComments, setNumberOfComments] = useState(_count.comments);
+    const { toastify } = useContext(ToastContext);
+
+    const likePost = async () => {
+      const res = await fetch(`/api/users/${sessionUserId}/post-likes`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ postId: id } as PostLikePostRequestBody),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setLikedId(data.id);
+        setNumberOfLikes((prev) => prev + 1);
+      } else {
+        toastify({ title: 'Unable to like.', type: 'error' });
+      }
+    };
+
+    const unlikePost = async () => {
+      const res = await fetch(
+        `/api/users/${sessionUserId}/post-likes/${likedId}`,
+        {
+          method: 'DELETE',
+        }
+      );
+
+      if (res.ok) {
+        setLikedId(0);
+        setNumberOfLikes((prev) => prev - 1);
+      } else {
+        toastify({ title: 'Unable to unlike.', type: 'error' });
+      }
+    };
+
     return (
       <>
         <div className="rounded-2xl bg-slate-50 overflow-hidden">
@@ -34,9 +77,24 @@ export const Post = memo(
             <p className="text-lg text-gray-700 mb-8">{content}</p>
             <div className="flex justify-start gap-6">
               <div className="flex items-center gap-3 cursor-pointer">
-                <Heart stroke="black" width={24} height={24} />
+                <div
+                  onClick={() => {
+                    likedId === 0 ? likePost() : unlikePost();
+                  }}
+                  className="p-2 group transition-transform hover:bg-pink-200 active:bg-pink-300 rounded-full"
+                >
+                  <Heart
+                    width={24}
+                    height={24}
+                    className={cn(
+                      'transition-transform group-hover:stroke-pink-500 group-active:rotate-45',
+                      likedId !== 0 ? 'stroke-red-500' : 'stroke-black',
+                      likedId !== 0 ? 'fill-red-500' : 'fill-none'
+                    )}
+                  />
+                </div>
                 <p className="font-semibold text-lg text-gray-700 hidden sm:block">
-                  {_count.postLikes} Likes
+                  {numberOfLikes} {numberOfLikes === 1 ? 'Like' : 'Likes'}
                 </p>
               </div>
               <div className="flex items-center gap-3 cursor-pointer">

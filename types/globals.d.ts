@@ -1,4 +1,4 @@
-import { PostLike, Post } from '@prisma/client';
+import { PostLike, Post, Comment, VisualMediaType } from '@prisma/client';
 import type { DefaultUser } from 'next-auth';
 
 declare global {
@@ -9,8 +9,14 @@ declare global {
   }
   type AnimationState = 'from' | 'to';
 
-  interface PostType extends Post {
+  interface PostType {
+    id: number;
+    content: string | null;
+    createdAt: Date;
+    postLikes: PostLike[];
+    comments: Comment[];
     user: {
+      id: string;
       name: string | null;
       profilePhoto: string | null;
     };
@@ -19,12 +25,16 @@ declare global {
       url: string;
     }[];
     _count: {
-      postLikes: number;
       comments: number;
+      postLikes: number;
     };
   }
   interface VisualMedia {
     type: VisualMediaType;
     url: string;
+  }
+
+  interface PostLikePostRequestBody {
+    postId: number;
   }
 }
