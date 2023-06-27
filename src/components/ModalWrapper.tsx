@@ -1,20 +1,21 @@
 import { cn } from '@/lib/cn';
+import { motion } from 'framer-motion';
 
 export default function ModalWrapper({
   children,
-  animationState,
 }: {
   children: React.ReactNode;
-  animationState: AnimationState;
 }) {
   return (
-    <div
+    <motion.div
+      initial={{ backdropFilter: 'blur(0)' }}
+      animate={{ backdropFilter: 'blur(4px)' }}
+      exit={{ backdropFilter: 'blur(0)' }}
       className={cn(
-        'fixed top-0 left-0 z-20 transition-all duration-500 w-full h-screen flex justify-center items-end md:items-center',
-        animationState === 'from' ? 'backdrop-blur-none' : 'backdrop-blur-sm'
+        'fixed top-0 left-0 z-20 w-full h-screen flex justify-center items-end md:items-center'
       )}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }

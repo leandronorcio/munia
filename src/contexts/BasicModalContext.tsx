@@ -4,6 +4,7 @@ import ModalContentWrapper from '@/components/ModalContentWrapper';
 import ModalWrapper from '@/components/ModalWrapper';
 import Button from '@/components/ui/Button';
 import { Close } from '@/svg_components';
+import { AnimatePresence } from 'framer-motion';
 import { createContext, useState } from 'react';
 
 const BasicModalContext = createContext<{
@@ -30,7 +31,6 @@ function BasicModalContextProvider({
   children: React.ReactNode;
 }) {
   const [shown, setShown] = useState(false);
-  const [animation, setAnimation] = useState<AnimationState>('from');
   const [dialog, setDialog] = useState<{
     type: 'alert' | 'confirm';
     title: string;
@@ -44,12 +44,10 @@ function BasicModalContextProvider({
 
   const show = () => {
     setShown(true);
-    setTimeout(() => setAnimation('to'), 1);
   };
 
   const hide = () => {
-    setAnimation('from');
-    setTimeout(() => setShown(false), 500);
+    setShown(false);
   };
 
   const alert = ({ title, message }: { title: string; message: string }) => {
@@ -81,41 +79,43 @@ function BasicModalContextProvider({
 
   return (
     <BasicModalContext.Provider value={{ shown: shown, alert, confirm }}>
-      {shown && (
-        <ModalWrapper animationState={animation}>
-          <ModalContentWrapper animationState={animation}>
-            <Close
-              className="absolute top-6 md:top-8 right-6 md:right-8 cursor-pointer stroke-gray-900 hover:stroke-gray-500"
-              width={24}
-              height={24}
-              onClick={hide}
-            />
-            <h1 className="text-center text-4xl md:text-5xl font-bold">
-              {dialog.title}
-            </h1>
-            <p className="text-lg text-center text-gray-700">
-              {dialog.message}
-            </p>
-            <Button
-              onClick={() => {
-                hide();
-                dialog.type === 'alert'
-                  ? hide()
-                  : dialog.actionOnConfirm && dialog.actionOnConfirm();
-              }}
-              shape="pill"
-              size="long"
-            >
-              {dialog.type === 'alert' ? 'Okay' : 'Confirm'}
-            </Button>
-            {dialog.type === 'confirm' && (
-              <Button onClick={hide} shape="pill" size="long" mode="ghost">
-                Cancel
+      <AnimatePresence>
+        {shown && (
+          <ModalWrapper key="modal-wrapper">
+            <ModalContentWrapper key="modal-content-wrapper">
+              <Close
+                className="absolute top-6 md:top-8 right-6 md:right-8 cursor-pointer stroke-gray-900 hover:stroke-gray-500"
+                width={24}
+                height={24}
+                onClick={hide}
+              />
+              <h1 className="text-center text-4xl md:text-5xl font-bold">
+                {dialog.title}
+              </h1>
+              <p className="text-lg text-center text-gray-700">
+                {dialog.message}
+              </p>
+              <Button
+                onClick={() => {
+                  hide();
+                  dialog.type === 'alert'
+                    ? hide()
+                    : dialog.actionOnConfirm && dialog.actionOnConfirm();
+                }}
+                shape="pill"
+                size="long"
+              >
+                {dialog.type === 'alert' ? 'Okay' : 'Confirm'}
               </Button>
-            )}
-          </ModalContentWrapper>
-        </ModalWrapper>
-      )}
+              {dialog.type === 'confirm' && (
+                <Button onClick={hide} shape="pill" size="long" mode="ghost">
+                  Cancel
+                </Button>
+              )}
+            </ModalContentWrapper>
+          </ModalWrapper>
+        )}
+      </AnimatePresence>
       {children}
     </BasicModalContext.Provider>
   );
