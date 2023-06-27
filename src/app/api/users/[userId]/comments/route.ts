@@ -8,10 +8,10 @@ interface CommentPostRequestBody {
 }
 export default async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { userId: string } }
 ) {
   const [user] = await useProtectApiRoute();
-  if (!user || user.id !== params.id)
+  if (!user || user.id !== params.userId)
     return NextResponse.json({}, { status: 401 });
 
   const { content, postId } = (await request.json()) as CommentPostRequestBody;

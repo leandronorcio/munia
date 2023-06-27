@@ -4,10 +4,10 @@ import prisma from '@/lib/prisma';
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string; postLikeId: string } }
+  { params }: { params: { userId: string; postLikeId: string } }
 ) {
   const [user] = await useProtectApiRoute();
-  if (!user || user.id !== params.id)
+  if (!user || user.id !== params.userId)
     return NextResponse.json({}, { status: 401 });
 
   const res = await prisma.postLike.delete({

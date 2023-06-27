@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { userId: string } }
 ) {
   const [user] = await useProtectApiRoute();
   if (!user) return NextResponse.json({}, { status: 401 });
@@ -49,7 +49,7 @@ export async function GET(
       },
     },
     where: {
-      userId: params.id,
+      userId: params.userId,
     },
     take: limit,
     skip: offset,

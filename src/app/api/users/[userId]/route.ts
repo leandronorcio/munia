@@ -3,17 +3,17 @@ import prisma from '@/lib/prisma';
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { userId: string } }
 ) {
-  const { id } = params;
+  const { userId } = params;
   const user = await prisma.user.findFirst({
     where: {
       OR: [
         {
-          id: id,
+          id: userId,
         },
         {
-          handle: id,
+          handle: userId,
         },
       ],
     },
