@@ -5,7 +5,7 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 model Account {
@@ -36,10 +36,10 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String        @id @default(cuid())
   handle        String?
   name          String?
-  email         String?   @unique
+  email         String?       @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
@@ -61,11 +61,11 @@ model VerificationToken {
 }
 
 model Post {
-  id          Int      @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   content     String?
-  createdAt   DateTime @default(now())
+  createdAt   DateTime      @default(now())
   visualMedia VisualMedia[]
-  user        User     @relation(fields: [userId], references: [id])
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
   postLikes   PostLike[]
   comments    Comment[]
@@ -74,24 +74,24 @@ model Post {
 }
 
 model PostLike {
-  id         Int      @id @default(autoincrement())
-  createdAt  DateTime @default(now())
-  user       User     @relation(fields: [userId], references: [id])
-  userId     String
-  post       Post     @relation(fields: [postId], references: [id])
-  postId     Int
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
 
   @@unique([id, userId, postId])
 }
 
 model Comment {
-  id         Int      @id @default(autoincrement())
-  content    String
-  createdAt  DateTime @default(now())
-  user       User     @relation(fields: [userId], references: [id])
-  userId     String
-  post       Post     @relation(fields: [postId], references: [id])
-  postId     Int
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
 }
 
 model VisualMedia {
@@ -99,9 +99,9 @@ model VisualMedia {
   type       VisualMediaType @default(PHOTO)
   url        String
   uploadedAt DateTime        @default(now())
-  user       User            @relation(fields: [userId], references: [id])
+  user       User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
-  post       Post            @relation(fields: [postId], references: [id])
+  post       Post            @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId     Int
 }
 
