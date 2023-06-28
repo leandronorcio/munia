@@ -1,19 +1,41 @@
-import { useContext, useState } from 'react';
+'use client';
+import { useContext, useEffect, useState } from 'react';
 import Comment from './Comment';
 import Button from './ui/Button';
 import ProfilePhoto from './ui/ProfilePhoto';
 import TextArea from './ui/TextArea';
-import { useSession } from 'next-auth/react';
 import { ToastContext } from '@/contexts/ToastContext';
 
-export function Comments({ postId }: { postId: number }) {
+export function Comments({
+  postId,
+  authorId,
+}: {
+  postId: number;
+  authorId: string;
+}) {
+  const [comments, setComments] = useState<CommentType[]>([]);
   const [commentText, setCommentText] = useState('');
-  const { data: session } = useSession();
-  const userId = session?.user?.id;
   const { toastify } = useContext(ToastContext);
 
+  useEffect(() => {
+    const run = async () => {
+      const res = await fetch(
+        `/api/users/${authorId}/posts/${postId}/comments`
+      );
+
+      if (!res.ok) {
+        toastify({ title: 'Error Getting Comments', type: 'error' });
+        return;
+      }
+
+      const data = (await res.json()) as { comments: CommentType[] };
+      setComments(data.comments);
+    };
+    run();
+  }, []);
+
   const postComment = async () => {
-    const res = await fetch(`/api/users/${userId}/posts/${postId}/comments`, {
+    const res = await fetch(`/api/users/${authorId}/posts/${postId}/comments`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -22,6 +44,8 @@ export function Comments({ postId }: { postId: number }) {
     });
 
     if (res.ok) {
+      const addedComment = (await res.json()) as CommentType;
+      setComments((prev) => [...prev, addedComment]);
       toastify({ title: 'Comment Posted', type: 'success' });
       setCommentText('');
     } else {
@@ -31,7 +55,9 @@ export function Comments({ postId }: { postId: number }) {
 
   return (
     <div className="flex flex-col gap-3 px-8 py-6">
-      <Comment />
+      {comments?.map((comment, i) => (
+        <Comment key={i} {...comment} />
+      ))}
       <div className="flex flex-row ">
         <div className="w-11 h-11">
           <ProfilePhoto />

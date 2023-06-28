@@ -36,6 +36,7 @@ export const Post = memo(
     // The numberOfLikes is not real-time, it only reacts to likePost and unLikePost.
     const [numberOfLikes, setNumberOfLikes] = useState(_count.postLikes);
     const [numberOfComments, setNumberOfComments] = useState(_count.comments);
+    const [commentsShown, setCommentsShown] = useState(false);
     const { toastify } = useContext(ToastContext);
     const { confirm } = useContext(BasicDialogsContext);
 
@@ -86,69 +87,68 @@ export const Post = memo(
     };
 
     return (
-      <>
-        <div className="rounded-2xl bg-slate-50 ">
-          <div className="flex justify-between items-center px-4 py-4 sm:px-8 sm:py-6">
-            <ProfileBlock
-              name={author.name!}
-              time={formatDistanceStrict(new Date(createdAt), new Date())}
-              photoUrl={author.profilePhoto!}
-            />
-            {isOwnPost && (
-              <DropdownMenu>
-                <DropdownItem
-                  onClick={() =>
-                    confirm({
-                      title: 'Delete Post',
-                      message: 'Do you really wish to delete this post?',
-                      actionOnConfirm: deletePost,
-                    })
-                  }
-                >
-                  Delete Post
-                </DropdownItem>
-              </DropdownMenu>
-            )}
-          </div>
-          <PostVisualMediaContainer
-            visualMedia={sortVisualMedia(visualMedia)}
+      <div className="rounded-2xl bg-slate-50">
+        <div className="flex justify-between items-center px-4 py-4 sm:px-8 sm:py-6">
+          <ProfileBlock
+            name={author.name!}
+            time={formatDistanceStrict(new Date(createdAt), new Date())}
+            photoUrl={author.profilePhoto!}
           />
-          <div className="px-8 py-4">
-            <p className="text-lg text-gray-700 mb-8">{content}</p>
-            <div className="flex justify-start gap-6">
-              <div className="flex items-center gap-3 cursor-pointer">
-                <div
-                  onClick={() => {
-                    likedId === 0 ? likePost() : unlikePost();
-                  }}
-                  className="p-2 group transition-transform hover:bg-pink-200 active:bg-pink-300 rounded-full"
-                >
-                  <Heart
-                    width={24}
-                    height={24}
-                    className={cn(
-                      'transition-transform group-hover:stroke-pink-500 group-active:rotate-45',
-                      likedId !== 0 ? 'stroke-red-500' : 'stroke-black',
-                      likedId !== 0 ? 'fill-red-500' : 'fill-none'
-                    )}
-                  />
-                </div>
-                <p className="font-semibold text-lg text-gray-700 hidden sm:block">
-                  {numberOfLikes} {numberOfLikes === 1 ? 'Like' : 'Likes'}
-                </p>
+          {isOwnPost && (
+            <DropdownMenu>
+              <DropdownItem
+                onClick={() =>
+                  confirm({
+                    title: 'Delete Post',
+                    message: 'Do you really wish to delete this post?',
+                    actionOnConfirm: deletePost,
+                  })
+                }
+              >
+                Delete Post
+              </DropdownItem>
+            </DropdownMenu>
+          )}
+        </div>
+        <PostVisualMediaContainer visualMedia={sortVisualMedia(visualMedia)} />
+        <div className="px-8 py-4">
+          <p className="text-lg text-gray-700 mb-8">{content}</p>
+          <div className="flex justify-start gap-6">
+            <div className="flex items-center gap-3 cursor-pointer">
+              <div
+                onClick={() => {
+                  likedId === 0 ? likePost() : unlikePost();
+                }}
+                className="p-2 group transition-transform hover:bg-pink-200 active:bg-pink-300 rounded-full"
+              >
+                <Heart
+                  width={24}
+                  height={24}
+                  className={cn(
+                    'transition-transform group-hover:stroke-pink-500 group-active:rotate-45',
+                    likedId !== 0 ? 'stroke-red-500' : 'stroke-black',
+                    likedId !== 0 ? 'fill-red-500' : 'fill-none'
+                  )}
+                />
               </div>
-              <div className="flex items-center gap-3 cursor-pointer">
-                <SvgComment stroke="black" width={24} height={24} />
-                <p className="font-semibold text-lg text-gray-700 hidden sm:block">
-                  {_count.comments} Comments
-                </p>
-              </div>
+              <p className="font-semibold text-lg text-gray-700 hidden sm:block">
+                {numberOfLikes} {numberOfLikes === 1 ? 'Like' : 'Likes'}
+              </p>
+            </div>
+            <div
+              className="flex items-center gap-3 cursor-pointer"
+              onClick={() => setCommentsShown((prev) => !prev)}
+            >
+              <SvgComment stroke="black" width={24} height={24} />
+              <p className="font-semibold text-lg text-gray-700 hidden sm:block">
+                {_count.comments} Comments
+              </p>
             </div>
           </div>
-
-          <Comments postId={postId} />
         </div>
-      </>
+
+        {commentsShown && <Comments postId={postId} authorId={author.id} />}
+      </div>
     );
   },
   (oldProps, newProps) => areObjectsEqual(oldProps, newProps)
