@@ -4,19 +4,17 @@ import prisma from '@/lib/prisma';
 
 export async function POST(
   request: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: { userId: string; postId: string } }
 ) {
   const [user] = await useProtectApiRoute();
   if (!user || user.id !== params.userId)
     return NextResponse.json({}, { status: 401 });
 
-  const { postId } = (await request.json()) as PostLikePostRequestBody;
-
   const res = await prisma.postLike.create({
     data: {
       post: {
         connect: {
-          id: postId,
+          id: parseInt(params.postId),
         },
       },
       user: {

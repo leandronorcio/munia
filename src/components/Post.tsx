@@ -33,12 +33,11 @@ export const Post = memo(
     const { toastify } = useContext(ToastContext);
 
     const likePost = async () => {
-      const res = await fetch(`/api/users/${sessionUserId}/post-likes`, {
+      const res = await fetch(`/api/users/${sessionUserId}/posts/${id}/likes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ postId: id } as PostLikePostRequestBody),
       });
 
       if (res.ok) {
@@ -52,7 +51,7 @@ export const Post = memo(
 
     const unlikePost = async () => {
       const res = await fetch(
-        `/api/users/${sessionUserId}/post-likes/${likedId}`,
+        `/api/users/${sessionUserId}/posts/${id}/likes/${likedId}`,
         {
           method: 'DELETE',
         }

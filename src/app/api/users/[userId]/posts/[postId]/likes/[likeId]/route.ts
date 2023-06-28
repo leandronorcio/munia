@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { userId: string; postLikeId: string } }
+  { params }: { params: { userId: string; postId: string; likeId: string } }
 ) {
   const [user] = await useProtectApiRoute();
   if (!user || user.id !== params.userId)
@@ -12,7 +12,11 @@ export async function DELETE(
 
   const res = await prisma.postLike.delete({
     where: {
-      id: parseInt(params.postLikeId),
+      id_userId_postId: {
+        userId: params.userId,
+        postId: parseInt(params.postId),
+        id: parseInt(params.likeId),
+      },
     },
   });
 
