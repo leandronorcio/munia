@@ -7,7 +7,6 @@ export async function GET(
 ) {
   const res = await prisma.comment.findMany({
     where: {
-      userId: params.userId,
       postId: parseInt(params.postId),
     },
     select: {

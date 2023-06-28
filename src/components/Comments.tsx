@@ -8,10 +8,10 @@ import { ToastContext } from '@/contexts/ToastContext';
 
 export function Comments({
   postId,
-  authorId,
+  postAuthorId,
 }: {
   postId: number;
-  authorId: string;
+  postAuthorId: string;
 }) {
   const [comments, setComments] = useState<CommentType[]>([]);
   const [commentText, setCommentText] = useState('');
@@ -20,7 +20,7 @@ export function Comments({
   useEffect(() => {
     const run = async () => {
       const res = await fetch(
-        `/api/users/${authorId}/posts/${postId}/comments`
+        `/api/users/${postAuthorId}/posts/${postId}/comments`
       );
 
       if (!res.ok) {
@@ -29,19 +29,25 @@ export function Comments({
       }
 
       const data = (await res.json()) as { comments: CommentType[] };
+      console.log(data);
       setComments(data.comments);
     };
     run();
   }, []);
 
   const postComment = async () => {
-    const res = await fetch(`/api/users/${authorId}/posts/${postId}/comments`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ content: commentText } as CommentPOSTRequestBody),
-    });
+    const res = await fetch(
+      `/api/users/${postAuthorId}/posts/${postId}/comments`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          content: commentText,
+        } as CommentPOSTRequestBody),
+      }
+    );
 
     if (res.ok) {
       const addedComment = (await res.json()) as CommentType;

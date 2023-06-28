@@ -147,7 +147,7 @@ export const Post = memo(
           </div>
         </div>
 
-        {commentsShown && <Comments postId={postId} authorId={author.id} />}
+        {commentsShown && <Comments postId={postId} postAuthorId={author.id} />}
       </div>
     );
   },
