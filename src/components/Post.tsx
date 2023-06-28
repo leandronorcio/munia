@@ -14,6 +14,7 @@ import formatDistanceStrict from 'date-fns/formatDistanceStrict';
 import { BasicDialogsContext } from '@/contexts/BasicDialogsContext';
 import SvgComment from '@/svg_components/Comment';
 import { Comments } from './Comments';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export const Post = memo(
   function Post({
@@ -147,7 +148,18 @@ export const Post = memo(
           </div>
         </div>
 
-        {commentsShown && <Comments postId={postId} postAuthorId={author.id} />}
+        <AnimatePresence>
+          {commentsShown && (
+            <motion.div
+              key={`${postId}-comments`}
+              initial={{ height: 0 }}
+              animate={{ height: 'auto' }}
+              exit={{ height: 0 }}
+            >
+              <Comments postId={postId} postAuthorId={author.id} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     );
   },

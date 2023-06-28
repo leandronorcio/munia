@@ -5,6 +5,7 @@ import Button from './ui/Button';
 import ProfilePhoto from './ui/ProfilePhoto';
 import TextArea from './ui/TextArea';
 import { ToastContext } from '@/contexts/ToastContext';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export function Comments({
   postId,
@@ -32,7 +33,9 @@ export function Comments({
       console.log(data);
       setComments(data.comments);
     };
-    run();
+
+    // Wait for the animation of the Component to finish before fetching comments.
+    setTimeout(() => run(), 500);
   }, []);
 
   const postComment = async () => {
@@ -61,9 +64,19 @@ export function Comments({
 
   return (
     <div className="flex flex-col gap-3 px-8 py-6">
-      {comments?.map((comment, i) => (
-        <Comment key={i} {...comment} />
-      ))}
+      <AnimatePresence>
+        {comments?.map((comment, i) => (
+          <motion.div
+            key={`${postId}-comments-${comment.id}`}
+            initial={{ height: 0, x: 30 }}
+            animate={{ height: 'auto', x: 0 }}
+            exit={{ height: 0, x: 30 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Comment key={i} {...comment} />
+          </motion.div>
+        ))}
+      </AnimatePresence>
       <div className="flex flex-row ">
         <div className="w-11 h-11">
           <ProfilePhoto />
