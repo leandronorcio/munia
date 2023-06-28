@@ -1,6 +1,5 @@
 'use client';
 import { Heart } from '@/svg_components';
-import SvgComment from '@/svg_components/Comment';
 import ProfileBlock from './ProfileBlock';
 import PostVisualMediaContainer from './PostVisualMediaContainer';
 import { memo, useContext, useState } from 'react';
@@ -13,6 +12,8 @@ import { DropdownItem } from './ui/DropdownItem';
 import { DropdownMenu } from './ui/DropdownMenu';
 import formatDistanceStrict from 'date-fns/formatDistanceStrict';
 import { BasicDialogsContext } from '@/contexts/BasicDialogsContext';
+import SvgComment from '@/svg_components/Comment';
+import { Comments } from './Comments';
 
 export const Post = memo(
   function Post({
@@ -143,22 +144,7 @@ export const Post = memo(
             </div>
           </div>
 
-          {/* <div className="flex flex-col gap-3 px-8 py-6">
-          <Comment />
-          <div className="flex flex-row ">
-            <div className="w-11 h-11">
-              <ProfilePhoto />
-            </div>
-            <div className="flex-grow flex flex-col justify-center">
-              <TextArea placeholder="Write your comment here..." />
-            </div>
-          </div>
-          <div className="flex justify-end">
-            <Button onClick={() => {}} mode="secondary" size="small">
-              Comment
-            </Button>
-          </div>
-        </div> */}
+          <Comments postId={postId} />
         </div>
       </>
     );
