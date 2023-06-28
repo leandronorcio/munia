@@ -48,4 +48,15 @@ declare global {
   interface CommentPOSTRequestBody {
     content: string;
   }
+
+  interface CommentType {
+    user: {
+      id: string;
+      name: string | null;
+      profilePhoto: string | null;
+    };
+    id: number;
+    content: string;
+    createdAt: Date;
+  }
 }
