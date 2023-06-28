@@ -20,7 +20,7 @@ export const Post = memo(
     id: postId,
     content,
     createdAt,
-    user,
+    user: author,
     visualMedia,
     postLikes,
     _count,
@@ -30,6 +30,7 @@ export const Post = memo(
   }) {
     const { data: session } = useSession();
     const userId = session?.user?.id;
+    const isOwnPost = userId === author.id;
     // The postLikes prop contains zero or one item i.e. the <PostLike>'s id.
     const [likedId, setLikedId] = useState(postLikes[0]?.id || 0);
     // The numberOfLikes is not real-time, it only reacts to likePost and unLikePost.
@@ -89,23 +90,25 @@ export const Post = memo(
         <div className="rounded-2xl bg-slate-50 ">
           <div className="flex justify-between items-center px-4 py-4 sm:px-8 sm:py-6">
             <ProfileBlock
-              name={user.name!}
+              name={author.name!}
               time={formatDistanceStrict(new Date(createdAt), new Date())}
-              photoUrl={user.profilePhoto!}
+              photoUrl={author.profilePhoto!}
             />
-            <DropdownMenu>
-              <DropdownItem
-                onClick={() =>
-                  confirm({
-                    title: 'Delete Post',
-                    message: 'Do you really wish to delete this post?',
-                    actionOnConfirm: deletePost,
-                  })
-                }
-              >
-                Delete Post
-              </DropdownItem>
-            </DropdownMenu>
+            {isOwnPost && (
+              <DropdownMenu>
+                <DropdownItem
+                  onClick={() =>
+                    confirm({
+                      title: 'Delete Post',
+                      message: 'Do you really wish to delete this post?',
+                      actionOnConfirm: deletePost,
+                    })
+                  }
+                >
+                  Delete Post
+                </DropdownItem>
+              </DropdownMenu>
+            )}
           </div>
           <PostVisualMediaContainer
             visualMedia={sortVisualMedia(visualMedia)}
