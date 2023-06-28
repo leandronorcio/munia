@@ -6,6 +6,10 @@ export async function GET(
   request: Request,
   { params }: { params: { userId: string } }
 ) {
+  /**
+   * The [user] will only be used to check whether the
+   * user requesting the Posts have like them or not.
+   */
   const [user] = await useProtectApiRoute();
   if (!user) return NextResponse.json({}, { status: 401 });
 
