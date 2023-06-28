@@ -3,6 +3,7 @@
 import ModalContentWrapper from '@/components/ModalContentWrapper';
 import ModalWrapper from '@/components/ModalWrapper';
 import Button from '@/components/ui/Button';
+import { TextInput } from '@/components/ui/TextInput';
 import { Close } from '@/svg_components';
 import { AnimatePresence } from 'framer-motion';
 import { createContext, useState } from 'react';
@@ -19,10 +20,24 @@ const BasicDialogsContext = createContext<{
     message: string;
     actionOnConfirm: Function;
   }) => void;
+  prompt: ({
+    title,
+    message,
+    promptLabel,
+    initialPromptValue,
+    actionOnSubmit,
+  }: {
+    title: string;
+    message?: string | undefined;
+    promptLabel?: string | undefined;
+    initialPromptValue?: string | undefined;
+    actionOnSubmit: (value: string) => void;
+  }) => void;
 }>({
   shown: false,
   alert: () => {},
   confirm: () => {},
+  prompt: () => {},
 });
 
 function BasicDialogsContextProvider({
@@ -32,15 +47,18 @@ function BasicDialogsContextProvider({
 }) {
   const [shown, setShown] = useState(false);
   const [dialog, setDialog] = useState<{
-    type: 'alert' | 'confirm';
+    type: 'alert' | 'confirm' | 'prompt';
     title: string;
     message: string;
     actionOnConfirm?: Function;
+    actionOnSubmit?: (value: string) => void;
+    promptLabel?: string;
   }>({
     type: 'alert',
     title: '',
     message: '',
   });
+  const [promptValue, setPromptValue] = useState('');
 
   const show = () => {
     setShown(true);
@@ -48,6 +66,14 @@ function BasicDialogsContextProvider({
 
   const hide = () => {
     setShown(false);
+    setDialog({
+      type: 'alert',
+      title: '',
+      message: '',
+      actionOnConfirm: undefined,
+      actionOnSubmit: undefined,
+    });
+    setPromptValue('');
   };
 
   const alert = ({ title, message }: { title: string; message: string }) => {
@@ -77,8 +103,50 @@ function BasicDialogsContextProvider({
     show();
   };
 
+  const prompt = ({
+    title,
+    message = '',
+    promptLabel,
+    initialPromptValue,
+    actionOnSubmit,
+  }: {
+    title: string;
+    message?: string;
+    promptLabel?: string;
+    initialPromptValue?: string;
+    actionOnSubmit: (value: string) => void;
+  }) => {
+    setDialog({
+      type: 'prompt',
+      title,
+      message,
+      promptLabel,
+      actionOnSubmit,
+    });
+    setPromptValue(initialPromptValue || '');
+    show();
+  };
+
+  const handleAffirmative = () => {
+    if (dialog.type === 'alert') {
+      hide();
+      return;
+    }
+    if (dialog.type === 'confirm') {
+      dialog.actionOnConfirm && dialog.actionOnConfirm();
+      hide();
+      return;
+    }
+    if (dialog.type === 'prompt') {
+      dialog.actionOnSubmit && dialog.actionOnSubmit(promptValue);
+      hide();
+    }
+  };
+
   return (
-    <BasicDialogsContext.Provider value={{ shown: shown, alert, confirm }}>
+    <BasicDialogsContext.Provider
+      value={{ shown: shown, alert, confirm, prompt }}
+    >
       <AnimatePresence>
         {shown && (
           <ModalWrapper key="modal-wrapper">
@@ -95,19 +163,19 @@ function BasicDialogsContextProvider({
               <p className="text-lg text-center text-gray-700">
                 {dialog.message}
               </p>
-              <Button
-                onClick={() => {
-                  hide();
-                  dialog.type === 'alert'
-                    ? hide()
-                    : dialog.actionOnConfirm && dialog.actionOnConfirm();
-                }}
-                shape="pill"
-                size="long"
-              >
-                {dialog.type === 'alert' ? 'Okay' : 'Confirm'}
+              <div>
+                {dialog.type === 'prompt' && (
+                  <TextInput
+                    value={promptValue}
+                    onChange={(e) => setPromptValue(e.target.value)}
+                    label={dialog.promptLabel || 'Input here'}
+                  />
+                )}
+              </div>
+              <Button onClick={handleAffirmative} shape="pill" size="long">
+                {affirmativeTexts[dialog.type]}
               </Button>
-              {dialog.type === 'confirm' && (
+              {dialog.type !== 'alert' && (
                 <Button onClick={hide} shape="pill" size="long" mode="ghost">
                   Cancel
                 </Button>
@@ -120,5 +188,11 @@ function BasicDialogsContextProvider({
     </BasicDialogsContext.Provider>
   );
 }
+
+const affirmativeTexts = {
+  alert: 'Okay',
+  confirm: 'Confirm',
+  prompt: 'Submit',
+};
 
 export { BasicDialogsContext, BasicDialogsContextProvider };
