@@ -8,14 +8,7 @@ export async function GET(
   const { userId } = params;
   const user = await prisma.user.findFirst({
     where: {
-      OR: [
-        {
-          id: userId,
-        },
-        {
-          handle: userId,
-        },
-      ],
+      id: userId,
     },
   });
 

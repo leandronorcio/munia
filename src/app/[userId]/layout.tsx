@@ -21,12 +21,12 @@ export default async function Layout({
   params,
 }: {
   children: React.ReactNode;
-  params: { profileHandle: string };
+  params: { userId: string };
 }) {
   const [user] = await useProtectApiRoute();
   if (!user) return redirect('/');
 
-  const profile = await getProfile(params.profileHandle);
+  const profile = await getProfile(params.userId);
   if (profile === null) return redirect('/not-found');
   const isOwnProfile = profile?.id === user?.id;
 
