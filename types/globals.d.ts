@@ -37,4 +37,8 @@ declare global {
   interface PostLikePostRequestBody {
     postId: number;
   }
+
+  interface CommentPOSTRequestBody {
+    content: string;
+  }
 }
