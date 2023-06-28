@@ -31,7 +31,11 @@ export async function GET(
           url: true,
         },
       },
-      // Use postLikes to store the <PostLike>'s id if the user has like the post.
+      /**
+       * Use postLikes to store the <PostLike>'s id of the user to the Post.
+       * If there is a <PostLike> id, that means the user requesting has
+       * liked the Post.
+       */
       postLikes: {
         select: {
           id: true,
@@ -40,7 +44,6 @@ export async function GET(
           userId: user.id,
         },
       },
-      comments: true,
       _count: {
         select: {
           postLikes: true,

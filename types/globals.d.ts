@@ -13,8 +13,9 @@ declare global {
     id: number;
     content: string | null;
     createdAt: Date;
-    postLikes: PostLike[];
-    comments: Comment[];
+    postLikes: {
+      id: number;
+    }[];
     user: {
       id: string;
       name: string | null;
@@ -25,10 +26,11 @@ declare global {
       url: string;
     }[];
     _count: {
-      comments: number;
       postLikes: number;
+      comments: number;
     };
   }
+
   interface VisualMedia {
     type: VisualMediaType;
     url: string;

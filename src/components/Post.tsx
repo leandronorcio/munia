@@ -23,7 +23,6 @@ export const Post = memo(
     user,
     visualMedia,
     postLikes,
-    comments,
     _count,
     setPosts,
   }: PostType & {
