@@ -3,6 +3,7 @@ import { ToastContext } from '@/contexts/ToastContext';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Post } from './Post';
 import useOnScreen from '@/hooks/useOnScreen';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export function Posts({
   type,
@@ -58,17 +59,32 @@ export function Posts({
   }, [isBottomOnScreen]);
 
   return (
-    <div className="flex flex-col gap-8">
-      {posts.map((post) => {
-        return <Post key={post.id} setPosts={setPosts} {...post} />;
-      })}
-      <div onClick={() => setPagination((prev) => prev + 1)} ref={loadingElRef}>
+    <>
+      <div className="flex flex-col">
+        <AnimatePresence>
+          {posts.map((post) => {
+            return (
+              <motion.div
+                initial={false}
+                animate={{ height: 'auto', marginTop: '32px', opacity: 1 }}
+                exit={{ height: 0, marginTop: '0px', opacity: 0 }}
+                style={{ originY: 0, overflowY: 'hidden' }}
+                transition={{ duration: 0.5 }}
+                key={post.id}
+              >
+                <Post setPosts={setPosts} {...post} />
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
+      </div>
+      <div className="mt-10" ref={loadingElRef}>
         {maxedOut
           ? pagination === 1
             ? 'No posts yet'
             : 'All posts loaded'
           : 'Loading posts...'}
       </div>
-    </div>
+    </>
   );
 }

@@ -44,7 +44,7 @@ export default function Tabs() {
   const parentLayoutSegment = `/${usePathname().split('/')[1]}`;
 
   return (
-    <div className="mt-6 mb-3 flex flex-row gap-[10px]">
+    <div className="mt-6 flex flex-row gap-[10px]">
       {[
         { title: 'Posts', segment: parentLayoutSegment },
         { title: 'Photos', segment: `${parentLayoutSegment}/photos` },
