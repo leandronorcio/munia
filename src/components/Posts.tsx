@@ -18,8 +18,6 @@ export function Posts({
   const loadingElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(loadingElRef);
 
-  console.log(pagination);
-
   const retrievePosts = async () => {
     if (maxedOut) return;
     const postsPerPage = 3;
@@ -62,7 +60,7 @@ export function Posts({
   return (
     <div className="flex flex-col gap-8">
       {posts.map((post) => {
-        return <Post key={post.id} {...post} />;
+        return <Post key={post.id} setPosts={setPosts} {...post} />;
       })}
       <div onClick={() => setPagination((prev) => prev + 1)} ref={loadingElRef}>
         {maxedOut

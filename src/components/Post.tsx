@@ -12,10 +12,11 @@ import { ToastContext } from '@/contexts/ToastContext';
 import { DropdownItem } from './ui/DropdownItem';
 import { DropdownMenu } from './ui/DropdownMenu';
 import formatDistanceStrict from 'date-fns/formatDistanceStrict';
+import { BasicDialogsContext } from '@/contexts/BasicDialogsContext';
 
 export const Post = memo(
   function Post({
-    id,
+    id: postId,
     content,
     createdAt,
     user,
@@ -23,18 +24,22 @@ export const Post = memo(
     postLikes,
     comments,
     _count,
-  }: PostType) {
+    setPosts,
+  }: PostType & {
+    setPosts: React.Dispatch<React.SetStateAction<PostType[]>>;
+  }) {
     const { data: session } = useSession();
-    const sessionUserId = session?.user?.id;
+    const userId = session?.user?.id;
     // The postLikes prop contains zero or one item i.e. the <PostLike>'s id.
     const [likedId, setLikedId] = useState(postLikes[0]?.id || 0);
     // The numberOfLikes is not real-time, it only reacts to likePost and unLikePost.
     const [numberOfLikes, setNumberOfLikes] = useState(_count.postLikes);
     const [numberOfComments, setNumberOfComments] = useState(_count.comments);
     const { toastify } = useContext(ToastContext);
+    const { confirm } = useContext(BasicDialogsContext);
 
     const likePost = async () => {
-      const res = await fetch(`/api/users/${sessionUserId}/posts/${id}/likes`, {
+      const res = await fetch(`/api/users/${userId}/posts/${postId}/likes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,13 +51,13 @@ export const Post = memo(
         setLikedId(data.id);
         setNumberOfLikes((prev) => prev + 1);
       } else {
-        toastify({ title: 'Unable to like.', type: 'error' });
+        toastify({ title: 'Unable To Like', type: 'error' });
       }
     };
 
     const unlikePost = async () => {
       const res = await fetch(
-        `/api/users/${sessionUserId}/posts/${id}/likes/${likedId}`,
+        `/api/users/${userId}/posts/${postId}/likes/${likedId}`,
         {
           method: 'DELETE',
         }
@@ -62,7 +67,20 @@ export const Post = memo(
         setLikedId(0);
         setNumberOfLikes((prev) => prev - 1);
       } else {
-        toastify({ title: 'Unable to unlike.', type: 'error' });
+        toastify({ title: 'Unable To Unlike', type: 'error' });
+      }
+    };
+
+    const deletePost = async () => {
+      const res = await fetch(`/api/users/${userId}/posts/${postId}`, {
+        method: 'DELETE',
+      });
+
+      if (res.ok) {
+        setPosts((prev) => prev.filter((post) => post.id !== postId));
+        toastify({ title: 'Successfully Deleted', type: 'success' });
+      } else {
+        toastify({ title: 'Unable to Delete', type: 'error' });
       }
     };
 
@@ -76,7 +94,15 @@ export const Post = memo(
               photoUrl={user.profilePhoto!}
             />
             <DropdownMenu>
-              <DropdownItem onClick={() => console.log('deleting post')}>
+              <DropdownItem
+                onClick={() =>
+                  confirm({
+                    title: 'Delete Post',
+                    message: 'Do you really wish to delete this post?',
+                    actionOnConfirm: deletePost,
+                  })
+                }
+              >
                 Delete Post
               </DropdownItem>
             </DropdownMenu>
