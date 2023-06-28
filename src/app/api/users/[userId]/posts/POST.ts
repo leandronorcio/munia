@@ -4,11 +4,6 @@ import { writeFile } from 'fs/promises';
 import { listOfKeyValuesToObject } from '@/lib/listOfKeyValuesToObject';
 import prisma from '@/lib/prisma';
 
-interface UserPostsPostRequestBody {
-  content?: string;
-  files?: Blob | Blob[];
-}
-
 export async function POST(
   request: Request,
   { params }: { params: { userId: string } }
@@ -18,7 +13,7 @@ export async function POST(
     return NextResponse.json({}, { status: 401 });
 
   const formData = await request.formData();
-  const body = listOfKeyValuesToObject(formData) as UserPostsPostRequestBody;
+  const body = listOfKeyValuesToObject(formData) as PostPOSTRequestBody;
   const { content, files } = body;
   const savedFiles: VisualMedia[] = [];
 

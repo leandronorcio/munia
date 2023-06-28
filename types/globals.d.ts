@@ -34,6 +34,11 @@ declare global {
     url: string;
   }
 
+  interface PostPOSTRequestBody {
+    content?: string;
+    files?: Blob | Blob[];
+  }
+
   interface PostLikePostRequestBody {
     postId: number;
   }
