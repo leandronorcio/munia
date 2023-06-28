@@ -18,6 +18,8 @@ export function Posts({
   const loadingElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(loadingElRef);
 
+  console.log(pagination);
+
   const retrievePosts = async () => {
     if (maxedOut) return;
     const postsPerPage = 3;
