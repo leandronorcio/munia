@@ -11,6 +11,7 @@ import { cn } from '@/lib/cn';
 import { ToastContext } from '@/contexts/ToastContext';
 import { DropdownItem } from './ui/DropdownItem';
 import { DropdownMenu } from './ui/DropdownMenu';
+import formatDistanceStrict from 'date-fns/formatDistanceStrict';
 
 export const Post = memo(
   function Post({
@@ -69,7 +70,11 @@ export const Post = memo(
       <>
         <div className="rounded-2xl bg-slate-50 ">
           <div className="flex justify-between items-center px-4 py-4 sm:px-8 sm:py-6">
-            <ProfileBlock name={user.name!} photoUrl={user.profilePhoto!} />
+            <ProfileBlock
+              name={user.name!}
+              time={formatDistanceStrict(new Date(createdAt), new Date())}
+              photoUrl={user.profilePhoto!}
+            />
             <DropdownMenu>
               <DropdownItem onClick={() => console.log('deleting post')}>
                 Delete Post
