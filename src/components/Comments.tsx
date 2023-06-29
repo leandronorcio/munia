@@ -66,22 +66,31 @@ export function Comments({
   };
 
   return (
-    <div className="flex flex-col gap-3 px-8 py-6 bg-gray-100">
+    <div className="flex flex-col px-8 py-6 bg-gray-100">
       <AnimatePresence>
         {comments?.map((comment, i) => (
           <motion.div
             key={`${postId}-comments-${comment.id}`}
-            initial={{ height: 0, x: 40 }}
-            animate={{ height: 'auto', x: 0 }}
-            exit={{ height: 0, x: 40 }}
-            style={{ overflow: 'hidden' }}
-            transition={{ delay: delayCommentAnimation ? i * 0.1 : 0 }}
+            initial={{ height: 0, x: 40, marginTop: '0', overflow: 'hidden' }}
+            animate={{
+              height: 'auto',
+              x: 0,
+              marginTop: '12px',
+              overflow: 'visible',
+            }}
+            exit={{ height: 0, x: 40, marginTop: '0', overflow: 'hidden' }}
+            transition={{ delay: delayCommentAnimation ? i * 0.125 : 0 }}
           >
-            <Comment key={i} {...comment} />
+            <Comment
+              key={i}
+              {...comment}
+              postAuthorId={postAuthorId}
+              setComments={setComments}
+            />
           </motion.div>
         ))}
       </AnimatePresence>
-      <div className="flex flex-row ">
+      <div className="flex flex-row mt-3">
         <div className="w-11 h-11">
           <ProfilePhoto />
         </div>

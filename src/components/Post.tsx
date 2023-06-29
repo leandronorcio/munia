@@ -36,7 +36,6 @@ export const Post = memo(
     const [likedId, setLikedId] = useState(postLikes[0]?.id || 0);
     // The numberOfLikes is not real-time, it only reacts to likePost and unLikePost.
     const [numberOfLikes, setNumberOfLikes] = useState(_count.postLikes);
-    const [numberOfComments, setNumberOfComments] = useState(_count.comments);
     const [commentsShown, setCommentsShown] = useState(false);
     const { toastify } = useContext(ToastContext);
     const { confirm } = useContext(BasicDialogsContext);
