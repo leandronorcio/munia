@@ -48,6 +48,10 @@ declare global {
     content: string;
   }
 
+  interface CommentPUTRequestBody {
+    content: string;
+  }
+
   interface CommentType {
     id: number;
     content: string;
