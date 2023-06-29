@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSortable, defaultAnimateLayoutChanges } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Delete } from '@/svg_components';
+import { Delete, FullScreenExpandResize } from '@/svg_components';
 
 function animateLayoutChanges(args: any) {
   const { isSorting, wasDragging } = args;
@@ -34,7 +34,19 @@ export function CreatePostSortItem({
       >
         <Delete className="stroke-red-50" />
       </button>
-      <div {...attributes} {...listeners} className="h-[240px] cursor-move">
+      <div
+        {...attributes}
+        {...listeners}
+        className="touch-none bg-black/30 inline-block p-6 rounded-full cursor-move absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%]"
+      >
+        <FullScreenExpandResize
+          stroke="white"
+          strokeWidth={2}
+          width={48}
+          height={48}
+        />
+      </div>
+      <div className="h-[240px]">
         {type === 'PHOTO' ? (
           <img src={url} className="w-full h-full object-cover rounded-md" />
         ) : (
