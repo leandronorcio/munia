@@ -4,13 +4,13 @@ import ProfileBlock from './ProfileBlock';
 import { useSession } from 'next-auth/react';
 import { DropdownMenu } from './ui/DropdownMenu';
 import { DropdownItem } from './ui/DropdownItem';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { ToastContext } from '@/contexts/ToastContext';
 import { BasicDialogsContext } from '@/contexts/BasicDialogsContext';
 
 export default function Comment({
   id: commentId,
-  content,
+  content: initialContent,
   createdAt,
   user: author,
   postAuthorId,
@@ -20,11 +20,13 @@ export default function Comment({
   postAuthorId: string;
   setComments: React.Dispatch<React.SetStateAction<CommentType[]>>;
 }) {
+  // Use this state when the comment is edited.
+  const [content, setContent] = useState(initialContent);
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const isOwnComment = userId === author.id;
   const { toastify } = useContext(ToastContext);
-  const { confirm } = useContext(BasicDialogsContext);
+  const { confirm, prompt } = useContext(BasicDialogsContext);
 
   const deleteComment = async () => {
     const res = await fetch(
@@ -43,6 +45,30 @@ export default function Comment({
         type: 'error',
         title: 'Error',
         message: 'Unable to delete this comment.',
+      });
+    }
+  };
+
+  const editComment = async (newValue: string) => {
+    const res = await fetch(
+      `/api/users/${postAuthorId}/posts/${postId}/comments/${commentId}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content: newValue } as CommentPUTRequestBody),
+      }
+    );
+
+    if (res.ok) {
+      setContent(newValue);
+      toastify({ type: 'success', title: 'Successfully Edited' });
+    } else {
+      toastify({
+        type: 'error',
+        title: 'Error',
+        message: 'Unable to edit this comment.',
       });
     }
   };
@@ -69,6 +95,19 @@ export default function Comment({
                 }}
               >
                 Delete Comment
+              </DropdownItem>
+              <DropdownItem
+                onClick={() => {
+                  prompt({
+                    title: 'Edit Comment',
+                    initialPromptValue: content,
+                    actionOnSubmit: (value) => {
+                      editComment(value);
+                    },
+                  });
+                }}
+              >
+                Edit Comment
               </DropdownItem>
             </DropdownMenu>
           </>
