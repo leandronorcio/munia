@@ -1,5 +1,4 @@
-import Post from '@/components/Post';
-import CreatePost from './CreatePost';
+import CreatePost from '../../components/CreatePost';
 
 export default function Page() {
   return (
