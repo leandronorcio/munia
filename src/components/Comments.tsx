@@ -16,6 +16,8 @@ export function Comments({
 }) {
   const [comments, setComments] = useState<CommentType[]>([]);
   const [commentText, setCommentText] = useState('');
+  // Delay the animations of the <Comment> components on initial render of the <Comments> component.
+  const [delayCommentAnimation, setDelayCommentAnimation] = useState(true);
   const { toastify } = useContext(ToastContext);
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export function Comments({
     };
 
     // Wait for the animation of the Component to finish before fetching comments.
-    setTimeout(() => run(), 500);
+    setTimeout(() => run(), 400);
   }, []);
 
   const postComment = async () => {
@@ -54,24 +56,26 @@ export function Comments({
 
     if (res.ok) {
       const addedComment = (await res.json()) as CommentType;
+      setDelayCommentAnimation(false);
       setComments((prev) => [...prev, addedComment]);
-      toastify({ title: 'Comment Posted', type: 'success' });
       setCommentText('');
+      toastify({ title: 'Comment Posted', type: 'success' });
     } else {
       toastify({ title: 'Comment Not Posted', type: 'error' });
     }
   };
 
   return (
-    <div className="flex flex-col gap-3 px-8 py-6">
+    <div className="flex flex-col gap-3 px-8 py-6 bg-gray-100">
       <AnimatePresence>
         {comments?.map((comment, i) => (
           <motion.div
             key={`${postId}-comments-${comment.id}`}
-            initial={{ height: 0, x: 30 }}
+            initial={{ height: 0, x: 40 }}
             animate={{ height: 'auto', x: 0 }}
-            exit={{ height: 0, x: 30 }}
-            transition={{ duration: 0.5 }}
+            exit={{ height: 0, x: 40 }}
+            style={{ overflow: 'hidden' }}
+            transition={{ delay: delayCommentAnimation ? i * 0.1 : 0 }}
           >
             <Comment key={i} {...comment} />
           </motion.div>
