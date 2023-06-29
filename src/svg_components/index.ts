@@ -12,6 +12,7 @@ export { default as Delete } from "./Delete";
 export { default as Ellipse } from "./Ellipse";
 export { default as EmojiHappySmile } from "./EmojiHappySmile";
 export { default as ForwardArrow } from "./ForwardArrow";
+export { default as FullScreenExpandResize } from "./FullScreenExpandResize";
 export { default as GridFeedCards } from "./GridFeedCards";
 export { default as Heart } from "./Heart";
 export { default as Hide } from "./Hide";
