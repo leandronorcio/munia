@@ -99,7 +99,7 @@ function ToastContextProvider({ children }: { children: React.ReactNode }) {
         {shown && (
           <motion.div
             className={cn(
-              'w-80 fixed z-10 bottom-20 md:bottom-6 right-6 p-6 rounded-xl',
+              'w-80 fixed z-30 bottom-20 md:bottom-6 right-6 p-6 rounded-xl',
               colors[toast.type].bg
             )}
             initial={{ opacity: 0, x: 48 }}
