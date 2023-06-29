@@ -8,6 +8,7 @@ import { Close } from '@/svg_components';
 import { AnimatePresence } from 'framer-motion';
 import { createContext, useContext, useState } from 'react';
 import { ToastContext } from './ToastContext';
+import { CloseButton } from '@/components/ui/CloseButton';
 
 const BasicDialogsContext = createContext<{
   shown: boolean;
@@ -160,10 +161,8 @@ function BasicDialogsContextProvider({
         {shown && (
           <ModalWrapper key="basic-dialogs-modal-wrapper" zIndex={30}>
             <ModalContentWrapper>
-              <Close
-                className="absolute top-6 md:top-8 right-6 md:right-8 cursor-pointer stroke-gray-900 hover:stroke-gray-500"
-                width={24}
-                height={24}
+              <CloseButton
+                className="absolute top-6 md:top-8 right-6 md:right-8"
                 onClick={hide}
               />
               <h1 className="text-center text-4xl md:text-5xl font-bold">
