@@ -13,6 +13,8 @@ import 'swiper/css';
 import 'swiper/css/zoom';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { CreatePostModalContextProvider } from '@/contexts/CreatePostModalContext';
+import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
@@ -45,24 +47,24 @@ export default async function RootLayout({
           <SessionProviderContext>
             <BasicDialogsContextProvider>
               <VisualMediaModalContextProvider>
-                <div className="h-screen flex flex-col bg-violet-100">
-                  {session ? (
-                    <>
-                      <Navbar />
-                      <Sidebar />
-                      <BottomMenu />
-                      <div className="transition-[margin] duration-500 overflow-y-auto ml-0 md:ml-[240px]">
-                        <div className="flex justify-center">
-                          <div className="w-full h-full lg:w-[650px] xl:w-[800px] transition-all duration-500 md:px-4 md:pt-8 mb-10">
+                <CreatePostModalContextProvider>
+                  <div className="h-screen flex flex-col bg-violet-100">
+                    {session ? (
+                      <>
+                        <Navbar />
+                        <Sidebar />
+                        <BottomMenu />
+                        <div className="transition-[margin] duration-500 overflow-y-auto ml-0 md:ml-[240px]">
+                          <ResponsiveContainer className="md:pt-8 mb-14 transition-[width,padding]">
                             {children}
-                          </div>
+                          </ResponsiveContainer>
                         </div>
-                      </div>
-                    </>
-                  ) : (
-                    onboarding
-                  )}
-                </div>
+                      </>
+                    ) : (
+                      onboarding
+                    )}
+                  </div>
+                </CreatePostModalContextProvider>
               </VisualMediaModalContextProvider>
             </BasicDialogsContextProvider>
           </SessionProviderContext>

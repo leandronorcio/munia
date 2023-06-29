@@ -78,7 +78,7 @@ export function Posts({
           })}
         </AnimatePresence>
       </div>
-      <div className="mt-10" ref={loadingElRef}>
+      <div className="mt-6" ref={loadingElRef}>
         {maxedOut
           ? pagination === 1
             ? 'No posts yet'
