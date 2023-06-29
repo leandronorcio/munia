@@ -31,6 +31,7 @@ export async function POST(
     id: res.id,
     content,
     createdAt: new Date(),
+    postId: parseInt(params.postId),
     user: { id: user.id, name: user.name, profilePhoto: user.profilePhoto },
   } as CommentType);
 }

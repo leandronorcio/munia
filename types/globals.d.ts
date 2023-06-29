@@ -49,13 +49,14 @@ declare global {
   }
 
   interface CommentType {
+    id: number;
+    content: string;
+    createdAt: Date;
+    postId: number;
     user: {
       id: string;
       name: string | null;
       profilePhoto: string | null;
     };
-    id: number;
-    content: string;
-    createdAt: Date;
   }
 }
