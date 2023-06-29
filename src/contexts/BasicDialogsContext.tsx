@@ -158,7 +158,7 @@ function BasicDialogsContextProvider({
     >
       <AnimatePresence>
         {shown && (
-          <ModalWrapper key="basic-dialogs-modal-wrapper">
+          <ModalWrapper key="basic-dialogs-modal-wrapper" zIndex={30}>
             <ModalContentWrapper>
               <Close
                 className="absolute top-6 md:top-8 right-6 md:right-8 cursor-pointer stroke-gray-900 hover:stroke-gray-500"

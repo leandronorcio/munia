@@ -21,7 +21,7 @@ export default function VisualMediaModal({
   const [isEnd, setIsEnd] = useState(false);
 
   return (
-    <ModalWrapper>
+    <ModalWrapper zIndex={20}>
       <Swiper
         onSlideChange={(swiper) => {
           setIsBeginning(swiper.isBeginning);
