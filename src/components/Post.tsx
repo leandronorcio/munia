@@ -88,7 +88,7 @@ export const Post = memo(
     };
 
     return (
-      <div className="rounded-2xl bg-slate-50">
+      <div className="rounded-2xl bg-slate-50 overflow-hidden">
         <div className="flex justify-between items-center px-4 py-4 sm:px-8 sm:py-6">
           <ProfileBlock
             name={author.name!}
@@ -115,32 +115,40 @@ export const Post = memo(
         <div className="px-8 py-4">
           <p className="text-lg text-gray-700 mb-8">{content}</p>
           <div className="flex justify-start gap-6">
-            <div className="flex items-center gap-3 cursor-pointer">
-              <div
-                onClick={() => {
-                  likedId === 0 ? likePost() : unlikePost();
-                }}
-                className="p-2 group transition-transform hover:bg-pink-200 active:bg-pink-300 rounded-full"
-              >
-                <Heart
-                  width={24}
-                  height={24}
-                  className={cn(
-                    'transition-transform group-hover:stroke-pink-500 group-active:rotate-45',
-                    likedId !== 0 ? 'stroke-red-500' : 'stroke-black',
-                    likedId !== 0 ? 'fill-red-500' : 'fill-none'
-                  )}
-                />
-              </div>
+            <div
+              className={cn(
+                'flex items-center gap-3 cursor-pointer px-4 py-2 rounded-xl hover:bg-pink-200'
+              )}
+              onClick={() => {
+                likedId === 0 ? likePost() : unlikePost();
+              }}
+            >
+              <Heart
+                width={24}
+                height={24}
+                className={cn(
+                  'stroke-black',
+                  likedId !== 0 && 'stroke-none fill-red-500'
+                )}
+              />
               <p className="font-semibold text-lg text-gray-700 hidden sm:block">
                 {numberOfLikes} {numberOfLikes === 1 ? 'Like' : 'Likes'}
               </p>
             </div>
             <div
-              className="flex items-center gap-3 cursor-pointer"
+              className={cn(
+                'flex items-center gap-3 cursor-pointer px-4 py-2 rounded-xl hover:bg-blue-200'
+              )}
               onClick={() => setCommentsShown((prev) => !prev)}
             >
-              <SvgComment stroke="black" width={24} height={24} />
+              <SvgComment
+                className={cn(
+                  'stroke-black',
+                  commentsShown && 'stroke-none fill-blue-500'
+                )}
+                width={24}
+                height={24}
+              />
               <p className="font-semibold text-lg text-gray-700 hidden sm:block">
                 {_count.comments} Comments
               </p>

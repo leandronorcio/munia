@@ -1,7 +1,7 @@
 // https://stackoverflow.com/questions/40731352/extending-html-elements-in-react-and-typescript-while-preserving-props
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 interface TextAreaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -21,7 +21,7 @@ export default function TextArea({ ...props }: TextAreaProps) {
         textarea.style.height = textarea.scrollHeight + 'px';
       }}
       {...props}
-      className="w-full bg-slate-50 outline-none px-4 py-0 text-lg overflow-hidden resize-none"
+      className="w-full bg-transparent outline-none px-4 py-0 text-lg overflow-hidden resize-none"
       rows={1}
     />
   );
