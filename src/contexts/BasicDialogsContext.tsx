@@ -6,7 +6,8 @@ import Button from '@/components/ui/Button';
 import { TextInput } from '@/components/ui/TextInput';
 import { Close } from '@/svg_components';
 import { AnimatePresence } from 'framer-motion';
-import { createContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
+import { ToastContext } from './ToastContext';
 
 const BasicDialogsContext = createContext<{
   shown: boolean;
@@ -59,6 +60,7 @@ function BasicDialogsContextProvider({
     message: '',
   });
   const [promptValue, setPromptValue] = useState('');
+  const { toastify } = useContext(ToastContext);
 
   const show = () => {
     setShown(true);
@@ -138,6 +140,13 @@ function BasicDialogsContextProvider({
       return;
     }
     if (dialog.type === 'prompt') {
+      if (promptValue === '') {
+        return toastify({
+          type: 'error',
+          title: 'Error',
+          message: 'Input cannot be empty.',
+        });
+      }
       dialog.actionOnSubmit && dialog.actionOnSubmit(promptValue);
       hide();
     }
