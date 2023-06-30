@@ -120,7 +120,7 @@ export const Post = memo(
                   confirm({
                     title: 'Delete Post',
                     message: 'Do you really wish to delete this post?',
-                    actionOnConfirm: deletePost,
+                    onConfirm: deletePost,
                   })
                 }
               >

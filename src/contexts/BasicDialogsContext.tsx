@@ -14,24 +14,24 @@ const BasicDialogsContext = createContext<{
   confirm: ({
     title,
     message,
-    actionOnConfirm,
+    onConfirm,
   }: {
     title: string;
     message: string;
-    actionOnConfirm: Function;
+    onConfirm: Function;
   }) => void;
   prompt: ({
     title,
     message,
     promptLabel,
     initialPromptValue,
-    actionOnSubmit,
+    onSubmit,
   }: {
     title: string;
     message?: string | undefined;
     promptLabel?: string | undefined;
     initialPromptValue?: string | undefined;
-    actionOnSubmit: (value: string) => void;
+    onSubmit: (value: string) => void;
   }) => void;
 }>({
   alert: () => {},
@@ -49,8 +49,8 @@ function BasicDialogsContextProvider({
     type: 'alert' | 'confirm' | 'prompt';
     title: string;
     message: string;
-    actionOnConfirm?: Function;
-    actionOnSubmit?: (value: string) => void;
+    onConfirm?: Function;
+    onSubmit?: (value: string) => void;
     promptLabel?: string;
   }>({
     type: 'alert',
@@ -70,8 +70,8 @@ function BasicDialogsContextProvider({
       type: 'alert',
       title: '',
       message: '',
-      actionOnConfirm: undefined,
-      actionOnSubmit: undefined,
+      onConfirm: undefined,
+      onSubmit: undefined,
     });
     setPromptValue('');
   };
@@ -88,17 +88,17 @@ function BasicDialogsContextProvider({
   const confirm = ({
     title,
     message,
-    actionOnConfirm,
+    onConfirm,
   }: {
     title: string;
     message: string;
-    actionOnConfirm: Function;
+    onConfirm: Function;
   }) => {
     setDialog({
       type: 'confirm',
       title,
       message,
-      actionOnConfirm,
+      onConfirm,
     });
     show();
   };
@@ -108,20 +108,20 @@ function BasicDialogsContextProvider({
     message = '',
     promptLabel,
     initialPromptValue,
-    actionOnSubmit,
+    onSubmit,
   }: {
     title: string;
     message?: string;
     promptLabel?: string;
     initialPromptValue?: string;
-    actionOnSubmit: (value: string) => void;
+    onSubmit: (value: string) => void;
   }) => {
     setDialog({
       type: 'prompt',
       title,
       message,
       promptLabel,
-      actionOnSubmit,
+      onSubmit,
     });
     setPromptValue(initialPromptValue || '');
     show();
@@ -133,7 +133,7 @@ function BasicDialogsContextProvider({
       return;
     }
     if (dialog.type === 'confirm') {
-      dialog.actionOnConfirm && dialog.actionOnConfirm();
+      dialog.onConfirm && dialog.onConfirm();
       hide();
       return;
     }
@@ -145,7 +145,7 @@ function BasicDialogsContextProvider({
           message: 'Input cannot be empty.',
         });
       }
-      dialog.actionOnSubmit && dialog.actionOnSubmit(promptValue);
+      dialog.onSubmit && dialog.onSubmit(promptValue);
       hide();
     }
   };

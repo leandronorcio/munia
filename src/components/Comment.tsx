@@ -90,7 +90,7 @@ export default function Comment({
                   confirm({
                     title: 'Confirm Delete',
                     message: 'Do you really wish to delete this comment?',
-                    actionOnConfirm: deleteComment,
+                    onConfirm: deleteComment,
                   });
                 }}
               >
@@ -101,7 +101,7 @@ export default function Comment({
                   prompt({
                     title: 'Edit Comment',
                     initialPromptValue: content,
-                    actionOnSubmit: (value) => {
+                    onSubmit: (value) => {
                       editComment(value);
                     },
                   });

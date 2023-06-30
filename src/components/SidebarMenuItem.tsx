@@ -33,7 +33,7 @@ export default function SidebarMenuItem({
           confirm({
             title: 'Confirm Logout',
             message: 'Do you really wish to logout?',
-            actionOnConfirm: () => signOut({ callbackUrl: '/' }),
+            onConfirm: () => signOut({ callbackUrl: '/' }),
           });
         } else {
           router.push(route);

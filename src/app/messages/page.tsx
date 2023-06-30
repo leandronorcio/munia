@@ -31,7 +31,7 @@ export default function Messages() {
           confirm({
             title: 'Testing',
             message: 'Hello there mate.',
-            actionOnConfirm: () => {
+            onConfirm: () => {
               console.log('confirmed');
             },
           })
@@ -45,7 +45,7 @@ export default function Messages() {
             title: 'Prompt',
             promptLabel: 'Enter your crush',
             initialPromptValue: 'Lorem ipsum dolor sit amet.',
-            actionOnSubmit: (value) => console.log(`The value is ${value}`),
+            onSubmit: (value) => console.log(`The value is ${value}`),
           });
         }}
       >

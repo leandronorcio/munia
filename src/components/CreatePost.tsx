@@ -117,7 +117,7 @@ export default function CreatePost({
       confirm({
         title: 'Exit',
         message: "Do you really wish to exit? Changes won't be saved.",
-        actionOnConfirm: () => setTimeout(() => exitCreatePostModal(), 300),
+        onConfirm: () => setTimeout(() => exitCreatePostModal(), 300),
       });
       return;
     }
