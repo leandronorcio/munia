@@ -1,16 +1,16 @@
 import { listOfKeyValuesToObject } from '@/lib/listOfKeyValuesToObject';
 import prisma from '@/lib/prisma';
-import { writeFile } from 'fs/promises';
+import { unlink, writeFile } from 'fs/promises';
 import { NextResponse } from 'next/server';
 
 export async function useWritePost({
   formData,
-  userId,
+  user,
   type,
   postId,
 }: {
   formData: FormData;
-  userId: string;
+  user: CustomUser;
   type: 'create' | 'edit';
   postId?: number;
 }) {
@@ -26,7 +26,9 @@ export async function useWritePost({
         filesArr.forEach(async (file, i) => {
           const type = file.type.startsWith('image/') ? 'PHOTO' : 'VIDEO';
           const extension = file.type.split('/')[1];
-          const filePath = `./uploads/${userId}-${Date.now()}-${i}-${type.toLocaleLowerCase()}.${extension}`;
+          const filePath = `./uploads/${
+            user.id
+          }-${Date.now()}-${i}-${type.toLocaleLowerCase()}.${extension}`;
           savedFiles.push({
             type,
             url: filePath,
@@ -52,7 +54,7 @@ export async function useWritePost({
                 url: file.url,
                 user: {
                   connect: {
-                    id: userId,
+                    id: user.id,
                   },
                 },
               })),
@@ -60,19 +62,92 @@ export async function useWritePost({
           }),
           user: {
             connect: {
-              id: userId,
+              id: user.id,
             },
           },
         },
-        include: {
-          visualMedia: true,
+        select: {
+          id: true,
+          content: true,
+          createdAt: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+              profilePhoto: true,
+            },
+          },
+          visualMedia: {
+            select: {
+              type: true,
+              url: true,
+            },
+          },
+          /**
+           * Use postLikes to store the <PostLike>'s id of the user to the Post.
+           * If there is a <PostLike> id, that means the user requesting has
+           * liked the Post.
+           */
+          postLikes: {
+            select: {
+              id: true,
+            },
+            where: {
+              userId: user.id,
+            },
+          },
+          _count: {
+            select: {
+              postLikes: true,
+              comments: true,
+            },
+          },
         },
       });
 
-      console.log(res);
-      return NextResponse.json({ id: res.id });
+      return NextResponse.json<PostType>({ ...res });
     } else if (type === 'edit') {
+      // Delete the associated visualMedia files from the filesystem before updating.
+      const post = await prisma.post.findFirst({
+        select: {
+          visualMedia: true,
+        },
+        where: {
+          AND: [{ id: postId }, { userId: user.id }],
+        },
+      });
+
+      if (post != null) {
+        if (post.visualMedia.length > 0) {
+          for (const file of post.visualMedia) {
+            await unlink(`./public/${file.url}`);
+          }
+        }
+      }
+
+      // Delete the visualMedia records from the database.
+      await prisma.post.update({
+        where: {
+          id_userId: {
+            id: postId!,
+            userId: user.id,
+          },
+        },
+        data: {
+          visualMedia: {
+            deleteMany: {},
+          },
+        },
+      });
+
       const res = await prisma.post.update({
+        where: {
+          id_userId: {
+            id: postId!,
+            userId: user.id,
+          },
+        },
+
         data: {
           content: (content || '') as string,
           ...(files !== undefined && {
@@ -82,20 +157,59 @@ export async function useWritePost({
                 url: file.url,
                 user: {
                   connect: {
-                    id: userId,
+                    id: user.id,
                   },
                 },
               })),
             },
           }),
+          ...(files === undefined && {
+            visualMedia: {
+              deleteMany: {},
+            },
+          }),
         },
-        where: {
-          id: postId,
+        select: {
+          id: true,
+          content: true,
+          createdAt: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+              profilePhoto: true,
+            },
+          },
+          visualMedia: {
+            select: {
+              type: true,
+              url: true,
+            },
+          },
+          /**
+           * Use postLikes to store the <PostLike>'s id of the user to the Post.
+           * If there is a <PostLike> id, that means the user requesting has
+           * liked the Post.
+           */
+          postLikes: {
+            select: {
+              id: true,
+            },
+            where: {
+              userId: user.id,
+            },
+          },
+          _count: {
+            select: {
+              postLikes: true,
+              comments: true,
+            },
+          },
         },
       });
 
       console.log(res);
-      return NextResponse.json({ id: res.id });
+      return NextResponse.json<PostType>({ ...res });
     }
   } catch (error) {
     console.log(error);

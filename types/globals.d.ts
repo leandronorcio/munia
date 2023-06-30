@@ -40,6 +40,11 @@ declare global {
     files?: Blob | Blob[];
   }
 
+  interface PostPUTRequestBody {
+    content?: string;
+    files?: Blob | Blob[];
+  }
+
   interface PostLikePostRequestBody {
     postId: number;
   }
