@@ -4,14 +4,12 @@ import ModalContentWrapper from '@/components/ModalContentWrapper';
 import ModalWrapper from '@/components/ModalWrapper';
 import Button from '@/components/ui/Button';
 import { TextInput } from '@/components/ui/TextInput';
-import { Close } from '@/svg_components';
 import { AnimatePresence } from 'framer-motion';
 import { createContext, useContext, useState } from 'react';
 import { ToastContext } from './ToastContext';
 import { CloseButton } from '@/components/ui/CloseButton';
 
 const BasicDialogsContext = createContext<{
-  shown: boolean;
   alert: ({ title, message }: { title: string; message: string }) => void;
   confirm: ({
     title,
@@ -36,7 +34,6 @@ const BasicDialogsContext = createContext<{
     actionOnSubmit: (value: string) => void;
   }) => void;
 }>({
-  shown: false,
   alert: () => {},
   confirm: () => {},
   prompt: () => {},
@@ -154,9 +151,7 @@ function BasicDialogsContextProvider({
   };
 
   return (
-    <BasicDialogsContext.Provider
-      value={{ shown: shown, alert, confirm, prompt }}
-    >
+    <BasicDialogsContext.Provider value={{ alert, confirm, prompt }}>
       <AnimatePresence>
         {shown && (
           <ModalWrapper key="basic-dialogs-modal-wrapper" zIndex={30}>
