@@ -10,10 +10,17 @@ export default function Messages() {
   const { toastify } = useContext(ToastContext);
   const { launchCreatePost } = useContext(CreatePostModalContext);
 
+  console.log('rerendered messages');
   return (
     <>
       <h1>Messages</h1>
-      <button onClick={launchCreatePost}>Launch Create Post</button>
+      <button
+        onClick={() =>
+          launchCreatePost({ onSuccess: (post) => console.log(post) })
+        }
+      >
+        Launch Create Post
+      </button>
       <button
         onClick={() => alert({ title: 'Alert', message: 'Hello there mate.' })}
       >

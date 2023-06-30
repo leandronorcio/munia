@@ -12,10 +12,12 @@ import { motion } from 'framer-motion';
 import { CloseButton } from './ui/CloseButton';
 import { BasicDialogsContext } from '@/contexts/BasicDialogsContext';
 import { capitalizeFirstLetter } from '@/lib/capitalizeFirstLettet';
+import { CreatePostCallback } from '@/contexts/CreatePostModalContext';
 
 export default function CreatePost({
   toEditValues,
   exitCreatePostModal,
+  onSuccess,
 }: {
   toEditValues: {
     postId: number;
@@ -23,6 +25,7 @@ export default function CreatePost({
     initialVisualMedia: VisualMedia[];
   } | null;
   exitCreatePostModal: () => void;
+  onSuccess: CreatePostCallback | null;
 }) {
   const mode: 'create' | 'edit' = toEditValues === null ? 'create' : 'edit';
   const [content, setContent] = useState(toEditValues?.initialContent || '');
@@ -73,6 +76,8 @@ export default function CreatePost({
     });
 
     if (res.ok) {
+      const createdPost = await res.json();
+      onSuccess !== null && onSuccess(createdPost);
       toastify({ title: 'Successfully Posted', type: 'success' });
       exitCreatePostModal();
     } else {
@@ -90,6 +95,8 @@ export default function CreatePost({
     );
 
     if (res.ok) {
+      const editedPost = await res.json();
+      onSuccess !== null && onSuccess(editedPost);
       toastify({ title: 'Successfully Edited', type: 'success' });
       exitCreatePostModal();
     } else {

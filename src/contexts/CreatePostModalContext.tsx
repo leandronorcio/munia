@@ -3,10 +3,11 @@ import CreatePost from '@/components/CreatePost';
 import ModalWrapper from '@/components/ModalWrapper';
 import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 import { AnimatePresence } from 'framer-motion';
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
+export type CreatePostCallback = (post: PostType) => void;
 
 const CreatePostModalContext = createContext<{
-  launchCreatePost: () => void;
+  launchCreatePost: ({ onSuccess }: { onSuccess: CreatePostCallback }) => void;
   launchEditPost: ({
     initialContent,
     initialVisualMedia,
@@ -15,6 +16,7 @@ const CreatePostModalContext = createContext<{
     initialContent: string;
     initialVisualMedia: VisualMedia[];
     postId: number;
+    onSuccess: CreatePostCallback;
   }) => void;
 }>({ launchCreatePost: () => {}, launchEditPost: () => {} });
 
@@ -24,24 +26,36 @@ function CreatePostModalContextProvider({
   children: React.ReactNode;
 }) {
   const [shown, setShown] = useState(false);
+  const [callbackFn, setCallbackFn] = useState<{
+    onSuccess: CreatePostCallback | null;
+  }>({
+    onSuccess: null,
+  });
   const [toEditValues, setToEditValues] = useState<{
     postId: number;
     initialContent: string;
     initialVisualMedia: VisualMedia[];
   } | null>(null);
 
-  const launchCreatePost = () => {
+  const launchCreatePost = ({
+    onSuccess,
+  }: {
+    onSuccess: CreatePostCallback;
+  }) => {
     setShown(true);
+    setCallbackFn({ onSuccess });
   };
 
   const launchEditPost = ({
     initialContent,
     initialVisualMedia,
     postId,
+    onSuccess,
   }: {
     initialContent: string;
     initialVisualMedia: VisualMedia[];
     postId: number;
+    onSuccess: CreatePostCallback;
   }) => {
     setToEditValues({
       postId,
@@ -49,6 +63,7 @@ function CreatePostModalContextProvider({
       initialVisualMedia,
     });
     setShown(true);
+    setCallbackFn({ onSuccess });
   };
 
   const exitCreatePostModal = () => {
@@ -68,6 +83,7 @@ function CreatePostModalContextProvider({
                 <CreatePost
                   exitCreatePostModal={exitCreatePostModal}
                   toEditValues={toEditValues}
+                  onSuccess={callbackFn.onSuccess}
                 />
               </ResponsiveContainer>
             </div>
