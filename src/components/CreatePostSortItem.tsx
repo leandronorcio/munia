@@ -37,7 +37,7 @@ export function CreatePostSortItem({
       <div
         {...attributes}
         {...listeners}
-        className="touch-none bg-black/30 inline-block p-6 rounded-full cursor-move absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%]"
+        className="touch-none bg-black/30 inline-block p-6 rounded-full cursor-move absolute z-10 top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%]"
       >
         <FullScreenExpandResize
           stroke="white"
