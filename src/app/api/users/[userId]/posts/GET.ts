@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import prisma from '@/lib/prisma';
+import { selectPost } from './selectPost';
 
 export async function GET(
   request: Request,
@@ -18,43 +19,7 @@ export async function GET(
   const offset = parseInt(searchParams.get('offset') || '0');
 
   const res = await prisma.post.findMany({
-    select: {
-      id: true,
-      content: true,
-      createdAt: true,
-      user: {
-        select: {
-          id: true,
-          name: true,
-          profilePhoto: true,
-        },
-      },
-      visualMedia: {
-        select: {
-          type: true,
-          url: true,
-        },
-      },
-      /**
-       * Use postLikes to store the <PostLike>'s id of the user to the Post.
-       * If there is a <PostLike> id, that means the user requesting has
-       * liked the Post.
-       */
-      postLikes: {
-        select: {
-          id: true,
-        },
-        where: {
-          userId: user.id,
-        },
-      },
-      _count: {
-        select: {
-          postLikes: true,
-          comments: true,
-        },
-      },
-    },
+    select: selectPost(user.id),
     where: {
       userId: params.userId,
     },

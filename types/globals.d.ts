@@ -12,6 +12,11 @@ declare global {
     id: number;
     content: string | null;
     createdAt: Date;
+    /**
+     * Use postLikes to store the <PostLike>'s id of the user to the Post.
+     * If there is a <PostLike> id, that means the user requesting has
+     * liked the Post.
+     */
     postLikes: {
       id: number;
     }[];

@@ -1,3 +1,4 @@
+import { selectPost } from '@/app/api/users/[userId]/posts/selectPost';
 import { listOfKeyValuesToObject } from '@/lib/listOfKeyValuesToObject';
 import prisma from '@/lib/prisma';
 import { unlink, writeFile } from 'fs/promises';
@@ -66,43 +67,7 @@ export async function useWritePost({
             },
           },
         },
-        select: {
-          id: true,
-          content: true,
-          createdAt: true,
-          user: {
-            select: {
-              id: true,
-              name: true,
-              profilePhoto: true,
-            },
-          },
-          visualMedia: {
-            select: {
-              type: true,
-              url: true,
-            },
-          },
-          /**
-           * Use postLikes to store the <PostLike>'s id of the user to the Post.
-           * If there is a <PostLike> id, that means the user requesting has
-           * liked the Post.
-           */
-          postLikes: {
-            select: {
-              id: true,
-            },
-            where: {
-              userId: user.id,
-            },
-          },
-          _count: {
-            select: {
-              postLikes: true,
-              comments: true,
-            },
-          },
-        },
+        select: selectPost(user.id),
       });
 
       return NextResponse.json<PostType>({ ...res });
@@ -169,43 +134,7 @@ export async function useWritePost({
             },
           }),
         },
-        select: {
-          id: true,
-          content: true,
-          createdAt: true,
-          user: {
-            select: {
-              id: true,
-              name: true,
-              profilePhoto: true,
-            },
-          },
-          visualMedia: {
-            select: {
-              type: true,
-              url: true,
-            },
-          },
-          /**
-           * Use postLikes to store the <PostLike>'s id of the user to the Post.
-           * If there is a <PostLike> id, that means the user requesting has
-           * liked the Post.
-           */
-          postLikes: {
-            select: {
-              id: true,
-            },
-            where: {
-              userId: user.id,
-            },
-          },
-          _count: {
-            select: {
-              postLikes: true,
-              comments: true,
-            },
-          },
-        },
+        select: selectPost(user.id),
       });
 
       console.log(res);
