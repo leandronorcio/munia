@@ -27,8 +27,10 @@ export const Post = memo(
     postLikes,
     _count,
     setPosts,
+    index,
   }: PostType & {
     setPosts: React.Dispatch<React.SetStateAction<PostType[]>>;
+    index: number;
   }) {
     const { data: session } = useSession();
     const userId = session?.user?.id;
@@ -88,6 +90,21 @@ export const Post = memo(
       }
     };
 
+    const editPost = () => {
+      launchEditPost({
+        postId,
+        initialContent: content || '',
+        initialVisualMedia: visualMedia,
+        onSuccess: (editedPost) => {
+          setPosts((prev) => {
+            const arr = [...prev];
+            arr[index] = editedPost;
+            return arr;
+          });
+        },
+      });
+    };
+
     return (
       <div className="rounded-2xl bg-slate-50 overflow-hidden">
         <div className="flex justify-between items-center px-4 py-4 sm:px-8 sm:py-6">
@@ -109,17 +126,7 @@ export const Post = memo(
               >
                 Delete Post
               </DropdownItem>
-              <DropdownItem
-                onClick={() => {
-                  launchEditPost({
-                    postId,
-                    initialContent: content || '',
-                    initialVisualMedia: visualMedia,
-                  });
-                }}
-              >
-                Edit Post
-              </DropdownItem>
+              <DropdownItem onClick={editPost}>Edit Post</DropdownItem>
             </DropdownMenu>
           )}
         </div>

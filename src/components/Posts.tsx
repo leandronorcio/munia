@@ -62,7 +62,7 @@ export function Posts({
     <>
       <div className="flex flex-col">
         <AnimatePresence>
-          {posts.map((post) => {
+          {posts.map((post, i) => {
             return (
               <motion.div
                 initial={false}
@@ -72,7 +72,7 @@ export function Posts({
                 transition={{ duration: 0.5 }}
                 key={post.id}
               >
-                <Post setPosts={setPosts} {...post} />
+                <Post setPosts={setPosts} index={i} {...post} />
               </motion.div>
             );
           })}
