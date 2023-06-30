@@ -1,15 +1,19 @@
 'use client';
+import TextArea from '@/components/ui/TextArea';
 import { BasicDialogsContext } from '@/contexts/BasicDialogsContext';
+import { CreatePostModalContext } from '@/contexts/CreatePostModalContext';
 import { ToastContext } from '@/contexts/ToastContext';
 import { useContext } from 'react';
 
 export default function Messages() {
   const { alert, confirm, prompt } = useContext(BasicDialogsContext);
   const { toastify } = useContext(ToastContext);
+  const { launchCreatePost } = useContext(CreatePostModalContext);
 
   return (
     <>
       <h1>Messages</h1>
+      <button onClick={launchCreatePost}>Launch Create Post</button>
       <button
         onClick={() => alert({ title: 'Alert', message: 'Hello there mate.' })}
       >
@@ -65,6 +69,7 @@ export default function Messages() {
           </label>
         </div>
       </div>
+      <TextArea />
     </>
   );
 }

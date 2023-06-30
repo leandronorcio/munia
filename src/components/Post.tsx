@@ -15,6 +15,7 @@ import { BasicDialogsContext } from '@/contexts/BasicDialogsContext';
 import SvgComment from '@/svg_components/Comment';
 import { Comments } from './Comments';
 import { AnimatePresence, motion } from 'framer-motion';
+import { CreatePostModalContext } from '@/contexts/CreatePostModalContext';
 
 export const Post = memo(
   function Post({
@@ -39,6 +40,7 @@ export const Post = memo(
     const [commentsShown, setCommentsShown] = useState(false);
     const { toastify } = useContext(ToastContext);
     const { confirm } = useContext(BasicDialogsContext);
+    const { launchEditPost } = useContext(CreatePostModalContext);
 
     const likePost = async () => {
       const res = await fetch(`/api/users/${userId}/posts/${postId}/likes`, {
@@ -106,6 +108,17 @@ export const Post = memo(
                 }
               >
                 Delete Post
+              </DropdownItem>
+              <DropdownItem
+                onClick={() => {
+                  launchEditPost({
+                    postId,
+                    initialContent: content || '',
+                    initialVisualMedia: visualMedia,
+                  });
+                }}
+              >
+                Edit Post
               </DropdownItem>
             </DropdownMenu>
           )}

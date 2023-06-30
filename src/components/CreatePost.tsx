@@ -9,11 +9,28 @@ import { CreatePostTabs } from './CreatePostTabs';
 import { useSession } from 'next-auth/react';
 import { AnimatePresence } from 'framer-motion';
 import { motion } from 'framer-motion';
+import { CloseButton } from './ui/CloseButton';
+import { BasicDialogsContext } from '@/contexts/BasicDialogsContext';
+import { capitalizeFirstLetter } from '@/lib/capitalizeFirstLettet';
 
-export default function CreatePost() {
-  const [content, setContent] = useState('');
-  const [visualMedia, setVisualMedia] = useState<VisualMedia[]>([]);
+export default function CreatePost({
+  toEditValues,
+  exitCreatePostModal,
+}: {
+  toEditValues: {
+    postId: number;
+    initialContent: string;
+    initialVisualMedia: VisualMedia[];
+  } | null;
+  exitCreatePostModal: () => void;
+}) {
+  const mode: 'create' | 'edit' = toEditValues === null ? 'create' : 'edit';
+  const [content, setContent] = useState(toEditValues?.initialContent || '');
+  const [visualMedia, setVisualMedia] = useState<VisualMedia[]>(
+    toEditValues?.initialVisualMedia || []
+  );
   const { toastify } = useContext(ToastContext);
+  const { confirm } = useContext(BasicDialogsContext);
   const { data: session } = useSession();
   const user = session?.user;
 
@@ -33,7 +50,7 @@ export default function CreatePost() {
     e.target.value = '';
   };
 
-  const submitPost = async () => {
+  const generateFormData = async (): Promise<FormData> => {
     const formData = new FormData();
     formData.append('content', content);
 
@@ -46,21 +63,72 @@ export default function CreatePost() {
       formData.append('files', file, file.name);
     }
 
+    return formData;
+  };
+
+  const submitPost = async () => {
     const res = await fetch(`/api/users/${user?.id}/posts`, {
       method: 'POST',
-      body: formData,
+      body: await generateFormData(),
     });
 
     if (res.ok) {
-      setContent('');
-      setVisualMedia([]);
       toastify({ title: 'Successfully Posted', type: 'success' });
+      exitCreatePostModal();
+    } else {
+      toastify({ title: 'Error Creating Post', type: 'error' });
     }
   };
 
+  const submitPostEdit = async () => {
+    const res = await fetch(
+      `/api/users/${user?.id}/posts/${toEditValues?.postId}`,
+      {
+        method: 'PUT',
+        body: await generateFormData(),
+      }
+    );
+
+    if (res.ok) {
+      toastify({ title: 'Successfully Edited', type: 'success' });
+      exitCreatePostModal();
+    } else {
+      toastify({ title: 'Error Editing Post', type: 'error' });
+    }
+  };
+
+  const handleClickPostButton = () => {
+    if (mode === 'create') {
+      submitPost();
+    } else {
+      submitPostEdit();
+    }
+  };
+
+  const handleClickCloseButton = () => {
+    if (content !== '' || visualMedia.length > 0) {
+      confirm({
+        title: 'Exit',
+        message: "Do you really wish to exit? Changes won't be saved.",
+        actionOnConfirm: () => setTimeout(() => exitCreatePostModal(), 300),
+      });
+      return;
+    }
+    exitCreatePostModal();
+  };
+
   return (
-    <div className="p-4 sm:p-6 rounded-xl bg-slate-50 mb-6 ">
-      <div className="flex flex-row mb-[18px] ">
+    <div className="pb-5 rounded-xl bg-white mb-6 ">
+      <div className="mb-4 py-3 bg-gray-100 rounded-t-xl relative">
+        <h3 className="text-lg font-semibold text-center">
+          {capitalizeFirstLetter(mode)} Post
+        </h3>
+        <CloseButton
+          className="absolute top-[50%] translate-y-[-50%] right-3"
+          onClick={handleClickCloseButton}
+        />
+      </div>
+      <div className="flex flex-row mb-[18px] px-4">
         <div className="w-11 h-11">
           <ProfilePhoto />
         </div>
@@ -74,7 +142,7 @@ export default function CreatePost() {
         <div>
           <Button
             mode="secondary"
-            onClick={submitPost}
+            onClick={handleClickPostButton}
             size="small"
             disabled={content === '' && visualMedia.length === 0}
           >
