@@ -11,11 +11,11 @@ import { ToastContext } from '@/contexts/ToastContext';
 import { DropdownItem } from './ui/DropdownItem';
 import { DropdownMenu } from './ui/DropdownMenu';
 import formatDistanceStrict from 'date-fns/formatDistanceStrict';
-import { BasicDialogsContext } from '@/contexts/BasicDialogsContext';
 import SvgComment from '@/svg_components/Comment';
 import { Comments } from './Comments';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CreatePostModalContext } from '@/contexts/CreatePostModalContext';
+import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 
 export const Post = memo(
   function Post({
@@ -41,7 +41,7 @@ export const Post = memo(
     const [numberOfLikes, setNumberOfLikes] = useState(_count.postLikes);
     const [commentsShown, setCommentsShown] = useState(false);
     const { toastify } = useContext(ToastContext);
-    const { confirm } = useContext(BasicDialogsContext);
+    const { confirm } = useBasicDialogs();
     const { launchEditPost } = useContext(CreatePostModalContext);
 
     const likePost = async () => {

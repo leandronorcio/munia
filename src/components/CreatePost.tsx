@@ -10,9 +10,9 @@ import { useSession } from 'next-auth/react';
 import { AnimatePresence } from 'framer-motion';
 import { motion } from 'framer-motion';
 import { CloseButton } from './ui/CloseButton';
-import { BasicDialogsContext } from '@/contexts/BasicDialogsContext';
 import { capitalizeFirstLetter } from '@/lib/capitalizeFirstLettet';
 import { CreatePostCallback } from '@/contexts/CreatePostModalContext';
+import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 
 export default function CreatePost({
   toEditValues,
@@ -33,7 +33,7 @@ export default function CreatePost({
     toEditValues?.initialVisualMedia || []
   );
   const { toastify } = useContext(ToastContext);
-  const { confirm } = useContext(BasicDialogsContext);
+  const { confirm } = useBasicDialogs();
   const { data: session } = useSession();
   const user = session?.user;
 

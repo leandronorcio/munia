@@ -1,17 +1,17 @@
 'use client';
 
-import { BasicDialogsContext } from '@/contexts/BasicDialogsContext';
 import { ToastContext } from '@/contexts/ToastContext';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useContext, useRef } from 'react';
+import { useBasicDialogs } from './useBasicDialogs';
 
 export function useUpdateProfileAndCoverPhotoClient(
   toUpdate: 'profile' | 'cover'
 ) {
   const router = useRouter();
 
-  const { alert } = useContext(BasicDialogsContext);
+  const { alert } = useBasicDialogs();
   const { toastify } = useContext(ToastContext);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const { data: session } = useSession();

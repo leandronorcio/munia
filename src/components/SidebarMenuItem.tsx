@@ -1,10 +1,10 @@
 'use client';
-import { BasicDialogsContext } from '@/contexts/BasicDialogsContext';
 import { useActiveRouteChecker } from '@/hooks/useActiveRouteChecker';
+import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { cn } from '@/lib/cn';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { SVGProps, useContext } from 'react';
+import { SVGProps } from 'react';
 
 export default function SidebarMenuItem({
   children,
@@ -19,7 +19,7 @@ export default function SidebarMenuItem({
 }) {
   const router = useRouter();
   const [isActive] = useActiveRouteChecker(route);
-  const { confirm } = useContext(BasicDialogsContext);
+  const { confirm } = useBasicDialogs();
 
   return (
     <div

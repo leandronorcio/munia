@@ -6,7 +6,7 @@ import { DropdownMenu } from './ui/DropdownMenu';
 import { DropdownItem } from './ui/DropdownItem';
 import { useContext, useState } from 'react';
 import { ToastContext } from '@/contexts/ToastContext';
-import { BasicDialogsContext } from '@/contexts/BasicDialogsContext';
+import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 
 export default function Comment({
   id: commentId,
@@ -26,7 +26,7 @@ export default function Comment({
   const userId = session?.user?.id;
   const isOwnComment = userId === author.id;
   const { toastify } = useContext(ToastContext);
-  const { confirm, prompt } = useContext(BasicDialogsContext);
+  const { confirm, prompt } = useBasicDialogs();
 
   const deleteComment = async () => {
     const res = await fetch(
