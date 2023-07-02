@@ -11,9 +11,11 @@ import {
 export function CreatePostModal() {
   const { shown, callbackFn, shouldOpenFileInputOnMount, toEditValues } =
     useContext(CreatePostModalContextData);
-  const { setShown, setToEditValues } = useContext(CreatePostModalContextApi);
+  const { setShown, setShouldOpenFileInputOnMount, setToEditValues } =
+    useContext(CreatePostModalContextApi);
   const exitCreatePostModal = () => {
     setShown(false);
+    setShouldOpenFileInputOnMount(false);
     setToEditValues(null);
   };
 
