@@ -1,24 +1,21 @@
 'use client';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Zoom, Navigation, Pagination, Keyboard } from 'swiper';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { PhotosModalNavigationButton } from './PhotosModalNavigationButton';
 import ModalWrapper from './ModalWrapper';
 import { Close } from '@/svg_components';
 import { cn } from '@/lib/cn';
 import { AnimatePresence, motion } from 'framer-motion';
+import {
+  VisualMediaModalContextApi,
+  VisualMediaModalContextData,
+} from '@/contexts/VisualMediaModalContext';
 
-export default function VisualMediaModal({
-  shown,
-  visualMedia,
-  initialSlide = 0,
-  close,
-}: {
-  shown: boolean;
-  visualMedia: VisualMedia[];
-  initialSlide?: number;
-  close: Function;
-}) {
+export default function VisualMediaModal() {
+  const { shown, modal } = useContext(VisualMediaModalContextData);
+  const { setShown } = useContext(VisualMediaModalContextApi);
+  const { visualMedia, initialSlide } = modal;
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
 
@@ -48,7 +45,7 @@ export default function VisualMediaModal({
               whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
               className="fixed z-20 right-4 bg-red-400 hover:bg-red-600 p-3 rounded-full cursor-pointer"
               onClick={() => {
-                close();
+                setShown(false);
               }}
             >
               <Close stroke="white" strokeWidth={4} width={24} height={24} />
