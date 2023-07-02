@@ -27,10 +27,8 @@ export const Post = memo(
     postLikes,
     _count,
     setPosts,
-    index,
   }: PostType & {
     setPosts: React.Dispatch<React.SetStateAction<PostType[]>>;
-    index: number;
   }) {
     const { data: session } = useSession();
     const userId = session?.user?.id;
@@ -97,9 +95,10 @@ export const Post = memo(
         initialVisualMedia: visualMedia,
         onSuccess: (editedPost) => {
           setPosts((prev) => {
-            const arr = [...prev];
-            arr[index] = editedPost;
-            return arr;
+            const posts = [...prev];
+            const index = posts.findIndex((post) => post.id === postId);
+            posts[index] = editedPost;
+            return posts;
           });
         },
       });

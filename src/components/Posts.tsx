@@ -72,7 +72,7 @@ export function Posts({
                 transition={{ duration: 0.5 }}
                 key={post.id}
               >
-                <Post setPosts={setPosts} index={i} {...post} />
+                <Post setPosts={setPosts} {...post} />
               </motion.div>
             );
           })}
