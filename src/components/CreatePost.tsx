@@ -151,7 +151,7 @@ export default function CreatePost({
   };
 
   return (
-    <div className="pb-5 rounded-xl bg-white mb-6 ">
+    <div className="rounded-xl overflow-hidden bg-white mb-6">
       <div className="mb-4 py-3 bg-gray-100 rounded-t-xl relative">
         <h3 className="text-lg font-semibold text-center">
           {capitalizeFirstLetter(mode)} Post

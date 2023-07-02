@@ -51,7 +51,7 @@ export function CreatePostSort({
       modifiers={[restrictToParentElement]}
       measuring={measuringConfig}
     >
-      <div className="grid grid-cols-2 gap-2">
+      <div className="px-2 grid grid-cols-2 gap-2">
         <SortableContext items={itemIds} strategy={rectSortingStrategy}>
           {visualMedia.map((item) => (
             <CreatePostSortItem

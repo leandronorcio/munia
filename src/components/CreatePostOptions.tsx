@@ -10,7 +10,7 @@ export const CreatePostOptions = forwardRef<
   }
 >(({ handleVisualMediaChange }, ref) => {
   return (
-    <div className="flex flex-row gap-6 justify-center sm:justify-start px-4">
+    <div className="flex flex-row gap-6 justify-center sm:justify-start px-4 pb-5">
       <label className="flex flex-row items-center gap-4 cursor-pointer group">
         <Image fill="black" width={24} height={24} />
         <p className="text-gray-500 group-hover:text-black font-semibold text-base">

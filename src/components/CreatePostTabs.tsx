@@ -19,7 +19,7 @@ const CreatePostTabs = memo(
 
     return (
       <>
-        <div className={cn('border-t-2 mt-4')}>
+        <div className={cn('border-t-2')}>
           <div className="flex justify-center">
             {['preview', 'sort'].map((item, i) => {
               const isActive = item === activeCreatePostTab;
