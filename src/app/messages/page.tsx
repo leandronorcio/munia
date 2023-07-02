@@ -15,7 +15,10 @@ export default function Messages() {
       <h1>Messages</h1>
       <button
         onClick={() =>
-          launchCreatePost({ onSuccess: (post) => console.log(post) })
+          launchCreatePost({
+            onSuccess: (post) => console.log(post),
+            shouldOpenFileInputOnMount: true,
+          })
         }
       >
         Launch Create Post

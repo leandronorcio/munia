@@ -4,6 +4,7 @@ import { Post } from './Post';
 import useOnScreen from '@/hooks/useOnScreen';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useToast } from '@/hooks/useToast';
+import { CreatePostModalLauncher } from './CreatePostModalLauncher';
 
 export function Posts({
   type,
@@ -61,6 +62,8 @@ export function Posts({
   return (
     <div className="min-h-[500px] flex flex-col justify-between">
       <div className="flex flex-col">
+        <CreatePostModalLauncher onSuccess={() => {}} />
+
         <AnimatePresence>
           {posts.map((post, i) => {
             return (
