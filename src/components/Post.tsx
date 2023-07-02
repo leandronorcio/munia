@@ -2,7 +2,7 @@
 import { Heart } from '@/svg_components';
 import ProfileBlock from './ProfileBlock';
 import PostVisualMediaContainer from './PostVisualMediaContainer';
-import { memo, useContext, useState } from 'react';
+import { memo, useState } from 'react';
 import { areObjectsEqual } from '@/lib/areObjectsEqual';
 import { sortVisualMedia } from '@/lib/sortVisualMedia';
 import { useSession } from 'next-auth/react';
@@ -13,9 +13,9 @@ import formatDistanceStrict from 'date-fns/formatDistanceStrict';
 import SvgComment from '@/svg_components/Comment';
 import { Comments } from './Comments';
 import { AnimatePresence, motion } from 'framer-motion';
-import { CreatePostModalContext } from '@/contexts/CreatePostModalContext';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { useToast } from '@/hooks/useToast';
+import { useCreatePost } from '@/hooks/useCreatePost';
 
 export const Post = memo(
   function Post({
@@ -42,7 +42,7 @@ export const Post = memo(
     const [commentsShown, setCommentsShown] = useState(false);
     const { showToast } = useToast();
     const { confirm } = useBasicDialogs();
-    const { launchEditPost } = useContext(CreatePostModalContext);
+    const { launchEditPost } = useCreatePost();
     console.log('rendered: ' + postId);
     const likePost = async () => {
       const res = await fetch(`/api/users/${userId}/posts/${postId}/likes`, {

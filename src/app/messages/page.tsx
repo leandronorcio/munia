@@ -1,14 +1,13 @@
 'use client';
 import TextArea from '@/components/ui/TextArea';
-import { CreatePostModalContext } from '@/contexts/CreatePostModalContext';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
+import { useCreatePost } from '@/hooks/useCreatePost';
 import { useToast } from '@/hooks/useToast';
-import { useContext } from 'react';
 
 export default function Messages() {
   const { alert, confirm, prompt } = useBasicDialogs();
   const { showToast } = useToast();
-  const { launchCreatePost } = useContext(CreatePostModalContext);
+  const { launchCreatePost } = useCreatePost();
 
   console.log('rerendered messages');
   return (
