@@ -1,12 +1,14 @@
 'use client';
 
 import { EmojiHappySmile, Image } from '@/svg_components';
+import { forwardRef } from 'react';
 
-export default function CreatePostOptions({
-  handleVisualMediaChange,
-}: {
-  handleVisualMediaChange: React.ChangeEventHandler<HTMLInputElement>;
-}) {
+export const CreatePostOptions = forwardRef<
+  HTMLInputElement,
+  {
+    handleVisualMediaChange: React.ChangeEventHandler<HTMLInputElement>;
+  }
+>(({ handleVisualMediaChange }, ref) => {
   return (
     <div className="flex flex-row gap-6 justify-center sm:justify-start px-4">
       <label className="flex flex-row items-center gap-4 cursor-pointer group">
@@ -15,6 +17,7 @@ export default function CreatePostOptions({
           Image / Video
         </p>
         <input
+          ref={ref}
           type="file"
           className="hidden"
           name="visualMedia"
@@ -31,4 +34,4 @@ export default function CreatePostOptions({
       </label>
     </div>
   );
-}
+});
