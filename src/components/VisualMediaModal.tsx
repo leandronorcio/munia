@@ -4,13 +4,13 @@ import { Zoom, Navigation, Pagination, Keyboard } from 'swiper';
 import { useContext, useState } from 'react';
 import { PhotosModalNavigationButton } from './PhotosModalNavigationButton';
 import ModalWrapper from './ModalWrapper';
-import { Close } from '@/svg_components';
 import { cn } from '@/lib/cn';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   VisualMediaModalContextApi,
   VisualMediaModalContextData,
 } from '@/contexts/VisualMediaModalContext';
+import { CloseButton } from './ui/CloseButton';
 
 export default function VisualMediaModal() {
   const { shown, modal } = useContext(VisualMediaModalContextData);
@@ -42,13 +42,13 @@ export default function VisualMediaModal() {
               initial={{ top: '-56px' }}
               animate={{ top: '16px' }}
               exit={{ top: '-56px' }}
-              whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
-              className="fixed z-20 right-4 bg-red-400 hover:bg-red-600 p-3 rounded-full cursor-pointer"
-              onClick={() => {
-                setShown(false);
-              }}
+              className="fixed z-20 right-4"
             >
-              <Close stroke="white" strokeWidth={4} width={24} height={24} />
+              <CloseButton
+                onClick={() => {
+                  setShown(false);
+                }}
+              />
             </motion.div>
             {visualMedia.length > 1 && (
               <>
