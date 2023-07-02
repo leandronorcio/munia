@@ -1,6 +1,5 @@
 'use client';
 import VisualMediaModal from '@/components/VisualMediaModal';
-import { AnimatePresence } from 'framer-motion';
 import { createContext, useState } from 'react';
 
 const VisualMediaModalContext = createContext<{
@@ -20,14 +19,13 @@ function VisualMediaModalContextProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const [shown, setShown] = useState(false);
   const [modal, setModal] = useState<{
     visualMedia: VisualMedia[];
     initialSlide: number;
-    shown: boolean;
   }>({
     visualMedia: [],
     initialSlide: 0,
-    shown: false,
   });
 
   const showVisualMediaModal = ({
@@ -40,29 +38,22 @@ function VisualMediaModalContextProvider({
     setModal({
       visualMedia,
       initialSlide,
-      shown: true,
     });
+    setShown(true);
   };
 
   const hideVisualMediaModal = () => {
-    setModal((prev) => ({
-      ...prev,
-      shown: false,
-    }));
+    setShown(false);
   };
 
   return (
     <VisualMediaModalContext.Provider value={{ showVisualMediaModal }}>
-      <AnimatePresence>
-        {modal.shown && (
-          <VisualMediaModal
-            key="visual-media-modal"
-            visualMedia={modal.visualMedia}
-            initialSlide={modal.initialSlide}
-            close={hideVisualMediaModal}
-          />
-        )}
-      </AnimatePresence>
+      <VisualMediaModal
+        shown={shown}
+        visualMedia={modal.visualMedia}
+        initialSlide={modal.initialSlide}
+        close={hideVisualMediaModal}
+      />
       {children}
     </VisualMediaModalContext.Provider>
   );
