@@ -1,7 +1,7 @@
 'use client';
 import Button from '@/components/ui/Button';
 import ProfilePhoto from '@/components/ui/ProfilePhoto';
-import TextArea from '@/components/ui/TextArea';
+import { TextArea } from '@/components/ui/TextArea';
 import { CreatePostOptions } from './CreatePostOptions';
 import { useEffect, useRef, useState } from 'react';
 import { CreatePostTabs } from './CreatePostTabs';
@@ -38,11 +38,17 @@ export default function CreatePost({
   const { data: session } = useSession();
   const user = session?.user;
   const inputFileRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    if (inputFileRef.current == null) return;
+    if (inputFileRef.current === null) return;
     if (shouldOpenFileInputOnMount) inputFileRef.current.click();
   }, [inputFileRef.current]);
+
+  useEffect(() => {
+    if (textareaRef.current === null) return;
+    textareaRef.current.focus();
+  }, [textareaRef.current]);
 
   const handleVisualMediaChange: React.ChangeEventHandler<
     HTMLInputElement
@@ -163,6 +169,7 @@ export default function CreatePost({
           <TextArea
             value={content}
             onChange={(e) => setContent(e.target.value)}
+            ref={textareaRef}
             placeholder="What's on your mind?"
           />
         </div>

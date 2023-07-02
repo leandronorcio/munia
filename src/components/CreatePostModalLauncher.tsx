@@ -1,6 +1,6 @@
 import { EmojiHappySmile, Image } from '@/svg_components';
 import ProfilePhoto from './ui/ProfilePhoto';
-import TextArea from './ui/TextArea';
+import { TextArea } from './ui/TextArea';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { CreatePostCallback } from '@/contexts/CreatePostModalContext';
 
