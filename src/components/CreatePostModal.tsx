@@ -9,9 +9,8 @@ import {
 } from '@/contexts/CreatePostModalContext';
 
 export function CreatePostModal() {
-  const { shown, callbackFn, toEditValues } = useContext(
-    CreatePostModalContextData
-  );
+  const { shown, callbackFn, shouldOpenFileInputOnMount, toEditValues } =
+    useContext(CreatePostModalContextData);
   const { setShown, setToEditValues } = useContext(CreatePostModalContextApi);
   const exitCreatePostModal = () => {
     setShown(false);
@@ -28,6 +27,7 @@ export function CreatePostModal() {
                 exitCreatePostModal={exitCreatePostModal}
                 toEditValues={toEditValues}
                 onSuccess={callbackFn.onSuccess}
+                shouldOpenFileInputOnMount={shouldOpenFileInputOnMount}
               />
             </ResponsiveContainer>
           </div>

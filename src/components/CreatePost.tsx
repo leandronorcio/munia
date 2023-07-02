@@ -2,15 +2,18 @@
 import Button from '@/components/ui/Button';
 import ProfilePhoto from '@/components/ui/ProfilePhoto';
 import TextArea from '@/components/ui/TextArea';
-import CreatePostOptions from './CreatePostOptions';
-import { useState } from 'react';
+import { CreatePostOptions } from './CreatePostOptions';
+import { useEffect, useRef, useState } from 'react';
 import { CreatePostTabs } from './CreatePostTabs';
 import { useSession } from 'next-auth/react';
 import { AnimatePresence } from 'framer-motion';
 import { motion } from 'framer-motion';
 import { CloseButton } from './ui/CloseButton';
 import { capitalizeFirstLetter } from '@/lib/capitalizeFirstLettet';
-import { CreatePostCallback } from '@/contexts/CreatePostModalContext';
+import {
+  CreatePostCallback,
+  ToEditValues,
+} from '@/contexts/CreatePostModalContext';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { useToast } from '@/hooks/useToast';
 
@@ -18,14 +21,12 @@ export default function CreatePost({
   toEditValues,
   exitCreatePostModal,
   onSuccess,
+  shouldOpenFileInputOnMount,
 }: {
-  toEditValues: {
-    postId: number;
-    initialContent: string;
-    initialVisualMedia: VisualMedia[];
-  } | null;
+  toEditValues: ToEditValues | null;
   exitCreatePostModal: () => void;
   onSuccess: CreatePostCallback | null;
+  shouldOpenFileInputOnMount: boolean;
 }) {
   const mode: 'create' | 'edit' = toEditValues === null ? 'create' : 'edit';
   const [content, setContent] = useState(toEditValues?.initialContent || '');
@@ -36,6 +37,12 @@ export default function CreatePost({
   const { confirm } = useBasicDialogs();
   const { data: session } = useSession();
   const user = session?.user;
+  const inputFileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputFileRef.current == null) return;
+    if (shouldOpenFileInputOnMount) inputFileRef.current.click();
+  }, [inputFileRef.current]);
 
   const handleVisualMediaChange: React.ChangeEventHandler<
     HTMLInputElement
@@ -170,7 +177,10 @@ export default function CreatePost({
           </Button>
         </div>
       </div>
-      <CreatePostOptions handleVisualMediaChange={handleVisualMediaChange} />
+      <CreatePostOptions
+        handleVisualMediaChange={handleVisualMediaChange}
+        ref={inputFileRef}
+      />
       <AnimatePresence>
         {visualMedia.length > 0 && (
           <motion.div

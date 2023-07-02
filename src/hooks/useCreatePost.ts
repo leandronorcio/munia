@@ -5,16 +5,22 @@ import {
 import { useContext } from 'react';
 
 export function useCreatePost() {
-  const { setShown, setCallbackFn, setToEditValues } = useContext(
-    CreatePostModalContextApi
-  );
+  const {
+    setShown,
+    setCallbackFn,
+    setShouldOpenFileInputOnMount,
+    setToEditValues,
+  } = useContext(CreatePostModalContextApi);
 
   const launchCreatePost = ({
     onSuccess,
+    shouldOpenFileInputOnMount = false,
   }: {
     onSuccess: CreatePostCallback;
+    shouldOpenFileInputOnMount?: boolean;
   }) => {
     setCallbackFn({ onSuccess });
+    setShouldOpenFileInputOnMount(shouldOpenFileInputOnMount);
     setShown(true);
   };
 

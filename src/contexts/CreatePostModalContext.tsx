@@ -19,12 +19,14 @@ const CreatePostModalContextData = createContext<{
   callbackFn: {
     onSuccess: CreatePostCallback | null;
   };
+  shouldOpenFileInputOnMount: boolean;
   toEditValues: ToEditValues | null;
 }>({
   shown: false,
   callbackFn: {
     onSuccess: null,
   },
+  shouldOpenFileInputOnMount: false,
   toEditValues: null,
 });
 const CreatePostModalContextApi = createContext<{
@@ -35,10 +37,12 @@ const CreatePostModalContextApi = createContext<{
     }>
   >;
   setToEditValues: Dispatch<SetStateAction<ToEditValues | null>>;
+  setShouldOpenFileInputOnMount: Dispatch<SetStateAction<boolean>>;
 }>({
   setShown: () => {},
   setCallbackFn: () => {},
   setToEditValues: () => {},
+  setShouldOpenFileInputOnMount: () => {},
 });
 
 function CreatePostModalContextProvider({
@@ -52,15 +56,22 @@ function CreatePostModalContextProvider({
   }>({
     onSuccess: null,
   });
+  const [shouldOpenFileInputOnMount, setShouldOpenFileInputOnMount] =
+    useState(false);
   const [toEditValues, setToEditValues] = useState<ToEditValues | null>(null);
 
   const memoizedContextApiValue = useMemo(
-    () => ({ setShown, setCallbackFn, setToEditValues }),
+    () => ({
+      setShown,
+      setCallbackFn,
+      setToEditValues,
+      setShouldOpenFileInputOnMount,
+    }),
     []
   );
   return (
     <CreatePostModalContextData.Provider
-      value={{ shown, callbackFn, toEditValues }}
+      value={{ shown, callbackFn, shouldOpenFileInputOnMount, toEditValues }}
     >
       <CreatePostModalContextApi.Provider value={memoizedContextApiValue}>
         <CreatePostModal />
