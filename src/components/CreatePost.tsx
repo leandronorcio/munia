@@ -113,13 +113,26 @@ export default function CreatePost({
   };
 
   const handleClickCloseButton = () => {
-    if (content !== '' || visualMedia.length > 0) {
+    const confirmExit = () => {
       confirm({
         title: 'Exit',
         message: "Do you really wish to exit? Changes won't be saved.",
         onConfirm: () => setTimeout(() => exitCreatePostModal(), 300),
       });
-      return;
+    };
+    if (mode === 'create') {
+      if (content !== '' || visualMedia.length > 0) {
+        confirmExit();
+        return;
+      }
+    } else if (mode === 'edit') {
+      if (
+        content !== toEditValues?.initialContent ||
+        visualMedia !== toEditValues.initialVisualMedia
+      ) {
+        confirmExit();
+        return;
+      }
     }
     exitCreatePostModal();
   };
