@@ -129,7 +129,11 @@ export const Post = memo(
             </DropdownMenu>
           )}
         </div>
-        <PostVisualMediaContainer visualMedia={sortVisualMedia(visualMedia)} />
+        {visualMedia.length > 0 && (
+          <PostVisualMediaContainer
+            visualMedia={sortVisualMedia(visualMedia)}
+          />
+        )}
         <div className="px-8 py-4">
           <p className="text-lg text-gray-700 mb-8">{content}</p>
           <div className="flex justify-start gap-6">
