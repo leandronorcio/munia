@@ -1,9 +1,9 @@
 'use client';
-import { ToastContext } from '@/contexts/ToastContext';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Post } from './Post';
 import useOnScreen from '@/hooks/useOnScreen';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useToast } from '@/hooks/useToast';
 
 export function Posts({
   type,
@@ -15,9 +15,9 @@ export function Posts({
   const [posts, setPosts] = useState<PostType[]>([]);
   const [pagination, setPagination] = useState(0);
   const [maxedOut, setMaxedOut] = useState(false);
-  const { toastify } = useContext(ToastContext);
   const loadingElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(loadingElRef);
+  const { showToast } = useToast();
 
   const retrievePosts = async () => {
     if (maxedOut) return;
@@ -33,7 +33,7 @@ export function Posts({
     const res = await fetch(url);
 
     if (!res.ok) {
-      toastify({
+      showToast({
         type: 'error',
         title: 'Error',
         message: 'There was an error getting the posts.',

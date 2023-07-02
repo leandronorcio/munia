@@ -4,9 +4,9 @@ import ProfileBlock from './ProfileBlock';
 import { useSession } from 'next-auth/react';
 import { DropdownMenu } from './ui/DropdownMenu';
 import { DropdownItem } from './ui/DropdownItem';
-import { useContext, useState } from 'react';
-import { ToastContext } from '@/contexts/ToastContext';
+import { useState } from 'react';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
+import { useToast } from '@/hooks/useToast';
 
 export default function Comment({
   id: commentId,
@@ -25,7 +25,7 @@ export default function Comment({
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const isOwnComment = userId === author.id;
-  const { toastify } = useContext(ToastContext);
+  const { showToast } = useToast();
   const { confirm, prompt } = useBasicDialogs();
 
   const deleteComment = async () => {
@@ -38,10 +38,10 @@ export default function Comment({
 
     if (res.ok) {
       const data = await res.json();
-      toastify({ type: 'success', title: 'Successfully Deleted' });
+      showToast({ type: 'success', title: 'Successfully Deleted' });
       setComments((prev) => prev.filter((comment) => comment.id !== data.id));
     } else {
-      toastify({
+      showToast({
         type: 'error',
         title: 'Error',
         message: 'Unable to delete this comment.',
@@ -63,9 +63,9 @@ export default function Comment({
 
     if (res.ok) {
       setContent(newValue);
-      toastify({ type: 'success', title: 'Successfully Edited' });
+      showToast({ type: 'success', title: 'Successfully Edited' });
     } else {
-      toastify({
+      showToast({
         type: 'error',
         title: 'Error',
         message: 'Unable to edit this comment.',

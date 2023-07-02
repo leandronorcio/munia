@@ -1,10 +1,10 @@
 'use client';
 
-import { ToastContext } from '@/contexts/ToastContext';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useContext, useRef } from 'react';
+import { useRef } from 'react';
 import { useBasicDialogs } from './useBasicDialogs';
+import { useToast } from './useToast';
 
 export function useUpdateProfileAndCoverPhotoClient(
   toUpdate: 'profile' | 'cover'
@@ -12,7 +12,7 @@ export function useUpdateProfileAndCoverPhotoClient(
   const router = useRouter();
 
   const { alert } = useBasicDialogs();
-  const { toastify } = useContext(ToastContext);
+  const { showToast } = useToast();
   const inputFileRef = useRef<HTMLInputElement>(null);
   const { data: session } = useSession();
   const user = session?.user;
@@ -43,7 +43,7 @@ export function useUpdateProfileAndCoverPhotoClient(
 
     if (res.ok) {
       // const response: Response & { uploadedTo: string } = await res.json();
-      toastify({
+      showToast({
         title: 'Success!',
         message: `Your ${toUpdate} photo has been updated.`,
         type: 'success',

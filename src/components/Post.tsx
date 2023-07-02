@@ -7,7 +7,6 @@ import { areObjectsEqual } from '@/lib/areObjectsEqual';
 import { sortVisualMedia } from '@/lib/sortVisualMedia';
 import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/cn';
-import { ToastContext } from '@/contexts/ToastContext';
 import { DropdownItem } from './ui/DropdownItem';
 import { DropdownMenu } from './ui/DropdownMenu';
 import formatDistanceStrict from 'date-fns/formatDistanceStrict';
@@ -16,6 +15,7 @@ import { Comments } from './Comments';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CreatePostModalContext } from '@/contexts/CreatePostModalContext';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
+import { useToast } from '@/hooks/useToast';
 
 export const Post = memo(
   function Post({
@@ -40,10 +40,10 @@ export const Post = memo(
     // The numberOfLikes is not real-time, it only reacts to likePost and unLikePost.
     const [numberOfLikes, setNumberOfLikes] = useState(_count.postLikes);
     const [commentsShown, setCommentsShown] = useState(false);
-    const { toastify } = useContext(ToastContext);
+    const { showToast } = useToast();
     const { confirm } = useBasicDialogs();
     const { launchEditPost } = useContext(CreatePostModalContext);
-
+    console.log('rendered: ' + postId);
     const likePost = async () => {
       const res = await fetch(`/api/users/${userId}/posts/${postId}/likes`, {
         method: 'POST',
@@ -57,7 +57,7 @@ export const Post = memo(
         setLikedId(data.id);
         setNumberOfLikes((prev) => prev + 1);
       } else {
-        toastify({ title: 'Unable To Like', type: 'error' });
+        showToast({ title: 'Unable To Like', type: 'error' });
       }
     };
 
@@ -73,7 +73,7 @@ export const Post = memo(
         setLikedId(0);
         setNumberOfLikes((prev) => prev - 1);
       } else {
-        toastify({ title: 'Unable To Unlike', type: 'error' });
+        showToast({ title: 'Unable To Unlike', type: 'error' });
       }
     };
 
@@ -84,9 +84,9 @@ export const Post = memo(
 
       if (res.ok) {
         setPosts((prev) => prev.filter((post) => post.id !== postId));
-        toastify({ title: 'Successfully Deleted', type: 'success' });
+        showToast({ title: 'Successfully Deleted', type: 'success' });
       } else {
-        toastify({ title: 'Unable to Delete', type: 'error' });
+        showToast({ title: 'Unable to Delete', type: 'error' });
       }
     };
 

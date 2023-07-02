@@ -3,8 +3,7 @@ import Button from '@/components/ui/Button';
 import ProfilePhoto from '@/components/ui/ProfilePhoto';
 import TextArea from '@/components/ui/TextArea';
 import CreatePostOptions from './CreatePostOptions';
-import { useContext, useState } from 'react';
-import { ToastContext } from '@/contexts/ToastContext';
+import { useState } from 'react';
 import { CreatePostTabs } from './CreatePostTabs';
 import { useSession } from 'next-auth/react';
 import { AnimatePresence } from 'framer-motion';
@@ -13,6 +12,7 @@ import { CloseButton } from './ui/CloseButton';
 import { capitalizeFirstLetter } from '@/lib/capitalizeFirstLettet';
 import { CreatePostCallback } from '@/contexts/CreatePostModalContext';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
+import { useToast } from '@/hooks/useToast';
 
 export default function CreatePost({
   toEditValues,
@@ -32,7 +32,7 @@ export default function CreatePost({
   const [visualMedia, setVisualMedia] = useState<VisualMedia[]>(
     toEditValues?.initialVisualMedia || []
   );
-  const { toastify } = useContext(ToastContext);
+  const { showToast } = useToast();
   const { confirm } = useBasicDialogs();
   const { data: session } = useSession();
   const user = session?.user;
@@ -78,10 +78,10 @@ export default function CreatePost({
     if (res.ok) {
       const createdPost = await res.json();
       onSuccess !== null && onSuccess(createdPost);
-      toastify({ title: 'Successfully Posted', type: 'success' });
+      showToast({ title: 'Successfully Posted', type: 'success' });
       exitCreatePostModal();
     } else {
-      toastify({ title: 'Error Creating Post', type: 'error' });
+      showToast({ title: 'Error Creating Post', type: 'error' });
     }
   };
 
@@ -97,10 +97,10 @@ export default function CreatePost({
     if (res.ok) {
       const editedPost = await res.json();
       onSuccess !== null && onSuccess(editedPost);
-      toastify({ title: 'Successfully Edited', type: 'success' });
+      showToast({ title: 'Successfully Edited', type: 'success' });
       exitCreatePostModal();
     } else {
-      toastify({ title: 'Error Editing Post', type: 'error' });
+      showToast({ title: 'Error Editing Post', type: 'error' });
     }
   };
 

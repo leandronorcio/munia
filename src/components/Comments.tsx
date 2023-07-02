@@ -1,11 +1,11 @@
 'use client';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Comment from './Comment';
 import Button from './ui/Button';
 import ProfilePhoto from './ui/ProfilePhoto';
 import TextArea from './ui/TextArea';
-import { ToastContext } from '@/contexts/ToastContext';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useToast } from '@/hooks/useToast';
 
 export function Comments({
   postId,
@@ -18,7 +18,7 @@ export function Comments({
   const [commentText, setCommentText] = useState('');
   // Delay the animations of the <Comment> components on initial render of the <Comments> component.
   const [delayCommentAnimation, setDelayCommentAnimation] = useState(true);
-  const { toastify } = useContext(ToastContext);
+  const { showToast } = useToast();
 
   useEffect(() => {
     const run = async () => {
@@ -27,7 +27,7 @@ export function Comments({
       );
 
       if (!res.ok) {
-        toastify({ title: 'Error Getting Comments', type: 'error' });
+        showToast({ title: 'Error Getting Comments', type: 'error' });
         return;
       }
 
@@ -59,9 +59,9 @@ export function Comments({
       setDelayCommentAnimation(false);
       setComments((prev) => [...prev, addedComment]);
       setCommentText('');
-      toastify({ title: 'Comment Posted', type: 'success' });
+      showToast({ title: 'Comment Posted', type: 'success' });
     } else {
-      toastify({ title: 'Comment Not Posted', type: 'error' });
+      showToast({ title: 'Comment Not Posted', type: 'error' });
     }
   };
 

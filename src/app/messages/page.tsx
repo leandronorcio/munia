@@ -1,13 +1,13 @@
 'use client';
 import TextArea from '@/components/ui/TextArea';
 import { CreatePostModalContext } from '@/contexts/CreatePostModalContext';
-import { ToastContext } from '@/contexts/ToastContext';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
+import { useToast } from '@/hooks/useToast';
 import { useContext } from 'react';
 
 export default function Messages() {
   const { alert, confirm, prompt } = useBasicDialogs();
-  const { toastify } = useContext(ToastContext);
+  const { showToast } = useToast();
   const { launchCreatePost } = useContext(CreatePostModalContext);
 
   console.log('rerendered messages');
@@ -53,7 +53,7 @@ export default function Messages() {
       </button>
       <button
         onClick={() =>
-          toastify({
+          showToast({
             title: 'Successfully updated.',
             type: 'success',
           })
