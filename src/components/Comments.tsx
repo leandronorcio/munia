@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Comment from './Comment';
 import Button from './ui/Button';
 import ProfilePhoto from './ui/ProfilePhoto';
-import TextArea from './ui/TextArea';
+import { TextArea } from './ui/TextArea';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useToast } from '@/hooks/useToast';
 

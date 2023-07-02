@@ -62,7 +62,9 @@ export function Posts({
   return (
     <div className="min-h-[500px] flex flex-col justify-between">
       <div className="flex flex-col">
-        <CreatePostModalLauncher onSuccess={() => {}} />
+        <CreatePostModalLauncher
+          onSuccess={(post) => setPosts((prev) => [post, ...prev])}
+        />
 
         <AnimatePresence>
           {posts.map((post, i) => {

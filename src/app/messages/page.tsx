@@ -1,5 +1,5 @@
 'use client';
-import TextArea from '@/components/ui/TextArea';
+import { TextArea } from '@/components/ui/TextArea';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { useToast } from '@/hooks/useToast';
