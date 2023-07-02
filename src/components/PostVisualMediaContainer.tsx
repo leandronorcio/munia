@@ -1,8 +1,8 @@
-import { memo, useContext } from 'react';
+import { memo } from 'react';
 import PostVisualMedia from './PostVisualMedia';
-import { VisualMediaModalContext } from '@/contexts/VisualMediaModalContext';
 import { cn } from '@/lib/cn';
 import { isOdd } from '@/lib/isOdd';
+import { useVisualMediaModal } from '@/hooks/useVisualMediaModal';
 
 const PostVisualMediaContainer = memo(
   function PostVisualMediaContainer({
@@ -10,7 +10,7 @@ const PostVisualMediaContainer = memo(
   }: {
     visualMedia: VisualMedia[];
   }) {
-    const { showVisualMediaModal } = useContext(VisualMediaModalContext);
+    const { showVisualMediaModal } = useVisualMediaModal();
     const len = visualMedia.length;
 
     return (
