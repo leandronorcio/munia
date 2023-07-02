@@ -70,7 +70,7 @@ export function Posts({
           {posts.map((post, i) => {
             return (
               <motion.div
-                initial={false}
+                initial={{ height: 0, marginTop: '0px', opacity: 0 }}
                 animate={{ height: 'auto', marginTop: '32px', opacity: 1 }}
                 exit={{ height: 0, marginTop: '0px', opacity: 0 }}
                 style={{ originY: 0, overflowY: 'hidden' }}
