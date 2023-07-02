@@ -59,7 +59,7 @@ export function Posts({
   }, [isBottomOnScreen]);
 
   return (
-    <>
+    <div className="min-h-[500px] flex flex-col justify-between">
       <div className="flex flex-col">
         <AnimatePresence>
           {posts.map((post, i) => {
@@ -79,12 +79,12 @@ export function Posts({
         </AnimatePresence>
       </div>
       <div className="mt-6" ref={loadingElRef}>
-        {maxedOut
+        {/* {maxedOut
           ? pagination === 1
             ? 'No posts yet'
             : 'All posts loaded'
-          : 'Loading posts...'}
+          : 'Loading posts...'} */}
       </div>
-    </>
+    </div>
   );
 }
