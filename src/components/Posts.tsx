@@ -14,7 +14,7 @@ export function Posts({
   userId: string;
 }) {
   const [posts, setPosts] = useState<PostType[]>([]);
-  const [pagination, setPagination] = useState(0);
+  const [cursor, setCursor] = useState<number | null>(null);
   const [maxedOut, setMaxedOut] = useState(false);
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
@@ -24,12 +24,11 @@ export function Posts({
     if (maxedOut) return;
     const postsPerPage = 3;
     const limit = postsPerPage;
-    const offset = pagination * postsPerPage;
     const url = new URL(
       document.location.origin + `/api/users/${userId}/posts`
     );
     url.searchParams.set('limit', limit.toString());
-    url.searchParams.set('offset', offset.toString());
+    if (cursor !== null) url.searchParams.set('cursor', cursor.toString());
 
     const res = await fetch(url);
 
@@ -53,10 +52,14 @@ export function Posts({
 
   useEffect(() => {
     retrievePosts();
-  }, [pagination]);
+  }, [cursor]);
 
   useEffect(() => {
-    if (isBottomOnScreen === true) setPagination((prev) => prev + 1);
+    if (isBottomOnScreen === true) {
+      const [{ id: bottomPostId }] = posts.slice(-1);
+      //                                   ^ returns an array containing the last post object
+      setCursor(bottomPostId);
+    }
   }, [isBottomOnScreen]);
 
   return (

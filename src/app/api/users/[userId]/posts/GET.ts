@@ -16,7 +16,7 @@ export async function GET(
 
   const { searchParams } = new URL(request.url);
   const limit = parseInt(searchParams.get('limit') || '5');
-  const offset = parseInt(searchParams.get('offset') || '0');
+  const cursor = parseInt(searchParams.get('cursor') || '0');
 
   const res = await prisma.post.findMany({
     select: selectPost(user.id),
@@ -24,7 +24,12 @@ export async function GET(
       userId: params.userId,
     },
     take: limit,
-    skip: offset,
+    skip: cursor ? 1 : undefined,
+    cursor: cursor
+      ? {
+          id: cursor,
+        }
+      : undefined,
     orderBy: {
       createdAt: 'desc',
     },
