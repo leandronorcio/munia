@@ -14,7 +14,7 @@ export function useUpdateProfileAndCoverPhotoClient(
   const { alert } = useBasicDialogs();
   const { showToast } = useToast();
   const inputFileRef = useRef<HTMLInputElement>(null);
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const user = session?.user;
 
   const openInput = () => {
@@ -49,6 +49,7 @@ export function useUpdateProfileAndCoverPhotoClient(
         type: 'success',
       });
       router.refresh();
+      update();
     } else {
       alert({
         title: 'Upload Error',

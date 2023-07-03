@@ -111,6 +111,7 @@ export const Post = memo(
             name={author.name!}
             time={formatDistanceStrict(new Date(createdAt), new Date())}
             photoUrl={author.profilePhoto!}
+            isOwn={isOwnPost}
           />
           {isOwnPost && (
             <DropdownMenu>

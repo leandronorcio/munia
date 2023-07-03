@@ -46,7 +46,6 @@ export async function useUpdateProfileAndCoverPhoto(
       { status: 200 }
     );
   } catch (error) {
-    console.log('Errorrr: ' + error);
     return NextResponse.json({ error: 'Server error.' }, { status: 500 });
   }
 }

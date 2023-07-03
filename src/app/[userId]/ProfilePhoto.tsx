@@ -29,7 +29,7 @@ export default function ProfilePhoto({
             visualMedia: [
               {
                 type: 'PHOTO',
-                url: profile.coverPhoto as string,
+                url: profile.profilePhoto as string,
               },
             ],
             initialSlide: 0,

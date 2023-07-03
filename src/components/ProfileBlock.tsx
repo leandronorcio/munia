@@ -1,21 +1,22 @@
+import ProfilePhoto from './ui/ProfilePhoto';
+
 export default function ProfileBlock({
   type = 'post',
   name,
   time,
   photoUrl,
+  isOwn,
 }: {
   type?: 'post' | 'comment';
   name: string;
   time: string;
   photoUrl: string;
+  isOwn: boolean;
 }) {
   return (
     <div className="flex gap-3 overflow-x-auto no-scrollbar">
       <div className="w-12 h-12 flex-shrink-0">
-        <img
-          src={photoUrl}
-          className="w-full h-full rounded-full object-cover"
-        />
+        <ProfilePhoto photoUrl={isOwn ? undefined : photoUrl} />
       </div>
 
       <div className="flex flex-col">
