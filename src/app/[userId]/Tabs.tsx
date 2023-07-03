@@ -21,7 +21,7 @@ function TabItem({
 
   return (
     <div
-      className="flex flex-col gap-2 items-center px-3 py-4 cursor-pointer"
+      className="flex flex-col gap-2 items-center px-3 py-4 cursor-pointer mb-2"
       onClick={() => {
         router.push(segment);
       }}
