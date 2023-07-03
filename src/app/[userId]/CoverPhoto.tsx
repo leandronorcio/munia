@@ -34,7 +34,7 @@ export default function CoverPhoto({
               className="hidden"
               accept="image/png, image/jpg, image/jpeg"
             />
-            <Button Icon={Image} onClick={openInput} shape="pill" />
+            <Button Icon={Image} onClick={openInput} size="small" />
           </div>
         </label>
       )}

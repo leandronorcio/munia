@@ -12,7 +12,7 @@ import { BottomMenuIcon } from './BottomMenuIcon';
 
 export default function BottomMenu() {
   const { data: session } = useSession();
-  const id = session?.user ? session.user.id : '/usernotfound';
+  const id = session?.user ? session.user.id : '/not-found';
 
   return (
     <div className="transition-[bottom] duration-500 w-full fixed left-0 bottom-0 z-[1] md:-bottom-16 h-14 flex flex-row bg-violet-500 shadow-2xl">

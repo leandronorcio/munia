@@ -32,12 +32,7 @@ export default function ProfilePhoto({
               className="hidden"
               accept="image/png, image/jpg, image/jpeg"
             />
-            <Button
-              Icon={Camera}
-              onClick={openInput}
-              shape="pill"
-              size="small"
-            />
+            <Button Icon={Camera} onClick={openInput} size="small" />
           </div>
         </label>
       )}

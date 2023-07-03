@@ -1,6 +1,5 @@
 // https://stackoverflow.com/questions/40731352/extending-html-elements-in-react-and-typescript-while-preserving-props
 'use client';
-
 import { cn } from '@/lib/cn';
 import { forwardRef, useRef } from 'react';
 
