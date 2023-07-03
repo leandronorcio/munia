@@ -16,8 +16,8 @@ export function Posts({
   const [posts, setPosts] = useState<PostType[]>([]);
   const [pagination, setPagination] = useState(0);
   const [maxedOut, setMaxedOut] = useState(false);
-  const loadingElRef = useRef<HTMLDivElement>(null);
-  const isBottomOnScreen = useOnScreen(loadingElRef);
+  const bottomElRef = useRef<HTMLDivElement>(null);
+  const isBottomOnScreen = useOnScreen(bottomElRef);
   const { showToast } = useToast();
 
   const retrievePosts = async () => {
@@ -60,7 +60,7 @@ export function Posts({
   }, [isBottomOnScreen]);
 
   return (
-    <div className="min-h-[500px] flex flex-col justify-between">
+    <div className="min-h-[830px] flex flex-col justify-between">
       <div className="flex flex-col">
         <CreatePostModalLauncher
           onSuccess={(post) => setPosts((prev) => [post, ...prev])}
@@ -83,12 +83,8 @@ export function Posts({
           })}
         </AnimatePresence>
       </div>
-      <div className="mt-6" ref={loadingElRef}>
-        {/* {maxedOut
-          ? pagination === 1
-            ? 'No posts yet'
-            : 'All posts loaded'
-          : 'Loading posts...'} */}
+      <div className="mt-6" ref={bottomElRef}>
+        {/* Bottom element, if on screen, increase the pagination state. */}
       </div>
     </div>
   );
