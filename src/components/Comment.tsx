@@ -83,6 +83,7 @@ export default function Comment({
               name={author.name!}
               photoUrl={author.profilePhoto!}
               time={formatDistanceStrict(new Date(createdAt), new Date())}
+              isOwn={isOwnComment}
             />
             <DropdownMenu>
               <DropdownItem

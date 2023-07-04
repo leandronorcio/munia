@@ -8,15 +8,26 @@ import {
   BasicDialogsContextApi,
   BasicDialogsContextData,
 } from '@/contexts/BasicDialogsContext';
+import { useToast } from '@/hooks/useToast';
 import { AnimatePresence } from 'framer-motion';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
 export function BasicDialogs() {
   const { shown, dialog } = useContext(BasicDialogsContextData);
   const { setShown, setDialog } = useContext(BasicDialogsContextApi);
-  const [promptValue, setPromptValue] = useState(
-    dialog.initialPromptValue || ''
-  );
+  const [promptValue, setPromptValue] = useState('');
+  const { showToast } = useToast();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (dialog.initialPromptValue) setPromptValue(dialog.initialPromptValue);
+  }, [dialog.initialPromptValue]);
+
+  useEffect(() => {
+    if (shown === false) return;
+    if (inputRef.current === null) return;
+    inputRef.current.focus();
+  }, [shown]);
 
   const hide = () => {
     setShown(false);
@@ -26,6 +37,7 @@ export function BasicDialogs() {
       message: '',
       onConfirm: undefined,
       onSubmit: undefined,
+      initialPromptValue: '',
     });
     setPromptValue('');
   };
@@ -42,7 +54,11 @@ export function BasicDialogs() {
     }
     if (dialog.type === 'prompt') {
       if (promptValue === '') {
-        alert('Input cannot be empty.');
+        showToast({
+          title: 'Empty Input',
+          message: 'Please input something.',
+          type: 'error',
+        });
         return;
       }
       dialog.onSubmit && dialog.onSubmit(promptValue);
@@ -77,6 +93,7 @@ export function BasicDialogs() {
                   value={promptValue}
                   onChange={(e) => setPromptValue(e.target.value)}
                   label={dialog.promptLabel || 'Input here'}
+                  ref={inputRef}
                 />
               )}
             </div>
