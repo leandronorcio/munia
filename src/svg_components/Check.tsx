@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
-const SvgArrowChevronDown = (props: SVGProps<SVGSVGElement>) => (
+const SvgCheck = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="1em"
@@ -10,12 +10,11 @@ const SvgArrowChevronDown = (props: SVGProps<SVGSVGElement>) => (
     {...props}
   >
     <path
-      stroke={props.stroke}
+      stroke={props.stroke || 'black'}
       strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="m18.926 10-6.963 6.963L4.999 10"
+      strokeWidth={props.strokeWidth || 2}
+      d="m4 12.314 5.657 5.656L20.97 6.657"
     />
   </svg>
 );
-export default SvgArrowChevronDown;
+export default SvgCheck;

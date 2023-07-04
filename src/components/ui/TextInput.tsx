@@ -16,7 +16,11 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         <label className="relative block">
           {Icon && (
             <div className="absolute top-[50%] translate-y-[-50%] left-5">
-              <Icon className="stroke-gray-500" width={24} height={24} />
+              <Icon
+                className={cn(error ? 'stroke-red-900' : 'stroke-gray-500')}
+                width={24}
+                height={24}
+              />
             </div>
           )}
           <input

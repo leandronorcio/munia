@@ -4,6 +4,7 @@ export { default as ArrowChevronDown } from "./ArrowChevronDown";
 export { default as ArrowChevronForward } from "./ArrowChevronForward";
 export { default as BackArrow } from "./BackArrow";
 export { default as Camera } from "./Camera";
+export { default as Check } from "./Check";
 export { default as CircleActionsAlertInfo } from "./CircleActionsAlertInfo";
 export { default as CircleActionsClose } from "./CircleActionsClose";
 export { default as CircleActionsSuccess } from "./CircleActionsSuccess";
