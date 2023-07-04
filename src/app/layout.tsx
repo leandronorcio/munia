@@ -13,8 +13,10 @@ import 'swiper/css';
 import 'swiper/css/zoom';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import 'react-datepicker/dist/react-datepicker.css';
 import { CreatePostModalContextProvider } from '@/contexts/CreatePostModalContext';
 import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
+import { cn } from '@/lib/cn';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
@@ -42,19 +44,19 @@ export default async function RootLayout({
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
         />
       </head>
-      <body className={poppins.className}>
+      <body className={cn('bg-violet-100', poppins.className)}>
         <ToastContextProvider>
           <SessionProviderContext>
             <BasicDialogsContextProvider>
               <VisualMediaModalContextProvider>
                 <CreatePostModalContextProvider>
-                  <div className="h-screen flex flex-col bg-violet-100">
+                  <div className="h-screen flex flex-col">
                     {session ? (
                       <>
                         <Navbar />
                         <Sidebar />
                         <BottomMenu />
-                        <div className="transition-[margin] duration-500 overflow-y-auto ml-0 md:ml-[240px]">
+                        <div className="transition-[margin] duration-500 ml-0 md:ml-[240px] md:pt-20">
                           <ResponsiveContainer className="md:pt-8 mb-14 transition-[width,padding]">
                             {children}
                           </ResponsiveContainer>
