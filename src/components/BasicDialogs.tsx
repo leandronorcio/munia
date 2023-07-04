@@ -92,7 +92,7 @@ export function BasicDialogs() {
                 <TextInput
                   value={promptValue}
                   onChange={(e) => setPromptValue(e.target.value)}
-                  label={dialog.promptLabel || 'Input here'}
+                  placeholder={dialog.promptLabel || 'Input here'}
                   ref={inputRef}
                 />
               )}

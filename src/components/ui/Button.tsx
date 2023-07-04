@@ -14,7 +14,7 @@ const sizes = {
   huge: 'px-8 py-5 gap-4 text-lg rounded-2xl',
   large: 'px-8 py-5 gap-4 text-base rounded-2xl',
   medium: 'px-6 py-4 gap-3 text-base rounded-xl',
-  small: 'px-4 py-[9px] gap-3 text-sm rounded-lg',
+  small: 'px-4 py-[9px] gap-3 text-[13px] rounded-lg',
   long: 'px-16 py-3 gap-3 text-base rounded-xl',
 };
 const modes = {
