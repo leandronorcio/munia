@@ -27,10 +27,10 @@ export async function useUpdateProfileAndCoverPhoto(
       );
     }
     const buffer = Buffer.from(await file.arrayBuffer());
-    const filePath = `./uploads/${
+    const filePath = `/uploads/${
       user.id
     }-${Date.now()}-${toUpdate}.${extension}`;
-    await writeFile(`./public/${filePath}`, buffer);
+    await writeFile(`./public${filePath}`, buffer);
 
     const updateUser = await prisma.user.update({
       where: {

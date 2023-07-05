@@ -27,7 +27,7 @@ export async function useWritePost({
         filesArr.forEach(async (file, i) => {
           const type = file.type.startsWith('image/') ? 'PHOTO' : 'VIDEO';
           const extension = file.type.split('/')[1];
-          const filePath = `./uploads/${
+          const filePath = `/uploads/${
             user.id
           }-${Date.now()}-${i}-${type.toLocaleLowerCase()}.${extension}`;
           savedFiles.push({
@@ -36,7 +36,7 @@ export async function useWritePost({
           });
 
           await writeFile(
-            `./public/${filePath}`,
+            `./public${filePath}`,
             Buffer.from(await file.arrayBuffer())
           );
           if (i === filesArr.length - 1) resolve();
