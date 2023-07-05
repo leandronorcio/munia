@@ -43,12 +43,25 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  about         About?
   profilePhoto  String?
   coverPhoto    String?
   post          Post[]
   visualMedia   VisualMedia[]
   postLikes     PostLike[]
   comments      Comment[]
+}
+
+model About {
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId             String             @unique
+  gender             Gender?
+  birthDate          DateTime?
+  phoneNumber        String?
+  address            String?
+  bio                String?
+  website            String?
+  relationshipStatus RelationshipStatus
 }
 
 model VerificationToken {
@@ -109,4 +122,17 @@ model VisualMedia {
 enum VisualMediaType {
   PHOTO
   VIDEO
+}
+
+enum Gender {
+  FEMALE
+  MALE
+  NONBINARY
+}
+
+enum RelationshipStatus {
+  SINGLE
+  IN_A_RELATIONSHIP
+  ENGAGED
+  MARRIED
 }
