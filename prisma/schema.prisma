@@ -36,32 +36,26 @@ model Session {
 }
 
 model User {
-  id            String        @id @default(cuid())
-  name          String?
-  email         String?       @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  about         About?
-  profilePhoto  String?
-  coverPhoto    String?
-  post          Post[]
-  visualMedia   VisualMedia[]
-  postLikes     PostLike[]
-  comments      Comment[]
-}
-
-model About {
-  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId             String             @unique
+  id                 String             @id @default(cuid())
+  name               String?
+  email              String?            @unique
   gender             Gender?
   birthDate          DateTime?
   phoneNumber        String?
   address            String?
   bio                String?
   website            String?
-  relationshipStatus RelationshipStatus
+  relationshipStatus RelationshipStatus?
+  emailVerified      DateTime?
+  image              String?
+  accounts           Account[]
+  sessions           Session[]
+  profilePhoto       String?
+  coverPhoto         String?
+  post               Post[]
+  visualMedia        VisualMedia[]
+  postLikes          PostLike[]
+  comments           Comment[]
 }
 
 model VerificationToken {
