@@ -56,9 +56,11 @@ export function Posts({
 
   useEffect(() => {
     if (isBottomOnScreen === true) {
-      const [{ id: bottomPostId }] = posts.slice(-1);
-      //                                   ^ returns an array containing the last post object
-      setCursor(bottomPostId);
+      if (posts.length > 0) {
+        const [{ id: bottomPostId }] = posts.slice(-1);
+        //                                   ^ returns an array containing the last post object
+        setCursor(bottomPostId);
+      }
     }
   }, [isBottomOnScreen]);
 
