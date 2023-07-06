@@ -11,12 +11,14 @@ export function Select({
   placeholder,
   onChange,
   error,
+  name,
 }: {
   options: any[];
   value: string;
   placeholder: string;
   onChange: (value: string) => void;
   error?: string;
+  name?: string;
 }) {
   const [optionsVisible, setOptionsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -44,6 +46,7 @@ export function Select({
           onClick={() => setOptionsVisible((prev) => !prev)}
           readOnly
           error={error}
+          name={name}
         />
         <div className="absolute z-10 top-5 right-5">
           <motion.div
