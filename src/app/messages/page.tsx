@@ -21,7 +21,12 @@ export default function Messages() {
         placeholder="Enter manufacturer"
       />
       <br />
-      <DateInput value={date} onChange={(date) => setDate(date)} />
+      <DateInput
+        value={date}
+        onChange={(date) => setDate(date)}
+        placeholderText="Enter birthdate"
+        error="fuck"
+      />
     </>
   );
 }
