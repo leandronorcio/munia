@@ -97,11 +97,11 @@ export function BasicDialogs() {
                 />
               )}
             </div>
-            <Button onClick={handleAffirmative} shape="pill" size="long">
+            <Button onClick={handleAffirmative} shape="pill" expand="half">
               {affirmativeTexts[dialog.type]}
             </Button>
             {dialog.type !== 'alert' && (
-              <Button onClick={hide} shape="pill" size="long" mode="ghost">
+              <Button onClick={hide} shape="pill" mode="ghost">
                 Cancel
               </Button>
             )}

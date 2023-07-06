@@ -8,14 +8,14 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: Sizes;
   Icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
   shape?: 'pill' | 'rounded';
+  expand?: 'full' | 'half';
 }
-type Sizes = 'huge' | 'large' | 'medium' | 'small' | 'long';
+type Sizes = 'huge' | 'large' | 'medium' | 'small';
 const sizes = {
   huge: 'px-8 py-5 gap-4 text-lg rounded-2xl',
   large: 'px-8 py-5 gap-4 text-base rounded-2xl',
   medium: 'px-6 py-4 gap-3 text-base rounded-xl',
   small: 'px-4 py-[9px] gap-3 text-[13px] rounded-lg',
-  long: 'px-16 py-3 gap-3 text-base rounded-xl',
 };
 const modes = {
   primary:
@@ -36,6 +36,7 @@ export default function Button({
   mode = 'primary',
   size = 'medium',
   shape = 'rounded',
+  expand = undefined,
   Icon,
   ...rest
 }: ButtonProps) {
@@ -48,6 +49,8 @@ export default function Button({
         mode !== 'ghost' && sizes[size],
         modes[mode],
         shape === 'pill' && 'rounded-full',
+        expand === 'full' && 'w-full',
+        expand === 'half' && 'w-1/2',
         iconOnly && 'px-3 py-3 rounded-full',
         rest.disabled && 'opacity-50',
       ])}
