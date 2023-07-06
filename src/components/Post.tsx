@@ -137,10 +137,10 @@ export const Post = memo(
         )}
         <div className="px-8 py-4">
           <p className="text-lg text-gray-700 mb-8">{content}</p>
-          <div className="flex justify-start gap-6">
+          <div className="flex justify-start gap-3 -ml-4">
             <div
               className={cn(
-                'flex items-center gap-3 cursor-pointer px-4 py-2 rounded-xl hover:bg-pink-200'
+                'flex items-center gap-3 cursor-pointer px-4 py-2 rounded-xl hover:bg-pink-200 active:ring-4 ring-pink-300'
               )}
               onClick={() => {
                 likedId === 0 ? likePost() : unlikePost();
@@ -160,7 +160,7 @@ export const Post = memo(
             </div>
             <div
               className={cn(
-                'flex items-center gap-3 cursor-pointer px-4 py-2 rounded-xl hover:bg-blue-200'
+                'flex items-center gap-3 cursor-pointer px-4 py-2 rounded-xl hover:bg-blue-200 active:ring-4 ring-blue-300'
               )}
               onClick={() => setCommentsShown((prev) => !prev)}
             >
