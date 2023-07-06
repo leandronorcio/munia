@@ -35,5 +35,5 @@ export async function GET(
     },
   });
 
-  return NextResponse.json({ posts: res });
+  return NextResponse.json<{ posts: PostType[] }>({ posts: res });
 }
