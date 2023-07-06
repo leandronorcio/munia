@@ -1,11 +1,15 @@
-import { PostLike, Post, Comment, VisualMediaType } from '@prisma/client';
+import {
+  PostLike,
+  Post,
+  Comment,
+  VisualMediaType,
+  User,
+  About,
+} from '@prisma/client';
 import type { DefaultUser } from 'next-auth';
 
 declare global {
-  interface CustomUser extends DefaultUser {
-    profilePhoto: string;
-    coverPhoto: string;
-  }
+  interface CustomUser extends DefaultUser, User {}
   type AnimationState = 'from' | 'to';
 
   interface PostType {
