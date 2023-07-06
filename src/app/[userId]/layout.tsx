@@ -4,17 +4,8 @@ import ProfilePhoto from './ProfilePhoto';
 import CoverPhoto from './CoverPhoto';
 import Tabs from './Tabs';
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
-
-async function getProfile(id: string) {
-  const res = await fetch(`${process.env.URL}/api/users/${id}`);
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch user profile.');
-  }
-
-  const data = await res.json();
-  return data.user;
-}
+import { getProfile } from './getProfile';
+import { User } from '@prisma/client';
 
 export default async function Layout({
   children,
@@ -26,7 +17,7 @@ export default async function Layout({
   const [user] = await useProtectApiRoute();
   if (!user) return redirect('/');
 
-  const profile = await getProfile(params.userId);
+  const profile: User = await getProfile(params.userId);
   if (profile === null) return redirect('/not-found');
   const isOwnProfile = profile?.id === user?.id;
 
