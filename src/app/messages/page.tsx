@@ -1,6 +1,7 @@
 'use client';
 import { DateInput } from '@/components/ui/DateInput';
 import { Select } from '@/components/ui/Select';
+import { TextArea } from '@/components/ui/TextArea';
 import { TextInput } from '@/components/ui/TextInput';
 import { Search } from '@/svg_components';
 import { useState } from 'react';
@@ -27,6 +28,7 @@ export default function Messages() {
         placeholderText="Enter birthdate"
         error="fuck"
       />
+      <TextArea filled />
     </>
   );
 }

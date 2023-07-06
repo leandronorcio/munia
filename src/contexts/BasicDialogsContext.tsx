@@ -29,6 +29,7 @@ interface BasicDialogType {
   onConfirm?: Function;
   promptLabel?: string;
   initialPromptValue?: string;
+  promptType?: 'input' | 'textarea';
   onSubmit?: (value: string) => void;
 }
 

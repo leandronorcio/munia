@@ -11,13 +11,15 @@ import {
 import { useToast } from '@/hooks/useToast';
 import { AnimatePresence } from 'framer-motion';
 import { useContext, useEffect, useRef, useState } from 'react';
+import { TextArea } from './ui/TextArea';
 
 export function BasicDialogs() {
   const { shown, dialog } = useContext(BasicDialogsContextData);
   const { setShown, setDialog } = useContext(BasicDialogsContextApi);
   const [promptValue, setPromptValue] = useState('');
-  const { showToast } = useToast();
+  const [inputError, setInputError] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (dialog.initialPromptValue) setPromptValue(dialog.initialPromptValue);
@@ -25,8 +27,13 @@ export function BasicDialogs() {
 
   useEffect(() => {
     if (shown === false) return;
-    if (inputRef.current === null) return;
-    inputRef.current.focus();
+    if (dialog.promptType === 'input') {
+      if (inputRef.current === null) return;
+      inputRef.current.focus();
+    } else {
+      if (textareaRef.current === null) return;
+      textareaRef.current.focus();
+    }
   }, [shown]);
 
   const hide = () => {
@@ -40,6 +47,7 @@ export function BasicDialogs() {
       initialPromptValue: '',
     });
     setPromptValue('');
+    setInputError('');
   };
 
   const handleAffirmative = () => {
@@ -54,11 +62,7 @@ export function BasicDialogs() {
     }
     if (dialog.type === 'prompt') {
       if (promptValue === '') {
-        showToast({
-          title: 'Empty Input',
-          message: 'Please input something.',
-          type: 'error',
-        });
+        setInputError('This cannot be empty.');
         return;
       }
       dialog.onSubmit && dialog.onSubmit(promptValue);
@@ -89,12 +93,26 @@ export function BasicDialogs() {
             </p>
             <div>
               {dialog.type === 'prompt' && (
-                <TextInput
-                  value={promptValue}
-                  onChange={(e) => setPromptValue(e.target.value)}
-                  placeholder={dialog.promptLabel || 'Input here'}
-                  ref={inputRef}
-                />
+                <>
+                  {dialog.promptType === 'input' ? (
+                    <TextInput
+                      value={promptValue}
+                      onChange={(e) => setPromptValue(e.target.value)}
+                      placeholder={dialog.promptLabel || 'Input here'}
+                      ref={inputRef}
+                      error={inputError}
+                    />
+                  ) : (
+                    <TextArea
+                      value={promptValue}
+                      onChange={(e) => setPromptValue(e.target.value)}
+                      placeholder={dialog.promptLabel || 'Input here'}
+                      ref={textareaRef}
+                      error={inputError}
+                      filled
+                    />
+                  )}
+                </>
               )}
             </div>
             <Button onClick={handleAffirmative} shape="pill" expand="half">

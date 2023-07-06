@@ -102,6 +102,7 @@ export default function Comment({
                   prompt({
                     title: 'Edit Comment',
                     initialPromptValue: content,
+                    promptType: 'textarea',
                     onSubmit: (value) => {
                       editComment(value);
                     },

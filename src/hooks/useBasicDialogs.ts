@@ -40,12 +40,14 @@ export function useBasicDialogs() {
     message = '',
     promptLabel,
     initialPromptValue,
+    promptType = 'input',
     onSubmit,
   }: {
     title: string;
     message?: string;
     promptLabel?: string;
     initialPromptValue?: string;
+    promptType?: 'input' | 'textarea';
     onSubmit: (value: string) => void;
   }) => {
     setDialog({
@@ -54,6 +56,7 @@ export function useBasicDialogs() {
       message,
       promptLabel,
       initialPromptValue,
+      promptType,
       onSubmit,
     });
     show();
