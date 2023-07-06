@@ -1,7 +1,7 @@
 // https://stackoverflow.com/questions/40731352/extending-html-elements-in-react-and-typescript-while-preserving-props
 'use client';
 import { cn } from '@/lib/cn';
-import { forwardRef, useRef } from 'react';
+import { forwardRef, useEffect, useRef } from 'react';
 
 interface TextAreaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -10,17 +10,26 @@ interface TextAreaProps
   error?: string;
 }
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({ filled = false, error, ...rest }, ref) => {
-    const localRef = useRef<HTMLTextAreaElement>(null);
-    const textareaRef = ref || localRef;
+  ({ filled = false, error, ...rest }, parentRef) => {
+    const localRef = useRef<HTMLTextAreaElement | null>(null);
+
+    useEffect(() => {
+      const textarea = localRef.current;
+      if (textarea === null) return;
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
+    }, [localRef.current]);
 
     return (
       <div>
         <textarea
-          ref={textareaRef}
+          ref={(el: HTMLTextAreaElement) => {
+            if (typeof parentRef === 'function') parentRef(el);
+            else if (parentRef !== null) parentRef.current = el;
+            localRef.current = el;
+          }}
           onInput={(e) => {
             const textarea = e.target as HTMLTextAreaElement;
-
             textarea.style.height = 'auto';
             textarea.style.height = textarea.scrollHeight + 'px';
           }}
