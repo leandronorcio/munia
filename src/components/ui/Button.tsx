@@ -4,7 +4,7 @@ import { SVGProps } from 'react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
-  mode?: 'primary' | 'secondary' | 'ghost';
+  mode?: 'primary' | 'secondary' | 'ghost' | 'subtle';
   size?: Sizes;
   Icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
   shape?: 'pill' | 'rounded';
@@ -12,23 +12,26 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 type Sizes = 'huge' | 'large' | 'medium' | 'small';
 const sizes = {
-  huge: 'px-8 py-5 gap-4 text-lg rounded-2xl',
-  large: 'px-8 py-5 gap-4 text-base rounded-2xl',
-  medium: 'px-6 py-4 gap-3 text-base rounded-xl',
-  small: 'px-4 py-[9px] gap-3 text-[13px] rounded-lg',
+  huge: 'px-8 py-5 gap-4 text-lg rounded-2xl active:ring-8',
+  large: 'px-8 py-5 gap-4 text-base rounded-2xl active:ring-8',
+  medium: 'px-6 py-4 gap-3 text-base rounded-xl active:ring-8',
+  small: 'px-4 py-[9px] gap-3 text-[13px] rounded-lg active:ring-4',
 };
 const modes = {
   primary:
-    'bg-violet-600 dark:bg-violet-400 text-white dark:text-violet-800 hover:bg-violet-700 dark:hover:bg-violet-300 active:ring-8 ring-violet-400 dark:active:ring-violet-900',
+    'bg-violet-600 dark:bg-violet-400 text-white dark:text-violet-800 hover:bg-violet-700 dark:hover:bg-violet-300 ring-violet-400 dark:active:ring-violet-900',
   secondary:
-    'border-2 border-violet-600 dark:border-violet-400 text-violet-600 dark:text-violet-400 hover:border-violet-800 dark:hover:border-violet-300 hover:text-violet-800 dark:hover:text-violet-300 active:ring-8 ring-violet-400 dark:active:ring-violet-900',
+    'border-2 border-violet-600 dark:border-violet-400 text-violet-600 dark:text-violet-400 hover:border-violet-800 dark:hover:border-violet-300 hover:text-violet-800 dark:hover:text-violet-300 ring-violet-400 dark:active:ring-violet-900',
   ghost: 'font-semibold text-gray-600 hover:text-gray-900',
+  subtle:
+    'bg-transparent border-2 border-violet-200 hover:border-violet-400 text-violet-800 hover:text-violet-900 ring-violet-200',
 };
 const iconModes = {
   primary: 'stroke-white dark:stroke-violet-800',
   secondary:
     'stroke-violet-600 dark:stroke-violet-400 group-hover:stroke-violet-800 dark:group-hover:stroke-violet-300',
   ghost: 'stroke-gray-600',
+  subtle: 'stroke-violet-800 group-hover:stroke-violet-900',
 };
 
 export default function Button({
