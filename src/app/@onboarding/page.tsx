@@ -4,7 +4,7 @@ import OnboardingButtonsContainer from './OnboardingButtonsContainer';
 export default async function Page() {
   return (
     <main
-      className="flex flex-col min-h-screen w-full justify-center items-center relative bg-black"
+      className="flex flex-col min-h-screen w-full justify-center items-center relative"
       style={{
         background: 'linear-gradient(95.08deg, #5F2EEA 2.49%, #E359F9 97.19%)',
         boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
@@ -12,7 +12,7 @@ export default async function Page() {
     >
       <OnboardingButtonsContainer></OnboardingButtonsContainer>
       <div
-        className="flex flex-row items-center justify-center gap-4 w-4/5 md:w-[700px] h-56 rounded-3xl backdrop:blur-md"
+        className="flex flex-row items-center justify-center gap-4 w-full md:w-[550px] h-56 rounded-none md:rounded-3xl"
         style={{ background: 'rgba(239, 240, 246, 0.25)' }}
       >
         <SvgLogo width={88} height={88} />
