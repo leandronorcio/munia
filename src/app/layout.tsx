@@ -57,7 +57,7 @@ export default async function RootLayout({
                         <Sidebar />
                         <BottomMenu />
                         <div className="transition-[margin] duration-500 ml-0 md:ml-[240px] mt-20">
-                          <ResponsiveContainer className="md:pt-8 mb-14 transition-[width,padding]">
+                          <ResponsiveContainer className="mb-14 transition-[width,padding]">
                             {children}
                           </ResponsiveContainer>
                         </div>

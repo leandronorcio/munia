@@ -18,11 +18,11 @@ export default function CoverPhoto({
 
   return (
     <div
-      className="h-72 md:rounded-3xl transition-all bg-cover bg-center"
+      className="w-full h-full bg-cover bg-center"
       style={{
         backgroundImage: profile.coverPhoto
           ? `url("${profile.coverPhoto}")`
-          : 'linear-gradient(95.08deg, #AF45DB 2.49%, #EB7B96 97.19%)',
+          : 'none',
       }}
     >
       <div
