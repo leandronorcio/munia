@@ -39,6 +39,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
     "@svgr/cli": "^7.0.0",
     "prisma": "^4.15.0"
   }
