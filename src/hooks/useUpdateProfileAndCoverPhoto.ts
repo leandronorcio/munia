@@ -1,6 +1,7 @@
 import { writeFile } from 'fs/promises';
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { CustomUser } from 'types';
 
 export async function useUpdateProfileAndCoverPhoto(
   request: Request,

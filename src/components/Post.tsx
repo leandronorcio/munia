@@ -16,6 +16,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { useToast } from '@/hooks/useToast';
 import { useCreatePost } from '@/hooks/useCreatePost';
+import { PostType } from 'types';
 
 export const Post = memo(
   function Post({

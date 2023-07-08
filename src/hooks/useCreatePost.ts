@@ -3,6 +3,7 @@ import {
   CreatePostModalContextApi,
 } from '@/contexts/CreatePostModalContext';
 import { useContext } from 'react';
+import { VisualMedia } from 'types';
 
 export function useCreatePost() {
   const {

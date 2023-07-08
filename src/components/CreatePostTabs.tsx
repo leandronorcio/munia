@@ -4,6 +4,7 @@ import { cn } from '@/lib/cn';
 import { Ellipse } from '@/svg_components';
 import { memo, useState } from 'react';
 import { CreatePostSort } from './CreatePostSort';
+import { VisualMedia } from 'types';
 
 const CreatePostTabs = memo(
   function CreatePostTabs({

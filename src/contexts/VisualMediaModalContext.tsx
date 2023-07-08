@@ -7,6 +7,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { VisualMedia } from 'types';
 
 interface VisualMediaModalType {
   visualMedia: VisualMedia[];

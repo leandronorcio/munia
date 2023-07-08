@@ -6,6 +6,7 @@ import ProfilePhoto from './ui/ProfilePhoto';
 import { TextArea } from './ui/TextArea';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useToast } from '@/hooks/useToast';
+import { CommentPOSTRequestBody, CommentType } from 'types';
 
 export function Comments({
   postId,

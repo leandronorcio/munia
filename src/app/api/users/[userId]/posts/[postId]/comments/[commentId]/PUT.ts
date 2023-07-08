@@ -1,6 +1,7 @@
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
+import { CommentPUTRequestBody } from 'types';
 
 export async function PUT(
   request: Request,

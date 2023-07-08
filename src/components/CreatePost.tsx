@@ -16,6 +16,7 @@ import {
 } from '@/contexts/CreatePostModalContext';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { useToast } from '@/hooks/useToast';
+import { VisualMedia } from 'types';
 
 export default function CreatePost({
   toEditValues,

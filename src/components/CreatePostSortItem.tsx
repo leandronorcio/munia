@@ -2,6 +2,7 @@ import React from 'react';
 import { useSortable, defaultAnimateLayoutChanges } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Delete, FullScreenExpandResize } from '@/svg_components';
+import { VisualMedia } from 'types';
 
 function animateLayoutChanges(args: any) {
   const { isSorting, wasDragging } = args;

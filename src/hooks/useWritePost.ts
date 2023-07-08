@@ -3,6 +3,7 @@ import { listOfKeyValuesToObject } from '@/lib/listOfKeyValuesToObject';
 import prisma from '@/lib/prisma';
 import { unlink, writeFile } from 'fs/promises';
 import { NextResponse } from 'next/server';
+import { CustomUser, PostPOSTRequestBody, VisualMedia, PostType } from 'types';
 
 export async function useWritePost({
   formData,

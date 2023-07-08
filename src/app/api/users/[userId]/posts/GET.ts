@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import prisma from '@/lib/prisma';
 import { selectPost } from './selectPost';
+import { PostType } from 'types';
 
 export async function GET(
   request: Request,

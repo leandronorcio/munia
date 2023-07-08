@@ -7,6 +7,7 @@ import { DropdownItem } from './ui/DropdownItem';
 import { useState } from 'react';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { useToast } from '@/hooks/useToast';
+import { CommentType, CommentPUTRequestBody } from 'types';
 
 export default function Comment({
   id: commentId,

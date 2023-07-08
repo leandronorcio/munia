@@ -3,6 +3,7 @@ import PostVisualMedia from './PostVisualMedia';
 import { cn } from '@/lib/cn';
 import { isOdd } from '@/lib/isOdd';
 import { useVisualMediaModal } from '@/hooks/useVisualMediaModal';
+import { VisualMedia } from 'types';
 
 const PostVisualMediaContainer = memo(
   function PostVisualMediaContainer({

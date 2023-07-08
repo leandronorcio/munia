@@ -1,3 +1,5 @@
+import { VisualMedia } from 'types';
+
 export function sortVisualMedia(visualMedia: VisualMedia[]) {
   function getOrder(item: string) {
     // Extract the number before "-photo"/"-video"

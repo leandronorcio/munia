@@ -5,6 +5,7 @@ import useOnScreen from '@/hooks/useOnScreen';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useToast } from '@/hooks/useToast';
 import { CreatePostModalLauncher } from './CreatePostModalLauncher';
+import { PostType } from 'types';
 
 export function Posts({
   type,

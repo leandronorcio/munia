@@ -1,6 +1,7 @@
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { CommentPOSTRequestBody, CommentType } from 'types';
 
 export async function POST(
   request: Request,

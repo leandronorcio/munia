@@ -16,6 +16,7 @@ import {
 } from '@dnd-kit/sortable';
 import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { CreatePostSortItem } from './CreatePostSortItem';
+import { VisualMedia } from 'types';
 
 const measuringConfig = {
   droppable: {

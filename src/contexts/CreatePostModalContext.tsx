@@ -1,5 +1,6 @@
 'use client';
 import { CreatePostModal } from '@/components/CreatePostModal';
+import { PostType, VisualMedia } from 'types';
 import {
   Dispatch,
   SetStateAction,
