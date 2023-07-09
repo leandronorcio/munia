@@ -5,6 +5,7 @@ import NextAuth, { AuthOptions } from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import FacebookProvider from 'next-auth/providers/facebook';
 import EmailProvider from 'next-auth/providers/email';
+import { CustomUser } from 'types';
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma) as Adapter,
@@ -29,12 +30,30 @@ export const authOptions: AuthOptions = {
       from: process.env.EMAIL_FROM,
     }),
   ],
+  session: {
+    strategy: 'jwt',
+  },
   callbacks: {
-    session: async ({ session, user }) => {
-      // Add user to the session.
+    jwt: async ({ token }) => {
+      // You can add something to the token here, it will be passed to the session.
+      // https://next-auth.js.org/configuration/callbacks#jwt-callback
+      return token;
+    },
+    session: async ({ token, session }) => {
+      let user: CustomUser | null = null;
+      if (token) {
+        // Retrieve user from the database using the token.
+        user = await prisma.user.findFirst({
+          where: {
+            id: token.sub,
+          },
+        });
+      }
+
       return {
         ...session,
-        user: user,
+        // Pass the retrieved user object to the client.
+        user: user || undefined,
       };
     },
   },
