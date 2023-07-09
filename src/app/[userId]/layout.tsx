@@ -15,7 +15,6 @@ export default async function Layout({
   params: { userId: string };
 }) {
   const [user] = await useProtectApiRoute();
-  if (!user) return redirect('/');
 
   const profile: User = await getProfile(params.userId);
   if (profile === null) return redirect('/not-found');

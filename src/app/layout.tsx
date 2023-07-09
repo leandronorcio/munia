@@ -17,6 +17,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { CreatePostModalContextProvider } from '@/contexts/CreatePostModalContext';
 import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 import { cn } from '@/lib/cn';
+import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
@@ -35,7 +36,7 @@ export default async function RootLayout({
   children: React.ReactNode;
   onboarding: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
+  const [user] = await useProtectApiRoute();
   return (
     <html lang="en">
       <head>
@@ -51,7 +52,7 @@ export default async function RootLayout({
               <VisualMediaModalContextProvider>
                 <CreatePostModalContextProvider>
                   <div className="h-screen flex flex-col">
-                    {session ? (
+                    {user ? (
                       <>
                         <Navbar />
                         <Sidebar />
