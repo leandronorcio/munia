@@ -1,19 +1,17 @@
 import './globals.css';
-import SessionProviderContext from '@/contexts/SessionProviderContext';
-import { Poppins } from 'next/font/google';
-import { BasicDialogsContextProvider } from '@/contexts/BasicDialogsContext';
-import { ToastContextProvider } from '@/contexts/ToastContext';
-import { VisualMediaModalContextProvider } from '@/contexts/VisualMediaModalContext';
-import { getServerSession } from 'next-auth';
-import { authOptions } from './api/auth/[...nextauth]/route';
-import Navbar from '../components/Navbar';
-import Sidebar from '../components/Sidebar';
-import BottomMenu from '../components/BottomMenu';
 import 'swiper/css';
 import 'swiper/css/zoom';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'react-datepicker/dist/react-datepicker.css';
+import SessionProviderContext from '@/contexts/SessionProviderContext';
+import { Poppins } from 'next/font/google';
+import { BasicDialogsContextProvider } from '@/contexts/BasicDialogsContext';
+import { ToastContextProvider } from '@/contexts/ToastContext';
+import { VisualMediaModalContextProvider } from '@/contexts/VisualMediaModalContext';
+import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
+import BottomMenu from '../components/BottomMenu';
 import { CreatePostModalContextProvider } from '@/contexts/CreatePostModalContext';
 import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 import { cn } from '@/lib/cn';
@@ -31,10 +29,8 @@ export const metadata = {
 
 export default async function RootLayout({
   children,
-  onboarding,
 }: {
   children: React.ReactNode;
-  onboarding: React.ReactNode;
 }) {
   const [user] = await useProtectApiRoute();
   return (
@@ -64,7 +60,7 @@ export default async function RootLayout({
                         </div>
                       </>
                     ) : (
-                      onboarding
+                      children
                     )}
                   </div>
                 </CreatePostModalContextProvider>

@@ -1,7 +1,8 @@
 import SvgLogo from '@/svg_components/Logo';
-import OnboardingButtonsContainer from './OnboardingButtonsContainer';
+import OnboardingButtonsContainer from '../components/OnboardingButtonsContainer';
+import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 
-export default async function Page() {
+function Onboarding() {
   return (
     <main
       className="flex flex-col min-h-screen w-full justify-center items-center relative"
@@ -28,4 +29,17 @@ export default async function Page() {
       </div>
     </main>
   );
+}
+
+function Feed() {
+  return (
+    <div className="px-4 py-4 md:px-0 md:py-0">
+      <h1 className="font-bold text-4xl mb-6">News Feed</h1>
+    </div>
+  );
+}
+
+export default async function Page() {
+  const [user] = await useProtectApiRoute();
+  return <>{user ? <Feed /> : <Onboarding />}</>;
 }
