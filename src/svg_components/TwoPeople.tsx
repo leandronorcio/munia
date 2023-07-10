@@ -1,3 +1,4 @@
+'use client';
 import * as React from 'react';
 import { SVGProps } from 'react';
 const SvgTwoPeople = (props: SVGProps<SVGSVGElement>) => (

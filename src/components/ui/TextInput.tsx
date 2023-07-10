@@ -6,12 +6,12 @@ interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder: string;
   Icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
   error?: string;
+  width?: string | number;
 }
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-  ({ placeholder, Icon, error, ...rest }, ref) => {
+  ({ placeholder, Icon, error, width, ...rest }, ref) => {
     const localRef = useRef<HTMLInputElement>(null);
     const inputRef = ref || localRef;
-
     return (
       <div>
         <label className="relative block">
@@ -27,10 +27,11 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           <input
             {...rest}
             className={cn(
-              'w-[320px] pt-8 pb-2 pr-5 outline-none rounded-2xl focus:ring-2 ring-black peer',
+              'pt-8 pb-2 pr-5 outline-none rounded-2xl focus:ring-2 ring-black peer',
               Icon ? 'pl-16' : 'pl-5',
               error ? 'bg-red-200 ring-2 ring-red-900' : 'bg-slate-100'
             )}
+            style={{ width: width || '320px' }}
             placeholder=" "
             ref={inputRef}
           />
