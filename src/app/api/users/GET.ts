@@ -1,7 +1,7 @@
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { convertKebabToAllCaps } from '@/lib/convertKebabToAllCaps';
 import prisma from '@/lib/prisma';
-import { Gender, RelationshipStatus } from '@prisma/client';
+import { Gender, RelationshipStatus, User } from '@prisma/client';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
@@ -33,5 +33,5 @@ export async function GET(request: Request) {
     //   [orderBy]: sort,
     // },
   });
-  return NextResponse.json(res);
+  return NextResponse.json<User[]>(res);
 }

@@ -22,7 +22,6 @@ export function Posts({
   const { showToast } = useToast();
 
   const retrievePosts = async () => {
-    if (maxedOut) return;
     const postsPerPage = 3;
     const limit = postsPerPage;
     const url = new URL(
@@ -52,6 +51,7 @@ export function Posts({
   };
 
   useEffect(() => {
+    if (maxedOut) return;
     retrievePosts();
   }, [cursor]);
 
@@ -90,7 +90,7 @@ export function Posts({
         </AnimatePresence>
       </div>
       <div className="mt-6" ref={bottomElRef}>
-        {/* Bottom element, if on screen, increase the pagination state. */}
+        {/* Bottom element, if on screen, set the cursor state to the bottom post id. */}
       </div>
     </div>
   );

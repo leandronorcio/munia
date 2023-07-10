@@ -5,10 +5,15 @@ import { DropdownMenu } from '@/components/ui/DropdownMenu';
 import { deleteSearchParams } from '@/lib/deleteSearchParams';
 import { kebabToNormal } from '@/lib/kebabToNormal';
 import { updateSearchParams } from '@/lib/updateSearchParams';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export function Filters() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const selectedFilters = {
+    gender: searchParams.get('gender'),
+    relationshipStatus: searchParams.get('relationship-status'),
+  };
   const updateParams = ({
     title,
     value,
@@ -22,6 +27,7 @@ export function Filters() {
         : deleteSearchParams(title);
 
     router.push(newPathName);
+    router.refresh();
   };
 
   return (
@@ -30,7 +36,7 @@ export function Filters() {
         width="115%"
         trigger={
           <Button mode="subtle" shape="pill">
-            Gender: <b>All</b>
+            Gender: <b>{kebabToNormal(selectedFilters.gender) || 'All'}</b>
           </Button>
         }
       >
@@ -54,7 +60,8 @@ export function Filters() {
         width="100%"
         trigger={
           <Button mode="subtle" shape="pill">
-            Relationship Status: <b>Single</b>
+            Relationship Status:{' '}
+            <b>{kebabToNormal(selectedFilters.relationshipStatus) || 'All'}</b>
           </Button>
         }
       >
@@ -82,31 +89,6 @@ export function Filters() {
             );
           }
         )}
-      </DropdownMenu>
-      <DropdownMenu
-        trigger={
-          <Button mode="subtle" shape="pill">
-            Follow Status:
-          </Button>
-        }
-      >
-        <DropdownItem
-          onClick={() => updateParams({ title: 'follow-status', value: null })}
-        >
-          Clear
-        </DropdownItem>
-        {['follower', 'following'].map((item) => {
-          return (
-            <DropdownItem
-              key={item}
-              onClick={() =>
-                updateParams({ title: 'follow-status', value: item })
-              }
-            >
-              {item}
-            </DropdownItem>
-          );
-        })}
       </DropdownMenu>
     </div>
   );
