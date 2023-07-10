@@ -9,6 +9,9 @@ import { CustomUser } from 'types';
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma) as Adapter,
+  pages: {
+    signIn: '/login',
+  },
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID as string,

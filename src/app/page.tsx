@@ -1,6 +1,8 @@
 import SvgLogo from '@/svg_components/Logo';
-import OnboardingButtonsContainer from '../components/OnboardingButtonsContainer';
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
+import { LogInSquare, TwoPeople } from '@/svg_components';
+import Link from 'next/link';
+import Button from '@/components/ui/Button';
 
 function Onboarding() {
   return (
@@ -11,7 +13,18 @@ function Onboarding() {
         boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
       }}
     >
-      <OnboardingButtonsContainer></OnboardingButtonsContainer>
+      <div className="flex flex-row gap-4 absolute top-10 right-10">
+        <Link href="/login">
+          <Button size="medium" shape="pill" Icon={LogInSquare}>
+            Login
+          </Button>
+        </Link>
+        <Link href="/register">
+          <Button size="medium" shape="pill" Icon={TwoPeople}>
+            Sign Up
+          </Button>
+        </Link>
+      </div>
       <div
         className="flex flex-row items-center justify-center gap-4 w-full md:w-[550px] h-56 rounded-none md:rounded-3xl"
         style={{ background: 'rgba(239, 240, 246, 0.25)' }}
