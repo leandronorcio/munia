@@ -48,7 +48,6 @@ export default async function Discover({
   searchParams: DiscoverSearchParams;
 }) {
   const profiles = await getProfile({ searchParams });
-  console.log(profiles);
   return (
     <div className="mt-8 p-4 md:p-0">
       <h1 className="font-bold text-4xl mb-6">Discover People</h1>

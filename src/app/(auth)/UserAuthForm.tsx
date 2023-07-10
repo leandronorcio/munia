@@ -5,6 +5,7 @@ import { useToast } from '@/hooks/useToast';
 import { AtSign, Facebook, Github, LogInSquare } from '@/svg_components';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { z } from 'zod';
 
@@ -17,6 +18,8 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
     github: false,
     facebook: false,
   });
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('from') || '/';
   const { showToast } = useToast();
 
   const submitEmail = async () => {
@@ -96,7 +99,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
               github: true,
             }));
             signIn('github', {
-              callbackUrl: '/',
+              callbackUrl,
             });
           }}
           shape="pill"
@@ -114,7 +117,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
               facebook: true,
             }));
             signIn('facebook', {
-              callbackUrl: '/',
+              callbackUrl,
             });
           }}
           shape="pill"
