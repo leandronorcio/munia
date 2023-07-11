@@ -3,7 +3,21 @@ import { listOfKeyValuesToObject } from '@/lib/listOfKeyValuesToObject';
 import prisma from '@/lib/prisma';
 import { unlink, writeFile } from 'fs/promises';
 import { NextResponse } from 'next/server';
-import { CustomUser, PostPOSTRequestBody, VisualMedia, PostType } from 'types';
+import { CustomUser, VisualMedia, PostType } from 'types';
+import { Blob } from 'buffer';
+import * as z from 'zod';
+import { isValidFileType } from '@/lib/isValidFileType';
+
+const writePostSchema = z
+  .object({
+    content: z.string().optional(),
+    files: z
+      .union([z.instanceof(Blob), z.array(z.instanceof(Blob))])
+      .optional(),
+  })
+  .refine((data) => data.content !== undefined || data.files !== undefined, {
+    message: "Either 'content' or 'files' must be defined",
+  });
 
 export async function useWritePost({
   formData,
@@ -16,11 +30,11 @@ export async function useWritePost({
   type: 'create' | 'edit';
   postId?: number;
 }) {
-  const body = listOfKeyValuesToObject(formData) as PostPOSTRequestBody;
-  const { content, files } = body;
-  const savedFiles: VisualMedia[] = [];
-
   try {
+    const body = writePostSchema.parse(listOfKeyValuesToObject(formData));
+    const { content, files } = body;
+    const savedFiles: VisualMedia[] = [];
+
     if (files) {
       await new Promise<void>((resolve) => {
         // Convert 'files' field to an array if it is not.
@@ -28,6 +42,12 @@ export async function useWritePost({
         filesArr.forEach(async (file, i) => {
           const type = file.type.startsWith('image/') ? 'PHOTO' : 'VIDEO';
           const extension = file.type.split('/')[1];
+          if (!isValidFileType(extension)) {
+            return NextResponse.json(
+              { error: 'Invalid file type.' },
+              { status: 415 }
+            );
+          }
           const filePath = `/uploads/${
             user.id
           }-${Date.now()}-${i}-${type.toLocaleLowerCase()}.${extension}`;
@@ -138,11 +158,12 @@ export async function useWritePost({
         select: selectPost(user.id),
       });
 
-      console.log(res);
       return NextResponse.json<PostType>({ ...res });
     }
   } catch (error) {
-    console.log(error);
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(error.issues, { status: 422 });
+    }
     return NextResponse.json(
       { error: 'Error creating post.' },
       { status: 500 }
