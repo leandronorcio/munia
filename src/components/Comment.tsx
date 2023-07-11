@@ -7,7 +7,7 @@ import { DropdownItem } from './ui/DropdownItem';
 import { useState } from 'react';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { useToast } from '@/hooks/useToast';
-import { CommentType, CommentPUTRequestBody } from 'types';
+import { CommentType } from 'types';
 
 export default function Comment({
   id: commentId,
@@ -30,12 +30,9 @@ export default function Comment({
   const { confirm, prompt } = useBasicDialogs();
 
   const deleteComment = async () => {
-    const res = await fetch(
-      `/api/users/${postAuthorId}/posts/${postId}/comments/${commentId}`,
-      {
-        method: 'DELETE',
-      }
-    );
+    const res = await fetch(`/api/posts/${postId}/comments/${commentId}`, {
+      method: 'DELETE',
+    });
 
     if (res.ok) {
       const data = await res.json();
@@ -51,16 +48,13 @@ export default function Comment({
   };
 
   const editComment = async (newValue: string) => {
-    const res = await fetch(
-      `/api/users/${postAuthorId}/posts/${postId}/comments/${commentId}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ content: newValue } as CommentPUTRequestBody),
-      }
-    );
+    const res = await fetch(`/api/posts/${postId}/comments/${commentId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ content: newValue }),
+    });
 
     if (res.ok) {
       setContent(newValue);

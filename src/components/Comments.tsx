@@ -6,7 +6,7 @@ import ProfilePhoto from './ui/ProfilePhoto';
 import { TextArea } from './ui/TextArea';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useToast } from '@/hooks/useToast';
-import { CommentPOSTRequestBody, CommentType } from 'types';
+import { CommentType } from 'types';
 
 export function Comments({
   postId,
@@ -22,10 +22,8 @@ export function Comments({
   const { showToast } = useToast();
 
   useEffect(() => {
-    const run = async () => {
-      const res = await fetch(
-        `/api/users/${postAuthorId}/posts/${postId}/comments`
-      );
+    const getComments = async () => {
+      const res = await fetch(`/api/posts/${postId}/comments`);
 
       if (!res.ok) {
         showToast({ title: 'Error Getting Comments', type: 'error' });
@@ -33,27 +31,23 @@ export function Comments({
       }
 
       const data = (await res.json()) as { comments: CommentType[] };
-      console.log(data);
       setComments(data.comments);
     };
 
     // Wait for the animation of the Component to finish before fetching comments.
-    setTimeout(() => run(), 400);
+    setTimeout(() => getComments(), 400);
   }, []);
 
   const postComment = async () => {
-    const res = await fetch(
-      `/api/users/${postAuthorId}/posts/${postId}/comments`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          content: commentText,
-        } as CommentPOSTRequestBody),
-      }
-    );
+    const res = await fetch(`/api/posts/${postId}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        content: commentText,
+      }),
+    });
 
     if (res.ok) {
       const addedComment = (await res.json()) as CommentType;
