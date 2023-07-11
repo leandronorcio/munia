@@ -13,10 +13,5 @@ export async function GET(
     },
   });
 
-  if (user === null)
-    return NextResponse.json(
-      { message: 'Profile not found,' },
-      { status: 401 }
-    );
-  return NextResponse.json<{ user: User }>({ user });
+  return NextResponse.json<{ user: User | null }>({ user });
 }

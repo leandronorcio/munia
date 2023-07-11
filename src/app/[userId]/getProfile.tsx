@@ -1,12 +1,12 @@
 import { User } from '@prisma/client';
+import { notFound } from 'next/navigation';
 
 export async function getProfile(id: string) {
   const res = await fetch(`${process.env.URL}/api/users/${id}`);
+  const { user }: { user: User | null } = await res.json();
 
-  if (!res.ok) {
-    throw new Error('Failed to fetch user profile.');
+  if (!user) {
+    notFound();
   }
-
-  const { user }: { user: User } = await res.json();
   return user;
 }

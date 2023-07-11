@@ -13,7 +13,7 @@ import { z } from 'zod';
 
 export async function POST(
   request: Request,
-  { params }: { params: { userId: string; postId: string } }
+  { params }: { params: { postId: string } }
 ) {
   const [user] = await useProtectApiRoute();
   if (!user) return NextResponse.json({}, { status: 401 });
