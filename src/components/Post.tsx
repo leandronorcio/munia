@@ -77,7 +77,7 @@ export const Post = memo(
     };
 
     const deletePost = async () => {
-      const res = await fetch(`/api/users/${userId}/posts/${postId}`, {
+      const res = await fetch(`/api/posts/${postId}`, {
         method: 'DELETE',
       });
 

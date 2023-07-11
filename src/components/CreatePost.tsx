@@ -84,7 +84,7 @@ export default function CreatePost({
   };
 
   const submitPost = async () => {
-    const res = await fetch(`/api/users/${user?.id}/posts`, {
+    const res = await fetch(`/api/posts`, {
       method: 'POST',
       body: await generateFormData(),
     });
@@ -100,13 +100,10 @@ export default function CreatePost({
   };
 
   const submitPostEdit = async () => {
-    const res = await fetch(
-      `/api/users/${user?.id}/posts/${toEditValues?.postId}`,
-      {
-        method: 'PUT',
-        body: await generateFormData(),
-      }
-    );
+    const res = await fetch(`/api/posts/${toEditValues?.postId}`, {
+      method: 'PATCH',
+      body: await generateFormData(),
+    });
 
     if (res.ok) {
       const editedPost = await res.json();
