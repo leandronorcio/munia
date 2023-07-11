@@ -80,7 +80,6 @@ model Post {
   postLikes   PostLike[]
   comments    Comment[]
 
-  @@unique([id, userId]) // Unnecessary now
 }
 
 model PostLike {
@@ -91,7 +90,7 @@ model PostLike {
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
 
-  @@unique([userId, postId]) // @@unique([userId, postId]) 
+  @@unique([userId, postId])
 }
 
 model Comment {
@@ -103,7 +102,6 @@ model Comment {
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
 
-  @@unique([id, userId, postId]) // Unnecessary now
 }
 
 model VisualMedia {

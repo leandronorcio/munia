@@ -42,19 +42,6 @@ export interface VisualMedia {
   url: string;
 }
 
-export interface PostPOSTRequestBody {
-  content?: string;
-  files?: Blob | Blob[];
-}
-
-export interface CommentPOSTRequestBody {
-  content: string;
-}
-
-export interface CommentPUTRequestBody {
-  content: string;
-}
-
 export interface CommentType {
   id: number;
   content: string;

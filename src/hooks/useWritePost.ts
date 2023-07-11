@@ -1,4 +1,4 @@
-import { selectPost } from '@/app/api/users/[userId]/posts/selectPost';
+import { selectPost } from '@/lib/selectPost';
 import { listOfKeyValuesToObject } from '@/lib/listOfKeyValuesToObject';
 import prisma from '@/lib/prisma';
 import { unlink, writeFile } from 'fs/promises';

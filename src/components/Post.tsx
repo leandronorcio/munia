@@ -44,8 +44,9 @@ export const Post = memo(
     const { launchEditPost } = useCreatePost();
     console.log('rendered: ' + postId);
     const likePost = async () => {
-      const res = await fetch(`/api/users/${userId}/posts/${postId}/likes`, {
+      const res = await fetch(`/api/users/${userId}/liked-posts`, {
         method: 'POST',
+        body: JSON.stringify({ postId }),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -61,12 +62,9 @@ export const Post = memo(
     };
 
     const unlikePost = async () => {
-      const res = await fetch(
-        `/api/users/${userId}/posts/${postId}/likes/${likedId}`,
-        {
-          method: 'DELETE',
-        }
-      );
+      const res = await fetch(`/api/users/${userId}/liked-posts/${postId}`, {
+        method: 'DELETE',
+      });
 
       if (res.ok) {
         setLikedId(0);
