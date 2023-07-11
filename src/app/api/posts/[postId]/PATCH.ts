@@ -10,13 +10,14 @@ export async function PATCH(
   request: Request,
   { params }: { params: { postId: string } }
 ) {
-  if (!verifyAccessToPost(parseInt(params.postId))) {
+  const postId = parseInt(params.postId);
+  if (!verifyAccessToPost(postId)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
   }
 
   const formData = await request.formData();
   return useWritePost({
-    postId: parseInt(params.postId),
+    postId: postId,
     type: 'edit',
     formData,
   });
