@@ -3,35 +3,25 @@ import { listOfKeyValuesToObject } from '@/lib/listOfKeyValuesToObject';
 import prisma from '@/lib/prisma';
 import { unlink, writeFile } from 'fs/promises';
 import { NextResponse } from 'next/server';
-import { CustomUser, VisualMedia, PostType } from 'types';
-import { Blob } from 'buffer';
-import * as z from 'zod';
+import { VisualMedia, PostType } from 'types';
 import { isValidFileType } from '@/lib/isValidFileType';
-
-const writePostSchema = z
-  .object({
-    content: z.string().optional(),
-    files: z
-      .union([z.instanceof(Blob), z.array(z.instanceof(Blob))])
-      .optional(),
-  })
-  .refine((data) => data.content !== undefined || data.files !== undefined, {
-    message: "Either 'content' or 'files' must be defined",
-  });
+import { postWriteSchema } from '@/lib/validations/post';
+import { z } from 'zod';
+import { useProtectApiRoute } from './useProtectApiRoute';
 
 export async function useWritePost({
   formData,
-  user,
   type,
   postId,
 }: {
   formData: FormData;
-  user: CustomUser;
   type: 'create' | 'edit';
   postId?: number;
 }) {
+  const [user] = await useProtectApiRoute();
+  const userId = user?.id!;
   try {
-    const body = writePostSchema.parse(listOfKeyValuesToObject(formData));
+    const body = postWriteSchema.parse(listOfKeyValuesToObject(formData));
     const { content, files } = body;
     const savedFiles: VisualMedia[] = [];
 
@@ -48,9 +38,7 @@ export async function useWritePost({
               { status: 415 }
             );
           }
-          const filePath = `/uploads/${
-            user.id
-          }-${Date.now()}-${i}-${type.toLocaleLowerCase()}.${extension}`;
+          const filePath = `/uploads/${userId}-${Date.now()}-${i}-${type.toLocaleLowerCase()}.${extension}`;
           savedFiles.push({
             type,
             url: filePath,
@@ -76,7 +64,7 @@ export async function useWritePost({
                 url: file.url,
                 user: {
                   connect: {
-                    id: user.id,
+                    id: userId,
                   },
                 },
               })),
@@ -84,11 +72,11 @@ export async function useWritePost({
           }),
           user: {
             connect: {
-              id: user.id,
+              id: userId,
             },
           },
         },
-        select: selectPost(user.id),
+        select: selectPost(userId),
       });
 
       return NextResponse.json<PostType>({ ...res });
@@ -99,7 +87,7 @@ export async function useWritePost({
           visualMedia: true,
         },
         where: {
-          AND: [{ id: postId }, { userId: user.id }],
+          AND: [{ id: postId }, { userId: userId }],
         },
       });
 
@@ -116,7 +104,7 @@ export async function useWritePost({
         where: {
           id_userId: {
             id: postId!,
-            userId: user.id,
+            userId: userId,
           },
         },
         data: {
@@ -130,7 +118,7 @@ export async function useWritePost({
         where: {
           id_userId: {
             id: postId!,
-            userId: user.id,
+            userId: userId,
           },
         },
 
@@ -143,7 +131,7 @@ export async function useWritePost({
                 url: file.url,
                 user: {
                   connect: {
-                    id: user.id,
+                    id: userId,
                   },
                 },
               })),
@@ -155,7 +143,7 @@ export async function useWritePost({
             },
           }),
         },
-        select: selectPost(user.id),
+        select: selectPost(userId),
       });
 
       return NextResponse.json<PostType>({ ...res });
