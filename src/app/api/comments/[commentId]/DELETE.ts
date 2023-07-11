@@ -1,31 +1,24 @@
 /**
- * PUT /api/posts/:postId/comments/:commentId
- * - Allows an authenticated user to edit a comment on a post.
+ * DELETE /api/comments/:commentId
+ * - Allows an authenticated user to delete a comment on a post.
  */
 
 import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { verifyAccessToComment } from './verifyAccessToComment';
-import { commentWriteSchema } from '@/lib/validations/comment';
 
-export async function PUT(
+export async function DELETE(
   request: Request,
-  { params }: { params: { postId: string; commentId: string } }
+  { params }: { params: { commentId: string } }
 ) {
   const commentId = parseInt(params.commentId);
   if (!verifyAccessToComment(commentId)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
   }
 
-  const body = await request.json();
-  const { content } = commentWriteSchema.parse(body);
-
-  const res = await prisma.comment.update({
+  const res = await prisma.comment.delete({
     where: {
       id: commentId,
-    },
-    data: {
-      content,
     },
   });
 

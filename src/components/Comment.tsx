@@ -30,7 +30,7 @@ export default function Comment({
   const { confirm, prompt } = useBasicDialogs();
 
   const deleteComment = async () => {
-    const res = await fetch(`/api/posts/${postId}/comments/${commentId}`, {
+    const res = await fetch(`/api/comments/${commentId}`, {
       method: 'DELETE',
     });
 
@@ -48,7 +48,7 @@ export default function Comment({
   };
 
   const editComment = async (newValue: string) => {
-    const res = await fetch(`/api/posts/${postId}/comments/${commentId}`, {
+    const res = await fetch(`/api/comments/${commentId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
