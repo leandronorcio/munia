@@ -36,7 +36,11 @@ model Session {
 }
 
 model User {
+  // Do not change the `id` field, it must be permanent and immutable.
   id                 String             @id @default(cuid())
+  // The `username` can be updated anytime by the user.
+  // It will acquire the `id` as its default value.
+  username           String?
   name               String?
   email              String?            @unique
   gender             Gender?
