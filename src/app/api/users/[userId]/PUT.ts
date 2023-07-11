@@ -17,7 +17,7 @@ export async function PUT(
 
   const nonEmptyStringSchema = z.string().trim().min(1);
   const userAboutSchema = z.object({
-    id: nonEmptyStringSchema.optional(),
+    username: nonEmptyStringSchema.optional(),
     name: nonEmptyStringSchema.optional(),
     email: nonEmptyStringSchema.email().optional(),
     bio: nonEmptyStringSchema.optional().nullable(),
@@ -87,6 +87,7 @@ export async function PUT(
       }
     }
   } else {
+    console.log(validate.error.issues[0].message);
     return NextResponse.json(
       { error: validate.error.issues[0].message },
       { status: 400 }

@@ -48,19 +48,19 @@ export function About({
       </AboutItem>
 
       <AboutItem
-        field="id"
-        value={profileData.id}
-        label="ID / Handle"
+        field="username"
+        value={profileData.username}
+        label="Username"
         isOwnProfile={isOwnProfile}
       >
         <TextInput
-          placeholder="Enter ID"
-          value={profileDataControl.id || ''}
-          name="id"
+          placeholder="Enter Username"
+          value={profileDataControl.username || ''}
+          name="username"
           onChange={(e) => {
             setProfileDataControl((prev) => ({
               ...prev,
-              id: e.target.value,
+              username: e.target.value,
             }));
           }}
         />

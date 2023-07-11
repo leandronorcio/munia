@@ -97,12 +97,13 @@ export function AboutItem({
               className="stroke-gray-600 hover:stroke-black cursor-pointer"
               onClick={() => setIsEditing(true)}
             />
-            {value && ['id', 'name', 'email'].includes(field) === false && (
-              <Delete
-                onClick={setToNull}
-                className="stroke-gray-600 hover:stroke-black cursor-pointer"
-              />
-            )}
+            {value &&
+              ['username', 'name', 'email'].includes(field) === false && (
+                <Delete
+                  onClick={setToNull}
+                  className="stroke-gray-600 hover:stroke-black cursor-pointer"
+                />
+              )}
           </>
         )}
       </div>
