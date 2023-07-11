@@ -1,4 +1,4 @@
-export const selectPost = (userId: string) => ({
+export const selectPost = (userId: string | undefined) => ({
   id: true,
   content: true,
   createdAt: true,

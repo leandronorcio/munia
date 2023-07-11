@@ -1,3 +1,8 @@
+/**
+ * GET /api/users/:userId/posts
+ * - Returns the posts composed by a single user, specified
+ * by the :userId parameter.
+ */
 import { NextResponse } from 'next/server';
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import prisma from '@/lib/prisma';
@@ -13,14 +18,13 @@ export async function GET(
    * user requesting the Posts have like them or not.
    */
   const [user] = await useProtectApiRoute();
-  if (!user) return NextResponse.json({}, { status: 401 });
 
   const { searchParams } = new URL(request.url);
   const limit = parseInt(searchParams.get('limit') || '5');
   const cursor = parseInt(searchParams.get('cursor') || '0');
 
   const res = await prisma.post.findMany({
-    select: selectPost(user.id),
+    select: selectPost(user?.id),
     where: {
       userId: params.userId,
     },
