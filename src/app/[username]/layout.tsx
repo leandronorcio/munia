@@ -4,7 +4,7 @@ import CoverPhoto from './CoverPhoto';
 import Tabs from './Tabs';
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { getProfile } from './getProfile';
-import type { User } from '@prisma/client';
+import { GetUser } from 'types';
 
 export default async function Layout({
   children,
@@ -15,7 +15,7 @@ export default async function Layout({
 }) {
   const [user] = await useProtectApiRoute();
 
-  const profile: User | null = await getProfile(params.username);
+  const profile: GetUser | null = await getProfile(params.username);
   const isOwnProfile = profile?.id === user?.id;
 
   return (
@@ -31,7 +31,7 @@ export default async function Layout({
           <CoverPhoto isOwnProfile={isOwnProfile} profile={profile!} />
         </div>
         <ProfilePhoto isOwnProfile={isOwnProfile} profile={profile!} />
-        {!isOwnProfile && <ProfileActionButtons />}
+        {!isOwnProfile && <ProfileActionButtons profile={profile!} />}
       </div>
 
       <div className="px-4">
@@ -41,11 +41,13 @@ export default async function Layout({
           <div className="flex flex-row">
             <p className="text-lg mr-6 hidden lg:block">&bull;</p>
             <p className="text-lg mr-6 font-semibold">
-              <span>0</span> <span className="text-gray-500">Followers</span>
+              <span>{profile?.followerCount}</span>{' '}
+              <span className="text-gray-500">Followers</span>
             </p>
             <p className="text-lg mr-6">&bull;</p>
             <p className="text-lg font-semibold">
-              <span>0</span> <span className="text-gray-500">Following</span>
+              <span>{profile?.followingCount}</span>{' '}
+              <span className="text-gray-500">Following</span>
             </p>
           </div>
         </div>

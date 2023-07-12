@@ -1,6 +1,6 @@
-import prisma from '@/lib/prisma';
-import type { User } from '@prisma/client';
+import prisma from '@/lib/prisma/prisma';
 import { notFound } from 'next/navigation';
+import { GetUser } from 'types';
 
 export async function getProfile(username: string) {
   // Get the id of the user from the given username.
@@ -19,7 +19,7 @@ export async function getProfile(username: string) {
 
   // Use the id to fetch from the /api/users/:userId endpoint
   const res = await fetch(`${process.env.URL}/api/users/${check.id}`);
-  const { user }: { user: User | null } = await res.json();
+  const user: GetUser | null = await res.json();
 
   return user;
 }
