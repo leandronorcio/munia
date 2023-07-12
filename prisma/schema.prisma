@@ -37,12 +37,12 @@ model Session {
 
 model User {
   // Do not change the `id` field, it must be permanent and immutable.
-  id                 String             @id @default(cuid())
+  id                 String              @id @default(cuid())
   // The `username` can be updated anytime by the user.
   // It will acquire the `id` as its default value.
   username           String?
   name               String?
-  email              String?            @unique
+  email              String?             @unique
   gender             Gender?
   birthDate          DateTime?
   phoneNumber        String?
@@ -60,6 +60,8 @@ model User {
   visualMedia        VisualMedia[]
   postLikes          PostLike[]
   comments           Comment[]
+  followers          Follow[]            @relation("UserFollowers")
+  following          Follow[]            @relation("UserFollowing")
 }
 
 model VerificationToken {
@@ -68,6 +70,16 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Follow {
+  id          Int    @id @default(autoincrement())
+  follower    User   @relation("UserFollowers", fields: [followerId], references: [id], onDelete: Cascade)
+  followerId  String
+  following   User   @relation("UserFollowing", fields: [followingId], references: [id], onDelete: Cascade)
+  followingId String
+
+  @@unique([followerId, followingId])
 }
 
 model Post {
@@ -79,7 +91,6 @@ model Post {
   userId      String
   postLikes   PostLike[]
   comments    Comment[]
-
 }
 
 model PostLike {
@@ -101,7 +112,6 @@ model Comment {
   userId    String
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
-
 }
 
 model VisualMedia {
