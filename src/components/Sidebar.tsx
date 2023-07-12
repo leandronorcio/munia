@@ -12,7 +12,7 @@ import { useSession } from 'next-auth/react';
 
 export default function Sidebar() {
   const { data: session } = useSession();
-  const id = session?.user ? session.user.id : '/usernotfound';
+  const username = session?.user ? session.user.username : '/not-found';
 
   return (
     <div className="transition-all duration-500 pt-28 w-[240px] h-screen fixed -left-[240px] md:left-0 flex flex-col py-8 px-6 last-child:mt-auto">
@@ -22,7 +22,7 @@ export default function Sidebar() {
           Icon: GridFeedCards,
           route: '/',
         },
-        { title: 'My Profile', Icon: Profile, route: `/${id}` },
+        { title: 'My Profile', Icon: Profile, route: `/${username}` },
         { title: 'Messages', Icon: Mail, route: '/messages' },
         {
           title: 'Notifications',

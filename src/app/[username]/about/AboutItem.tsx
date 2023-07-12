@@ -46,9 +46,9 @@ export function AboutItem({
     if (res.ok) {
       update();
       setIsEditing(false);
-      const { id } = (await res.json()) as User;
-      if (field === 'id') {
-        router.replace(`/${id}/about`);
+      const { username } = (await res.json()) as User;
+      if (field === 'username') {
+        router.replace(`/${username}/about`);
         return;
       }
       if (field === 'name') router.refresh();
