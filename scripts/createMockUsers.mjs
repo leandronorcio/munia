@@ -64,6 +64,7 @@ function createRandomUser() {
 
   return {
     id,
+    username: id,
     name: fullName,
     email,
     gender: isGenderNonBinary ? 'NONBINARY' : gender.toUpperCase(),
@@ -83,7 +84,7 @@ async function main() {
     data: fakeUsers,
     skipDuplicates: true,
   });
-  console.log(res);
+  console.log(`${res.count} fake users have been successfully created.`);
 }
 
 main()
