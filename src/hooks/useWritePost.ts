@@ -1,6 +1,6 @@
-import { selectPost } from '@/lib/selectPost';
+import { selectPost } from '@/lib/prisma/selectPost';
 import { listOfKeyValuesToObject } from '@/lib/listOfKeyValuesToObject';
-import prisma from '@/lib/prisma';
+import prisma from '@/lib/prisma/prisma';
 import { unlink, writeFile } from 'fs/promises';
 import { NextResponse } from 'next/server';
 import { VisualMedia, PostType } from 'types';
@@ -102,10 +102,7 @@ export async function useWritePost({
       // Delete the visualMedia records from the database.
       await prisma.post.update({
         where: {
-          id_userId: {
-            id: postId!,
-            userId: userId,
-          },
+          id: postId,
         },
         data: {
           visualMedia: {
@@ -116,10 +113,7 @@ export async function useWritePost({
 
       const res = await prisma.post.update({
         where: {
-          id_userId: {
-            id: postId!,
-            userId: userId,
-          },
+          id: postId,
         },
 
         data: {

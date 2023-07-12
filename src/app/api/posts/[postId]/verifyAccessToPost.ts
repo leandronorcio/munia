@@ -1,5 +1,5 @@
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
-import prisma from '@/lib/prisma';
+import prisma from '@/lib/prisma/prisma';
 
 export const verifyAccessToPost = async (postId: number) => {
   const [user] = await useProtectApiRoute();

@@ -5,7 +5,7 @@
 
 import { NextResponse } from 'next/server';
 import { verifyAccessToPost } from './verifyAccessToPost';
-import prisma from '@/lib/prisma';
+import prisma from '@/lib/prisma/prisma';
 import { unlink } from 'fs/promises';
 
 export async function DELETE(

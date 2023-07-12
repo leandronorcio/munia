@@ -1,6 +1,6 @@
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { convertKebabToAllCaps } from '@/lib/convertKebabToAllCaps';
-import prisma from '@/lib/prisma';
+import prisma from '@/lib/prisma/prisma';
 import { Gender, RelationshipStatus, User } from '@prisma/client';
 import { NextResponse } from 'next/server';
 

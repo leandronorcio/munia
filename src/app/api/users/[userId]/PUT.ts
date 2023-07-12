@@ -2,7 +2,7 @@ import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { sub } from 'date-fns';
-import prisma from '@/lib/prisma';
+import prisma from '@/lib/prisma/prisma';
 import { Prisma } from '@prisma/client';
 
 export async function PUT(

@@ -1,4 +1,4 @@
-import prisma from '@/lib/prisma';
+import prisma from '@/lib/prisma/prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import GithubProvider from 'next-auth/providers/github';
 import FacebookProvider from 'next-auth/providers/facebook';

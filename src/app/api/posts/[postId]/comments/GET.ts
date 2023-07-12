@@ -3,7 +3,7 @@
  * - Returns the comments of a post specified by the postId provided.
  */
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import prisma from '@/lib/prisma/prisma';
 
 export async function GET(
   request: Request,

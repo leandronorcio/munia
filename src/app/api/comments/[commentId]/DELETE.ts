@@ -3,7 +3,7 @@
  * - Allows an authenticated user to delete a comment on a post.
  */
 
-import prisma from '@/lib/prisma';
+import prisma from '@/lib/prisma/prisma';
 import { NextResponse } from 'next/server';
 import { verifyAccessToComment } from './verifyAccessToComment';
 

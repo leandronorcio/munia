@@ -6,7 +6,7 @@
 
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import prisma from '@/lib/prisma/prisma';
 import { CommentType } from 'types';
 import { commentWriteSchema } from '@/lib/validations/comment';
 import { z } from 'zod';

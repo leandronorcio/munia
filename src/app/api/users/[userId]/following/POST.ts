@@ -8,7 +8,7 @@
  */
 
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
-import prisma from '@/lib/prisma';
+import prisma from '@/lib/prisma/prisma';
 import { followPostSchema } from '@/lib/validations/follow';
 import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
