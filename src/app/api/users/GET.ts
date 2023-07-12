@@ -1,8 +1,11 @@
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { convertKebabToAllCaps } from '@/lib/convertKebabToAllCaps';
+import { includeToUser } from '@/lib/prisma/includeToUser';
 import prisma from '@/lib/prisma/prisma';
-import { Gender, RelationshipStatus, User } from '@prisma/client';
+import { toGetUser } from '@/lib/prisma/toGetUser';
+import { Gender, RelationshipStatus } from '@prisma/client';
 import { NextResponse } from 'next/server';
+import { FindUserResult, GetUser } from 'types';
 
 export async function GET(request: Request) {
   const [user] = await useProtectApiRoute();
@@ -13,14 +16,15 @@ export async function GET(request: Request) {
   const relationshipStatus = convertKebabToAllCaps(
     searchParams.get('relationship-status')
   );
-  const followStatus = convertKebabToAllCaps(searchParams.get('follow-status'));
+  // const followStatus = convertKebabToAllCaps(searchParams.get('follow-status'));
   const limit = parseInt(searchParams.get('limit') || '4');
   const offset = parseInt(searchParams.get('offset') || '0');
   // const orderBy =
   //   (searchParams.get('order-by') as 'birthDate' | null) || 'birthDate';
   // const sort = (searchParams.get('sort') as 'asc' | 'desc' | null) || 'asc';
 
-  const res = await prisma.user.findMany({
+  const res: FindUserResult[] | null = await prisma.user.findMany({
+    include: includeToUser(user.id),
     where: {
       ...(gender !== null && { gender: gender as Gender }),
       ...(relationshipStatus !== null && {
@@ -33,5 +37,11 @@ export async function GET(request: Request) {
     //   [orderBy]: sort,
     // },
   });
-  return NextResponse.json<User[]>(res);
+
+  if (res === null) {
+    return NextResponse.json(null);
+  }
+
+  const users = res.map((singleUser) => toGetUser(singleUser));
+  return NextResponse.json<GetUser[] | null>(users);
 }

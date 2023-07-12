@@ -5,10 +5,26 @@ import {
   VisualMediaType,
   User,
   About,
+  Follow,
 } from '@prisma/client';
 import type { DefaultUser } from 'next-auth';
 
 export interface CustomUser extends DefaultUser, User {}
+
+// Use this type when finding a User in prisma.
+export interface FindUserResult extends User {
+  followers: Follow[];
+  _count: {
+    following: number;
+    followers: number;
+  };
+}
+
+/**
+ * The FindUserResult shall be converted to GetUser, use
+ * the ./src/lib/prisma/toGetUser.ts function to do this.
+ * GetUser must be the response of GET users route handlers.
+ */
 export interface GetUser extends User {
   followerCount: number | null;
   followingCount: number | null;
