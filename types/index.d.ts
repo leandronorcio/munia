@@ -9,6 +9,11 @@ import {
 import type { DefaultUser } from 'next-auth';
 
 export interface CustomUser extends DefaultUser, User {}
+export interface GetUser extends User {
+  followerCount: number | null;
+  followingCount: number | null;
+  isFollowing: boolean | null; // true when the authenticated user is following the user being requested
+}
 
 export interface PostType {
   id: number;
