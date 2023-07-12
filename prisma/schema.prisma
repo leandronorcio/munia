@@ -60,8 +60,8 @@ model User {
   visualMedia        VisualMedia[]
   postLikes          PostLike[]
   comments           Comment[]
-  followers          Follow[]            @relation("UserFollowers")
-  following          Follow[]            @relation("UserFollowing")
+  followers          Follow[]            @relation("following")
+  following          Follow[]            @relation("follower")
 }
 
 model VerificationToken {
@@ -74,9 +74,9 @@ model VerificationToken {
 
 model Follow {
   id          Int    @id @default(autoincrement())
-  follower    User   @relation("UserFollowers", fields: [followerId], references: [id], onDelete: Cascade)
+  follower    User   @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
   followerId  String
-  following   User   @relation("UserFollowing", fields: [followingId], references: [id], onDelete: Cascade)
+  following   User   @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
   followingId String
 
   @@unique([followerId, followingId])
