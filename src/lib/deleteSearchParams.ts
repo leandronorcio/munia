@@ -4,7 +4,7 @@ export const deleteSearchParams = (type: string) => {
 
   // Delete the specified search parameter
   newSearchParams.delete(type.toLocaleLowerCase());
-  console.log(newSearchParams.toString());
+
   // Construct the updated URL pathname with the deleted search parameter
   const newPathname = `${
     window.location.pathname

@@ -45,7 +45,7 @@ export function ProfileActionButtons({ profile }: { profile: GetUser }) {
   };
 
   return (
-    <div className="absolute -bottom-20 right-2 md:right-0 flex flex-row items-center gap-2 md:gap-4">
+    <div className="flex flex-row items-center gap-2 md:gap-4">
       <Button
         onClick={isFollowing ? unFollow : follow}
         mode={isFollowing ? 'subtle' : 'primary'}

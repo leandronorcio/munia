@@ -2,6 +2,7 @@ import { Gender, RelationshipStatus } from '@prisma/client';
 import { Filters } from './Filters';
 import { headers } from 'next/headers';
 import { DiscoverProfiles } from './DiscoverProfiles';
+import { GetUser } from 'types';
 
 interface DiscoverSearchParams {
   gender?: Gender;
@@ -15,7 +16,7 @@ async function getProfiles({
   searchParams,
 }: {
   searchParams: DiscoverSearchParams;
-}) {
+}): Promise<GetUser[]> {
   const params = new URLSearchParams([
     ...Object.entries(searchParams),
   ]).toString();
@@ -24,9 +25,9 @@ async function getProfiles({
     headers: headers(),
   });
   if (!res.ok) {
-    return new Error('Failed to fetch profiles.');
+    throw Error('Failed to fetch profiles.');
   }
-  return await res.json();
+  return (await res.json()) as GetUser[];
 }
 
 export default async function Discover({

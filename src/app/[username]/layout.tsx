@@ -1,4 +1,4 @@
-import { ProfileActionButtons } from './ProfileActionButtons';
+import { ProfileActionButtons } from '../../components/ProfileActionButtons';
 import ProfilePhoto from './ProfilePhoto';
 import CoverPhoto from './CoverPhoto';
 import Tabs from './Tabs';
@@ -31,7 +31,11 @@ export default async function Layout({
           <CoverPhoto isOwnProfile={isOwnProfile} profile={profile!} />
         </div>
         <ProfilePhoto isOwnProfile={isOwnProfile} profile={profile!} />
-        {!isOwnProfile && <ProfileActionButtons profile={profile!} />}
+        {!isOwnProfile && (
+          <div className="absolute -bottom-20 right-2 md:right-0">
+            <ProfileActionButtons profile={profile!} />
+          </div>
+        )}
       </div>
 
       <div className="px-4">

@@ -3,15 +3,15 @@ import { DiscoverProfile } from '@/components/DiscoverProfile';
 import useOnScreen from '@/hooks/useOnScreen';
 import { useToast } from '@/hooks/useToast';
 import { CircleActionsSuccess } from '@/svg_components';
-import type { User } from '@prisma/client';
 import { useEffect, useRef, useState } from 'react';
+import { GetUser } from 'types';
 
 export function DiscoverProfiles({
   initialProfiles,
 }: {
-  initialProfiles: User[];
+  initialProfiles: GetUser[];
 }) {
-  const [profiles, setProfiles] = useState<User[]>(initialProfiles);
+  const [profiles, setProfiles] = useState<GetUser[]>(initialProfiles);
   const [isMaxedOut, setIsMaxedOut] = useState(false);
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
@@ -26,7 +26,7 @@ export function DiscoverProfiles({
     if (!res.ok) {
       showToast({ type: 'error', title: 'Error Fetching Posts' });
     }
-    const retrievedProfiles = (await res.json()) as User[];
+    const retrievedProfiles = (await res.json()) as GetUser[];
     if (retrievedProfiles.length === 0) return setIsMaxedOut(true);
     setProfiles((prev) => [...prev, ...retrievedProfiles]);
   };
