@@ -11,9 +11,7 @@ import { ToastContextProvider } from '@/contexts/ToastContext';
 import { VisualMediaModalContextProvider } from '@/contexts/VisualMediaModalContext';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
-import BottomMenu from '../components/BottomMenu';
 import { CreatePostModalContextProvider } from '@/contexts/CreatePostModalContext';
-import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 import { cn } from '@/lib/cn';
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 
@@ -41,28 +39,48 @@ export default async function RootLayout({
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
         />
       </head>
-      <body className={cn('bg-violet-100', poppins.className)}>
+      <body
+        className={cn(
+          'bg-violet-100 h-screen overflow-hidden',
+          poppins.className
+        )}
+      >
         <ToastContextProvider>
           <SessionProviderContext>
             <BasicDialogsContextProvider>
               <VisualMediaModalContextProvider>
                 <CreatePostModalContextProvider>
-                  <div className="h-screen flex flex-col">
-                    {user ? (
-                      <>
-                        <Navbar />
-                        <Sidebar />
-                        <BottomMenu />
-                        <div className="transition-[margin] duration-500 ml-0 md:ml-[240px] mt-20">
-                          <ResponsiveContainer className="mb-14 transition-[width,padding]">
-                            {children}
-                          </ResponsiveContainer>
+                  {user ? (
+                    <>
+                      <div className="flex flex-col h-full">
+                        <div className="flex-initial">
+                          <Navbar />
                         </div>
-                      </>
-                    ) : (
-                      children
-                    )}
-                  </div>
+
+                        <div className="flex-1 overflow-y-hidden">
+                          <div className="flex h-full">
+                            <div className="flex-initial hidden md:block">
+                              <Sidebar />
+                            </div>
+                            <div className="flex-1">
+                              {/**
+                               *  Child pages/layouts must be wrapped within the <PageWrapper>
+                               *  component to make the content scrollable when necessary.
+                               *
+                               *  Why not wrap them once and for all here? Because it will maintain
+                               *  a single scroll amount across pages, resulting into unexpected behavior
+                               *  e.g. navigating to another page is not scrolled to the top of the page
+                               *  but instead maintains the scroll amount of the prev page.
+                               */}
+                              {children}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    children
+                  )}
                 </CreatePostModalContextProvider>
               </VisualMediaModalContextProvider>
             </BasicDialogsContextProvider>

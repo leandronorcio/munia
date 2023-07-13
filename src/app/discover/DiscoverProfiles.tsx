@@ -61,9 +61,11 @@ export function DiscoverProfiles({
           <DiscoverProfile key={profile.id} user={profile} />
         ))}
       </div>
-      <div className="mt-6" ref={bottomElRef}></div>
+      <div className="mt-4" ref={bottomElRef}>
+        &nbsp;
+      </div>
       {isMaxedOut && (
-        <div className="grid place-items-center mt-8">
+        <div className="grid place-items-center mb-6">
           <div className="px-8 py-6 inline-block rounded-xl bg-green-200">
             <div className="flex items-center gap-4">
               <CircleActionsSuccess

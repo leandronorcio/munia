@@ -15,7 +15,7 @@ export default function Sidebar() {
   const username = session?.user ? session.user.username : '/not-found';
 
   return (
-    <div className="transition-all duration-500 pt-28 w-[240px] h-screen fixed -left-[240px] md:left-0 flex flex-col py-8 px-6 last-child:mt-auto">
+    <div className="h-full flex flex-col py-8 px-6">
       {[
         {
           title: 'News Feed',

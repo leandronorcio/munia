@@ -3,6 +3,7 @@ import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { LogInSquare, TwoPeople } from '@/svg_components';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
+import { PageWrapper } from '@/components/ui/PageWrapper';
 
 function Onboarding() {
   return (
@@ -46,9 +47,11 @@ function Onboarding() {
 
 function Feed() {
   return (
-    <div className="px-4 py-4 md:px-0 md:py-0">
-      <h1 className="font-bold text-4xl mb-6">News Feed</h1>
-    </div>
+    <PageWrapper>
+      <div className="px-4 py-4 md:px-0 md:py-0">
+        <h1 className="font-bold text-4xl mb-6">News Feed</h1>
+      </div>
+    </PageWrapper>
   );
 }
 
