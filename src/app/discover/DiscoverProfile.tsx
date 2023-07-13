@@ -1,5 +1,5 @@
 import { ProfileActionButtons } from '@/components/ProfileActionButtons';
-import ProfilePhoto from './ui/ProfilePhoto';
+import ProfilePhoto from '../../components/ui/ProfilePhoto';
 import { memo } from 'react';
 import { GetUser } from 'types';
 

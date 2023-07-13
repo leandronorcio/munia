@@ -15,6 +15,7 @@ import { CreatePostModalContextProvider } from '@/contexts/CreatePostModalContex
 import { cn } from '@/lib/cn';
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import BottomMenu from '@/components/BottomMenu';
+import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
@@ -65,6 +66,7 @@ export default async function RootLayout({
                             </div>
                             <div className="flex-1">
                               {/**
+                               *  IGNORE this comment for now:
                                *  Child pages/layouts must be wrapped within the <PageWrapper>
                                *  component to make the content scrollable when necessary.
                                *
@@ -73,7 +75,11 @@ export default async function RootLayout({
                                *  e.g. navigating to another page is not scrolled to the top of the page
                                *  but instead maintains the scroll amount of the prev page.
                                */}
-                              {children}
+                              <div className="h-full overflow-y-scroll">
+                                <ResponsiveContainer>
+                                  {children}
+                                </ResponsiveContainer>
+                              </div>
                             </div>
                           </div>
                         </div>

@@ -3,7 +3,6 @@ import { Filters } from './Filters';
 import { headers } from 'next/headers';
 import { DiscoverProfiles } from './DiscoverProfiles';
 import { GetUser } from 'types';
-import { PageWrapper } from '@/components/ui/PageWrapper';
 
 interface DiscoverSearchParams {
   gender?: Gender;
@@ -38,12 +37,9 @@ export default async function Discover({
 }) {
   const initialProfiles = await getProfiles({ searchParams });
   return (
-    <PageWrapper>
-      <div className="mt-8 p-4 md:p-0">
-        <h1 className="font-bold text-4xl mb-6">Discover People</h1>
-        <Filters />
-        <DiscoverProfiles initialProfiles={initialProfiles} />
-      </div>
-    </PageWrapper>
+    <div className="mt-0 md:mt-8 p-4 md:p-0">
+      <Filters />
+      <DiscoverProfiles initialProfiles={initialProfiles} />
+    </div>
   );
 }

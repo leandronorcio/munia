@@ -1,5 +1,5 @@
 'use client';
-import { DiscoverProfile } from '@/components/DiscoverProfile';
+import { DiscoverProfile } from '@/app/discover/DiscoverProfile';
 import useOnScreen from '@/hooks/useOnScreen';
 import { useToast } from '@/hooks/useToast';
 import { CircleActionsSuccess } from '@/svg_components';
