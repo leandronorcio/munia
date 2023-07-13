@@ -5,7 +5,7 @@ import useOnScreen from '@/hooks/useOnScreen';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useToast } from '@/hooks/useToast';
 import { CreatePostModalLauncher } from './CreatePostModalLauncher';
-import { PostType } from 'types';
+import { GetPost } from 'types';
 
 export function Posts({
   type,
@@ -16,7 +16,7 @@ export function Posts({
   userId: string;
   shouldShowCreatePost: boolean;
 }) {
-  const [posts, setPosts] = useState<PostType[]>([]);
+  const [posts, setPosts] = useState<GetPost[]>([]);
   const [cursor, setCursor] = useState<number | null>(null);
   const [maxedOut, setMaxedOut] = useState(false);
   const bottomElRef = useRef<HTMLDivElement>(null);
@@ -43,7 +43,7 @@ export function Posts({
     }
 
     const { posts: retrievedPosts } = (await res.json()) as {
-      posts: PostType[];
+      posts: GetPost[];
     };
     if (retrievedPosts.length === 0) {
       setMaxedOut(true);

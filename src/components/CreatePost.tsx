@@ -1,6 +1,5 @@
 'use client';
 import Button from '@/components/ui/Button';
-import ProfilePhoto from '@/components/ui/ProfilePhoto';
 import { TextArea } from '@/components/ui/TextArea';
 import { CreatePostOptions } from './CreatePostOptions';
 import { useEffect, useRef, useState } from 'react';
@@ -17,6 +16,7 @@ import {
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { useToast } from '@/hooks/useToast';
 import { VisualMedia } from 'types';
+import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 
 export default function CreatePost({
   toEditValues,
@@ -161,7 +161,7 @@ export default function CreatePost({
       </div>
       <div className="flex flex-row mb-[18px] px-4">
         <div className="w-11 h-11">
-          <ProfilePhoto />
+          <ProfilePhotoOwn />
         </div>
         <div className="flex-grow flex flex-col justify-center">
           <TextArea

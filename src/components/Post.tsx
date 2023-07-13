@@ -16,7 +16,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { useToast } from '@/hooks/useToast';
 import { useCreatePost } from '@/hooks/useCreatePost';
-import { PostType } from 'types';
+import { GetPost } from 'types';
 
 export const Post = memo(
   function Post({
@@ -28,8 +28,8 @@ export const Post = memo(
     postLikes,
     _count,
     setPosts,
-  }: PostType & {
-    setPosts: React.Dispatch<React.SetStateAction<PostType[]>>;
+  }: GetPost & {
+    setPosts: React.Dispatch<React.SetStateAction<GetPost[]>>;
   }) {
     const { data: session } = useSession();
     const userId = session?.user?.id;
@@ -108,9 +108,9 @@ export const Post = memo(
         <div className="flex justify-between items-center px-4 py-4 sm:px-8 sm:py-6">
           <ProfileBlock
             name={author.name!}
+            username={author.username!}
             time={formatDistanceStrict(new Date(createdAt), new Date())}
             photoUrl={author.profilePhoto!}
-            isOwn={isOwnPost}
           />
           {isOwnPost && (
             <DropdownMenu>

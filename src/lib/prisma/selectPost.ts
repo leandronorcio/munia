@@ -5,6 +5,7 @@ export const selectPost = (userId: string | undefined) => ({
   user: {
     select: {
       id: true,
+      username: true,
       name: true,
       profilePhoto: true,
     },

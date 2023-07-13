@@ -1,8 +1,8 @@
 import { EmojiHappySmile, Image } from '@/svg_components';
-import ProfilePhoto from './ui/ProfilePhoto';
 import { TextArea } from './ui/TextArea';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { CreatePostCallback } from '@/contexts/CreatePostModalContext';
+import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 
 export function CreatePostModalLauncher({
   onSuccess,
@@ -14,7 +14,7 @@ export function CreatePostModalLauncher({
     <div className="rounded-xl bg-white  px-4 py-4 sm:px-8 sm:py-6">
       <div className="flex flex-row mb-[18px]">
         <div className="w-12 h-12">
-          <ProfilePhoto />
+          <ProfilePhotoOwn />
         </div>
         <div
           onClick={() => {

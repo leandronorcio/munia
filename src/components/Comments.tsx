@@ -2,11 +2,11 @@
 import { useEffect, useState } from 'react';
 import Comment from './Comment';
 import Button from './ui/Button';
-import ProfilePhoto from './ui/ProfilePhoto';
 import { TextArea } from './ui/TextArea';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useToast } from '@/hooks/useToast';
 import { CommentType } from 'types';
+import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 
 export function Comments({
   postId,
@@ -85,9 +85,10 @@ export function Comments({
           </motion.div>
         ))}
       </AnimatePresence>
+
       <div className="flex flex-row mt-3">
         <div className="w-11 h-11">
-          <ProfilePhoto />
+          <ProfilePhotoOwn />
         </div>
         <div className="flex-grow flex flex-col justify-center">
           <TextArea

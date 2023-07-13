@@ -31,7 +31,7 @@ export interface GetUser extends User {
   isFollowing: boolean | null; // true when the authenticated user is following the user being requested
 }
 
-export interface PostType {
+export interface GetPost {
   id: number;
   content: string | null;
   createdAt: Date;
@@ -45,6 +45,7 @@ export interface PostType {
   }[];
   user: {
     id: string;
+    username: string | null;
     name: string | null;
     profilePhoto: string | null;
   };

@@ -1,5 +1,5 @@
 import { ProfileActionButtons } from '@/components/ProfileActionButtons';
-import ProfilePhoto from '../../components/ui/ProfilePhoto';
+import { ProfilePhoto } from '../../components/ui/ProfilePhoto';
 import { memo } from 'react';
 import { GetUser } from 'types';
 
@@ -11,7 +11,7 @@ export const DiscoverProfile = memo(
           <div className="w-24 h-24">
             <ProfilePhoto
               photoUrl={user.profilePhoto || undefined}
-              username={user.username || undefined}
+              username={user.username!}
             />
           </div>
           <ProfileActionButtons profile={user} />
