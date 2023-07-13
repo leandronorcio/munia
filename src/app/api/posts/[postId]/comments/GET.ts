@@ -4,12 +4,13 @@
  */
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma/prisma';
+import { CommentType } from 'types';
 
 export async function GET(
   request: Request,
   { params }: { params: { postId: string } }
 ) {
-  const res = await prisma.comment.findMany({
+  const res: CommentType[] = await prisma.comment.findMany({
     where: {
       postId: parseInt(params.postId),
     },
@@ -21,6 +22,7 @@ export async function GET(
       user: {
         select: {
           id: true,
+          username: true,
           name: true,
           profilePhoto: true,
         },

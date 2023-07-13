@@ -2,6 +2,7 @@ import ProfilePhoto from './ui/ProfilePhoto';
 
 export default function ProfileBlock({
   type = 'post',
+  username,
   name,
   time,
   photoUrl,
@@ -9,6 +10,7 @@ export default function ProfileBlock({
 }: {
   type?: 'post' | 'comment';
   name: string;
+  username: string;
   time: string;
   photoUrl: string;
   isOwn: boolean;
@@ -16,7 +18,10 @@ export default function ProfileBlock({
   return (
     <div className="flex gap-3 overflow-x-auto no-scrollbar">
       <div className="w-12 h-12 flex-shrink-0">
-        <ProfilePhoto photoUrl={isOwn ? undefined : photoUrl} />
+        <ProfilePhoto
+          photoUrl={isOwn ? undefined : photoUrl}
+          username={username}
+        />
       </div>
 
       <div className="flex flex-col">

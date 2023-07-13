@@ -70,6 +70,7 @@ export interface CommentType {
   postId: number;
   user: {
     id: string;
+    username: string | null;
     name: string | null;
     profilePhoto: string | null;
   };

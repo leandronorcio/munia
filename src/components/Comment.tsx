@@ -71,15 +71,16 @@ export default function Comment({
   return (
     <div className="flex flex-col items-start">
       <div className="flex w-full justify-between">
-        {isOwnComment && (
-          <>
-            <ProfileBlock
-              type="comment"
-              name={author.name!}
-              photoUrl={author.profilePhoto!}
-              time={formatDistanceStrict(new Date(createdAt), new Date())}
-              isOwn={isOwnComment}
-            />
+        <>
+          <ProfileBlock
+            type="comment"
+            name={author.name!}
+            username={author.username!}
+            photoUrl={author.profilePhoto!}
+            time={formatDistanceStrict(new Date(createdAt), new Date())}
+            isOwn={isOwnComment}
+          />
+          {isOwnComment && (
             <DropdownMenu>
               <DropdownItem
                 onClick={() => {
@@ -107,8 +108,8 @@ export default function Comment({
                 Edit Comment
               </DropdownItem>
             </DropdownMenu>
-          </>
-        )}
+          )}
+        </>
       </div>
       <p className="-mt-3 ml-[60px] p-3 bg-slate-200 rounded-2xl">{content}</p>
     </div>
