@@ -14,6 +14,7 @@ import Sidebar from '../components/Sidebar';
 import { CreatePostModalContextProvider } from '@/contexts/CreatePostModalContext';
 import { cn } from '@/lib/cn';
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
+import BottomMenu from '@/components/BottomMenu';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
@@ -75,6 +76,10 @@ export default async function RootLayout({
                               {children}
                             </div>
                           </div>
+                        </div>
+
+                        <div className="flex-initial md:hidden">
+                          <BottomMenu />
                         </div>
                       </div>
                     </>
