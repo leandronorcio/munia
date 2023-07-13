@@ -1,6 +1,7 @@
 import { Posts } from '@/components/Posts';
 import { getProfile } from './getProfile';
-import type { User } from '@prisma/client';
+import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
+import { GetUser } from 'types';
 
 // Posts sub-page.
 export default async function Page({
@@ -8,6 +9,14 @@ export default async function Page({
 }: {
   params: { username: string };
 }) {
-  const profile: User | null = await getProfile(params.username);
-  return <Posts type="profile" userId={profile?.id!} />;
+  const [user] = await useProtectApiRoute();
+  const profile: GetUser | null = await getProfile(params.username);
+  const shouldShowCreatePost = user?.id === profile?.id;
+  return (
+    <Posts
+      type="profile"
+      shouldShowCreatePost={shouldShowCreatePost}
+      userId={profile?.id!}
+    />
+  );
 }

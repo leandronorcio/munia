@@ -10,9 +10,11 @@ import { PostType } from 'types';
 export function Posts({
   type,
   userId,
+  shouldShowCreatePost,
 }: {
   type: 'profile' | 'newsFeed';
   userId: string;
+  shouldShowCreatePost: boolean;
 }) {
   const [posts, setPosts] = useState<PostType[]>([]);
   const [cursor, setCursor] = useState<number | null>(null);
@@ -68,9 +70,11 @@ export function Posts({
   return (
     <div className="min-h-[830px] flex flex-col justify-between">
       <div className="flex flex-col">
-        <CreatePostModalLauncher
-          onSuccess={(post) => setPosts((prev) => [post, ...prev])}
-        />
+        {shouldShowCreatePost && (
+          <CreatePostModalLauncher
+            onSuccess={(post) => setPosts((prev) => [post, ...prev])}
+          />
+        )}
 
         <AnimatePresence>
           {posts.map((post, i) => {
