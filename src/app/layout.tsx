@@ -16,6 +16,7 @@ import { cn } from '@/lib/cn';
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import BottomMenu from '@/components/BottomMenu';
 import { CountContextProvider } from '@/contexts/CountContext';
+import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
@@ -41,8 +42,9 @@ export default async function RootLayout({
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
         />
       </head>
-      {/** USING .h-screen breaks the scrollRestoration of NextJS */}
-      <body className={cn('bg-violet-100', poppins.className)}>
+      <body
+        className={cn('bg-violet-100 overflow-y-scroll', poppins.className)}
+      >
         <ToastContextProvider>
           <SessionProviderContext>
             <BasicDialogsContextProvider>
@@ -61,16 +63,7 @@ export default async function RootLayout({
                           <BottomMenu />
                         </div>
                         <div className="ml-0 md:ml-[220px] mt-[80px]">
-                          {/**
-                           *  Child pages/layouts must be wrapped within the <PageWrapper>
-                           *  component to make the content scrollable when necessary.
-                           *
-                           *  Why not wrap them once and for all here? Because it will maintain
-                           *  a single scroll amount across pages, resulting into unexpected behavior
-                           *  e.g. navigating to another page is not scrolled to the top of the page
-                           *  but instead maintains the scroll amount of the prev page.
-                           */}
-                          {children}
+                          <ResponsiveContainer>{children}</ResponsiveContainer>
                         </div>
                       </>
                     ) : (

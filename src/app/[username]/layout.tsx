@@ -5,7 +5,6 @@ import Tabs from './Tabs';
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { getProfile } from './getProfile';
 import { GetUser } from 'types';
-import { PageWrapper } from '@/components/ui/PageWrapper';
 
 export default async function Layout({
   children,
@@ -20,7 +19,7 @@ export default async function Layout({
   const isOwnProfile = profile?.id === user?.id;
 
   return (
-    <PageWrapper>
+    <>
       <div className="relative mb-28">
         <div
           className="h-60 md:h-72 md:rounded-b-3xl overflow-hidden drop-shadow-xl"
@@ -60,6 +59,6 @@ export default async function Layout({
         <Tabs />
         {children}
       </div>
-    </PageWrapper>
+    </>
   );
 }
