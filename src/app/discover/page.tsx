@@ -3,6 +3,7 @@ import { Filters } from './Filters';
 import { headers } from 'next/headers';
 import { DiscoverProfiles } from './DiscoverProfiles';
 import { GetUser } from 'types';
+import { PageWrapper } from '@/components/ui/PageWrapper';
 
 interface DiscoverSearchParams {
   gender?: Gender;
@@ -20,10 +21,12 @@ async function getProfiles({
   const params = new URLSearchParams([
     ...Object.entries(searchParams),
   ]).toString();
+
   const url = new URL(`${process.env.URL}/api/users?${params}`);
   const res = await fetch(url.href, {
     headers: headers(),
   });
+
   if (!res.ok) {
     throw Error('Failed to fetch profiles.');
   }
@@ -37,9 +40,11 @@ export default async function Discover({
 }) {
   const initialProfiles = await getProfiles({ searchParams });
   return (
-    <div className="mt-0 md:mt-8 p-4 md:p-0">
-      <Filters />
-      <DiscoverProfiles initialProfiles={initialProfiles} />
-    </div>
+    <PageWrapper>
+      <div className="mt-0 md:mt-8 p-4 md:p-0">
+        <Filters />
+        <DiscoverProfiles initialProfiles={initialProfiles} />
+      </div>
+    </PageWrapper>
   );
 }

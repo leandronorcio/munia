@@ -15,7 +15,7 @@ import { CreatePostModalContextProvider } from '@/contexts/CreatePostModalContex
 import { cn } from '@/lib/cn';
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import BottomMenu from '@/components/BottomMenu';
-import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
+import { CountContextProvider } from '@/contexts/CountContext';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
@@ -41,57 +41,42 @@ export default async function RootLayout({
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
         />
       </head>
-      <body
-        className={cn(
-          'bg-violet-100 h-screen overflow-hidden',
-          poppins.className
-        )}
-      >
+      {/** USING .h-screen breaks the scrollRestoration of NextJS */}
+      <body className={cn('bg-violet-100', poppins.className)}>
         <ToastContextProvider>
           <SessionProviderContext>
             <BasicDialogsContextProvider>
               <VisualMediaModalContextProvider>
                 <CreatePostModalContextProvider>
-                  {user ? (
-                    <>
-                      <div className="flex flex-col h-full">
-                        <div className="flex-initial">
+                  <CountContextProvider>
+                    {user ? (
+                      <>
+                        <div className="w-full fixed z-[1] top-0">
                           <Navbar />
                         </div>
-
-                        <div className="flex-1 overflow-y-hidden">
-                          <div className="flex h-full">
-                            <div className="flex-initial hidden md:block">
-                              <Sidebar />
-                            </div>
-                            <div className="flex-1">
-                              {/**
-                               *  IGNORE this comment for now:
-                               *  Child pages/layouts must be wrapped within the <PageWrapper>
-                               *  component to make the content scrollable when necessary.
-                               *
-                               *  Why not wrap them once and for all here? Because it will maintain
-                               *  a single scroll amount across pages, resulting into unexpected behavior
-                               *  e.g. navigating to another page is not scrolled to the top of the page
-                               *  but instead maintains the scroll amount of the prev page.
-                               */}
-                              <div className="h-full overflow-y-scroll">
-                                <ResponsiveContainer>
-                                  {children}
-                                </ResponsiveContainer>
-                              </div>
-                            </div>
-                          </div>
+                        <div className="fixed z-[1] top-0 left-0 pt-[80px] h-screen hidden md:block">
+                          <Sidebar />
                         </div>
-
-                        <div className="flex-initial md:hidden">
+                        <div className="w-full fixed z-[1] bottom-0 block md:hidden">
                           <BottomMenu />
                         </div>
-                      </div>
-                    </>
-                  ) : (
-                    children
-                  )}
+                        <div className="ml-0 md:ml-[220px] mt-[80px]">
+                          {/**
+                           *  Child pages/layouts must be wrapped within the <PageWrapper>
+                           *  component to make the content scrollable when necessary.
+                           *
+                           *  Why not wrap them once and for all here? Because it will maintain
+                           *  a single scroll amount across pages, resulting into unexpected behavior
+                           *  e.g. navigating to another page is not scrolled to the top of the page
+                           *  but instead maintains the scroll amount of the prev page.
+                           */}
+                          {children}
+                        </div>
+                      </>
+                    ) : (
+                      children
+                    )}
+                  </CountContextProvider>
                 </CreatePostModalContextProvider>
               </VisualMediaModalContextProvider>
             </BasicDialogsContextProvider>

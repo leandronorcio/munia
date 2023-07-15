@@ -68,7 +68,7 @@ export function Posts({
   }, [isBottomOnScreen]);
 
   return (
-    <div className="min-h-[830px] flex flex-col justify-between">
+    <div className="flex flex-col justify-between">
       <div className="flex flex-col">
         {shouldShowCreatePost && (
           <CreatePostModalLauncher
