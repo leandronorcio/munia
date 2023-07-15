@@ -36,7 +36,8 @@
     "tailwind-merge": "^1.12.0",
     "tailwindcss": "3.3.1",
     "typescript": "5.0.4",
-    "zod": "^3.21.4"
+    "zod": "^3.21.4",
+    "zustand": "^4.3.9"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",

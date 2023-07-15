@@ -5,15 +5,21 @@ import { DropdownMenu } from '@/components/ui/DropdownMenu';
 import { deleteSearchParams } from '@/lib/deleteSearchParams';
 import { kebabToNormal } from '@/lib/kebabToNormal';
 import { updateSearchParams } from '@/lib/updateSearchParams';
+import { useDiscoverProfilesStore } from '@/stores/useDiscoverProfilesStore';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 export function Filters() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { setProfiles, setIsMaxedOut } = useDiscoverProfilesStore(
+    ({ setProfiles, setIsMaxedOut }) => ({ setProfiles, setIsMaxedOut })
+  );
+
   const selectedFilters = {
     gender: searchParams.get('gender'),
     relationshipStatus: searchParams.get('relationship-status'),
   };
+
   const updateParams = ({
     title,
     value,
@@ -21,13 +27,18 @@ export function Filters() {
     title: string;
     value: string | null;
   }) => {
+    // Don't update when the value is the same
+    if (searchParams.get(title) === value) return;
     const newPathName =
       value !== null
         ? updateSearchParams(title, value.toLowerCase())
         : deleteSearchParams(title);
 
+    // Reset <DisvoverProfiles> state before updating the search params
+    setProfiles([], false);
+    setIsMaxedOut(false);
+
     router.push(newPathName);
-    router.refresh();
   };
 
   return (

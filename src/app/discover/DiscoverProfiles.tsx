@@ -2,55 +2,65 @@
 import { DiscoverProfile } from '@/app/discover/DiscoverProfile';
 import useOnScreen from '@/hooks/useOnScreen';
 import { useToast } from '@/hooks/useToast';
+import { useDiscoverProfilesStore } from '@/stores/useDiscoverProfilesStore';
 import { CircleActionsSuccess } from '@/svg_components';
-import { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useRef } from 'react';
 import { GetUser } from 'types';
 
-export function DiscoverProfiles({
-  initialProfiles,
-}: {
-  initialProfiles: GetUser[];
-}) {
-  const [profiles, setProfiles] = useState<GetUser[]>(initialProfiles);
-  const [isMaxedOut, setIsMaxedOut] = useState(false);
+export function DiscoverProfiles() {
+  const { profiles, isMaxedOut, setProfiles, setIsMaxedOut } =
+    useDiscoverProfilesStore(
+      ({ profiles, isMaxedOut, setProfiles, setIsMaxedOut }) => ({
+        profiles,
+        isMaxedOut,
+        setProfiles,
+        setIsMaxedOut,
+      })
+    );
+  const searchParams = useSearchParams();
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
   const { showToast } = useToast();
 
-  const fetchMoreProfiles = async () => {
-    const searchParams = new URLSearchParams(window.location.search);
+  const fetchProfiles = async () => {
     // Offset the number profiles rendered.
-    searchParams.set('offset', profiles.length.toString());
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set('offset', profiles.length.toString());
 
-    const res = await fetch(`/api/users?${searchParams.toString()}`);
+    const res = await fetch(`/api/users?${newSearchParams.toString()}`);
     if (!res.ok) {
       showToast({ type: 'error', title: 'Error Fetching Posts' });
     }
+
     const retrievedProfiles = (await res.json()) as GetUser[];
+
     if (retrievedProfiles.length === 0) return setIsMaxedOut(true);
-    setProfiles((prev) => [...prev, ...retrievedProfiles]);
+    setProfiles(retrievedProfiles, true);
   };
 
   useEffect(() => {
-    // Reset when receiving new initialProfiles.
-    setProfiles(initialProfiles);
-
-    // Initial profiles can contain up to 4 profiles only.
-    if (initialProfiles.length < 4) {
-      setIsMaxedOut(true);
-    } else {
-      setIsMaxedOut(false);
+    /**
+     * When going back to this page, effects will run even if the
+     * dependencies did not change, because the component is unmounted then
+     * remounted.
+     *
+     * The <Filter> component resets the profiles state, only fetch when
+     * the profiles are indeed reset by cheking if there are no profiles yet.
+     */
+    if (profiles.length === 0) {
+      fetchProfiles();
     }
-  }, [initialProfiles]);
+  }, [searchParams]);
 
   useEffect(() => {
+    // If bottom of screen is showing, and there are fetched,
+    // profiles already, try to load the next page of profiles.
     if (!isBottomOnScreen) return;
     if (isMaxedOut) return;
 
-    // If bottom of screen is showing, and there are initialProfiles,
-    // try to load the next page of profiles.
     if (profiles.length > 0) {
-      fetchMoreProfiles();
+      fetchProfiles();
     }
   }, [isBottomOnScreen]);
 
