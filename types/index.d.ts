@@ -76,3 +76,8 @@ export interface CommentType {
     profilePhoto: string | null;
   };
 }
+
+export interface DiscoverFilters {
+  gender?: 'male' | 'female' | 'nonbinary';
+  relationshipStatus?: 'single' | 'in-a-relationship' | 'engaged' | 'married';
+}

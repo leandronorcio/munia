@@ -2,43 +2,47 @@
 import Button from '@/components/ui/Button';
 import { DropdownItem } from '@/components/ui/DropdownItem';
 import { DropdownMenu } from '@/components/ui/DropdownMenu';
-import { deleteSearchParams } from '@/lib/deleteSearchParams';
 import { kebabToNormal } from '@/lib/kebabToNormal';
-import { updateSearchParams } from '@/lib/updateSearchParams';
 import { useDiscoverProfilesStore } from '@/stores/useDiscoverProfilesStore';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { DiscoverFilters } from 'types';
 
 export function Filters() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const { setProfiles, setIsMaxedOut } = useDiscoverProfilesStore(
     ({ setProfiles, setIsMaxedOut }) => ({ setProfiles, setIsMaxedOut })
   );
-
-  const selectedFilters = {
-    gender: searchParams.get('gender'),
-    relationshipStatus: searchParams.get('relationship-status'),
-  };
+  const { filters, setFilters } = useDiscoverProfilesStore(
+    ({ filters, setFilters }) => ({ filters, setFilters })
+  );
+  const genderFilters: DiscoverFilters['gender'][] = [
+    'male',
+    'female',
+    'nonbinary',
+  ];
+  const relationshipStatusFilters: DiscoverFilters['relationshipStatus'][] = [
+    'single',
+    'in-a-relationship',
+    'engaged',
+    'married',
+  ];
 
   const updateParams = ({
     title,
     value,
   }: {
-    title: string;
-    value: string | null;
+    title: keyof DiscoverFilters;
+    value: DiscoverFilters[keyof DiscoverFilters];
   }) => {
     // Don't update when the value is the same
-    if (searchParams.get(title) === value) return;
-    const newPathName =
-      value !== null
-        ? updateSearchParams(title, value.toLowerCase())
-        : deleteSearchParams(title);
+    if (filters[title] === value) return;
 
-    // Reset <DisvoverProfiles> state before updating the search params
+    // Reset <DisvoverProfiles> state before updating the filters
     setProfiles([], false);
     setIsMaxedOut(false);
 
-    router.push(newPathName);
+    // Update the filters
+    setFilters({ [title]: value });
   };
 
   return (
@@ -47,16 +51,16 @@ export function Filters() {
         width="115%"
         trigger={
           <Button mode="subtle" shape="pill">
-            Gender: <b>{kebabToNormal(selectedFilters.gender) || 'All'}</b>
+            Gender: <b>{kebabToNormal(filters.gender) || 'All'}</b>
           </Button>
         }
       >
         <DropdownItem
-          onClick={() => updateParams({ title: 'gender', value: null })}
+          onClick={() => updateParams({ title: 'gender', value: undefined })}
         >
           Clear
         </DropdownItem>
-        {['male', 'female', 'nonbinary'].map((gender) => {
+        {genderFilters.map((gender) => {
           return (
             <DropdownItem
               key={gender}
@@ -72,34 +76,32 @@ export function Filters() {
         trigger={
           <Button mode="subtle" shape="pill">
             Relationship Status:{' '}
-            <b>{kebabToNormal(selectedFilters.relationshipStatus) || 'All'}</b>
+            <b>{kebabToNormal(filters.relationshipStatus) || 'All'}</b>
           </Button>
         }
       >
         <DropdownItem
           onClick={() =>
-            updateParams({ title: 'relationship-status', value: null })
+            updateParams({ title: 'relationshipStatus', value: undefined })
           }
         >
           Clear
         </DropdownItem>
-        {['single', 'in-a-relationship', 'engaged', 'married'].map(
-          (relationship) => {
-            return (
-              <DropdownItem
-                key={relationship}
-                onClick={() =>
-                  updateParams({
-                    title: 'relationship-status',
-                    value: relationship,
-                  })
-                }
-              >
-                {kebabToNormal(relationship)}
-              </DropdownItem>
-            );
-          }
-        )}
+        {relationshipStatusFilters.map((relationship) => {
+          return (
+            <DropdownItem
+              key={relationship}
+              onClick={() =>
+                updateParams({
+                  title: 'relationshipStatus',
+                  value: relationship,
+                })
+              }
+            >
+              {kebabToNormal(relationship)}
+            </DropdownItem>
+          );
+        })}
       </DropdownMenu>
     </div>
   );

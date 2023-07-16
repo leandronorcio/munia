@@ -4,31 +4,37 @@ import useOnScreen from '@/hooks/useOnScreen';
 import { useToast } from '@/hooks/useToast';
 import { useDiscoverProfilesStore } from '@/stores/useDiscoverProfilesStore';
 import { CircleActionsSuccess } from '@/svg_components';
-import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { GetUser } from 'types';
 
 export function DiscoverProfiles() {
-  const { profiles, isMaxedOut, setProfiles, setIsMaxedOut } =
+  const { profiles, isMaxedOut, filters, setProfiles, setIsMaxedOut } =
     useDiscoverProfilesStore(
-      ({ profiles, isMaxedOut, setProfiles, setIsMaxedOut }) => ({
+      ({ profiles, isMaxedOut, filters, setProfiles, setIsMaxedOut }) => ({
         profiles,
         isMaxedOut,
+        filters,
         setProfiles,
         setIsMaxedOut,
       })
     );
-  const searchParams = useSearchParams();
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
   const { showToast } = useToast();
 
   const fetchProfiles = async () => {
-    // Offset the number profiles rendered.
-    const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set('offset', profiles.length.toString());
+    const params = new URLSearchParams('');
+    if (filters.gender) {
+      params.set('gender', filters.gender);
+    }
+    if (filters.relationshipStatus) {
+      params.set('relationship-status', filters.relationshipStatus);
+    }
 
-    const res = await fetch(`/api/users?${newSearchParams.toString()}`);
+    // Offset the number profiles rendered.
+    params.set('offset', profiles.length.toString());
+
+    const res = await fetch(`/api/users?${params.toString()}`);
     if (!res.ok) {
       showToast({ type: 'error', title: 'Error Fetching Posts' });
     }
@@ -51,7 +57,7 @@ export function DiscoverProfiles() {
     if (profiles.length === 0) {
       fetchProfiles();
     }
-  }, [searchParams]);
+  }, [filters]);
 
   useEffect(() => {
     // If bottom of screen is showing, and there are fetched,
