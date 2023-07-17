@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { faker } from '@faker-js/faker';
+import { subHours } from 'date-fns';
 
 const prisma = new PrismaClient();
 
@@ -62,29 +63,46 @@ function createRandomUser() {
     femaleAvatars = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const profilePhotoPath = `/${gender}-avatars/${randomProfilePhoto}`;
 
+  // Create fake posts
+  const fakePosts = Array.from({ length: 3 }).map((item, i) => ({
+    userId: id,
+    content: faker.lorem.sentence(),
+    createdAt: subHours(new Date(), i),
+  }));
+
   return {
-    id,
-    username: id,
-    name: fullName,
-    email,
-    gender: isGenderNonBinary ? 'NONBINARY' : gender.toUpperCase(),
-    birthDate,
-    bio,
-    website,
-    phoneNumber,
-    address,
-    profilePhoto: profilePhotoPath,
-    relationshipStatus,
+    user: {
+      id,
+      username: id,
+      name: fullName,
+      email,
+      gender: isGenderNonBinary ? 'NONBINARY' : gender.toUpperCase(),
+      birthDate,
+      bio,
+      website,
+      phoneNumber,
+      address,
+      profilePhoto: profilePhotoPath,
+      relationshipStatus,
+    },
+    posts: fakePosts,
   };
 }
 
 async function main() {
   const fakeUsers = Array.from({ length: 100 }, createRandomUser);
-  const res = await prisma.user.createMany({
-    data: fakeUsers,
-    skipDuplicates: true,
-  });
-  console.log(`${res.count} fake users have been successfully created.`);
+
+  for (const fakeUser of fakeUsers) {
+    const user = await prisma.user.create({
+      data: fakeUser.user,
+    });
+    const post = await prisma.post.createMany({
+      data: fakeUser.posts,
+    });
+
+    console.log(user);
+    console.log(post);
+  }
 }
 
 main()
