@@ -31,6 +31,11 @@ export interface GetUser extends User {
   isFollowing: boolean | null; // true when the authenticated user is following the user being requested
 }
 
+export interface VisualMedia {
+  type: VisualMediaType;
+  url: string;
+}
+
 export interface GetPost {
   id: number;
   content: string | null;
@@ -49,19 +54,11 @@ export interface GetPost {
     name: string | null;
     profilePhoto: string | null;
   };
-  visualMedia: {
-    type: VisualMediaType;
-    url: string;
-  }[];
+  visualMedia: VisualMedia[];
   _count: {
     postLikes: number;
     comments: number;
   };
-}
-
-export interface VisualMedia {
-  type: VisualMediaType;
-  url: string;
 }
 
 export interface CommentType {

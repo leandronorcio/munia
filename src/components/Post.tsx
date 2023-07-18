@@ -14,9 +14,7 @@ import SvgComment from '@/svg_components/Comment';
 import { Comments } from './Comments';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
-import { useToast } from '@/hooks/useToast';
-import { useCreatePost } from '@/hooks/useCreatePost';
-import { GetPost } from 'types';
+import { GetPost, VisualMedia } from 'types';
 
 export const Post = memo(
   function Post({
@@ -27,80 +25,48 @@ export const Post = memo(
     visualMedia,
     postLikes,
     _count,
-    setPosts,
+    likePost,
+    unLikePost,
+    deletePost,
+    editPost,
   }: GetPost & {
-    setPosts: React.Dispatch<React.SetStateAction<GetPost[]>>;
+    likePost: (postId: number) => void;
+    unLikePost: (postId: number) => void;
+    deletePost: (postId: number) => void;
+    editPost: (params: {
+      postId: number;
+      content: string;
+      visualMedia?: VisualMedia[];
+    }) => void;
   }) {
     const { data: session } = useSession();
     const userId = session?.user?.id;
     const isOwnPost = userId === author.id;
-    // The postLikes prop contains zero or one item i.e. the <PostLike>'s id.
-    const [likedId, setLikedId] = useState(postLikes[0]?.id || 0);
-    // The numberOfLikes is not real-time, it only reacts to likePost and unLikePost.
-    const [numberOfLikes, setNumberOfLikes] = useState(_count.postLikes);
+    const numberOfLikes = _count.postLikes;
+    const isPostLiked = postLikes.length > 0;
+
     const [commentsShown, setCommentsShown] = useState(false);
-    const { showToast } = useToast();
     const { confirm } = useBasicDialogs();
-    const { launchEditPost } = useCreatePost();
-    console.log('rendered: ' + postId);
-    const likePost = async () => {
-      const res = await fetch(`/api/users/${userId}/liked-posts`, {
-        method: 'POST',
-        body: JSON.stringify({ postId }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
 
-      if (res.ok) {
-        const data = await res.json();
-        setLikedId(data.id);
-        setNumberOfLikes((prev) => prev + 1);
-      } else {
-        showToast({ title: 'Unable To Like', type: 'error' });
-      }
+    console.log('rendered + ' + postId);
+    const handleLikeClick = () => {
+      !isPostLiked ? likePost(postId) : unLikePost(postId);
     };
 
-    const unlikePost = async () => {
-      const res = await fetch(`/api/users/${userId}/liked-posts/${postId}`, {
-        method: 'DELETE',
+    const handleDeleteClick = () => {
+      confirm({
+        title: 'Delete Post',
+        message: 'Do you really wish to delete this post?',
+        onConfirm: () => deletePost(postId),
       });
-
-      if (res.ok) {
-        setLikedId(0);
-        setNumberOfLikes((prev) => prev - 1);
-      } else {
-        showToast({ title: 'Unable To Unlike', type: 'error' });
-      }
     };
 
-    const deletePost = async () => {
-      const res = await fetch(`/api/posts/${postId}`, {
-        method: 'DELETE',
-      });
-
-      if (res.ok) {
-        setPosts((prev) => prev.filter((post) => post.id !== postId));
-        showToast({ title: 'Successfully Deleted', type: 'success' });
-      } else {
-        showToast({ title: 'Unable to Delete', type: 'error' });
-      }
+    const handleEditClick = () => {
+      editPost({ postId, content: content || '', visualMedia });
     };
 
-    const editPost = () => {
-      launchEditPost({
-        postId,
-        initialContent: content || '',
-        initialVisualMedia: visualMedia,
-        onSuccess: (editedPost) => {
-          setPosts((prev) => {
-            const posts = [...prev];
-            const index = posts.findIndex((post) => post.id === postId);
-            posts[index] = editedPost;
-            return posts;
-          });
-        },
-      });
+    const toggleCommentsSection = () => {
+      setCommentsShown((prev) => !prev);
     };
 
     return (
@@ -114,18 +80,10 @@ export const Post = memo(
           />
           {isOwnPost && (
             <DropdownMenu>
-              <DropdownItem
-                onClick={() =>
-                  confirm({
-                    title: 'Delete Post',
-                    message: 'Do you really wish to delete this post?',
-                    onConfirm: deletePost,
-                  })
-                }
-              >
+              <DropdownItem onClick={handleDeleteClick}>
                 Delete Post
               </DropdownItem>
-              <DropdownItem onClick={editPost}>Edit Post</DropdownItem>
+              <DropdownItem onClick={handleEditClick}>Edit Post</DropdownItem>
             </DropdownMenu>
           )}
         </div>
@@ -141,16 +99,14 @@ export const Post = memo(
               className={cn(
                 'flex items-center gap-3 cursor-pointer px-4 py-2 rounded-xl hover:bg-pink-200 active:ring-4 ring-pink-300'
               )}
-              onClick={() => {
-                likedId === 0 ? likePost() : unlikePost();
-              }}
+              onClick={handleLikeClick}
             >
               <Heart
                 width={24}
                 height={24}
                 className={cn(
                   'stroke-black',
-                  likedId !== 0 && 'stroke-none fill-red-500'
+                  isPostLiked && 'stroke-none fill-red-500'
                 )}
               />
               <p className="font-semibold text-lg text-gray-700 hidden sm:block">
@@ -161,7 +117,7 @@ export const Post = memo(
               className={cn(
                 'flex items-center gap-3 cursor-pointer px-4 py-2 rounded-xl hover:bg-blue-200 active:ring-4 ring-blue-300'
               )}
-              onClick={() => setCommentsShown((prev) => !prev)}
+              onClick={toggleCommentsSection}
             >
               <SvgComment
                 className={cn(
