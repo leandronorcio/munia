@@ -8,13 +8,13 @@ import { useEffect, useRef } from 'react';
 import { GetUser } from 'types';
 
 export function DiscoverProfiles() {
-  const { profiles, isMaxedOut, filters, setProfiles, setIsMaxedOut } =
+  const { profiles, isMaxedOut, filters, addProfiles, setIsMaxedOut } =
     useDiscoverProfilesStore(
-      ({ profiles, isMaxedOut, filters, setProfiles, setIsMaxedOut }) => ({
+      ({ profiles, isMaxedOut, filters, addProfiles, setIsMaxedOut }) => ({
         profiles,
         isMaxedOut,
         filters,
-        setProfiles,
+        addProfiles,
         setIsMaxedOut,
       })
     );
@@ -42,7 +42,7 @@ export function DiscoverProfiles() {
     const retrievedProfiles = (await res.json()) as GetUser[];
 
     if (retrievedProfiles.length === 0) return setIsMaxedOut(true);
-    setProfiles(retrievedProfiles, true);
+    addProfiles(retrievedProfiles);
   };
 
   useEffect(() => {

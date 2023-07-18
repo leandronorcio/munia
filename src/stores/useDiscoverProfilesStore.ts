@@ -5,7 +5,8 @@ interface DiscoverProfilesStore {
   profiles: GetUser[];
   isMaxedOut: boolean;
   filters: DiscoverFilters;
-  setProfiles: (profiles: GetUser[], shouldAppend: boolean) => void;
+  setProfiles: (profiles: GetUser[]) => void;
+  addProfiles: (profiles: GetUser[]) => void;
   setIsMaxedOut: (val: boolean) => void;
   setFilters: (filters: DiscoverFilters) => void;
 }
@@ -15,9 +16,13 @@ export const useDiscoverProfilesStore = create<DiscoverProfilesStore>()(
     profiles: [],
     isMaxedOut: false,
     filters: {},
-    setProfiles: (profiles, shouldAppend) =>
+    setProfiles: (profiles) =>
+      set(() => ({
+        profiles,
+      })),
+    addProfiles: (profiles) =>
       set((state) => ({
-        profiles: shouldAppend ? [...state.profiles, ...profiles] : profiles,
+        profiles: [...state.profiles, ...profiles],
       })),
     setIsMaxedOut: (val) => set(() => ({ isMaxedOut: val })),
     setFilters: (filters) =>

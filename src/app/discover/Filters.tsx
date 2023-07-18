@@ -38,7 +38,7 @@ export function Filters() {
     if (filters[title] === value) return;
 
     // Reset <DisvoverProfiles> state before updating the filters
-    setProfiles([], false);
+    setProfiles([]);
     setIsMaxedOut(false);
 
     // Update the filters
