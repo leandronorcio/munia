@@ -43,7 +43,12 @@ export async function POST(
       content,
       createdAt: new Date(),
       postId: parseInt(params.postId),
-      user: { id: user.id, name: user.name, profilePhoto: user.profilePhoto },
+      user: {
+        id: user.id,
+        name: user.name,
+        username: user.username,
+        profilePhoto: user.profilePhoto,
+      },
     } as CommentType);
   } catch (error) {
     if (error instanceof z.ZodError) {
