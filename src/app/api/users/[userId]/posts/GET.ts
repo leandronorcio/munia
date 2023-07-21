@@ -40,5 +40,5 @@ export async function GET(
     },
   });
 
-  return NextResponse.json<{ posts: GetPost[] | null }>({ posts: res });
+  return NextResponse.json<GetPost[] | null>(res);
 }

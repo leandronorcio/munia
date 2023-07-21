@@ -44,9 +44,7 @@ export function Posts({
       });
     }
 
-    const { posts: retrievedPosts } = (await res.json()) as {
-      posts: GetPost[];
-    };
+    const retrievedPosts = (await res.json()) as GetPost[];
     if (retrievedPosts.length === 0) {
       setMaxedOut(true);
       return;
