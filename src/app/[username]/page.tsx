@@ -1,4 +1,4 @@
-import { Posts } from '@/components/Posts';
+import { PostsUsingReactQuery } from '@/components/PostsUsingReactQuery';
 import { getProfile } from './getProfile';
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { GetUser } from 'types';
@@ -13,7 +13,7 @@ export default async function Page({
   const profile: GetUser | null = await getProfile(params.username);
   const shouldShowCreatePost = user?.id === profile?.id;
   return (
-    <Posts
+    <PostsUsingReactQuery
       type="profile"
       shouldShowCreatePost={shouldShowCreatePost}
       userId={profile?.id!}

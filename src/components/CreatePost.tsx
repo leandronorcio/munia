@@ -15,8 +15,15 @@ import {
 } from '@/contexts/CreatePostModalContext';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { useToast } from '@/hooks/useToast';
-import { VisualMedia } from 'types';
+import { GetPost, VisualMedia } from 'types';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
+import {
+  InfiniteData,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
+import { chunk } from 'lodash';
+import { postsPerPage } from '@/contants';
 
 export default function CreatePost({
   toEditValues,
@@ -29,6 +36,7 @@ export default function CreatePost({
   onSuccess: CreatePostCallback | null;
   shouldOpenFileInputOnMount: boolean;
 }) {
+  const qc = useQueryClient();
   const mode: 'create' | 'edit' = toEditValues === null ? 'create' : 'edit';
   const [content, setContent] = useState(toEditValues?.initialContent || '');
   const [visualMedia, setVisualMedia] = useState<VisualMedia[]>(
@@ -37,7 +45,6 @@ export default function CreatePost({
   const { showToast } = useToast();
   const { confirm } = useBasicDialogs();
   const { data: session } = useSession();
-  const user = session?.user;
   const inputFileRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -83,43 +90,106 @@ export default function CreatePost({
     return formData;
   };
 
-  const submitPost = async () => {
-    const res = await fetch(`/api/posts`, {
-      method: 'POST',
-      body: await generateFormData(),
-    });
+  const createPostMutation = useMutation(
+    async () => {
+      const res = await fetch(`/api/posts`, {
+        method: 'POST',
+        body: await generateFormData(),
+      });
 
-    if (res.ok) {
-      const createdPost = await res.json();
-      onSuccess !== null && onSuccess(createdPost);
-      showToast({ title: 'Successfully Posted', type: 'success' });
-      exitCreatePostModal();
-    } else {
-      showToast({ title: 'Error Creating Post', type: 'error' });
+      if (!res) {
+        throw Error('Error creating post.');
+      }
+
+      // Return the created post to be used by callbacks.
+      return (await res.json()) as GetPost;
+    },
+    {
+      onSuccess: (createdPost) => {
+        qc.setQueryData<InfiniteData<GetPost[]>>(
+          ['users', session?.user?.id, 'profile', 'posts'],
+          (oldData) => {
+            if (!oldData) return;
+            // Flatten the old pages first then prepend the newly created post
+            const flattenedOldPages = [createdPost, ...oldData?.pages.flat()];
+
+            // Chunk the `flattenedOldPages` depending on the number of posts per page
+            const newPages = chunk(flattenedOldPages, postsPerPage);
+
+            // Create the new `pageParams`, it must contain the id of each page's last post
+            const newPageParams = [
+              // The first `pageParam` is undefined as the initial page does not use a `pageParam`
+              undefined,
+              ...newPages.slice(0, -1).map((page) => page.at(-1)?.id),
+            ];
+
+            return {
+              pages: newPages,
+              pageParams: newPageParams,
+            };
+          }
+        );
+        showToast({ title: 'Successfully Posted', type: 'success' });
+        exitCreatePostModal();
+      },
+      onError: () => {
+        showToast({ title: 'Error Creating Post', type: 'error' });
+      },
     }
-  };
+  );
 
-  const submitPostEdit = async () => {
-    const res = await fetch(`/api/posts/${toEditValues?.postId}`, {
-      method: 'PATCH',
-      body: await generateFormData(),
-    });
+  const updatePostMutation = useMutation(
+    async () => {
+      const res = await fetch(`/api/posts/${toEditValues?.postId}`, {
+        method: 'PATCH',
+        body: await generateFormData(),
+      });
 
-    if (res.ok) {
-      const editedPost = await res.json();
-      onSuccess !== null && onSuccess(editedPost);
-      showToast({ title: 'Successfully Edited', type: 'success' });
-      exitCreatePostModal();
-    } else {
-      showToast({ title: 'Error Editing Post', type: 'error' });
+      if (!res) {
+        throw Error('Failed to edit post.');
+      }
+
+      // Return the created post to be used by callbacks.
+      return (await res.json()) as GetPost;
+    },
+    {
+      onSuccess: (updatedPost) => {
+        qc.setQueryData<InfiniteData<GetPost[]>>(
+          ['users', session?.user?.id, 'profile', 'posts'],
+          (oldData) => {
+            if (!oldData) return;
+
+            // Flatted the old pages first
+            const flattenedOldPages = oldData?.pages.flat();
+
+            // Find the index of the updated post
+            const index = flattenedOldPages?.findIndex(
+              (post) => post.id === updatedPost.id
+            );
+
+            // Write the updated post to the pages
+            flattenedOldPages[index] = updatedPost;
+
+            return {
+              pages: chunk(flattenedOldPages, postsPerPage),
+              pageParams: oldData.pageParams,
+            };
+          }
+        );
+        showToast({ title: 'Successfully Edited', type: 'success' });
+        exitCreatePostModal();
+      },
+      onError: () => {
+        showToast({ title: 'Error Editing Post', type: 'error' });
+      },
     }
-  };
+  );
 
   const handleClickPostButton = () => {
     if (mode === 'create') {
-      submitPost();
+      createPostMutation.mutate();
     } else {
-      submitPostEdit();
+      updatePostMutation.mutate();
     }
   };
 
