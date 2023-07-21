@@ -17,6 +17,7 @@ import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import BottomMenu from '@/components/BottomMenu';
 import { CountContextProvider } from '@/contexts/CountContext';
 import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
+import { ReactQueryProvider } from '@/contexts/ReactQueryProvider';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
@@ -46,34 +47,38 @@ export default async function RootLayout({
         className={cn('bg-violet-100 overflow-y-scroll', poppins.className)}
       >
         <ToastContextProvider>
-          <SessionProviderContext>
-            <BasicDialogsContextProvider>
-              <VisualMediaModalContextProvider>
-                <CreatePostModalContextProvider>
-                  <CountContextProvider>
-                    {user ? (
-                      <>
-                        <div className="w-full fixed z-[1] top-0">
-                          <Navbar />
-                        </div>
-                        <div className="fixed z-[1] top-0 left-0 pt-[80px] h-screen hidden md:block">
-                          <Sidebar />
-                        </div>
-                        <div className="w-full fixed z-[1] bottom-0 block md:hidden">
-                          <BottomMenu />
-                        </div>
-                        <div className="ml-0 md:ml-[220px] mt-[80px]">
-                          <ResponsiveContainer>{children}</ResponsiveContainer>
-                        </div>
-                      </>
-                    ) : (
-                      children
-                    )}
-                  </CountContextProvider>
-                </CreatePostModalContextProvider>
-              </VisualMediaModalContextProvider>
-            </BasicDialogsContextProvider>
-          </SessionProviderContext>
+          <ReactQueryProvider>
+            <SessionProviderContext>
+              <BasicDialogsContextProvider>
+                <VisualMediaModalContextProvider>
+                  <CreatePostModalContextProvider>
+                    <CountContextProvider>
+                      {user ? (
+                        <>
+                          <div className="w-full fixed z-[1] top-0">
+                            <Navbar />
+                          </div>
+                          <div className="fixed z-[1] top-0 left-0 pt-[80px] h-screen hidden md:block">
+                            <Sidebar />
+                          </div>
+                          <div className="w-full fixed z-[1] bottom-0 block md:hidden">
+                            <BottomMenu />
+                          </div>
+                          <div className="ml-0 md:ml-[220px] mt-[80px]">
+                            <ResponsiveContainer>
+                              {children}
+                            </ResponsiveContainer>
+                          </div>
+                        </>
+                      ) : (
+                        children
+                      )}
+                    </CountContextProvider>
+                  </CreatePostModalContextProvider>
+                </VisualMediaModalContextProvider>
+              </BasicDialogsContextProvider>
+            </SessionProviderContext>
+          </ReactQueryProvider>
         </ToastContextProvider>
       </body>
     </html>
