@@ -3,7 +3,6 @@ import { Heart } from '@/svg_components';
 import ProfileBlock from './ProfileBlock';
 import PostVisualMediaContainer from './PostVisualMediaContainer';
 import { memo, useState } from 'react';
-import { areObjectsEqual } from '@/lib/areObjectsEqual';
 import { sortVisualMedia } from '@/lib/sortVisualMedia';
 import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/cn';
@@ -15,6 +14,7 @@ import { Comments } from './Comments';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { GetPost, VisualMedia } from 'types';
+import { isEqual } from 'lodash';
 
 export const Post = memo(
   function Post({
@@ -149,5 +149,5 @@ export const Post = memo(
       </div>
     );
   },
-  (oldProps, newProps) => areObjectsEqual(oldProps, newProps)
+  (oldProps, newProps) => isEqual(oldProps, newProps)
 );
