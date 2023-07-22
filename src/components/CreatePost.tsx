@@ -110,16 +110,17 @@ export default function CreatePost({
           ['users', session?.user?.id, 'profile', 'posts'],
           (oldData) => {
             if (!oldData) return;
+
             // Flatten the old pages first then prepend the newly created post
-            const flattenedOldPages = [createdPost, ...oldData?.pages.flat()];
+            const newPosts = [createdPost, ...oldData?.pages.flat()];
 
-            // Chunk the `flattenedOldPages` depending on the number of posts per page
-            const newPages = chunk(flattenedOldPages, postsPerPage);
+            // Chunk the `newPosts` depending on the number of posts per page
+            const newPages = chunk(newPosts, postsPerPage);
 
-            // Create the new `pageParams`, it must contain the id of each page's last post
             const newPageParams = [
               // The first `pageParam` is undefined as the initial page does not use a `pageParam`
               undefined,
+              // Create the new `pageParams`, it must contain the id of each page's (except last page's) last post
               ...newPages.slice(0, -1).map((page) => page.at(-1)?.id),
             ];
 
@@ -159,19 +160,19 @@ export default function CreatePost({
           (oldData) => {
             if (!oldData) return;
 
-            // Flatted the old pages first
-            const flattenedOldPages = oldData?.pages.flat();
+            // Flatten the old pages first
+            const oldPosts = oldData?.pages.flat();
 
             // Find the index of the updated post
-            const index = flattenedOldPages?.findIndex(
+            const index = oldPosts?.findIndex(
               (post) => post.id === updatedPost.id
             );
 
-            // Write the updated post to the pages
-            flattenedOldPages[index] = updatedPost;
+            // Write the updated post
+            oldPosts[index] = updatedPost;
 
             return {
-              pages: chunk(flattenedOldPages, postsPerPage),
+              pages: chunk(oldPosts, postsPerPage),
               pageParams: oldData.pageParams,
             };
           }

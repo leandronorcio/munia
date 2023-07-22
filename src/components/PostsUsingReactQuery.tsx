@@ -1,6 +1,12 @@
 'use client';
 
-import { QueryFunction, useInfiniteQuery } from '@tanstack/react-query';
+import {
+  InfiniteData,
+  QueryFunction,
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { GetPost, VisualMedia } from 'types';
 import { CreatePostModalLauncher } from './CreatePostModalLauncher';
 import { useCallback, useEffect, useRef } from 'react';
@@ -9,6 +15,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Post } from './Post';
 import { postsPerPage } from '@/contants';
 import { useCreatePost } from '@/hooks/useCreatePost';
+import { useToast } from '@/hooks/useToast';
+import { chunk } from 'lodash';
 
 export function PostsUsingReactQuery({
   type,
@@ -19,9 +27,11 @@ export function PostsUsingReactQuery({
   userId: string;
   shouldShowCreatePost: boolean;
 }) {
+  const qc = useQueryClient();
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
   const { launchEditPost } = useCreatePost();
+  const { showToast } = useToast();
 
   const fetchPosts: QueryFunction<GetPost[]> = async ({ pageParam = 0 }) => {
     const params = new URLSearchParams();
@@ -56,14 +66,68 @@ export function PostsUsingReactQuery({
       // that will be passed to `fetchPosts()` when calling `fetchNextPage()`
       return lastPage.slice(-1)[0].id;
     },
+    staleTime: 1000 * 60 * 5,
   });
 
   useEffect(() => {
     if (!isBottomOnScreen) return;
     if (!data) return;
+    if (!hasNextPage) return;
 
     fetchNextPage();
   }, [isBottomOnScreen]);
+
+  const deleteMutation = useMutation(
+    async ({ postId }: { postId: number }) => {
+      const res = await fetch(`/api/posts/${postId}`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) {
+        throw Error('Failed to delete post.');
+      }
+
+      return (await res.json()) as { id: number };
+    },
+    {
+      onSuccess: ({ id: postId }) => {
+        qc.setQueryData<InfiniteData<GetPost[]>>(
+          ['users', userId, type, 'posts'],
+          (oldData) => {
+            if (!oldData) return;
+
+            // Flatten the old pages first
+            const oldPosts = oldData.pages.flat();
+
+            // Remove the deleted post from the `oldPosts`
+            const newPosts = oldPosts.filter((post) => post.id !== postId);
+
+            // Chunk the `newPosts` depending on the number of posts per page
+            const newPages = chunk(newPosts, postsPerPage);
+
+            const newPageParams = [
+              // The first `pageParam` is undefined as the initial page does not use a `pageParam`
+              undefined,
+              // Create the new `pageParams`, it must contain the id of each page's (except last page's) last post
+              ...newPages.slice(0, -1).map((page) => page.at(-1)?.id),
+            ];
+
+            return {
+              pages: newPages,
+              pageParams: newPageParams,
+            };
+          }
+        );
+      },
+      onError: () => {
+        showToast({ title: 'Unable to Delete', type: 'error' });
+      },
+    }
+  );
+
+  const deletePost = useCallback((postId: number) => {
+    deleteMutation.mutate({ postId });
+  }, []);
 
   const editPost = useCallback(
     ({
@@ -85,6 +149,10 @@ export function PostsUsingReactQuery({
     []
   );
 
+  const likePost = useCallback(async (postId: number) => {}, []);
+
+  const unLikePost = useCallback(async (postId: number) => {}, []);
+
   return (
     <div className="flex flex-col justify-between">
       <div className="flex flex-col">
@@ -98,33 +166,26 @@ export function PostsUsingReactQuery({
           <p>Error loading posts.</p>
         ) : (
           <AnimatePresence>
-            {data.pages.map((page) =>
-              page.map((post) => (
-                <motion.div
-                  initial={false}
-                  animate={{ height: 'auto', marginTop: '32px', opacity: 1 }}
-                  exit={{ height: 0, marginTop: '0px', opacity: 0 }}
-                  style={{ originY: 0, overflowY: 'hidden' }}
-                  transition={{ duration: 0.5 }}
-                  key={post.id}
-                >
-                  <Post
-                    {...post}
-                    likePost={() => {}}
-                    unLikePost={() => {}}
-                    editPost={editPost}
-                    deletePost={() => {}}
-                  />
-                </motion.div>
-              ))
-            )}
+            {data.pages.flat().map((post) => (
+              <motion.div
+                initial={false}
+                animate={{ height: 'auto', marginTop: '32px', opacity: 1 }}
+                exit={{ height: 0, marginTop: '0px', opacity: 0 }}
+                style={{ originY: 0, overflowY: 'hidden' }}
+                transition={{ duration: 0.5 }}
+                key={post.id}
+              >
+                <Post
+                  {...post}
+                  {...{ likePost, unLikePost, editPost, deletePost }}
+                />
+              </motion.div>
+            ))}
           </AnimatePresence>
         )}
       </div>
       <div className="mt-6" ref={bottomElRef}>
-        {isFetchingNextPage || hasNextPage
-          ? 'Loading more...'
-          : 'No more to load.'}
+        {isFetchingNextPage ? 'Loading more...' : 'No more to load.'}
       </div>
     </div>
   );
