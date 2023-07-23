@@ -1,15 +1,15 @@
 'use client';
 
-import { QueryFunction, useInfiniteQuery } from '@tanstack/react-query';
-import { GetPost, VisualMedia } from 'types';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { VisualMedia } from 'types';
 import { CreatePostModalLauncher } from './CreatePostModalLauncher';
 import { useCallback, useEffect, useRef } from 'react';
 import useOnScreen from '@/hooks/useOnScreen';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Post } from './Post';
-import { postsPerPage } from '@/contants';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { usePostsMutations } from '@/hooks/usePostsMutations';
+import { fetchPosts } from '@/lib/query-functions/fetchPosts';
 
 export function PostsUsingReactQuery({
   type,
@@ -29,20 +29,6 @@ export function PostsUsingReactQuery({
   const isBottomOnScreen = useOnScreen(bottomElRef);
   const { launchEditPost } = useCreatePost();
 
-  const fetchPosts: QueryFunction<GetPost[]> = async ({ pageParam = 0 }) => {
-    const params = new URLSearchParams();
-    params.set('limit', postsPerPage.toString());
-    params.set('cursor', pageParam.toString());
-
-    const res = await fetch(`/api/users/${userId}/posts?${params.toString()}`);
-
-    if (!res.ok) {
-      throw Error('Failed to load posts.');
-    }
-
-    return (await res.json()) as GetPost[];
-  };
-
   const {
     data,
     error,
@@ -53,13 +39,13 @@ export function PostsUsingReactQuery({
     status,
   } = useInfiniteQuery({
     queryKey: ['users', userId, type, 'posts'],
-    queryFn: fetchPosts,
+    queryFn: ({ pageParam }) => fetchPosts({ pageParam, userId }),
     getNextPageParam: (lastPage, pages) => {
       // If the last page doesn't have posts, that means the end is reached
       if (lastPage.length === 0) return undefined;
 
       // Return the id of the last post, this will serve as the cursor
-      // that will be passed to `fetchPosts()` when calling `fetchNextPage()`
+      // that will be passed to `queryFn` as `pageParam` property
       return lastPage.slice(-1)[0].id;
     },
     staleTime: 1000 * 60 * 5,
