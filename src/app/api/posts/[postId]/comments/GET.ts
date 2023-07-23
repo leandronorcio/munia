@@ -33,5 +33,5 @@ export async function GET(
     },
   });
 
-  return NextResponse.json({ comments: res });
+  return NextResponse.json<CommentType[]>(res);
 }
