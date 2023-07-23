@@ -36,11 +36,7 @@ export interface VisualMedia {
   url: string;
 }
 
-/**
- * The FindPostResult shall be converted to GetPost, use
- * the ./src/lib/prisma/toGetPost.ts function to do this.
- * GetPost must be the response of GET posts route handlers.
- */
+// Use this type when finding a Post in prisma.
 export interface FindPostResult {
   id: number;
   content: string | null;
@@ -66,6 +62,11 @@ export interface FindPostResult {
   };
 }
 
+/**
+ * The FindPostResult shall be converted to GetPost, use
+ * the ./src/lib/prisma/toGetPost.ts function to do this.
+ * GetPost must be the response of GET posts route handlers.
+ */
 export interface GetPost {
   id: number;
   content: string | null;
@@ -86,6 +87,7 @@ export interface GetPost {
     postLikes: number;
     comments: number;
   };
+  commentsShown?: boolean;
 }
 
 export interface CommentType {
