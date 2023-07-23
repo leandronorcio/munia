@@ -23,7 +23,7 @@ export const Post = memo(
     createdAt,
     user: author,
     visualMedia,
-    postLikes,
+    isLiked,
     _count,
     likePost,
     unLikePost,
@@ -43,14 +43,13 @@ export const Post = memo(
     const userId = session?.user?.id;
     const isOwnPost = userId === author.id;
     const numberOfLikes = _count.postLikes;
-    const isPostLiked = postLikes.length > 0;
 
     const [commentsShown, setCommentsShown] = useState(false);
     const { confirm } = useBasicDialogs();
 
     console.log('rendered + ' + postId);
     const handleLikeClick = () => {
-      !isPostLiked ? likePost(postId) : unLikePost(postId);
+      !isLiked ? likePost(postId) : unLikePost(postId);
     };
 
     const handleDeleteClick = () => {
@@ -106,7 +105,7 @@ export const Post = memo(
                 height={24}
                 className={cn(
                   'stroke-black',
-                  isPostLiked && 'stroke-none fill-red-500'
+                  isLiked && 'stroke-none fill-red-500'
                 )}
               />
               <p className="font-semibold text-lg text-gray-700 hidden sm:block">
