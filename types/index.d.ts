@@ -36,7 +36,12 @@ export interface VisualMedia {
   url: string;
 }
 
-export interface GetPost {
+/**
+ * The FindPostResult shall be converted to GetPost, use
+ * the ./src/lib/prisma/toGetPost.ts function to do this.
+ * GetPost must be the response of GET posts route handlers.
+ */
+export interface FindPostResult {
   id: number;
   content: string | null;
   createdAt: Date;
@@ -48,6 +53,28 @@ export interface GetPost {
   postLikes: {
     id: number;
   }[];
+  user: {
+    id: string;
+    username: string | null;
+    name: string | null;
+    profilePhoto: string | null;
+  };
+  visualMedia: VisualMedia[];
+  _count: {
+    postLikes: number;
+    comments: number;
+  };
+}
+
+export interface GetPost {
+  id: number;
+  content: string | null;
+  createdAt: Date;
+  /**
+   * `The isLiked` is used to check whether the authenticated user requesting
+   * the post has liked it or not.
+   */
+  isLiked: boolean;
   user: {
     id: string;
     username: string | null;

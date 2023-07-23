@@ -8,6 +8,7 @@ import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import prisma from '@/lib/prisma/prisma';
 import { selectPost } from '@/lib/prisma/selectPost';
 import { GetPost } from 'types';
+import { toGetPost } from '@/lib/prisma/toGetPost';
 
 export async function GET(
   request: Request,
@@ -23,7 +24,7 @@ export async function GET(
   const limit = parseInt(searchParams.get('limit') || '5');
   const cursor = parseInt(searchParams.get('cursor') || '0');
 
-  const res: GetPost[] | null = await prisma.post.findMany({
+  const res = await prisma.post.findMany({
     select: selectPost(user?.id),
     where: {
       userId: params.userId,
@@ -40,5 +41,6 @@ export async function GET(
     },
   });
 
-  return NextResponse.json<GetPost[] | null>(res);
+  const posts = res.map((post) => toGetPost(post));
+  return NextResponse.json<GetPost[] | null>(posts);
 }

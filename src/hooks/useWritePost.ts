@@ -3,11 +3,12 @@ import { listOfKeyValuesToObject } from '@/lib/listOfKeyValuesToObject';
 import prisma from '@/lib/prisma/prisma';
 import { unlink, writeFile } from 'fs/promises';
 import { NextResponse } from 'next/server';
-import { VisualMedia, PostType } from 'types';
+import { VisualMedia, GetPost } from 'types';
 import { isValidFileType } from '@/lib/isValidFileType';
 import { postWriteSchema } from '@/lib/validations/post';
 import { z } from 'zod';
 import { useProtectApiRoute } from './useProtectApiRoute';
+import { toGetPost } from '@/lib/prisma/toGetPost';
 
 export async function useWritePost({
   formData,
@@ -20,17 +21,22 @@ export async function useWritePost({
 }) {
   const [user] = await useProtectApiRoute();
   const userId = user?.id!;
+
   try {
     const body = postWriteSchema.parse(listOfKeyValuesToObject(formData));
     const { content, files } = body;
     const savedFiles: VisualMedia[] = [];
 
     if (files) {
+      // Wrap process of saving the files in a promise to wait for the files to be saved before continuing
       await new Promise<void>((resolve) => {
-        // Convert 'files' field to an array if it is not.
+        // Convert 'files' field to an array if it is not
         const filesArr = Array.isArray(files) ? files : [files];
+
         filesArr.forEach(async (file, i) => {
           const type = file.type.startsWith('image/') ? 'PHOTO' : 'VIDEO';
+
+          // Respond with an error is the user uploaded an unsupported file
           const extension = file.type.split('/')[1];
           if (!isValidFileType(extension)) {
             return NextResponse.json(
@@ -38,6 +44,8 @@ export async function useWritePost({
               { status: 415 }
             );
           }
+
+          // This `filePath` is what will be recorded in the data base
           const filePath = `/uploads/${userId}-${Date.now()}-${i}-${type.toLocaleLowerCase()}.${extension}`;
           savedFiles.push({
             type,
@@ -48,6 +56,8 @@ export async function useWritePost({
             `./public${filePath}`,
             Buffer.from(await file.arrayBuffer())
           );
+
+          // Only resolve when the last file is saved.
           if (i === filesArr.length - 1) resolve();
         });
       });
@@ -79,7 +89,7 @@ export async function useWritePost({
         select: selectPost(userId),
       });
 
-      return NextResponse.json<PostType>({ ...res });
+      return NextResponse.json<GetPost>(toGetPost(res));
     } else if (type === 'edit') {
       // Delete the associated visualMedia files from the filesystem before updating.
       const post = await prisma.post.findFirst({
@@ -115,7 +125,6 @@ export async function useWritePost({
         where: {
           id: postId,
         },
-
         data: {
           content: (content || '') as string,
           ...(files !== undefined && {
@@ -140,12 +149,13 @@ export async function useWritePost({
         select: selectPost(userId),
       });
 
-      return NextResponse.json<PostType>({ ...res });
+      return NextResponse.json<GetPost>(toGetPost(res));
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(error.issues, { status: 422 });
     }
+
     return NextResponse.json(
       { error: 'Error creating post.' },
       { status: 500 }
