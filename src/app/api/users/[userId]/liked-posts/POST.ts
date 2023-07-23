@@ -22,12 +22,26 @@ export async function POST(
 
   const { postId } = await request.json();
 
-  const res = await prisma.postLike.create({
+  // Check first if the post is already liked
+  const isLiked = await prisma.postLike.count({
+    where: {
+      userId: user.id,
+      postId,
+    },
+  });
+
+  if (isLiked) {
+    // Post is already liked, return 409 Conflict
+    return NextResponse.json({}, { status: 409 });
+  }
+
+  // Like the post
+  await prisma.postLike.create({
     data: {
       userId: user.id,
       postId,
     },
   });
 
-  return NextResponse.json({ liked: true });
+  return NextResponse.json({});
 }

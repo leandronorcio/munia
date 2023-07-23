@@ -124,6 +124,12 @@ export function usePostsMutations({
       });
 
       if (!res.ok) {
+        /**
+         * No need to throw an error when there is a 409 conflict.
+         * Why? Trying to like an already liked post should not
+         * roll back the optimistic LIKE mutation.
+         */
+        if (res.status === 409) return true;
         throw Error('Error liking post.');
       }
 
@@ -165,6 +171,12 @@ export function usePostsMutations({
       );
 
       if (!res.ok) {
+        /**
+         * No need to throw an error when there is a 409 conflict.
+         * Why? Trying to unlike a post that is not liked yet should
+         * NOT roll back the optimistic UNLIKE mutation.
+         */
+        if (res.status === 409) return true;
         throw Error('Error unliking post.');
       }
 
