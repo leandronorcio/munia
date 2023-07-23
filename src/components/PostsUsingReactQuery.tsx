@@ -20,10 +20,11 @@ export function PostsUsingReactQuery({
   userId: string;
   shouldShowCreatePost: boolean;
 }) {
-  const { deleteMutation, likeMutation, unLikeMutation } = usePostsMutations({
-    type,
-    userId,
-  });
+  const { deleteMutation, likeMutation, unLikeMutation, toggleComments } =
+    usePostsMutations({
+      type,
+      userId,
+    });
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
   const { launchEditPost } = useCreatePost();
@@ -128,7 +129,13 @@ export function PostsUsingReactQuery({
               >
                 <Post
                   {...post}
-                  {...{ likePost, unLikePost, editPost, deletePost }}
+                  {...{
+                    likePost,
+                    unLikePost,
+                    editPost,
+                    deletePost,
+                    toggleComments,
+                  }}
                 />
               </motion.div>
             ))}

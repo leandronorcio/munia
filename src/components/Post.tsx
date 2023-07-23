@@ -2,7 +2,7 @@
 import { Heart } from '@/svg_components';
 import ProfileBlock from './ProfileBlock';
 import PostVisualMediaContainer from './PostVisualMediaContainer';
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import { sortVisualMedia } from '@/lib/sortVisualMedia';
 import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/cn';
@@ -25,10 +25,12 @@ export const Post = memo(
     visualMedia,
     isLiked,
     _count,
+    commentsShown,
     likePost,
     unLikePost,
     deletePost,
     editPost,
+    toggleComments,
   }: GetPost & {
     likePost: (postId: number) => void;
     unLikePost: (postId: number) => void;
@@ -38,13 +40,13 @@ export const Post = memo(
       content: string;
       visualMedia?: VisualMedia[];
     }) => void;
+    toggleComments: (postId: number) => void;
   }) {
     const { data: session } = useSession();
     const userId = session?.user?.id;
     const isOwnPost = userId === author.id;
     const numberOfLikes = _count.postLikes;
 
-    const [commentsShown, setCommentsShown] = useState(false);
     const { confirm } = useBasicDialogs();
 
     console.log('rendered + ' + postId);
@@ -64,8 +66,8 @@ export const Post = memo(
       editPost({ postId, content: content || '', visualMedia });
     };
 
-    const toggleCommentsSection = () => {
-      setCommentsShown((prev) => !prev);
+    const handleCommentsTogglerClick = () => {
+      toggleComments(postId);
     };
 
     return (
@@ -116,7 +118,7 @@ export const Post = memo(
               className={cn(
                 'flex items-center gap-3 cursor-pointer px-4 py-2 rounded-xl hover:bg-blue-200 active:ring-4 ring-blue-300'
               )}
-              onClick={toggleCommentsSection}
+              onClick={handleCommentsTogglerClick}
             >
               <SvgComment
                 className={cn(

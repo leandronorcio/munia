@@ -10,6 +10,7 @@ import { chunk } from 'lodash';
 import { GetPost } from 'types';
 import { useToast } from './useToast';
 import { useSession } from 'next-auth/react';
+import { useCallback } from 'react';
 
 export function usePostsMutations({
   type,
@@ -206,5 +207,34 @@ export function usePostsMutations({
     }
   );
 
-  return { deleteMutation, likeMutation, unLikeMutation };
+  const toggleComments = useCallback(async (postId: number) => {
+    qc.setQueryData<InfiniteData<GetPost[]>>(
+      ['users', userId, type, 'posts'],
+      (oldData) => {
+        if (!oldData) return;
+
+        // Flatten the old pages
+        const newPosts = oldData?.pages.flat();
+
+        // Find the index of the post
+        const index = newPosts.findIndex((post) => post.id === postId);
+
+        // Get the value of the old post
+        const oldPost = newPosts[index];
+
+        // Toggle the `commentsShown` boolean property of the target post
+        newPosts[index] = {
+          ...oldPost,
+          commentsShown: !oldPost.commentsShown,
+        };
+
+        return {
+          pages: chunk(newPosts, postsPerPage),
+          pageParams: oldData.pageParams,
+        };
+      }
+    );
+  }, []);
+
+  return { deleteMutation, likeMutation, unLikeMutation, toggleComments };
 }
