@@ -14,6 +14,7 @@ import { useSession } from 'next-auth/react';
 
 export function Comments({ postId }: { postId: number }) {
   const qc = useQueryClient();
+  const queryKey = ['posts', postId, 'comments'];
   const { data: session } = useSession();
   const [commentText, setCommentText] = useState('');
   const [loadingCreateComment, setLoadingCreateComment] = useState(false);
@@ -26,8 +27,9 @@ export function Comments({ postId }: { postId: number }) {
     isError,
     error,
   } = useQuery<CommentType[], Error>({
-    queryKey: ['posts', postId, 'comments'],
+    queryKey: queryKey,
     queryFn: () => fetchComments({ postId }),
+    staleTime: 1000 * 60 * 5,
   });
 
   const createCommentMutation = useMutation({
@@ -55,20 +57,20 @@ export function Comments({ postId }: { postId: number }) {
 
       return (await res.json()) as CommentType;
     },
+
     onSuccess: (createdPost) => {
-      qc.setQueryData<CommentType[]>(
-        ['posts', postId, 'comments'],
-        (oldComments) => {
-          if (!oldComments) return;
-          return [...oldComments, createdPost];
-        }
-      );
+      qc.setQueryData<CommentType[]>(queryKey, (oldComments) => {
+        if (!oldComments) return;
+        return [...oldComments, createdPost];
+      });
 
       setCommentText('');
     },
+
     onError: (err: Error) => {
       showToast({ type: 'error', title: err.message });
     },
+
     onSettled: () => {
       setLoadingCreateComment(false);
     },
@@ -96,29 +98,41 @@ export function Comments({ postId }: { postId: number }) {
 
       return (await res.json()) as CommentType;
     },
-    onSuccess: (updatedComment) => {
-      qc.setQueryData<CommentType[]>(
-        ['posts', postId, 'comments'],
-        (oldComments) => {
-          if (!oldComments) return;
 
-          // Make a shallow copy of the `oldComments`
-          const newComments = [...oldComments];
+    onMutate: async ({ commentId, content }) => {
+      await qc.cancelQueries({ queryKey: queryKey });
 
-          // Find the index of the updated comment
-          const index = newComments.findIndex(
-            (comment) => comment.id === updatedComment.id
-          );
+      // Snapshot the previous value
+      const prevComments = qc.getQueryData(queryKey);
 
-          // Update the comment
-          newComments[index] = updatedComment;
+      // Optimistically update
+      qc.setQueryData<CommentType[]>(queryKey, (oldComments) => {
+        if (!oldComments) return;
 
-          // Return the updated data
-          return newComments;
-        }
-      );
+        // Make a shallow copy of the `oldComments`
+        const newComments = [...oldComments];
+
+        // Find the index of the updated comment
+        const index = newComments.findIndex(
+          (comment) => comment.id === commentId
+        );
+
+        // Update the comment
+        newComments[index] = {
+          ...newComments[index],
+          content,
+        };
+
+        // Return the updated data
+        return newComments;
+      });
+
+      // Return a context object with the snapshotted value
+      return { prevComments };
     },
-    onError: (err: Error) => {
+
+    onError: (err: Error, variables, context) => {
+      qc.setQueryData(queryKey, context?.prevComments);
       showToast({ type: 'error', title: err.message });
     },
   });
@@ -135,18 +149,28 @@ export function Comments({ postId }: { postId: number }) {
 
       return (await res.json()) as { id: number };
     },
-    onSuccess: ({ id }) => {
-      qc.setQueryData<CommentType[]>(
-        ['posts', postId, 'comments'],
-        (oldComments) => {
-          if (!oldComments) return;
 
-          // Remove the deleted comment and return the new comments
-          return oldComments.filter((comment) => comment.id !== id);
-        }
-      );
+    onMutate: async ({ commentId }) => {
+      await qc.cancelQueries({ queryKey: queryKey });
+
+      // Snapshot the previous value
+      const prevComments = qc.getQueryData(queryKey);
+
+      // Optimistically remove
+      qc.setQueryData<CommentType[]>(queryKey, (oldComments) => {
+        if (!oldComments) return;
+
+        // Remove the deleted comment and return the new comments
+        return oldComments.filter((comment) => comment.id !== commentId);
+      });
+
+      return {
+        prevComments,
+      };
     },
-    onError: (err: Error) => {
+
+    onError: (err: Error, variables, context) => {
+      qc.setQueryData(queryKey, context?.prevComments);
       showToast({ type: 'error', title: err.message });
     },
   });
