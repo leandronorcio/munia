@@ -7,7 +7,7 @@ import useOnScreen from '@/hooks/useOnScreen';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Post } from './Post';
 import { useCreatePost } from '@/hooks/useCreatePost';
-import { usePostsMutations } from '@/hooks/usePostsMutations';
+import { usePostsMutations } from '@/hooks/mutations/usePostsMutations';
 import { fetchPosts } from '@/lib/query-functions/fetchPosts';
 
 export function Posts({

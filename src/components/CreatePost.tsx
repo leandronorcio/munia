@@ -13,7 +13,7 @@ import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { VisualMedia } from 'types';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 import { useCreatePost } from '@/hooks/useCreatePost';
-import { useCreatePostMutations } from '@/hooks/useCreatePostMutations';
+import { useCreatePostMutations } from '@/hooks/mutations/useCreatePostMutations';
 
 export default function CreatePost({
   toEditValues,

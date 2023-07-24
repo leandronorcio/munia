@@ -6,9 +6,9 @@ import {
 } from '@tanstack/react-query';
 import { chunk } from 'lodash';
 import { GetPost } from 'types';
-import { useToast } from './useToast';
+import { useToast } from '../useToast';
 import { useSession } from 'next-auth/react';
-import { useCreatePost } from './useCreatePost';
+import { useCreatePost } from '../useCreatePost';
 import { VisualMedia } from 'types';
 
 export function useCreatePostMutations({

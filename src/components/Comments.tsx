@@ -10,7 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchComments } from '@/lib/query-functions/fetchComments';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { useSession } from 'next-auth/react';
-import { useCommentsMutations } from '@/hooks/useCommentsMutations';
+import { useCommentsMutations } from '@/hooks/mutations/useCommentsMutations';
 
 export function Comments({ postId }: { postId: number }) {
   const queryKey = ['posts', postId, 'comments'];

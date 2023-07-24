@@ -1,6 +1,6 @@
 import { QueryKey, useMutation, useQueryClient } from '@tanstack/react-query';
 import { GetComment } from 'types';
-import { useToast } from './useToast';
+import { useToast } from '../useToast';
 import { Dispatch, SetStateAction } from 'react';
 
 export function useCommentsMutations(
