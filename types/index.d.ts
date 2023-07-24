@@ -7,9 +7,6 @@ import {
   About,
   Follow,
 } from '@prisma/client';
-import type { DefaultUser } from 'next-auth';
-
-export interface CustomUser extends DefaultUser, User {}
 
 // Use this type when finding a User in prisma.
 export interface FindUserResult extends User {

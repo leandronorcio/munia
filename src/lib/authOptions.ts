@@ -5,7 +5,6 @@ import FacebookProvider from 'next-auth/providers/facebook';
 import EmailProvider from 'next-auth/providers/email';
 import type { Adapter } from 'next-auth/adapters';
 import type { NextAuthOptions } from 'next-auth';
-import { CustomUser } from 'types';
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as Adapter,
@@ -42,22 +41,23 @@ export const authOptions: NextAuthOptions = {
       // https://next-auth.js.org/configuration/callbacks#jwt-callback
       return token;
     },
-    session: async ({ token, session }) => {
-      let user: CustomUser | null = null;
-      if (token) {
-        // Retrieve user from the database using the token.
-        user = await prisma.user.findFirst({
-          where: {
-            id: token.sub,
-          },
-        });
+    session: async ({ session, token }) => {
+      /**
+       * Why not get and persist the entire user data to `session.user` here?
+       *
+       * Every time the session is checked, this callback function is
+       * invoked, thus calling the db here would be inefficient as the
+       * session is checked multiple times by different components.
+       *
+       * If you need the other data of the current logged in user, use the
+       * `useUserData()` hook instead. But if you only need to get the
+       * `id`, `name`, `email` and `image` of the user, use NextAuth's
+       * `useSession()` instead.
+       */
+      if (session.user) {
+        session.user.id = token.sub as string;
       }
-
-      return {
-        ...session,
-        // Pass the retrieved user object to the client.
-        user: user || undefined,
-      };
+      return session;
     },
   },
   events: {
