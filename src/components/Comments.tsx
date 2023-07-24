@@ -16,6 +16,7 @@ export function Comments({ postId }: { postId: number }) {
   const qc = useQueryClient();
   const { data: session } = useSession();
   const [commentText, setCommentText] = useState('');
+  const [loadingCreateComment, setLoadingCreateComment] = useState(false);
   const { prompt, confirm } = useBasicDialogs();
   const { showToast } = useToast();
 
@@ -37,6 +38,7 @@ export function Comments({ postId }: { postId: number }) {
       postId: number;
       content: string;
     }) => {
+      setLoadingCreateComment(true);
       const res = await fetch(`/api/posts/${postId}/comments`, {
         method: 'POST',
         headers: {
@@ -66,6 +68,9 @@ export function Comments({ postId }: { postId: number }) {
     },
     onError: (err: Error) => {
       showToast({ type: 'error', title: err.message });
+    },
+    onSettled: () => {
+      setLoadingCreateComment(false);
     },
   });
 
@@ -221,6 +226,7 @@ export function Comments({ postId }: { postId: number }) {
           mode="secondary"
           size="small"
           disabled={commentText === ''}
+          loading={loadingCreateComment}
         >
           Comment
         </Button>
