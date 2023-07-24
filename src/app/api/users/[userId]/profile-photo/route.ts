@@ -10,5 +10,5 @@ export async function POST(
   if (!user || user.id !== params.userId)
     return NextResponse.json({}, { status: 401 });
 
-  return await useUpdateProfileAndCoverPhoto(request, user, 'profilePhoto');
+  return await useUpdateProfileAndCoverPhoto(request, user.id, 'profilePhoto');
 }

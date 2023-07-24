@@ -1,11 +1,10 @@
 import { writeFile } from 'fs/promises';
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma/prisma';
-import { CustomUser } from 'types';
 
 export async function useUpdateProfileAndCoverPhoto(
   request: Request,
-  user: CustomUser,
+  userId: string,
   toUpdate: 'profilePhoto' | 'coverPhoto'
 ) {
   const formData = await request.formData();
@@ -28,14 +27,12 @@ export async function useUpdateProfileAndCoverPhoto(
       );
     }
     const buffer = Buffer.from(await file.arrayBuffer());
-    const filePath = `/uploads/${
-      user.id
-    }-${Date.now()}-${toUpdate}.${extension}`;
+    const filePath = `/uploads/${userId}-${Date.now()}-${toUpdate}.${extension}`;
     await writeFile(`./public${filePath}`, buffer);
 
     const updateUser = await prisma.user.update({
       where: {
-        id: user.id,
+        id: userId,
       },
       data: {
         [toUpdate]: filePath,
