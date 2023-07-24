@@ -1,6 +1,6 @@
 'use client';
-import { useState } from 'react';
-import Comment from './Comment';
+import { useCallback, useState } from 'react';
+import { Comment } from './Comment';
 import Button from './ui/Button';
 import { TextArea } from './ui/TextArea';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -150,30 +150,27 @@ export function Comments({ postId }: { postId: number }) {
     createCommentMutation.mutate({ postId, content: commentText });
   };
 
-  const handleEdit = ({
-    commentId,
-    content,
-  }: {
-    commentId: number;
-    content: string;
-  }) => {
-    prompt({
-      title: 'Edit Comment',
-      initialPromptValue: content,
-      promptType: 'textarea',
-      onSubmit: (value) => {
-        updateCommentMutation.mutate({ commentId, content: value });
-      },
-    });
-  };
+  const handleEdit = useCallback(
+    ({ commentId, content }: { commentId: number; content: string }) => {
+      prompt({
+        title: 'Edit Comment',
+        initialPromptValue: content,
+        promptType: 'textarea',
+        onSubmit: (value) => {
+          updateCommentMutation.mutate({ commentId, content: value });
+        },
+      });
+    },
+    []
+  );
 
-  const handleDelete = ({ commentId }: { commentId: number }) => {
+  const handleDelete = useCallback(({ commentId }: { commentId: number }) => {
     confirm({
       title: 'Confirm Delete',
       message: 'Do you really wish to delete this comment?',
       onConfirm: () => deleteCommentMutation.mutate({ commentId }),
     });
-  };
+  }, []);
 
   return (
     <div className="flex flex-col px-8 py-6 bg-gray-100">
