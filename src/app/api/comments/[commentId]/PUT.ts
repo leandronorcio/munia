@@ -7,6 +7,7 @@ import prisma from '@/lib/prisma/prisma';
 import { NextResponse } from 'next/server';
 import { verifyAccessToComment } from './verifyAccessToComment';
 import { commentWriteSchema } from '@/lib/validations/comment';
+import { CommentType } from 'types';
 
 export async function PUT(
   request: Request,
@@ -27,7 +28,10 @@ export async function PUT(
     data: {
       content,
     },
+    include: {
+      user: true,
+    },
   });
 
-  return NextResponse.json({ id: res.id });
+  return NextResponse.json<CommentType>(res);
 }
