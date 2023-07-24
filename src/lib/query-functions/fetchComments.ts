@@ -1,4 +1,4 @@
-import { CommentType } from 'types';
+import { GetComment } from 'types';
 
 export const fetchComments = async ({ postId }: { postId: number }) => {
   const res = await fetch(`/api/posts/${postId}/comments`);
@@ -7,5 +7,5 @@ export const fetchComments = async ({ postId }: { postId: number }) => {
     throw new Error('Error Getting Comments');
   }
 
-  return (await res.json()) as CommentType[];
+  return (await res.json()) as GetComment[];
 };

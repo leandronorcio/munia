@@ -1,5 +1,5 @@
 import { QueryKey, useMutation, useQueryClient } from '@tanstack/react-query';
-import { CommentType } from 'types';
+import { GetComment } from 'types';
 import { useToast } from './useToast';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -32,11 +32,11 @@ export function useCommentsMutations(
         throw new Error('Error Creating Comment');
       }
 
-      return (await res.json()) as CommentType;
+      return (await res.json()) as GetComment;
     },
 
     onSuccess: (createdPost) => {
-      qc.setQueryData<CommentType[]>(queryKey, (oldComments) => {
+      qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
         if (!oldComments) return;
         return [...oldComments, createdPost];
       });
@@ -69,7 +69,7 @@ export function useCommentsMutations(
         throw new Error('Error Updating Comment');
       }
 
-      return (await res.json()) as CommentType;
+      return (await res.json()) as GetComment;
     },
 
     onMutate: async ({ commentId, content }) => {
@@ -79,7 +79,7 @@ export function useCommentsMutations(
       const prevComments = qc.getQueryData(queryKey);
 
       // Optimistically update
-      qc.setQueryData<CommentType[]>(queryKey, (oldComments) => {
+      qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
         if (!oldComments) return;
 
         // Make a shallow copy of the `oldComments`
@@ -130,7 +130,7 @@ export function useCommentsMutations(
       const prevComments = qc.getQueryData(queryKey);
 
       // Optimistically remove
-      qc.setQueryData<CommentType[]>(queryKey, (oldComments) => {
+      qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
         if (!oldComments) return;
 
         // Remove the deleted comment and return the new comments

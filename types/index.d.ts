@@ -90,7 +90,7 @@ export interface GetPost {
   commentsShown?: boolean;
 }
 
-export interface CommentType {
+export interface GetComment {
   id: number;
   content: string;
   createdAt: Date;

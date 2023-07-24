@@ -4,13 +4,13 @@
  */
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma/prisma';
-import { CommentType } from 'types';
+import { GetComment } from 'types';
 
 export async function GET(
   request: Request,
   { params }: { params: { postId: string } }
 ) {
-  const res: CommentType[] = await prisma.comment.findMany({
+  const res: GetComment[] = await prisma.comment.findMany({
     where: {
       postId: parseInt(params.postId),
     },
@@ -33,5 +33,5 @@ export async function GET(
     },
   });
 
-  return NextResponse.json<CommentType[]>(res);
+  return NextResponse.json<GetComment[]>(res);
 }

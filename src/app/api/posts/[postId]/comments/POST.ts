@@ -7,7 +7,7 @@
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma/prisma';
-import { CommentType } from 'types';
+import { GetComment } from 'types';
 import { commentWriteSchema } from '@/lib/validations/comment';
 import { z } from 'zod';
 
@@ -49,7 +49,7 @@ export async function POST(
         username: user.username,
         profilePhoto: user.profilePhoto,
       },
-    } as CommentType);
+    } as GetComment);
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(error.issues, { status: 422 });

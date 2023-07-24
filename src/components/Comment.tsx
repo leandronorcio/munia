@@ -3,7 +3,7 @@ import { formatDistanceStrict } from 'date-fns';
 import ProfileBlock from './ProfileBlock';
 import { DropdownMenu } from './ui/DropdownMenu';
 import { DropdownItem } from './ui/DropdownItem';
-import { CommentType } from 'types';
+import { GetComment } from 'types';
 import { memo } from 'react';
 import { isEqual } from 'lodash';
 
@@ -16,7 +16,7 @@ export const Comment = memo(
     isOwnComment,
     handleEdit,
     handleDelete,
-  }: CommentType & {
+  }: GetComment & {
     isOwnComment: boolean;
     handleEdit: (params: { commentId: number; content: string }) => void;
     handleDelete: (params: { commentId: number }) => void;

@@ -4,7 +4,7 @@ import { Comment } from './Comment';
 import Button from './ui/Button';
 import { TextArea } from './ui/TextArea';
 import { AnimatePresence, motion } from 'framer-motion';
-import { CommentType } from 'types';
+import { GetComment } from 'types';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 import { useQuery } from '@tanstack/react-query';
 import { fetchComments } from '@/lib/query-functions/fetchComments';
@@ -28,7 +28,7 @@ export function Comments({ postId }: { postId: number }) {
     isLoading,
     isError,
     error,
-  } = useQuery<CommentType[], Error>({
+  } = useQuery<GetComment[], Error>({
     queryKey: queryKey,
     queryFn: () => fetchComments({ postId }),
     staleTime: 1000 * 60 * 5,
