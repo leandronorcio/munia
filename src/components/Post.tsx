@@ -139,11 +139,11 @@ export const Post = memo(
           {commentsShown && (
             <motion.div
               key={`${postId}-comments`}
-              initial={{ height: 0 }}
+              initial={false}
               animate={{ height: 'auto' }}
               exit={{ height: 0 }}
             >
-              <Comments postId={postId} postAuthorId={author.id} />
+              <Comments postId={postId} />
             </motion.div>
           )}
         </AnimatePresence>

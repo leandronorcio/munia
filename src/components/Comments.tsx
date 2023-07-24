@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Comment from './Comment';
 import Button from './ui/Button';
 import { TextArea } from './ui/TextArea';
@@ -7,84 +7,204 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useToast } from '@/hooks/useToast';
 import { CommentType } from 'types';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { fetchComments } from '@/lib/query-functions/fetchComments';
+import { useBasicDialogs } from '@/hooks/useBasicDialogs';
+import { useSession } from 'next-auth/react';
 
-export function Comments({
-  postId,
-  postAuthorId,
-}: {
-  postId: number;
-  postAuthorId: string;
-}) {
-  const [comments, setComments] = useState<CommentType[]>([]);
+export function Comments({ postId }: { postId: number }) {
+  const qc = useQueryClient();
+  const { data: session } = useSession();
   const [commentText, setCommentText] = useState('');
-  // Delay the animations of the <Comment> components on initial render of the <Comments> component.
-  const [delayCommentAnimation, setDelayCommentAnimation] = useState(true);
+  const { prompt, confirm } = useBasicDialogs();
   const { showToast } = useToast();
 
-  useEffect(() => {
-    const getComments = async () => {
-      const res = await fetch(`/api/posts/${postId}/comments`);
+  const {
+    data: comments,
+    isLoading,
+    isError,
+    error,
+  } = useQuery<CommentType[], Error>({
+    queryKey: ['posts', postId, 'comments'],
+    queryFn: () => fetchComments({ postId }),
+  });
+
+  const createCommentMutation = useMutation({
+    mutationFn: async ({
+      postId,
+      content,
+    }: {
+      postId: number;
+      content: string;
+    }) => {
+      const res = await fetch(`/api/posts/${postId}/comments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          content,
+        }),
+      });
 
       if (!res.ok) {
-        showToast({ title: 'Error Getting Comments', type: 'error' });
-        return;
+        throw new Error('Error Creating Comment');
       }
 
-      const data = (await res.json()) as { comments: CommentType[] };
-      setComments(data.comments);
-    };
+      return (await res.json()) as CommentType;
+    },
+    onSuccess: (createdPost) => {
+      qc.setQueryData<CommentType[]>(
+        ['posts', postId, 'comments'],
+        (oldComments) => {
+          if (!oldComments) return;
+          return [...oldComments, createdPost];
+        }
+      );
 
-    // Wait for the animation of the Component to finish before fetching comments.
-    setTimeout(() => getComments(), 400);
-  }, []);
-
-  const postComment = async () => {
-    const res = await fetch(`/api/posts/${postId}/comments`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        content: commentText,
-      }),
-    });
-
-    if (res.ok) {
-      const addedComment = (await res.json()) as CommentType;
-      setDelayCommentAnimation(false);
-      setComments((prev) => [...prev, addedComment]);
       setCommentText('');
-      showToast({ title: 'Comment Posted', type: 'success' });
-    } else {
-      showToast({ title: 'Comment Not Posted', type: 'error' });
-    }
+    },
+    onError: (err: Error) => {
+      showToast({ type: 'error', title: err.message });
+    },
+  });
+
+  const updateCommentMutation = useMutation({
+    mutationFn: async ({
+      commentId,
+      content,
+    }: {
+      commentId: number;
+      content: string;
+    }) => {
+      const res = await fetch(`/api/comments/${commentId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content: content }),
+      });
+
+      if (!res.ok) {
+        throw new Error('Error Updating Comment');
+      }
+
+      return (await res.json()) as CommentType;
+    },
+    onSuccess: (updatedComment) => {
+      qc.setQueryData<CommentType[]>(
+        ['posts', postId, 'comments'],
+        (oldComments) => {
+          if (!oldComments) return;
+
+          // Make a shallow copy of the `oldComments`
+          const newComments = [...oldComments];
+
+          // Find the index of the updated comment
+          const index = newComments.findIndex(
+            (comment) => comment.id === updatedComment.id
+          );
+
+          // Update the comment
+          newComments[index] = updatedComment;
+
+          // Return the updated data
+          return newComments;
+        }
+      );
+    },
+    onError: (err: Error) => {
+      showToast({ type: 'error', title: err.message });
+    },
+  });
+
+  const deleteCommentMutation = useMutation({
+    mutationFn: async ({ commentId }: { commentId: number }) => {
+      const res = await fetch(`/api/comments/${commentId}`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) {
+        throw new Error('Error Deleting Comment');
+      }
+
+      return (await res.json()) as { id: number };
+    },
+    onSuccess: ({ id }) => {
+      qc.setQueryData<CommentType[]>(
+        ['posts', postId, 'comments'],
+        (oldComments) => {
+          if (!oldComments) return;
+
+          // Remove the deleted comment and return the new comments
+          return oldComments.filter((comment) => comment.id !== id);
+        }
+      );
+    },
+    onError: (err: Error) => {
+      showToast({ type: 'error', title: err.message });
+    },
+  });
+
+  const handleCreate = () => {
+    createCommentMutation.mutate({ postId, content: commentText });
+  };
+
+  const handleEdit = ({
+    commentId,
+    content,
+  }: {
+    commentId: number;
+    content: string;
+  }) => {
+    prompt({
+      title: 'Edit Comment',
+      initialPromptValue: content,
+      promptType: 'textarea',
+      onSubmit: (value) => {
+        updateCommentMutation.mutate({ commentId, content: value });
+      },
+    });
+  };
+
+  const handleDelete = ({ commentId }: { commentId: number }) => {
+    confirm({
+      title: 'Confirm Delete',
+      message: 'Do you really wish to delete this comment?',
+      onConfirm: () => deleteCommentMutation.mutate({ commentId }),
+    });
   };
 
   return (
     <div className="flex flex-col px-8 py-6 bg-gray-100">
-      <AnimatePresence>
-        {comments?.map((comment, i) => (
-          <motion.div
-            key={`${postId}-comments-${comment.id}`}
-            initial={{ height: 0, x: 40, marginTop: '0', overflow: 'hidden' }}
-            animate={{
-              height: 'auto',
-              x: 0,
-              marginTop: '12px',
-              overflow: 'visible',
-            }}
-            exit={{ height: 0, x: 40, marginTop: '0', overflow: 'hidden' }}
-            transition={{ delay: delayCommentAnimation ? i * 0.125 : 0 }}
-          >
-            <Comment
-              key={i}
-              {...comment}
-              postAuthorId={postAuthorId}
-              setComments={setComments}
-            />
-          </motion.div>
-        ))}
-      </AnimatePresence>
+      {isLoading ? (
+        // TODO: Add fixed loading spinner here
+        <></>
+      ) : isError ? (
+        error.message
+      ) : (
+        <AnimatePresence>
+          {comments?.map((comment, i) => (
+            <motion.div
+              key={`${postId}-comments-${comment.id}`}
+              initial={false}
+              animate={{
+                height: 'auto',
+                x: 0,
+                marginTop: '12px',
+                overflow: 'visible',
+              }}
+              exit={{ height: 0, x: 40, marginTop: '0', overflow: 'hidden' }}
+            >
+              <Comment
+                {...comment}
+                {...{ handleEdit, handleDelete }}
+                isOwnComment={session?.user?.id === comment.user.id}
+              />
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      )}
 
       <div className="flex flex-row mt-3">
         <div className="w-11 h-11">
@@ -100,7 +220,7 @@ export function Comments({
       </div>
       <div className="flex justify-end">
         <Button
-          onClick={postComment}
+          onClick={handleCreate}
           mode="secondary"
           size="small"
           disabled={commentText === ''}

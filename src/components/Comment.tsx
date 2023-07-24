@@ -4,69 +4,22 @@ import ProfileBlock from './ProfileBlock';
 import { useSession } from 'next-auth/react';
 import { DropdownMenu } from './ui/DropdownMenu';
 import { DropdownItem } from './ui/DropdownItem';
-import { useState } from 'react';
-import { useBasicDialogs } from '@/hooks/useBasicDialogs';
-import { useToast } from '@/hooks/useToast';
 import { CommentType } from 'types';
 
 export default function Comment({
   id: commentId,
-  content: initialContent,
+  content,
   createdAt,
   user: author,
-  postAuthorId,
-  postId,
-  setComments,
+  isOwnComment,
+  handleEdit,
+  handleDelete,
 }: CommentType & {
-  postAuthorId: string;
-  setComments: React.Dispatch<React.SetStateAction<CommentType[]>>;
+  isOwnComment: boolean;
+  handleEdit: (params: { commentId: number; content: string }) => void;
+  handleDelete: (params: { commentId: number }) => void;
 }) {
-  // Use this state when the comment is edited.
-  const [content, setContent] = useState(initialContent);
   const { data: session } = useSession();
-  const userId = session?.user?.id;
-  const isOwnComment = userId === author.id;
-  const { showToast } = useToast();
-  const { confirm, prompt } = useBasicDialogs();
-
-  const deleteComment = async () => {
-    const res = await fetch(`/api/comments/${commentId}`, {
-      method: 'DELETE',
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      showToast({ type: 'success', title: 'Successfully Deleted' });
-      setComments((prev) => prev.filter((comment) => comment.id !== data.id));
-    } else {
-      showToast({
-        type: 'error',
-        title: 'Error',
-        message: 'Unable to delete this comment.',
-      });
-    }
-  };
-
-  const editComment = async (newValue: string) => {
-    const res = await fetch(`/api/comments/${commentId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ content: newValue }),
-    });
-
-    if (res.ok) {
-      setContent(newValue);
-      showToast({ type: 'success', title: 'Successfully Edited' });
-    } else {
-      showToast({
-        type: 'error',
-        title: 'Error',
-        message: 'Unable to edit this comment.',
-      });
-    }
-  };
 
   return (
     <div className="flex flex-col items-start">
@@ -81,29 +34,10 @@ export default function Comment({
           />
           {isOwnComment && (
             <DropdownMenu>
-              <DropdownItem
-                onClick={() => {
-                  confirm({
-                    title: 'Confirm Delete',
-                    message: 'Do you really wish to delete this comment?',
-                    onConfirm: deleteComment,
-                  });
-                }}
-              >
+              <DropdownItem onClick={() => handleDelete({ commentId })}>
                 Delete Comment
               </DropdownItem>
-              <DropdownItem
-                onClick={() => {
-                  prompt({
-                    title: 'Edit Comment',
-                    initialPromptValue: content,
-                    promptType: 'textarea',
-                    onSubmit: (value) => {
-                      editComment(value);
-                    },
-                  });
-                }}
-              >
+              <DropdownItem onClick={() => handleEdit({ commentId, content })}>
                 Edit Comment
               </DropdownItem>
             </DropdownMenu>
