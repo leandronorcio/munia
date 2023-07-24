@@ -3,22 +3,12 @@ import ModalWrapper from './ModalWrapper';
 import { ResponsiveContainer } from './ui/ResponsiveContainer';
 import CreatePost from './CreatePost';
 import { useContext } from 'react';
-import {
-  CreatePostModalContextApi,
-  CreatePostModalContextData,
-} from '@/contexts/CreatePostModalContext';
+import { CreatePostModalContextData } from '@/contexts/CreatePostModalContext';
 
 export function CreatePostModal() {
   const { shown, shouldOpenFileInputOnMount, toEditValues } = useContext(
     CreatePostModalContextData
   );
-  const { setShown, setShouldOpenFileInputOnMount, setToEditValues } =
-    useContext(CreatePostModalContextApi);
-  const exitCreatePostModal = () => {
-    setShown(false);
-    setShouldOpenFileInputOnMount(false);
-    setToEditValues(null);
-  };
 
   return (
     <AnimatePresence>
@@ -27,7 +17,6 @@ export function CreatePostModal() {
           <div className="w-full h-full grid place-items-center py-8 overflow-y-auto">
             <ResponsiveContainer>
               <CreatePost
-                exitCreatePostModal={exitCreatePostModal}
                 toEditValues={toEditValues}
                 shouldOpenFileInputOnMount={shouldOpenFileInputOnMount}
               />

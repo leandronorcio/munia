@@ -32,5 +32,11 @@ export function useCreatePost() {
     setShown(true);
   };
 
-  return { launchCreatePost, launchEditPost };
+  const exitCreatePostModal = () => {
+    setShown(false);
+    setShouldOpenFileInputOnMount(false);
+    setToEditValues(null);
+  };
+
+  return { launchCreatePost, launchEditPost, exitCreatePostModal };
 }
