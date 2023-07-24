@@ -8,11 +8,11 @@ import {
   Search,
 } from '@/svg_components';
 import SidebarMenuItem from './SidebarMenuItem';
-import { useSession } from 'next-auth/react';
+import { useUserData } from '@/hooks/useUserData';
 
 export default function Sidebar() {
-  const { data: session } = useSession();
-  const username = session?.user ? session.user.username : '/not-found';
+  const [user] = useUserData();
+  const username = user?.username || 'user-not-found';
 
   return (
     <div className="h-full flex flex-col py-8 px-6">

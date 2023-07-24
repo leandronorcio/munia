@@ -1,14 +1,11 @@
 'use client';
-import { useSession } from 'next-auth/react';
 import { ProfilePhoto } from './ProfilePhoto';
+import { useUserData } from '@/hooks/useUserData';
 
 export function ProfilePhotoOwn() {
-  const { data: session } = useSession();
+  const [user] = useUserData();
 
   return (
-    <ProfilePhoto
-      photoUrl={session?.user?.profilePhoto}
-      username={session?.user?.username}
-    />
+    <ProfilePhoto photoUrl={user?.profilePhoto} username={user?.username} />
   );
 }
