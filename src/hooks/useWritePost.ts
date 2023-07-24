@@ -7,8 +7,8 @@ import { VisualMedia, GetPost } from 'types';
 import { isValidFileType } from '@/lib/isValidFileType';
 import { postWriteSchema } from '@/lib/validations/post';
 import { z } from 'zod';
-import { useProtectApiRoute } from './useProtectApiRoute';
 import { toGetPost } from '@/lib/prisma/toGetPost';
+import { getServerUser } from '@/lib/getServerUser';
 
 export async function useWritePost({
   formData,
@@ -19,7 +19,7 @@ export async function useWritePost({
   type: 'create' | 'edit';
   postId?: number;
 }) {
-  const [user] = await useProtectApiRoute();
+  const [user] = await getServerUser();
   const userId = user?.id!;
 
   try {

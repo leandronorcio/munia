@@ -13,11 +13,11 @@ import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import { CreatePostModalContextProvider } from '@/contexts/CreatePostModalContext';
 import { cn } from '@/lib/cn';
-import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import BottomMenu from '@/components/BottomMenu';
 import { CountContextProvider } from '@/contexts/CountContext';
 import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 import { ReactQueryProvider } from '@/contexts/ReactQueryProvider';
+import { getServerUser } from '@/lib/getServerUser';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
@@ -34,7 +34,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [user] = await useProtectApiRoute();
+  const [user] = await getServerUser();
   return (
     <html lang="en">
       <head>

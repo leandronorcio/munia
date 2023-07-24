@@ -4,11 +4,11 @@
  * by the :userId parameter.
  */
 import { NextResponse } from 'next/server';
-import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import prisma from '@/lib/prisma/prisma';
 import { selectPost } from '@/lib/prisma/selectPost';
 import { GetPost } from 'types';
 import { toGetPost } from '@/lib/prisma/toGetPost';
+import { getServerUser } from '@/lib/getServerUser';
 
 export async function GET(
   request: Request,
@@ -18,7 +18,7 @@ export async function GET(
    * The [user] will only be used to check whether the
    * user requesting the Posts have like them or not.
    */
-  const [user] = await useProtectApiRoute();
+  const [user] = await getServerUser();
 
   const { searchParams } = new URL(request.url);
   const limit = parseInt(searchParams.get('limit') || '5');

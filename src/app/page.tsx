@@ -1,8 +1,8 @@
-import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { Onboarding } from './Onboarding';
 import { Feed } from './Feed';
+import { getServerUser } from '@/lib/getServerUser';
 
 export default async function Page() {
-  const [user] = await useProtectApiRoute();
+  const [user] = await getServerUser();
   return <>{user ? <Feed /> : <Onboarding />}</>;
 }

@@ -1,5 +1,5 @@
-import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { convertKebabToAllCaps } from '@/lib/convertKebabToAllCaps';
+import { getServerUser } from '@/lib/getServerUser';
 import { includeToUser } from '@/lib/prisma/includeToUser';
 import prisma from '@/lib/prisma/prisma';
 import { toGetUser } from '@/lib/prisma/toGetUser';
@@ -8,7 +8,7 @@ import { NextResponse } from 'next/server';
 import { FindUserResult, GetUser } from 'types';
 
 export async function GET(request: Request) {
-  const [user] = await useProtectApiRoute();
+  const [user] = await getServerUser();
   if (!user) return NextResponse.json({}, { status: 401 });
 
   const { searchParams } = new URL(request.url);

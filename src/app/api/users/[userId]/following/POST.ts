@@ -7,7 +7,7 @@
  * }
  */
 
-import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
+import { getServerUser } from '@/lib/getServerUser';
 import prisma from '@/lib/prisma/prisma';
 import { followPostSchema } from '@/lib/validations/follow';
 import { Prisma } from '@prisma/client';
@@ -18,7 +18,7 @@ export async function POST(
   request: Request,
   { params }: { params: { userId: string } }
 ) {
-  const [user] = await useProtectApiRoute();
+  const [user] = await getServerUser();
   if (!user || user.id !== params.userId)
     return NextResponse.json({}, { status: 403 });
 

@@ -1,8 +1,8 @@
 import { Posts } from '@/components/Posts';
 import { getProfile } from './getProfile';
-import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { GetUser } from 'types';
 import { CreatePostModalLauncher } from '@/components/CreatePostModalLauncher';
+import { getServerUser } from '@/lib/getServerUser';
 
 // Posts sub-page.
 export default async function Page({
@@ -10,7 +10,7 @@ export default async function Page({
 }: {
   params: { username: string };
 }) {
-  const [user] = await useProtectApiRoute();
+  const [user] = await getServerUser();
   const profile: GetUser | null = await getProfile(params.username);
   const shouldShowCreatePost = user?.id === profile?.id;
 

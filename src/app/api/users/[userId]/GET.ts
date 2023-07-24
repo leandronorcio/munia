@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma/prisma';
-import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { FindUserResult, GetUser } from 'types';
 import { includeToUser } from '@/lib/prisma/includeToUser';
 import { toGetUser } from '@/lib/prisma/toGetUser';
+import { getServerUser } from '@/lib/getServerUser';
 
 export async function GET(
   request: Request,
@@ -11,7 +11,7 @@ export async function GET(
 ) {
   // The user is only for checking whether the requestee
   // is following the user being rquested.
-  const [user] = await useProtectApiRoute();
+  const [user] = await getServerUser();
 
   const { userId } = params;
   const res: FindUserResult | null = await prisma.user.findFirst({

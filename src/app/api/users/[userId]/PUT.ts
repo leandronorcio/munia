@@ -1,15 +1,15 @@
-import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { sub } from 'date-fns';
 import prisma from '@/lib/prisma/prisma';
 import { Prisma } from '@prisma/client';
+import { getServerUser } from '@/lib/getServerUser';
 
 export async function PUT(
   request: Request,
   { params }: { params: { userId: string } }
 ) {
-  const [user] = await useProtectApiRoute();
+  const [user] = await getServerUser();
   if (!user || user.id !== params.userId)
     return NextResponse.json({}, { status: 401 });
 

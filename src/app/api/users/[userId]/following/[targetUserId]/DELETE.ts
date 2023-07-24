@@ -3,7 +3,7 @@
  * - Allows an authenticated user to remove a user
  * from their following list / unfollow the :targetUserId.
  */
-import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
+import { getServerUser } from '@/lib/getServerUser';
 import prisma from '@/lib/prisma/prisma';
 import { NextResponse } from 'next/server';
 
@@ -11,7 +11,7 @@ export async function DELETE(
   request: Request,
   { params }: { params: { userId: string; targetUserId: string } }
 ) {
-  const [user] = await useProtectApiRoute();
+  const [user] = await getServerUser();
   if (!user || user.id !== params.userId)
     return NextResponse.json({}, { status: 403 });
 

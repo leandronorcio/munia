@@ -4,18 +4,18 @@
  * by the :postId.
  */
 
-import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma/prisma';
 import { GetComment } from 'types';
 import { commentWriteSchema } from '@/lib/validations/comment';
 import { z } from 'zod';
+import { getServerUser } from '@/lib/getServerUser';
 
 export async function POST(
   request: Request,
   { params }: { params: { postId: string } }
 ) {
-  const [user] = await useProtectApiRoute();
+  const [user] = await getServerUser();
   if (!user) return NextResponse.json({}, { status: 401 });
 
   try {
@@ -38,6 +38,7 @@ export async function POST(
       },
     });
 
+    // TODO: Fix this
     return NextResponse.json({
       id: res.id,
       content,
