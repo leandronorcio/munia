@@ -9,10 +9,7 @@ import { AnimatePresence } from 'framer-motion';
 import { motion } from 'framer-motion';
 import { CloseButton } from './ui/CloseButton';
 import { capitalizeFirstLetter } from '@/lib/capitalizeFirstLettet';
-import {
-  CreatePostCallback,
-  ToEditValues,
-} from '@/contexts/CreatePostModalContext';
+import { ToEditValues } from '@/contexts/CreatePostModalContext';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { useToast } from '@/hooks/useToast';
 import { GetPost, VisualMedia } from 'types';
@@ -28,12 +25,10 @@ import { postsPerPage } from '@/contants';
 export default function CreatePost({
   toEditValues,
   exitCreatePostModal,
-  onSuccess,
   shouldOpenFileInputOnMount,
 }: {
   toEditValues: ToEditValues | null;
   exitCreatePostModal: () => void;
-  onSuccess: CreatePostCallback | null;
   shouldOpenFileInputOnMount: boolean;
 }) {
   const qc = useQueryClient();

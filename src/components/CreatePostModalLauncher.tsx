@@ -1,14 +1,9 @@
 import { EmojiHappySmile, Image } from '@/svg_components';
 import { TextArea } from './ui/TextArea';
 import { useCreatePost } from '@/hooks/useCreatePost';
-import { CreatePostCallback } from '@/contexts/CreatePostModalContext';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 
-export function CreatePostModalLauncher({
-  onSuccess,
-}: {
-  onSuccess: CreatePostCallback;
-}) {
+export function CreatePostModalLauncher() {
   const { launchCreatePost } = useCreatePost();
   return (
     <div className="rounded-xl bg-white  px-4 py-4 sm:px-8 sm:py-6">
@@ -18,7 +13,7 @@ export function CreatePostModalLauncher({
         </div>
         <div
           onClick={() => {
-            launchCreatePost({ onSuccess });
+            launchCreatePost({ shouldOpenFileInputOnMount: false });
           }}
           className="flex-grow flex flex-col justify-center"
         >
@@ -33,7 +28,6 @@ export function CreatePostModalLauncher({
         <div
           onClick={() => {
             launchCreatePost({
-              onSuccess,
               shouldOpenFileInputOnMount: true,
             });
           }}
