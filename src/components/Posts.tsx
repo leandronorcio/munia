@@ -1,156 +1,63 @@
 'use client';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { Post } from './Post';
+
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { VisualMedia } from 'types';
+import { useCallback, useEffect, useRef } from 'react';
 import useOnScreen from '@/hooks/useOnScreen';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useToast } from '@/hooks/useToast';
-import { CreatePostModalLauncher } from './CreatePostModalLauncher';
-import { GetPost, VisualMedia } from 'types';
+import { Post } from './Post';
 import { useCreatePost } from '@/hooks/useCreatePost';
+import { usePostsMutations } from '@/hooks/usePostsMutations';
+import { fetchPosts } from '@/lib/query-functions/fetchPosts';
 
 export function Posts({
   type,
   userId,
-  shouldShowCreatePost,
 }: {
-  type: 'profile' | 'newsFeed';
+  type: 'profile' | 'feed';
   userId: string;
-  shouldShowCreatePost: boolean;
 }) {
-  const [posts, setPosts] = useState<GetPost[]>([]);
-  const [cursor, setCursor] = useState<number | null>(null);
-  const [maxedOut, setMaxedOut] = useState(false);
+  const { deleteMutation, likeMutation, unLikeMutation, toggleComments } =
+    usePostsMutations({
+      type,
+      userId,
+    });
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
   const { launchEditPost } = useCreatePost();
-  const { showToast } = useToast();
 
-  const retrievePosts = async () => {
-    const postsPerPage = 3;
-    const limit = postsPerPage;
-    const url = new URL(
-      document.location.origin + `/api/users/${userId}/posts`
-    );
-    url.searchParams.set('limit', limit.toString());
-    if (cursor !== null) url.searchParams.set('cursor', cursor.toString());
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey: ['users', userId, type, 'posts'],
+    queryFn: ({ pageParam }) => fetchPosts({ pageParam, userId }),
+    getNextPageParam: (lastPage, pages) => {
+      // If the last page doesn't have posts, that means the end is reached
+      if (lastPage.length === 0) return undefined;
 
-    const res = await fetch(url);
-
-    if (!res.ok) {
-      showToast({
-        type: 'error',
-        title: 'Error',
-        message: 'There was an error getting the posts.',
-      });
-    }
-
-    const retrievedPosts = (await res.json()) as GetPost[];
-    if (retrievedPosts.length === 0) {
-      setMaxedOut(true);
-      return;
-    }
-    setPosts((prev) => [...prev, ...retrievedPosts]);
-  };
+      // Return the id of the last post, this will serve as the cursor
+      // that will be passed to `queryFn` as `pageParam` property
+      return lastPage.slice(-1)[0].id;
+    },
+    staleTime: 1000 * 60 * 5,
+  });
 
   useEffect(() => {
-    if (maxedOut) return;
-    retrievePosts();
-  }, [cursor]);
+    if (!isBottomOnScreen) return;
+    if (!data) return;
+    if (!hasNextPage) return;
 
-  useEffect(() => {
-    if (isBottomOnScreen === true) {
-      if (posts.length > 0) {
-        const [{ id: bottomPostId }] = posts.slice(-1);
-        //                                   ^ returns an array containing the last post object
-        setCursor(bottomPostId);
-      }
-    }
+    fetchNextPage();
   }, [isBottomOnScreen]);
 
-  const likePost = useCallback(
-    async (postId: number) => {
-      const res = await fetch(`/api/users/${userId}/liked-posts`, {
-        method: 'POST',
-        body: JSON.stringify({ postId }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setPosts((prevPosts) => {
-          // Find the index of the post using the `postId` param
-          const index = prevPosts.findIndex((post) => post.id === postId);
-          const prevPost = prevPosts[index];
-
-          // Create a new `posts` object
-          const newPosts = [...prevPosts];
-
-          // Like the target `post`
-          newPosts[index] = {
-            ...prevPost,
-            postLikes: [data.id],
-            _count: {
-              ...prevPost._count,
-              postLikes: newPosts[index]._count.postLikes + 1,
-            },
-          };
-
-          return newPosts;
-        });
-      } else {
-        showToast({ title: 'Unable To Like', type: 'error' });
-      }
-    },
-    [userId]
-  );
-
-  const unLikePost = useCallback(
-    async (postId: number) => {
-      const res = await fetch(`/api/users/${userId}/liked-posts/${postId}`, {
-        method: 'DELETE',
-      });
-
-      if (res.ok) {
-        setPosts((prevPosts) => {
-          // Find the index of the post using the `postId` param
-          const index = prevPosts.findIndex((post) => post.id === postId);
-          const prevPost = prevPosts[index];
-
-          // Create a new `posts` object
-          const newPosts = [...prevPosts];
-
-          // Like the target `post`
-          newPosts[index] = {
-            ...prevPost,
-            postLikes: [],
-            _count: {
-              ...prevPost._count,
-              postLikes: newPosts[index]._count.postLikes - 1,
-            },
-          };
-
-          return newPosts;
-        });
-      } else {
-        showToast({ title: 'Unable To Unlike', type: 'error' });
-      }
-    },
-    [userId]
-  );
-
-  const deletePost = useCallback(async (postId: number) => {
-    const res = await fetch(`/api/posts/${postId}`, {
-      method: 'DELETE',
-    });
-
-    if (res.ok) {
-      setPosts((prev) => prev.filter((post) => post.id !== postId));
-      showToast({ title: 'Successfully Deleted', type: 'success' });
-    } else {
-      showToast({ title: 'Unable to Delete', type: 'error' });
-    }
+  const deletePost = useCallback((postId: number) => {
+    deleteMutation.mutate({ postId });
   }, []);
 
   const editPost = useCallback(
@@ -167,33 +74,31 @@ export function Posts({
         postId,
         initialContent: content,
         initialVisualMedia: visualMedia || [],
-        onSuccess: (editedPost) => {
-          setPosts((prev) => {
-            const posts = [...prev];
-            const index = posts.findIndex((post) => post.id === postId);
-            posts[index] = editedPost;
-            return posts;
-          });
-        },
       });
     },
     []
   );
 
-  return (
-    <div className="flex flex-col justify-between">
-      <div className="flex flex-col">
-        {shouldShowCreatePost && (
-          <CreatePostModalLauncher
-            onSuccess={(post) => setPosts((prev) => [post, ...prev])}
-          />
-        )}
+  const likePost = useCallback(async (postId: number) => {
+    likeMutation.mutate({ postId });
+  }, []);
 
-        <AnimatePresence>
-          {posts.map((post) => {
-            return (
+  const unLikePost = useCallback(async (postId: number) => {
+    unLikeMutation.mutate({ postId });
+  }, []);
+
+  return (
+    <>
+      <div className="flex flex-col">
+        {status === 'loading' ? (
+          <p>Loading posts...</p>
+        ) : status === 'error' ? (
+          <p>Error loading posts.</p>
+        ) : (
+          <AnimatePresence>
+            {data.pages.flat().map((post) => (
               <motion.div
-                initial={{ height: 0, marginTop: '0px', opacity: 0 }}
+                initial={false}
                 animate={{ height: 'auto', marginTop: '32px', opacity: 1 }}
                 exit={{ height: 0, marginTop: '0px', opacity: 0 }}
                 style={{ originY: 0, overflowY: 'hidden' }}
@@ -202,16 +107,22 @@ export function Posts({
               >
                 <Post
                   {...post}
-                  {...{ likePost, unLikePost, editPost, deletePost }}
+                  {...{
+                    likePost,
+                    unLikePost,
+                    editPost,
+                    deletePost,
+                    toggleComments,
+                  }}
                 />
               </motion.div>
-            );
-          })}
-        </AnimatePresence>
+            ))}
+          </AnimatePresence>
+        )}
       </div>
       <div className="mt-6" ref={bottomElRef}>
-        {/* Bottom element, if on screen, set the cursor state to the bottom post id. */}
+        {isFetchingNextPage ? 'Loading more...' : 'No more to load.'}
       </div>
-    </div>
+    </>
   );
 }

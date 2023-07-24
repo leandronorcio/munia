@@ -1,3 +1,4 @@
+'use client';
 import { EmojiHappySmile, Image } from '@/svg_components';
 import { TextArea } from './ui/TextArea';
 import { useCreatePost } from '@/hooks/useCreatePost';

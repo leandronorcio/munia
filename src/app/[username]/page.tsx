@@ -1,7 +1,8 @@
-import { PostsUsingReactQuery } from '@/components/PostsUsingReactQuery';
+import { Posts } from '@/components/Posts';
 import { getProfile } from './getProfile';
 import { useProtectApiRoute } from '@/hooks/useProtectApiRoute';
 import { GetUser } from 'types';
+import { CreatePostModalLauncher } from '@/components/CreatePostModalLauncher';
 
 // Posts sub-page.
 export default async function Page({
@@ -12,11 +13,11 @@ export default async function Page({
   const [user] = await useProtectApiRoute();
   const profile: GetUser | null = await getProfile(params.username);
   const shouldShowCreatePost = user?.id === profile?.id;
+
   return (
-    <PostsUsingReactQuery
-      type="profile"
-      shouldShowCreatePost={shouldShowCreatePost}
-      userId={profile?.id!}
-    />
+    <div>
+      {shouldShowCreatePost && <CreatePostModalLauncher />}
+      <Posts type="profile" userId={profile?.id!} />
+    </div>
   );
 }
