@@ -4,21 +4,24 @@ import { Comment } from './Comment';
 import Button from './ui/Button';
 import { TextArea } from './ui/TextArea';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useToast } from '@/hooks/useToast';
 import { CommentType } from 'types';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { fetchComments } from '@/lib/query-functions/fetchComments';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { useSession } from 'next-auth/react';
+import { useCommentsMutations } from '@/hooks/useCommentsMutations';
 
 export function Comments({ postId }: { postId: number }) {
-  const qc = useQueryClient();
   const queryKey = ['posts', postId, 'comments'];
-  const { data: session } = useSession();
   const [commentText, setCommentText] = useState('');
+  const {
+    createCommentMutation,
+    updateCommentMutation,
+    deleteCommentMutation,
+  } = useCommentsMutations(queryKey, setCommentText);
+  const { data: session } = useSession();
   const { prompt, confirm } = useBasicDialogs();
-  const { showToast } = useToast();
 
   const {
     data: comments,
@@ -29,144 +32,6 @@ export function Comments({ postId }: { postId: number }) {
     queryKey: queryKey,
     queryFn: () => fetchComments({ postId }),
     staleTime: 1000 * 60 * 5,
-  });
-
-  const createCommentMutation = useMutation({
-    mutationFn: async ({
-      postId,
-      content,
-    }: {
-      postId: number;
-      content: string;
-    }) => {
-      const res = await fetch(`/api/posts/${postId}/comments`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          content,
-        }),
-      });
-
-      if (!res.ok) {
-        throw new Error('Error Creating Comment');
-      }
-
-      return (await res.json()) as CommentType;
-    },
-
-    onSuccess: (createdPost) => {
-      qc.setQueryData<CommentType[]>(queryKey, (oldComments) => {
-        if (!oldComments) return;
-        return [...oldComments, createdPost];
-      });
-
-      setCommentText('');
-    },
-
-    onError: (err: Error) => {
-      showToast({ type: 'error', title: err.message });
-    },
-  });
-
-  const updateCommentMutation = useMutation({
-    mutationFn: async ({
-      commentId,
-      content,
-    }: {
-      commentId: number;
-      content: string;
-    }) => {
-      const res = await fetch(`/api/comments/${commentId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ content: content }),
-      });
-
-      if (!res.ok) {
-        throw new Error('Error Updating Comment');
-      }
-
-      return (await res.json()) as CommentType;
-    },
-
-    onMutate: async ({ commentId, content }) => {
-      await qc.cancelQueries({ queryKey: queryKey });
-
-      // Snapshot the previous value
-      const prevComments = qc.getQueryData(queryKey);
-
-      // Optimistically update
-      qc.setQueryData<CommentType[]>(queryKey, (oldComments) => {
-        if (!oldComments) return;
-
-        // Make a shallow copy of the `oldComments`
-        const newComments = [...oldComments];
-
-        // Find the index of the updated comment
-        const index = newComments.findIndex(
-          (comment) => comment.id === commentId
-        );
-
-        // Update the comment
-        newComments[index] = {
-          ...newComments[index],
-          content,
-        };
-
-        // Return the updated data
-        return newComments;
-      });
-
-      // Return a context object with the snapshotted value
-      return { prevComments };
-    },
-
-    onError: (err: Error, variables, context) => {
-      qc.setQueryData(queryKey, context?.prevComments);
-      showToast({ type: 'error', title: err.message });
-    },
-  });
-
-  const deleteCommentMutation = useMutation({
-    mutationFn: async ({ commentId }: { commentId: number }) => {
-      const res = await fetch(`/api/comments/${commentId}`, {
-        method: 'DELETE',
-      });
-
-      if (!res.ok) {
-        throw new Error('Error Deleting Comment');
-      }
-
-      return (await res.json()) as { id: number };
-    },
-
-    onMutate: async ({ commentId }) => {
-      await qc.cancelQueries({ queryKey: queryKey });
-
-      // Snapshot the previous value
-      const prevComments = qc.getQueryData(queryKey);
-
-      // Optimistically remove
-      qc.setQueryData<CommentType[]>(queryKey, (oldComments) => {
-        if (!oldComments) return;
-
-        // Remove the deleted comment and return the new comments
-        return oldComments.filter((comment) => comment.id !== commentId);
-      });
-
-      return {
-        prevComments,
-      };
-    },
-
-    onError: (err: Error, variables, context) => {
-      qc.setQueryData(queryKey, context?.prevComments);
-      showToast({ type: 'error', title: err.message });
-    },
   });
 
   const handleCreate = () => {
