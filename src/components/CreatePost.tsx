@@ -42,7 +42,6 @@ export default function CreatePost({
   const [visualMedia, setVisualMedia] = useState<VisualMedia[]>(
     toEditValues?.initialVisualMedia || []
   );
-  const [loading, setLoading] = useState(false);
   const { showToast } = useToast();
   const { confirm } = useBasicDialogs();
   const { data: session } = useSession();
@@ -136,7 +135,6 @@ export default function CreatePost({
       },
       onError: () => {
         showToast({ title: 'Error Creating Post', type: 'error' });
-        setLoading(false);
       },
     }
   );
@@ -184,13 +182,11 @@ export default function CreatePost({
       },
       onError: () => {
         showToast({ title: 'Error Editing Post', type: 'error' });
-        setLoading(false);
       },
     }
   );
 
   const handleClickPostButton = () => {
-    setLoading(true);
     setTimeout(() => {
       if (mode === 'create') {
         createPostMutation.mutate();
@@ -254,7 +250,9 @@ export default function CreatePost({
             onClick={handleClickPostButton}
             size="small"
             disabled={content === '' && visualMedia.length === 0}
-            loading={loading}
+            loading={
+              createPostMutation.isLoading || updatePostMutation.isLoading
+            }
           >
             Post
           </Button>
