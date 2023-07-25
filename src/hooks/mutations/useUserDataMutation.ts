@@ -3,6 +3,52 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { GetUser } from 'types';
 
+export function useUserDataMutation() {
+  const { data: session } = useSession();
+  const userId = session?.user.id;
+  const qc = useQueryClient();
+
+  const updateUserDataMutation = useMutation({
+    mutationFn: ({
+      field,
+      value,
+    }: {
+      field: keyof User;
+      value: string | null;
+    }) => updateUserData({ userId: userId!, field, value }),
+    onSuccess: (updatedField) => {
+      qc.setQueryData<GetUser>(['users', userId], (oldUserData) => {
+        if (!oldUserData) return;
+        return {
+          ...oldUserData,
+          ...updatedField,
+        };
+      });
+    },
+  });
+
+  const updateUserPhotosMutation = useMutation({
+    mutationFn: ({
+      toUpdate,
+      formData,
+    }: {
+      toUpdate: 'profile' | 'cover';
+      formData: FormData;
+    }) => updateUserPhotos({ userId: userId!, toUpdate, formData }),
+    onSuccess: ({ type, uploadedTo }) => {
+      qc.setQueryData<GetUser>(['users', userId], (oldUserData) => {
+        if (!oldUserData) return;
+        return {
+          ...oldUserData,
+          [type]: uploadedTo,
+        };
+      });
+    },
+  });
+
+  return { updateUserDataMutation, updateUserPhotosMutation };
+}
+
 const updateUserData = async ({
   userId,
   field,
@@ -28,22 +74,32 @@ const updateUserData = async ({
   return { [field]: value };
 };
 
-export function useUserDataMutation() {
-  const { data: session } = useSession();
-  const qc = useQueryClient();
+const updateUserPhotos = async ({
+  userId,
+  toUpdate,
+  formData,
+}: {
+  userId: string;
+  toUpdate: 'profile' | 'cover';
+  formData: FormData;
+}) => {
+  const res = await fetch(
+    `/api/users/${userId}/${
+      toUpdate === 'profile' ? 'profile-photo' : 'cover-photo'
+    }`,
+    {
+      method: 'POST',
+      body: formData,
+    }
+  );
 
-  const updateUserDataMutation = useMutation({
-    mutationFn: updateUserData,
-    onSuccess: (updatedField) => {
-      qc.setQueryData<GetUser>(['users', session?.user.id], (oldUserData) => {
-        if (!oldUserData) return;
-        return {
-          ...oldUserData,
-          ...updatedField,
-        };
-      });
-    },
-  });
+  if (!res.ok) {
+    throw new Error(`Error updating ${toUpdate} photo.`);
+  }
 
-  return { updateUserDataMutation };
-}
+  const { uploadedTo } = (await res.json()) as { uploadedTo: string };
+  return {
+    type: toUpdate + 'Photo',
+    uploadedTo,
+  };
+};

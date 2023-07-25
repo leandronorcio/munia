@@ -1,27 +1,26 @@
 'use client';
 import Button from '@/components/ui/Button';
 import { useUpdateProfileAndCoverPhotoClient } from '@/hooks/useUpdateProfileAndCoverPhotoClient';
+import { useUserData } from '@/hooks/useUserData';
 import { useVisualMediaModal } from '@/hooks/useVisualMediaModal';
 import { Image } from '@/svg_components';
-import { User } from '@prisma/client';
 
 export default function CoverPhoto({
   isOwnProfile,
-  profile,
 }: {
   isOwnProfile: boolean;
-  profile: User;
 }) {
   const { inputFileRef, openInput, handleChange } =
     useUpdateProfileAndCoverPhotoClient('cover');
   const { showVisualMediaModal } = useVisualMediaModal();
+  const [user] = useUserData();
 
   return (
     <div
       className="w-full h-full bg-cover bg-center"
       style={{
-        backgroundImage: profile.coverPhoto
-          ? `url("${profile.coverPhoto}")`
+        backgroundImage: user?.coverPhoto
+          ? `url("${user?.coverPhoto}")`
           : 'none',
       }}
     >
@@ -31,7 +30,7 @@ export default function CoverPhoto({
             visualMedia: [
               {
                 type: 'PHOTO',
-                url: profile.coverPhoto as string,
+                url: user?.coverPhoto as string,
               },
             ],
             initialSlide: 0,

@@ -1,21 +1,20 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 import { useBasicDialogs } from './useBasicDialogs';
 import { useToast } from './useToast';
+import { useUserDataMutation } from './mutations/useUserDataMutation';
 
 export function useUpdateProfileAndCoverPhotoClient(
   toUpdate: 'profile' | 'cover'
 ) {
-  const router = useRouter();
-
+  const { data: session } = useSession();
+  const userId = session?.user.id;
+  const { updateUserPhotosMutation } = useUserDataMutation();
   const { alert } = useBasicDialogs();
   const { showToast } = useToast();
   const inputFileRef = useRef<HTMLInputElement>(null);
-  const { data: session, update } = useSession();
-  const user = session?.user;
 
   const openInput = () => {
     if (inputFileRef.current == null) return;
@@ -31,31 +30,28 @@ export function useUpdateProfileAndCoverPhotoClient(
 
     formData.append(name, file, file.name);
 
-    const res = await fetch(
-      `/api/users/${user?.id}/${
-        toUpdate === 'profile' ? 'profile-photo' : 'cover-photo'
-      }`,
+    if (!userId) return;
+    updateUserPhotosMutation.mutate(
       {
-        method: 'POST',
-        body: formData,
+        toUpdate,
+        formData,
+      },
+      {
+        onSuccess: () => {
+          showToast({
+            title: 'Success!',
+            message: `Your ${toUpdate} photo has been updated.`,
+            type: 'success',
+          });
+        },
+        onError: () => {
+          alert({
+            title: 'Upload Error',
+            message: 'There was an error uploading your photo.',
+          });
+        },
       }
     );
-
-    if (res.ok) {
-      // const response: Response & { uploadedTo: string } = await res.json();
-      showToast({
-        title: 'Success!',
-        message: `Your ${toUpdate} photo has been updated.`,
-        type: 'success',
-      });
-      router.refresh();
-      update();
-    } else {
-      alert({
-        title: 'Upload Error',
-        message: 'There was an error uploading your photo.',
-      });
-    }
 
     if (inputFileRef.current === null) return;
     inputFileRef.current.value = '';

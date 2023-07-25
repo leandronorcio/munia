@@ -30,7 +30,7 @@ export async function useUpdateProfileAndCoverPhoto(
     const filePath = `/uploads/${userId}-${Date.now()}-${toUpdate}.${extension}`;
     await writeFile(`./public${filePath}`, buffer);
 
-    const updateUser = await prisma.user.update({
+    const updatedUser = await prisma.user.update({
       where: {
         id: userId,
       },
@@ -39,10 +39,7 @@ export async function useUpdateProfileAndCoverPhoto(
       },
     });
 
-    return NextResponse.json(
-      { uploadedTo: updateUser[toUpdate] },
-      { status: 200 }
-    );
+    return NextResponse.json({ uploadedTo: updatedUser[toUpdate] });
   } catch (error) {
     return NextResponse.json({ error: 'Server error.' }, { status: 500 });
   }

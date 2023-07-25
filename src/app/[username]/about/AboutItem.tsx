@@ -2,7 +2,6 @@ import Button from '@/components/ui/Button';
 import { useUserDataMutation } from '@/hooks/mutations/useUserDataMutation';
 import { Delete, Edit } from '@/svg_components';
 import { User } from '@prisma/client';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { FormEvent, cloneElement, useState } from 'react';
 
@@ -28,8 +27,6 @@ export function AboutItem({
   isOwnProfile: boolean;
 }) {
   const [isEditing, setIsEditing] = useState(false);
-  const { data: session } = useSession();
-  const userId = session?.user.id;
   const { updateUserDataMutation } = useUserDataMutation();
   const router = useRouter();
 
@@ -44,10 +41,8 @@ export function AboutItem({
       value = value.toUpperCase().replace(/ /g, '_');
     }
 
-    if (userId === undefined) return;
     updateUserDataMutation.mutate(
       {
-        userId,
         field,
         value,
       },
@@ -65,9 +60,7 @@ export function AboutItem({
   };
 
   const setToNull = async () => {
-    if (userId === undefined) return;
     updateUserDataMutation.mutate({
-      userId,
       field,
       value: null,
     });
