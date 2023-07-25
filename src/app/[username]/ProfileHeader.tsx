@@ -6,6 +6,7 @@ import CoverPhoto from './CoverPhoto';
 import Tabs from './Tabs';
 import { useQuery } from '@tanstack/react-query';
 import { GetUser } from 'types';
+import { PROFILE_QUERY_STALE_TIME } from '@/constants';
 
 export function ProfileHeader({
   isOwnProfile,
@@ -26,6 +27,7 @@ export function ProfileHeader({
 
       return (await res.json()) as GetUser;
     },
+    staleTime: PROFILE_QUERY_STALE_TIME,
   });
 
   return (

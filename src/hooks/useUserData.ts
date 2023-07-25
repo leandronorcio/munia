@@ -1,4 +1,5 @@
 'use client';
+import { PROFILE_QUERY_STALE_TIME } from '@/constants';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { GetUser } from 'types';
@@ -27,7 +28,7 @@ export function useUserData() {
 
       return (await res.json()) as GetUser;
     },
-    staleTime: 1000 * 60 * 10,
+    staleTime: PROFILE_QUERY_STALE_TIME,
   });
 
   return [data];
