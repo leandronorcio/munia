@@ -36,21 +36,12 @@ export async function POST(
           },
         },
       },
+      include: {
+        user: true,
+      },
     });
 
-    // TODO: Fix this
-    return NextResponse.json({
-      id: res.id,
-      content,
-      createdAt: new Date(),
-      postId: parseInt(params.postId),
-      user: {
-        id: user.id,
-        name: user.name,
-        username: user.username,
-        profilePhoto: user.profilePhoto,
-      },
-    } as GetComment);
+    return NextResponse.json(res as GetComment);
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(error.issues, { status: 422 });
