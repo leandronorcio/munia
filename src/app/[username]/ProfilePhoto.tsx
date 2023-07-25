@@ -1,27 +1,25 @@
 'use client';
 import Button from '@/components/ui/Button';
 import { useUpdateProfileAndCoverPhotoClient } from '@/hooks/useUpdateProfileAndCoverPhotoClient';
-import { useUserData } from '@/hooks/useUserData';
 import { useVisualMediaModal } from '@/hooks/useVisualMediaModal';
 import { Camera } from '@/svg_components';
 
 export default function ProfilePhoto({
   isOwnProfile,
+  photoUrl,
 }: {
   isOwnProfile: boolean;
+  photoUrl: string | null;
 }) {
   const { inputFileRef, openInput, handleChange } =
     useUpdateProfileAndCoverPhotoClient('profile');
   const { showVisualMediaModal } = useVisualMediaModal();
-  const [user] = useUserData();
 
   return (
     <div
       className="absolute -bottom-24 bg-cover w-48 h-48 rounded-full border-8 border-white"
       style={{
-        backgroundImage: `url("${
-          user?.profilePhoto || 'default-profile-photo.jpg'
-        }")`,
+        backgroundImage: `url("${photoUrl || 'default-profile-photo.jpg'}")`,
       }}
     >
       <div
@@ -30,7 +28,7 @@ export default function ProfilePhoto({
             visualMedia: [
               {
                 type: 'PHOTO',
-                url: user?.profilePhoto as string,
+                url: photoUrl as string,
               },
             ],
             initialSlide: 0,

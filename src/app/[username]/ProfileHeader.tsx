@@ -40,9 +40,15 @@ export function ProfileHeader({
               'linear-gradient(95.08deg, #AF45DB 2.49%, #EB7B96 97.19%)',
           }}
         >
-          <CoverPhoto isOwnProfile={isOwnProfile} />
+          <CoverPhoto
+            isOwnProfile={isOwnProfile}
+            photoUrl={profile.coverPhoto}
+          />
         </div>
-        <ProfilePhoto isOwnProfile={isOwnProfile} />
+        <ProfilePhoto
+          isOwnProfile={isOwnProfile}
+          photoUrl={profile.profilePhoto}
+        />
         {!isOwnProfile && (
           <div className="absolute -bottom-20 right-2 md:right-0">
             <ProfileActionButtons profile={profile!} />
