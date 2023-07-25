@@ -35,16 +35,13 @@ export function useUserDataMutation() {
   const updateUserDataMutation = useMutation({
     mutationFn: updateUserData,
     onSuccess: (updatedField) => {
-      qc.setQueryData<GetUser>(
-        ['session-user-data', session?.user.id],
-        (oldUserData) => {
-          if (!oldUserData) return;
-          return {
-            ...oldUserData,
-            ...updatedField,
-          };
-        }
-      );
+      qc.setQueryData<GetUser>(['users', session?.user.id], (oldUserData) => {
+        if (!oldUserData) return;
+        return {
+          ...oldUserData,
+          ...updatedField,
+        };
+      });
     },
   });
 

@@ -17,7 +17,7 @@ export function useUserData() {
   const userId = session?.user.id;
 
   const { data } = useQuery({
-    queryKey: ['session-user-data', userId],
+    queryKey: ['users', userId],
     queryFn: async () => {
       const res = await fetch(`/api/users/${userId}`);
 
