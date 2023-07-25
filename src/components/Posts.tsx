@@ -9,6 +9,7 @@ import { Post } from './Post';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { usePostsMutations } from '@/hooks/mutations/usePostsMutations';
 import { fetchPosts } from '@/lib/query-functions/fetchPosts';
+import { AllCaughtUp } from './AllCaughtUp';
 
 export function Posts({
   type,
@@ -38,6 +39,9 @@ export function Posts({
     queryKey: ['users', userId, type, 'posts'],
     queryFn: ({ pageParam }) => fetchPosts({ pageParam, userId }),
     getNextPageParam: (lastPage, pages) => {
+      // If the `pages` `length` is 0, that means there is not a single post to load
+      if (pages.length === 0) return undefined;
+
       // If the last page doesn't have posts, that means the end is reached
       if (lastPage.length === 0) return undefined;
 
@@ -120,9 +124,8 @@ export function Posts({
           </AnimatePresence>
         )}
       </div>
-      <div className="mt-6" ref={bottomElRef}>
-        {isFetchingNextPage ? 'Loading more...' : 'No more to load.'}
-      </div>
+      <div className="h-6" ref={bottomElRef}></div>
+      {!isFetching && !hasNextPage && <AllCaughtUp />}
     </>
   );
 }
