@@ -11,7 +11,7 @@ export default function ProfilePhoto({
   isOwnProfile: boolean;
   photoUrl: string | null;
 }) {
-  const { inputFileRef, openInput, handleChange } =
+  const { inputFileRef, openInput, handleChange, isLoading } =
     useUpdateProfileAndCoverPhotoClient('profile');
   const { showVisualMediaModal } = useVisualMediaModal();
 
@@ -47,7 +47,12 @@ export default function ProfilePhoto({
               className="hidden"
               accept="image/png, image/jpg, image/jpeg"
             />
-            <Button Icon={Camera} onClick={openInput} size="small" />
+            <Button
+              Icon={Camera}
+              onClick={openInput}
+              size="small"
+              loading={isLoading}
+            />
           </div>
         </label>
       )}

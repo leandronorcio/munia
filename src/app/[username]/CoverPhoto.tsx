@@ -11,7 +11,7 @@ export default function CoverPhoto({
   isOwnProfile: boolean;
   photoUrl: string | null;
 }) {
-  const { inputFileRef, openInput, handleChange } =
+  const { inputFileRef, openInput, handleChange, isLoading } =
     useUpdateProfileAndCoverPhotoClient('cover');
   const { showVisualMediaModal } = useVisualMediaModal();
 
@@ -47,7 +47,12 @@ export default function CoverPhoto({
               className="hidden"
               accept="image/png, image/jpg, image/jpeg"
             />
-            <Button Icon={Image} onClick={openInput} size="small" />
+            <Button
+              Icon={Image}
+              onClick={openInput}
+              size="small"
+              loading={isLoading}
+            />
           </div>
         </label>
       )}

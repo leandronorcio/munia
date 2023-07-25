@@ -57,5 +57,10 @@ export function useUpdateProfileAndCoverPhotoClient(
     inputFileRef.current.value = '';
   };
 
-  return { inputFileRef, openInput, handleChange };
+  return {
+    inputFileRef,
+    openInput,
+    handleChange,
+    isLoading: updateUserPhotosMutation.isLoading,
+  };
 }
