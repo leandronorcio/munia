@@ -20,7 +20,9 @@ export const DiscoverProfile = memo(
           <h2 className="font-semibold text-2xl mb-3 px-2 text-center">
             {user.name}
           </h2>
-          <p className="text-gray-500 mb-4">{user.bio || 'No bio yet'}</p>
+          <p className="text-gray-500 mb-4 text-center">
+            {user.bio || 'No bio yet'}
+          </p>
           <div className="flex gap-6">
             <p className="text-lg  font-semibold flex gap-1 justify-center">
               <span>{user.followerCount}</span>{' '}

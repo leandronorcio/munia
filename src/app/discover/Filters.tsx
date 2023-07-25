@@ -2,47 +2,49 @@
 import Button from '@/components/ui/Button';
 import { DropdownItem } from '@/components/ui/DropdownItem';
 import { DropdownMenu } from '@/components/ui/DropdownMenu';
-import { kebabToNormal } from '@/lib/kebabToNormal';
-import { useDiscoverProfilesStore } from '@/stores/useDiscoverProfilesStore';
-import { useSearchParams } from 'next/navigation';
+import { kebabCase, lowerCase, startCase } from 'lodash';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { DiscoverFilters } from 'types';
 
 export function Filters() {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const { setProfiles, setIsMaxedOut } = useDiscoverProfilesStore(
-    ({ setProfiles, setIsMaxedOut }) => ({ setProfiles, setIsMaxedOut })
-  );
-  const { filters, setFilters } = useDiscoverProfilesStore(
-    ({ filters, setFilters }) => ({ filters, setFilters })
-  );
+  const pathname = usePathname();
+
+  const filters = {
+    gender: searchParams.get('gender') || undefined,
+    relationshipStatus: searchParams.get('relationship-status') || undefined,
+  };
   const genderFilters: DiscoverFilters['gender'][] = [
-    'male',
-    'female',
-    'nonbinary',
+    'MALE',
+    'FEMALE',
+    'NONBINARY',
   ];
   const relationshipStatusFilters: DiscoverFilters['relationshipStatus'][] = [
-    'single',
-    'in-a-relationship',
-    'engaged',
-    'married',
+    'SINGLE',
+    'IN_A_RELATIONSHIP',
+    'ENGAGED',
+    'MARRIED',
   ];
 
   const updateParams = ({
     title,
     value,
   }: {
-    title: keyof DiscoverFilters;
+    title: string;
     value: DiscoverFilters[keyof DiscoverFilters];
   }) => {
-    // Don't update when the value is the same
-    if (filters[title] === value) return;
+    const newSearchParams = new URLSearchParams(searchParams);
 
-    // Reset <DisvoverProfiles> state before updating the filters
-    setProfiles([]);
-    setIsMaxedOut(false);
+    if (value === undefined) {
+      newSearchParams.delete(title);
+    } else {
+      newSearchParams.set(title, kebabCase(value));
+    }
 
-    // Update the filters
-    setFilters({ [title]: value });
+    const url = `${pathname}?${newSearchParams.toString()}`;
+    router.push(url);
   };
 
   return (
@@ -51,7 +53,7 @@ export function Filters() {
         width="115%"
         trigger={
           <Button mode="subtle" shape="pill">
-            Gender: <b>{kebabToNormal(filters.gender) || 'All'}</b>
+            Gender: <b>{startCase(filters.gender) || 'All'}</b>
           </Button>
         }
       >
@@ -66,7 +68,7 @@ export function Filters() {
               key={gender}
               onClick={() => updateParams({ title: 'gender', value: gender })}
             >
-              {kebabToNormal(gender)}
+              {startCase(lowerCase(gender))}
             </DropdownItem>
           );
         })}
@@ -76,13 +78,13 @@ export function Filters() {
         trigger={
           <Button mode="subtle" shape="pill">
             Relationship Status:{' '}
-            <b>{kebabToNormal(filters.relationshipStatus) || 'All'}</b>
+            <b>{startCase(filters.relationshipStatus) || 'All'}</b>
           </Button>
         }
       >
         <DropdownItem
           onClick={() =>
-            updateParams({ title: 'relationshipStatus', value: undefined })
+            updateParams({ title: 'relationship-status', value: undefined })
           }
         >
           Clear
@@ -93,12 +95,12 @@ export function Filters() {
               key={relationship}
               onClick={() =>
                 updateParams({
-                  title: 'relationshipStatus',
+                  title: 'relationship-status',
                   value: relationship,
                 })
               }
             >
-              {kebabToNormal(relationship)}
+              {startCase(lowerCase(relationship))}
             </DropdownItem>
           );
         })}

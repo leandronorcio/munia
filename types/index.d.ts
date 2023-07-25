@@ -101,6 +101,6 @@ export interface GetComment {
 }
 
 export interface DiscoverFilters {
-  gender?: 'male' | 'female' | 'nonbinary';
-  relationshipStatus?: 'single' | 'in-a-relationship' | 'engaged' | 'married';
+  gender?: 'MALE' | 'FEMALE' | 'NONBINARY';
+  relationshipStatus?: 'SINGLE' | 'IN_A_RELATIONSHIP' | 'ENGAGED' | 'MARRIED';
 }
