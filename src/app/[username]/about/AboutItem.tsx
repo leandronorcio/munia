@@ -1,9 +1,18 @@
 import Button from '@/components/ui/Button';
+import { useUserDataMutation } from '@/hooks/mutations/useUserDataMutation';
 import { Delete, Edit } from '@/svg_components';
 import { User } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { FormEvent, cloneElement, useState } from 'react';
+
+/**
+ * Create an object type using the keys of `User`,
+ * populate each property with `HTMLInputElement`.
+ * This will be used to type the elements of
+ * the uncontrolled <Form> element.
+ */
+type FormElements = Record<keyof User, HTMLInputElement>;
 
 export function AboutItem({
   field,
@@ -19,78 +28,55 @@ export function AboutItem({
   isOwnProfile: boolean;
 }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const { data: session, update } = useSession();
+  const { data: session } = useSession();
+  const userId = session?.user.id;
+  const { updateUserDataMutation } = useUserDataMutation();
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const target = e.target as unknown as FormElements;
 
-    // @ts-expect-error
-    let value = e.target[field].value;
-    if (value === '' || value === null)
-      return setError(`${label} cannot be empty.`);
+    // Get the value of the input
+    let value = target[field].value;
 
     if (field === 'relationshipStatus' || field === 'gender') {
       value = value.toUpperCase().replace(/ /g, '_');
     }
 
-    const res = await fetch(`/api/users/${session?.user?.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
+    if (userId === undefined) return;
+    updateUserDataMutation.mutate(
+      {
+        userId,
+        field,
+        value,
       },
-      body: JSON.stringify({ [field]: value }),
-    });
-
-    if (res.ok) {
-      update();
-      setIsEditing(false);
-      const { username } = (await res.json()) as User;
-      if (field === 'username') {
-        router.replace(`/${username}/about`);
-        return;
+      {
+        onSuccess: (updatedField) => {
+          const updatedProperty = Object.entries(updatedField)[0][0];
+          if (updatedProperty === 'username') {
+            router.replace(`/${updatedField[updatedProperty]}/about`);
+            return;
+          }
+          setIsEditing(false);
+        },
       }
-      if (field === 'name') router.refresh();
-    } else {
-      const { error } = await res.json();
-      setError(error);
-    }
+    );
   };
 
   const setToNull = async () => {
-    const res = await fetch(`/api/users/${session?.user?.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ [field]: null }),
+    if (userId === undefined) return;
+    updateUserDataMutation.mutate({
+      userId,
+      field,
+      value: null,
     });
-
-    if (res.ok) {
-      update();
-    }
   };
 
   return (
     <div className="mb-2">
-      <h3 className="font-semibold text-xl text-gray-600 mb-2">{label}</h3>
-      <div className="flex items-center gap-4">
-        {!isEditing ? (
-          <h6 className="text-lg pl-4">{value || 'Not set'}</h6>
-        ) : (
-          <form onSubmit={handleSubmit} className="flex items-start gap-4">
-            {cloneElement(children, { error })}
-            <Button type="submit">Save</Button>
-            <Button
-              type="button"
-              mode="secondary"
-              onClick={() => setIsEditing(false)}
-            >
-              Cancel
-            </Button>
-          </form>
-        )}
+      <div className="flex items-center gap-3 mb-2">
+        <h3 className="font-semibold text-xl text-gray-600">{label}</h3>
         {isOwnProfile && !isEditing && (
           <>
             <Edit
@@ -107,6 +93,38 @@ export function AboutItem({
           </>
         )}
       </div>
+      {!isEditing ? (
+        <p className="text-lg pl-4">{value || 'Not set'}</p>
+      ) : (
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col items-start gap-4"
+        >
+          {/* Pass the `error` prop to the <TextInput> element. */}
+          {cloneElement(children, {
+            error:
+              updateUserDataMutation.error?.toString().replace('Error: ', '') ||
+              undefined,
+          })}
+          <div className="w-[320px] flex justify-end gap-2">
+            <Button
+              type="submit"
+              size="small"
+              loading={updateUserDataMutation.isLoading}
+            >
+              Save
+            </Button>
+            <Button
+              type="button"
+              size="small"
+              mode="secondary"
+              onClick={() => setIsEditing(false)}
+            >
+              Cancel
+            </Button>
+          </div>
+        </form>
+      )}
     </div>
   );
 }

@@ -17,7 +17,12 @@ export async function PUT(
 
   const nonEmptyStringSchema = z.string().trim().min(1);
   const userAboutSchema = z.object({
-    username: nonEmptyStringSchema.optional(),
+    username: nonEmptyStringSchema
+      .regex(/^[a-zA-Z0-9_-]+$/, {
+        message:
+          'Only alphanumeric characters, underscores, and dashes are allowed.',
+      })
+      .optional(),
     name: nonEmptyStringSchema.optional(),
     email: nonEmptyStringSchema.email().optional(),
     bio: nonEmptyStringSchema.optional().nullable(),
@@ -87,7 +92,6 @@ export async function PUT(
       }
     }
   } else {
-    console.log(validate.error.issues[0].message);
     return NextResponse.json(
       { error: validate.error.issues[0].message },
       { status: 400 }

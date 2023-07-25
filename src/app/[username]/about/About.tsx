@@ -6,10 +6,10 @@ import { useState } from 'react';
 import { TextInput } from '@/components/ui/TextInput';
 import { DateInput } from '@/components/ui/DateInput';
 import { Select } from '@/components/ui/Select';
-import { useSession } from 'next-auth/react';
 import { format } from 'date-fns';
 import { reverseCapitalizeWithUnderscores } from '@/lib/reverseCapitalizeWithUnderscores';
 import { capitalizeWithUnderscores } from '@/lib/capitalizeWithUnderscores';
+import { useUserData } from '@/hooks/useUserData';
 
 export function About({
   profile,
@@ -18,13 +18,15 @@ export function About({
   profile: User;
   isOwnProfile: boolean;
 }) {
-  const { data: session } = useSession();
-  const user = session?.user;
+  const [user] = useUserData();
+  // Use `profileData` for displaying the values
   const profileData = (isOwnProfile && user) || profile;
-  // Use this state for controlling the inputs.
+  // Use this state for controlling the inputs
   const [profileDataControl, setProfileDataControl] = useState<User>({
     ...profile,
   });
+
+  console.log(typeof profileData.birthDate);
 
   return (
     <div className="flex flex-col gap-3">
@@ -193,7 +195,7 @@ export function About({
       >
         <DateInput
           placeholderText="Enter Birth Date"
-          value={profileDataControl.birthDate}
+          value={new Date(profileDataControl.birthDate!)}
           name="birthDate"
           onChange={(date) => {
             setProfileDataControl((prev) => ({

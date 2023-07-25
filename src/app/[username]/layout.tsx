@@ -41,7 +41,7 @@ export default async function Layout({
       <div className="px-4">
         <h1 className="text-4xl font-bold mb-1">{profile?.name}</h1>
         <div className="flex flex-col lg:flex-row">
-          <p className="text-lg text-gray-600 mr-4">@{profile?.id}</p>
+          <p className="text-lg text-gray-600 mr-4">@{profile?.username}</p>
           <div className="flex flex-row">
             <p className="text-lg mr-6 hidden lg:block">&bull;</p>
             <p className="text-lg mr-6 font-semibold">
