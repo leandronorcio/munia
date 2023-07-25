@@ -1,6 +1,5 @@
 'use client';
 
-import { postsPerPage } from '@/contants';
 import {
   InfiniteData,
   useMutation,
@@ -11,6 +10,7 @@ import { GetPost } from 'types';
 import { useToast } from '../useToast';
 import { useSession } from 'next-auth/react';
 import { useCallback } from 'react';
+import { POSTS_PER_PAGE } from '@/constants';
 
 export function usePostsMutations({
   type,
@@ -49,7 +49,7 @@ export function usePostsMutations({
             const newPosts = oldPosts.filter((post) => post.id !== postId);
 
             // Chunk the `newPosts` depending on the number of posts per page
-            const newPages = chunk(newPosts, postsPerPage);
+            const newPages = chunk(newPosts, POSTS_PER_PAGE);
 
             const newPageParams = [
               // The first `pageParam` is undefined as the initial page does not use a `pageParam`
@@ -105,7 +105,7 @@ export function usePostsMutations({
         };
 
         return {
-          pages: chunk(newPosts, postsPerPage),
+          pages: chunk(newPosts, POSTS_PER_PAGE),
           pageParams: oldData.pageParams,
         };
       }
@@ -229,7 +229,7 @@ export function usePostsMutations({
         };
 
         return {
-          pages: chunk(newPosts, postsPerPage),
+          pages: chunk(newPosts, POSTS_PER_PAGE),
           pageParams: oldData.pageParams,
         };
       }

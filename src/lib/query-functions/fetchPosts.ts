@@ -1,4 +1,4 @@
-import { postsPerPage } from '@/contants';
+import { POSTS_PER_PAGE } from '@/constants';
 import { GetPost } from 'types';
 
 export async function fetchPosts({
@@ -9,7 +9,7 @@ export async function fetchPosts({
   userId: string;
 }) {
   const params = new URLSearchParams();
-  params.set('limit', postsPerPage.toString());
+  params.set('limit', POSTS_PER_PAGE.toString());
   params.set('cursor', pageParam.toString());
 
   const res = await fetch(`/api/users/${userId}/posts?${params.toString()}`);

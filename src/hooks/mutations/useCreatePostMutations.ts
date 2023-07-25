@@ -1,4 +1,3 @@
-import { postsPerPage } from '@/contants';
 import {
   InfiniteData,
   useMutation,
@@ -10,6 +9,7 @@ import { useToast } from '../useToast';
 import { useSession } from 'next-auth/react';
 import { useCreatePost } from '../useCreatePost';
 import { VisualMedia } from 'types';
+import { POSTS_PER_PAGE } from '@/constants';
 
 export function useCreatePostMutations({
   content,
@@ -64,7 +64,7 @@ export function useCreatePostMutations({
             const newPosts = [createdPost, ...oldData?.pages.flat()];
 
             // Chunk the `newPosts` depending on the number of posts per page
-            const newPages = chunk(newPosts, postsPerPage);
+            const newPages = chunk(newPosts, POSTS_PER_PAGE);
 
             const newPageParams = [
               // The first `pageParam` is undefined as the initial page does not use a `pageParam`
@@ -121,7 +121,7 @@ export function useCreatePostMutations({
             oldPosts[index] = updatedPost;
 
             return {
-              pages: chunk(oldPosts, postsPerPage),
+              pages: chunk(oldPosts, POSTS_PER_PAGE),
               pageParams: oldData.pageParams,
             };
           }
