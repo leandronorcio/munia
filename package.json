@@ -29,7 +29,7 @@
     "eslint-config-next": "^13.4.4",
     "framer-motion": "^10.12.17",
     "lodash": "^4.17.21",
-    "next": "^13.4.9",
+    "next": "^13.4.12",
     "next-auth": "^4.22.1",
     "nodemailer": "^6.9.3",
     "postcss": "8.4.22",
