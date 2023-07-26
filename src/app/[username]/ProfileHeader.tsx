@@ -14,11 +14,10 @@ export function ProfileHeader({
   isOwnProfile: boolean;
   initialProfileData: GetUser;
 }) {
-  // `profile` is guaranteed to be not undefined as it was given an `initialData`
-  const { data: profile } = useUserQuery(
-    initialProfileData.id,
-    initialProfileData
-  );
+  const { data } = useUserQuery(initialProfileData.id);
+  // If there is no query of the user data yet, use the
+  // `initialProfileData` that was fetched on server.
+  const profile = data || initialProfileData;
 
   return (
     <>
@@ -41,7 +40,7 @@ export function ProfileHeader({
         />
         {!isOwnProfile && (
           <div className="absolute -bottom-20 right-2 md:right-0">
-            <ProfileActionButtons profile={profile!} />
+            <ProfileActionButtons targetUserId={profile!.id} />
           </div>
         )}
       </div>
