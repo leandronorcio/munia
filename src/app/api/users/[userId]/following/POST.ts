@@ -37,7 +37,7 @@ export async function POST(
       if (error.code === 'P2002') {
         return NextResponse.json(
           { error: 'You are already following this user.' },
-          { status: 400 }
+          { status: 409 }
         );
       }
     }

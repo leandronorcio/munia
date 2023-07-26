@@ -20,7 +20,7 @@ export const DiscoverProfile = memo(
               userId={user.id}
             />
           </div>
-          <ProfileActionButtons profile={user} />
+          <ProfileActionButtons targetUserId={user.id} />
         </div>
         <div className="flex flex-col items-center py-8 bg-gray-50 rounded-b-3xl">
           <h2

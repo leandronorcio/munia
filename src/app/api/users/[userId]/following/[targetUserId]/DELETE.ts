@@ -36,7 +36,7 @@ export async function DELETE(
   } else {
     return NextResponse.json(
       { error: 'You are not following this user.' },
-      { status: 400 }
+      { status: 409 }
     );
   }
 }
