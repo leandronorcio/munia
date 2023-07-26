@@ -6,6 +6,10 @@ export function ProfilePhotoOwn() {
   const [user] = useUserData();
 
   return (
-    <ProfilePhoto photoUrl={user?.profilePhoto} username={user?.username} />
+    <ProfilePhoto
+      photoUrl={user?.profilePhoto}
+      username={user?.username}
+      userId={user?.id}
+    />
   );
 }

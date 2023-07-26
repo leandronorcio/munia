@@ -74,6 +74,7 @@ export const Post = memo(
       <div className="rounded-2xl bg-slate-50 overflow-hidden">
         <div className="flex justify-between items-center px-4 py-4 sm:px-8 sm:py-6">
           <ProfileBlock
+            userId={author.id}
             name={author.name!}
             username={author.username!}
             time={formatDistanceStrict(new Date(createdAt), new Date())}

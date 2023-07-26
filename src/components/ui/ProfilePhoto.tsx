@@ -1,19 +1,31 @@
 'use client';
-import { useRouter } from 'next/navigation';
+
+import { useGoToProfile } from '@/hooks/useGoToProfile';
 
 export function ProfilePhoto({
   photoUrl,
   username,
+  userId,
 }: {
   photoUrl?: string | null;
   username?: string | null;
+  userId?: string | null;
 }) {
-  const router = useRouter();
+  const { goToProfile } = useGoToProfile();
+
+  const handleClick = () => {
+    if (!userId || !username) return;
+    goToProfile({
+      userId,
+      username,
+    });
+  };
+
   return (
     <img
       src={photoUrl || '/default-profile-photo.jpg'}
       className="w-full h-full object-cover rounded-full cursor-pointer"
-      onClick={() => router.push(`/${username}`)}
+      onClick={handleClick}
     />
   );
 }
