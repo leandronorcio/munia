@@ -8,10 +8,10 @@ import {
   Search,
 } from '@/svg_components';
 import SidebarMenuItem from './SidebarMenuItem';
-import { useUserData } from '@/hooks/useUserData';
+import { useSessionUserData } from '@/hooks/useSessionUserData';
 
 export default function Sidebar() {
-  const [user] = useUserData();
+  const [user] = useSessionUserData();
   const username = user?.username || 'user-not-found';
 
   return (

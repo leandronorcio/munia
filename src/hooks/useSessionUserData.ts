@@ -7,13 +7,13 @@ import { GetUser } from 'types';
 /**
  * Use this hook to get the data of the current logged in user.
  *
- * NOTE: If you only need to get the `id`, `name`, `email` and `image`
- * of the user, use NextAuth's `useSession()` instead.
+ * NOTE: If you only need to get the `id` of the logged
+ * in user, use NextAuth's `useSession()` instead.
  *
  * @returns GetUser
  */
 
-export function useUserData() {
+export function useSessionUserData() {
   const { data: session } = useSession();
   const userId = session?.user.id;
 

@@ -9,7 +9,7 @@ import { Select } from '@/components/ui/Select';
 import { format } from 'date-fns';
 import { reverseCapitalizeWithUnderscores } from '@/lib/reverseCapitalizeWithUnderscores';
 import { capitalizeWithUnderscores } from '@/lib/capitalizeWithUnderscores';
-import { useUserData } from '@/hooks/useUserData';
+import { useSessionUserData } from '@/hooks/useSessionUserData';
 
 export function About({
   profile,
@@ -18,7 +18,7 @@ export function About({
   profile: User;
   isOwnProfile: boolean;
 }) {
-  const [user] = useUserData();
+  const [user] = useSessionUserData();
   // Use `profileData` for displaying the values
   const profileData = (isOwnProfile && user) || profile;
   // Use this state for controlling the inputs

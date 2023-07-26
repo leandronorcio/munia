@@ -49,10 +49,9 @@ export const authOptions: NextAuthOptions = {
        * invoked, thus calling the db here would be inefficient as the
        * session is checked multiple times by different components.
        *
-       * If you need the other data of the current logged in user, use the
-       * `useUserData()` hook instead. But if you only need to get the
-       * `id`, `name`, `email` and `image` of the user, use NextAuth's
-       * `useSession()` instead.
+       * If you only need to get the `id` of the user, use NextAuth's
+       * `useSession()`, but if you need data other than just the `id`
+       * use the `useSessionUserData()` custom hook instead.
        */
       if (session.user) {
         session.user.id = token.sub as string;
