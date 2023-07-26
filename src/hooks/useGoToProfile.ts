@@ -18,7 +18,7 @@ export function useGoToProfile() {
     username: string;
   }) {
     if (userId) {
-      qc.removeQueries({ queryKey: ['users', userId] });
+      qc.removeQueries({ queryKey: ['users', userId, 'profile', 'posts'] });
     }
     router.push(`/${username}`);
   }
