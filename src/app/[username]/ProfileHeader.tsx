@@ -4,9 +4,8 @@ import { ProfileActionButtons } from '../../components/ProfileActionButtons';
 import ProfilePhoto from './ProfilePhoto';
 import CoverPhoto from './CoverPhoto';
 import Tabs from './Tabs';
-import { useQuery } from '@tanstack/react-query';
 import { GetUser } from 'types';
-import { PROFILE_QUERY_STALE_TIME } from '@/constants';
+import { useUserQuery } from '@/hooks/queries/useUserQuery';
 
 export function ProfileHeader({
   isOwnProfile,
@@ -15,20 +14,11 @@ export function ProfileHeader({
   isOwnProfile: boolean;
   initialProfileData: GetUser;
 }) {
-  const { data: profile } = useQuery({
-    queryKey: ['users', initialProfileData.id],
-    initialData: initialProfileData,
-    queryFn: async () => {
-      const res = await fetch(`/api/users/${initialProfileData.id}`);
-
-      if (!res.ok) {
-        throw new Error('Unable to load profile.');
-      }
-
-      return (await res.json()) as GetUser;
-    },
-    staleTime: PROFILE_QUERY_STALE_TIME,
-  });
+  // `profile` is guaranteed to be not undefined as it was given an `initialData`
+  const { data: profile } = useUserQuery(
+    initialProfileData.id,
+    initialProfileData
+  );
 
   return (
     <>
@@ -42,12 +32,12 @@ export function ProfileHeader({
         >
           <CoverPhoto
             isOwnProfile={isOwnProfile}
-            photoUrl={profile.coverPhoto}
+            photoUrl={profile!.coverPhoto}
           />
         </div>
         <ProfilePhoto
           isOwnProfile={isOwnProfile}
-          photoUrl={profile.profilePhoto}
+          photoUrl={profile!.profilePhoto}
         />
         {!isOwnProfile && (
           <div className="absolute -bottom-20 right-2 md:right-0">
@@ -57,18 +47,18 @@ export function ProfileHeader({
       </div>
 
       <div className="px-4">
-        <h1 className="text-4xl font-bold mb-1">{profile.name}</h1>
+        <h1 className="text-4xl font-bold mb-1">{profile!.name}</h1>
         <div className="flex flex-col lg:flex-row">
-          <p className="text-lg text-gray-600 mr-4">@{profile.username}</p>
+          <p className="text-lg text-gray-600 mr-4">@{profile!.username}</p>
           <div className="flex flex-row">
             <p className="text-lg mr-6 hidden lg:block">&bull;</p>
             <p className="text-lg mr-6 font-semibold">
-              <span>{profile.followerCount}</span>{' '}
+              <span>{profile!.followerCount}</span>{' '}
               <span className="text-gray-500">Followers</span>
             </p>
             <p className="text-lg mr-6">&bull;</p>
             <p className="text-lg font-semibold">
-              <span>{profile.followingCount}</span>{' '}
+              <span>{profile!.followingCount}</span>{' '}
               <span className="text-gray-500">Following</span>
             </p>
           </div>
