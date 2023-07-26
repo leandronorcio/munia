@@ -2,7 +2,7 @@
 import { DiscoverProfile } from '@/app/discover/DiscoverProfile';
 import { AllCaughtUp } from '@/components/AllCaughtUp';
 import useOnScreen from '@/hooks/useOnScreen';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { GetUser } from 'types';
@@ -12,6 +12,7 @@ export function DiscoverProfiles() {
   const searchParams = useSearchParams();
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
+  const qc = useQueryClient();
 
   const {
     data,
@@ -38,7 +39,13 @@ export function DiscoverProfiles() {
       if (!res.ok) {
         throw new Error('Error fetching discover profiles.');
       }
-      return (await res.json()) as GetUser[];
+
+      const users = (await res.json()) as GetUser[];
+
+      for (const user of users) {
+        qc.setQueryData(['users', user.id], user);
+      }
+      return users;
     },
     getNextPageParam: (lastPage, pages) => {
       // If the `pages` `length` is 0, that means there is not a single profile to load
