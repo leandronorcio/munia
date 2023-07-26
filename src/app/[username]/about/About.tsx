@@ -26,8 +26,6 @@ export function About({
     ...profile,
   });
 
-  console.log(typeof profileData.birthDate);
-
   return (
     <div className="flex flex-col gap-3">
       <AboutItem
