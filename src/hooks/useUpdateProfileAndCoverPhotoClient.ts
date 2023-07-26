@@ -4,14 +4,14 @@ import { useSession } from 'next-auth/react';
 import { useRef } from 'react';
 import { useBasicDialogs } from './useBasicDialogs';
 import { useToast } from './useToast';
-import { useUserDataMutation } from './mutations/useUserDataMutation';
+import { useSessionUserDataMutation } from './mutations/useSessionUserDataMutation';
 
 export function useUpdateProfileAndCoverPhotoClient(
   toUpdate: 'profile' | 'cover'
 ) {
   const { data: session } = useSession();
   const userId = session?.user.id;
-  const { updateUserPhotosMutation } = useUserDataMutation();
+  const { updateSessionUserPhotosMutation } = useSessionUserDataMutation();
   const { alert } = useBasicDialogs();
   const { showToast } = useToast();
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -31,7 +31,7 @@ export function useUpdateProfileAndCoverPhotoClient(
     formData.append(name, file, file.name);
 
     if (!userId) return;
-    updateUserPhotosMutation.mutate(
+    updateSessionUserPhotosMutation.mutate(
       {
         toUpdate,
         formData,
@@ -61,6 +61,6 @@ export function useUpdateProfileAndCoverPhotoClient(
     inputFileRef,
     openInput,
     handleChange,
-    isLoading: updateUserPhotosMutation.isLoading,
+    isLoading: updateSessionUserPhotosMutation.isLoading,
   };
 }

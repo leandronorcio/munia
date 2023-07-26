@@ -3,12 +3,16 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { GetUser } from 'types';
 
-export function useUserDataMutation() {
+/**
+ * This hook is only used by the profile's profile/cover photo
+ * and the profile's About page.
+ */
+export function useSessionUserDataMutation() {
   const { data: session } = useSession();
   const userId = session?.user.id;
   const qc = useQueryClient();
 
-  const updateUserDataMutation = useMutation({
+  const updateSessionUserDataMutation = useMutation({
     mutationFn: ({
       field,
       value,
@@ -27,7 +31,7 @@ export function useUserDataMutation() {
     },
   });
 
-  const updateUserPhotosMutation = useMutation({
+  const updateSessionUserPhotosMutation = useMutation({
     mutationFn: ({
       toUpdate,
       formData,
@@ -46,7 +50,7 @@ export function useUserDataMutation() {
     },
   });
 
-  return { updateUserDataMutation, updateUserPhotosMutation };
+  return { updateSessionUserDataMutation, updateSessionUserPhotosMutation };
 }
 
 const updateUserData = async ({

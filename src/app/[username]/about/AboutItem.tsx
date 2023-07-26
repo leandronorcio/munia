@@ -1,5 +1,5 @@
 import Button from '@/components/ui/Button';
-import { useUserDataMutation } from '@/hooks/mutations/useUserDataMutation';
+import { useSessionUserDataMutation } from '@/hooks/mutations/useSessionUserDataMutation';
 import { Delete, Edit } from '@/svg_components';
 import { User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
@@ -27,7 +27,7 @@ export function AboutItem({
   isOwnProfile: boolean;
 }) {
   const [isEditing, setIsEditing] = useState(false);
-  const { updateUserDataMutation } = useUserDataMutation();
+  const { updateSessionUserDataMutation } = useSessionUserDataMutation();
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -41,7 +41,7 @@ export function AboutItem({
       value = value.toUpperCase().replace(/ /g, '_');
     }
 
-    updateUserDataMutation.mutate(
+    updateSessionUserDataMutation.mutate(
       {
         field,
         value,
@@ -60,7 +60,7 @@ export function AboutItem({
   };
 
   const setToNull = async () => {
-    updateUserDataMutation.mutate({
+    updateSessionUserDataMutation.mutate({
       field,
       value: null,
     });
@@ -96,14 +96,15 @@ export function AboutItem({
           {/* Pass the `error` prop to the <TextInput> element. */}
           {cloneElement(children, {
             error:
-              updateUserDataMutation.error?.toString().replace('Error: ', '') ||
-              undefined,
+              updateSessionUserDataMutation.error
+                ?.toString()
+                .replace('Error: ', '') || undefined,
           })}
           <div className="w-[320px] flex justify-end gap-2">
             <Button
               type="submit"
               size="small"
-              loading={updateUserDataMutation.isLoading}
+              loading={updateSessionUserDataMutation.isLoading}
             >
               Save
             </Button>
