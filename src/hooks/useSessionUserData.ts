@@ -1,8 +1,8 @@
 'use client';
 import { PROFILE_QUERY_STALE_TIME } from '@/constants';
+import { fetchUser } from '@/lib/query-functions/fetchUser';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import { GetUser } from 'types';
 
 /**
  * Use this hook to get the data of the current logged in user.
@@ -19,15 +19,7 @@ export function useSessionUserData() {
 
   const { data } = useQuery({
     queryKey: ['users', userId],
-    queryFn: async () => {
-      const res = await fetch(`/api/users/${userId}`);
-
-      if (!res) {
-        throw new Error("Error getting logged in user's data.");
-      }
-
-      return (await res.json()) as GetUser;
-    },
+    queryFn: () => fetchUser(userId),
     staleTime: PROFILE_QUERY_STALE_TIME,
   });
 
