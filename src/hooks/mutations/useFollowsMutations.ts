@@ -34,7 +34,11 @@ export function useFollowsMutations({
     },
     onError: (err: Error, variables, context) => {
       qc.setQueryData(queryKey, context?.previousTargetUser);
-      showToast({ title: 'Something Went Wrong', message: err.message });
+      showToast({
+        title: 'Something Went Wrong',
+        message: err.message,
+        type: 'error',
+      });
     },
   });
 
@@ -59,7 +63,11 @@ export function useFollowsMutations({
     },
     onError: (err: Error, variables, context) => {
       qc.setQueryData(queryKey, context?.previousTargetUser);
-      showToast({ title: 'Something Went Wrong', message: err.message });
+      showToast({
+        title: 'Something Went Wrong',
+        message: err.message,
+        type: 'error',
+      });
     },
   });
 
