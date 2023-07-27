@@ -44,7 +44,7 @@ export function ToggleStepper({
   onClick: MouseEventHandler<HTMLDivElement>;
   isActive: boolean;
   quantity: number;
-  noun: string;
+  noun?: string;
 } & VariantProps<typeof icon>) {
   return (
     <div className={cn(toggle({ color }))} onClick={onClick}>
@@ -54,7 +54,8 @@ export function ToggleStepper({
         className={cn(isActive ? icon({ color }) : 'stroke-black')}
       />
       <p className="hidden text-lg font-semibold text-gray-700 sm:block">
-        {quantity} {quantity === 1 ? noun : `${noun}s`}
+        {quantity}{' '}
+        {noun !== undefined ? (quantity === 1 ? noun : `${noun}s`) : ''}
       </p>
     </div>
   );
