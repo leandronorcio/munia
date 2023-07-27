@@ -47,6 +47,7 @@
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
     "@svgr/cli": "^7.0.0",
+    "prettier-plugin-tailwindcss": "^0.4.1",
     "prisma": "^4.15.0"
   }
 }
