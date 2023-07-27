@@ -1,23 +1,22 @@
 'use client';
+import Button from '@/components/ui/Button';
 import { CountContext } from '@/contexts/CountContext';
-import Link from 'next/link';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 export default function Messages() {
-  const { count, setCount } = useContext(CountContext);
+  const [loading, setLoading] = useState(false);
+  const toggleLoading = () => setLoading((prev) => !prev);
+  const message = 'lasl';
   return (
-    <div>
-      <div className="bg-green-200 w-full h-[200px]"></div>
-      <div className="bg-red-200 w-full h-[200px]"></div>
-      <p>{count}</p>
-      <div className="bg-green-200 w-full h-[200px]"></div>
-      <div className="bg-red-200 w-full h-[200px]"></div>
-      <button onClick={() => setCount((prev) => prev + 1)}>Add</button>
-      <div className="bg-green-200 w-full h-[200px]"></div>
-      <div className="bg-red-200 w-full h-[200px]"></div>
-      <Link href={'/notifications'}>Go to notifications</Link>
-      <div className="bg-green-200 w-full h-[200px]"></div>
-      <div className="bg-red-200 w-full h-[200px]"></div>
+    <div className="p-4 pt-2">
+      <Button
+        mode="secondary"
+        size="small"
+        loading={loading}
+        onClick={toggleLoading}
+      >
+        Submit
+      </Button>
     </div>
   );
 }
