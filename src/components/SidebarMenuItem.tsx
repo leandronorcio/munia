@@ -24,7 +24,7 @@ export default function SidebarMenuItem({
   return (
     <div
       className={cn([
-        'flex flex-row gap-4 items-center h-14 px-4 mt-2 cursor-pointer relative group duration-300 hover:bg-violet-200',
+        'group relative mt-2 flex h-14 cursor-pointer flex-row items-center gap-4 px-4 duration-300 hover:bg-violet-200',
         className,
         isActive && 'bg-violet-200',
       ])}
@@ -42,15 +42,15 @@ export default function SidebarMenuItem({
     >
       <div
         className={cn(
-          'w-[4px] h-0 group-hover:h-10 transition-height absolute left-0 rounded-r-lg duration-300 bg-violet-700',
-          isActive && 'h-10'
+          'transition-height absolute left-0 h-0 w-[4px] rounded-r-lg bg-violet-700 duration-300 group-hover:h-10',
+          isActive && 'h-10',
         )}
       ></div>
-      <Icon className="stroke-gray-700 w-6 h-6" />{' '}
+      <Icon className="h-6 w-6 stroke-gray-700" />{' '}
       <span
         className={cn(
           'text-base text-gray-700 transition-colors duration-300 group-hover:text-violet-700',
-          isActive && 'text-violet-700'
+          isActive && 'text-violet-700',
         )}
       >
         {children}

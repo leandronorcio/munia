@@ -80,7 +80,7 @@ export function Posts({
         initialVisualMedia: visualMedia || [],
       });
     },
-    []
+    [],
   );
 
   const likePost = useCallback(async (postId: number) => {

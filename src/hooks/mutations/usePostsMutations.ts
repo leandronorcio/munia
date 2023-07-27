@@ -62,13 +62,13 @@ export function usePostsMutations({
               pages: newPages,
               pageParams: newPageParams,
             };
-          }
+          },
         );
       },
       onError: () => {
         showToast({ title: 'Unable to Delete', type: 'error' });
       },
-    }
+    },
   );
 
   const likeUnlikeOptimisticSetter = ({
@@ -108,7 +108,7 @@ export function usePostsMutations({
           pages: chunk(newPosts, POSTS_PER_PAGE),
           pageParams: oldData.pageParams,
         };
-      }
+      },
     );
   };
 
@@ -154,10 +154,10 @@ export function usePostsMutations({
       onError: (err, { postId }, context) => {
         qc.setQueryData(
           ['users', userId, type, 'posts'],
-          context?.previousPosts
+          context?.previousPosts,
         );
       },
-    }
+    },
   );
 
   const unLikeMutation = useMutation(
@@ -168,7 +168,7 @@ export function usePostsMutations({
         `/api/users/${session?.user?.id}/liked-posts/${postId}`,
         {
           method: 'DELETE',
-        }
+        },
       );
 
       if (!res.ok) {
@@ -201,10 +201,10 @@ export function usePostsMutations({
       onError: (err, { postId }, context) => {
         qc.setQueryData(
           ['users', userId, type, 'posts'],
-          context?.previousPosts
+          context?.previousPosts,
         );
       },
-    }
+    },
   );
 
   const toggleComments = useCallback(async (postId: number) => {
@@ -232,7 +232,7 @@ export function usePostsMutations({
           pages: chunk(newPosts, POSTS_PER_PAGE),
           pageParams: oldData.pageParams,
         };
-      }
+      },
     );
   }, []);
 

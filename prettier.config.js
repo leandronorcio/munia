@@ -1,6 +1,6 @@
 module.exports = {
-  plugins: ["prettier-plugin-tailwindcss"],
-  tailwindFunctions: ["clsx", "cva"],
+  plugins: ['prettier-plugin-tailwindcss'],
+  tailwindFunctions: ['clsx', 'cva'],
   singleQuote: true,
-  trailingComma: "all",
+  trailingComma: 'all',
 };

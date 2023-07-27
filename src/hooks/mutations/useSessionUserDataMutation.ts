@@ -94,7 +94,7 @@ const updateUserPhotos = async ({
     {
       method: 'POST',
       body: formData,
-    }
+    },
   );
 
   if (!res.ok) {

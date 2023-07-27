@@ -49,7 +49,7 @@ export function Comments({ postId }: { postId: number }) {
         },
       });
     },
-    []
+    [],
   );
 
   const handleDelete = useCallback(({ commentId }: { commentId: number }) => {
@@ -61,7 +61,7 @@ export function Comments({ postId }: { postId: number }) {
   }, []);
 
   return (
-    <div className="flex flex-col px-8 py-6 bg-gray-100">
+    <div className="flex flex-col bg-gray-100 px-8 py-6">
       {isLoading ? (
         // TODO: Add fixed loading spinner here
         <></>
@@ -91,11 +91,11 @@ export function Comments({ postId }: { postId: number }) {
         </AnimatePresence>
       )}
 
-      <div className="flex flex-row mt-3">
-        <div className="w-11 h-11">
+      <div className="mt-3 flex flex-row">
+        <div className="h-11 w-11">
           <ProfilePhotoOwn />
         </div>
-        <div className="flex-grow flex flex-col justify-center">
+        <div className="flex flex-grow flex-col justify-center">
           <TextArea
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}

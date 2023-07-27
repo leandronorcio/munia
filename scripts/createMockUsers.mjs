@@ -55,7 +55,7 @@ function createRandomUser() {
   // Get a random profile picture from maleAvatars or femaleAvatars
   // depending on gender, then, remove the returned profile picture
   const randomProfilePhoto = `${getRandomItemAndRemove(
-    gender === 'male' ? maleAvatars : femaleAvatars
+    gender === 'male' ? maleAvatars : femaleAvatars,
   )}.png`;
   // Reset avatars array when all values are consumed
   if (maleAvatars.length === 0) maleAvatars = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];

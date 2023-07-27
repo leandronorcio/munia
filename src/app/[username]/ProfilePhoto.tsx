@@ -17,7 +17,7 @@ export default function ProfilePhoto({
 
   return (
     <div
-      className="absolute -bottom-24 bg-cover w-48 h-48 rounded-full border-8 border-white"
+      className="absolute -bottom-24 h-48 w-48 rounded-full border-8 border-white bg-cover"
       style={{
         backgroundImage: `url("${photoUrl || 'default-profile-photo.jpg'}")`,
       }}
@@ -34,11 +34,11 @@ export default function ProfilePhoto({
             initialSlide: 0,
           })
         }
-        className="w-full h-full absolute bg-black/30 rounded-full opacity-0 active:opacity-100 cursor-pointer"
+        className="absolute h-full w-full cursor-pointer rounded-full bg-black/30 opacity-0 active:opacity-100"
       ></div>
       {isOwnProfile && (
         <label>
-          <div className="absolute right-0 bottom-0">
+          <div className="absolute bottom-0 right-0">
             <input
               type="file"
               name="file"

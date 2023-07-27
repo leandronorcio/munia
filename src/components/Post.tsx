@@ -71,8 +71,8 @@ export const Post = memo(
     };
 
     return (
-      <div className="rounded-2xl bg-slate-50 overflow-hidden">
-        <div className="flex justify-between items-center px-4 py-4 sm:px-8 sm:py-6">
+      <div className="overflow-hidden rounded-2xl bg-slate-50">
+        <div className="flex items-center justify-between px-4 py-4 sm:px-8 sm:py-6">
           <ProfileBlock
             userId={author.id}
             name={author.name!}
@@ -95,11 +95,11 @@ export const Post = memo(
           />
         )}
         <div className="px-8 py-4">
-          <p className="text-lg text-gray-700 mb-8">{content}</p>
-          <div className="flex justify-start gap-3 -ml-4">
+          <p className="mb-8 text-lg text-gray-700">{content}</p>
+          <div className="-ml-4 flex justify-start gap-3">
             <div
               className={cn(
-                'flex items-center gap-3 cursor-pointer px-4 py-2 rounded-xl hover:bg-pink-200 active:ring-4 ring-pink-300'
+                'flex cursor-pointer items-center gap-3 rounded-xl px-4 py-2 ring-pink-300 hover:bg-pink-200 active:ring-4',
               )}
               onClick={handleLikeClick}
             >
@@ -108,28 +108,28 @@ export const Post = memo(
                 height={24}
                 className={cn(
                   'stroke-black',
-                  isLiked && 'stroke-none fill-red-500'
+                  isLiked && 'fill-red-500 stroke-none',
                 )}
               />
-              <p className="font-semibold text-lg text-gray-700 hidden sm:block">
+              <p className="hidden text-lg font-semibold text-gray-700 sm:block">
                 {numberOfLikes} {numberOfLikes === 1 ? 'Like' : 'Likes'}
               </p>
             </div>
             <div
               className={cn(
-                'flex items-center gap-3 cursor-pointer px-4 py-2 rounded-xl hover:bg-blue-200 active:ring-4 ring-blue-300'
+                'flex cursor-pointer items-center gap-3 rounded-xl px-4 py-2 ring-blue-300 hover:bg-blue-200 active:ring-4',
               )}
               onClick={handleCommentsTogglerClick}
             >
               <SvgComment
                 className={cn(
                   'stroke-black',
-                  commentsShown && 'stroke-none fill-blue-500'
+                  commentsShown && 'fill-blue-500 stroke-none',
                 )}
                 width={24}
                 height={24}
               />
-              <p className="font-semibold text-lg text-gray-700 hidden sm:block">
+              <p className="hidden text-lg font-semibold text-gray-700 sm:block">
                 {_count.comments} Comments
               </p>
             </div>
@@ -151,5 +151,5 @@ export const Post = memo(
       </div>
     );
   },
-  (oldProps, newProps) => isEqual(oldProps, newProps)
+  (oldProps, newProps) => isEqual(oldProps, newProps),
 );

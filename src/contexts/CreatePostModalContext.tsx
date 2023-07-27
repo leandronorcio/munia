@@ -51,7 +51,7 @@ function CreatePostModalContextProvider({
       setToEditValues,
       setShouldOpenFileInputOnMount,
     }),
-    []
+    [],
   );
   return (
     <CreatePostModalContextData.Provider

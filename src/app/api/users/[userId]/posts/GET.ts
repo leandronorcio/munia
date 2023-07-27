@@ -12,7 +12,7 @@ import { getServerUser } from '@/lib/getServerUser';
 
 export async function GET(
   request: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: { userId: string } },
 ) {
   /**
    * The [user] will only be used to check whether the

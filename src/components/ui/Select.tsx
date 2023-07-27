@@ -39,7 +39,7 @@ export function Select({
 
   return (
     <div className="relative w-[320px] cursor-pointer" ref={ref}>
-      <div className="w-full relative">
+      <div className="relative w-full">
         <TextInput
           value={value}
           placeholder={placeholder}
@@ -48,7 +48,7 @@ export function Select({
           error={error}
           name={name}
         />
-        <div className="absolute z-10 top-5 right-5">
+        <div className="absolute right-5 top-5 z-10">
           <motion.div
             initial={{ rotate: 0 }}
             animate={{ rotate: optionsVisible ? 180 : 0 }}
@@ -65,7 +65,7 @@ export function Select({
       <motion.div
         initial={{ scaleY: 0 }}
         animate={{ scaleY: optionsVisible ? 1 : 0, originY: 0 }}
-        className="absolute z-10 top-[110%] w-full py-2 rounded-xl bg-slate-100 border border-gray-300"
+        className="absolute top-[110%] z-10 w-full rounded-xl border border-gray-300 bg-slate-100 py-2"
         onClick={() => setOptionsVisible((prev) => !prev)}
       >
         {options.map((option) => (

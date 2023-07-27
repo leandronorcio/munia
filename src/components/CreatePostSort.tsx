@@ -35,13 +35,13 @@ export function CreatePostSort({
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   // The `url` of <VisualMedia> will serve as the ID's of the <SortableContext>.
   const itemIds = useMemo(
     () => visualMedia.map((item) => item.url),
-    [visualMedia]
+    [visualMedia],
   );
 
   return (
@@ -52,7 +52,7 @@ export function CreatePostSort({
       modifiers={[restrictToParentElement]}
       measuring={measuringConfig}
     >
-      <div className="px-2 grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-2 gap-2 px-2">
         <SortableContext items={itemIds} strategy={rectSortingStrategy}>
           {visualMedia.map((item) => (
             <CreatePostSortItem

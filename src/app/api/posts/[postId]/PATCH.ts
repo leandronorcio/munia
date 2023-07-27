@@ -8,7 +8,7 @@ import { verifyAccessToPost } from './verifyAccessToPost';
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { postId: string } }
+  { params }: { params: { postId: string } },
 ) {
   const postId = parseInt(params.postId);
   if (!verifyAccessToPost(postId)) {

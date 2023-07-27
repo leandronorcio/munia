@@ -18,14 +18,14 @@ export function PhotosModalNavigationButton({
   return (
     <motion.div
       className={cn(
-        'custom-swiper-button-prev fixed z-20 top-[50%] translate-y-[-50%] bg-violet-700 active:bg-violet-800 p-3 rounded-full cursor-pointer',
+        'custom-swiper-button-prev fixed top-[50%] z-20 translate-y-[-50%] cursor-pointer rounded-full bg-violet-700 p-3 active:bg-violet-800',
         type === 'prev'
           ? isBeginning
             ? 'opacity-50'
             : 'opacity-100'
           : isEnd
           ? 'opacity-50'
-          : 'opacity-100'
+          : 'opacity-100',
       )}
       initial={{ [type === 'prev' ? 'left' : 'right']: '-48px' }}
       animate={{ [type === 'prev' ? 'left' : 'right']: '16px' }}

@@ -35,15 +35,15 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           }}
           {...rest}
           className={cn(
-            'w-full  outline-none px-4 py-0 text-lg overflow-hidden resize-none',
-            filled ? 'p-5 rounded-2xl bg-slate-100' : 'bg-transparent',
+            'w-full  resize-none overflow-hidden px-4 py-0 text-lg outline-none',
+            filled ? 'rounded-2xl bg-slate-100 p-5' : 'bg-transparent',
             error && 'bg-red-200 ring-2 ring-red-900 placeholder:text-red-900',
-            rest.className
+            rest.className,
           )}
           rows={1}
         />
-        {error && <p className="text-red-800 font-semibold mt-2">{error}</p>}
+        {error && <p className="mt-2 font-semibold text-red-800">{error}</p>}
       </div>
     );
-  }
+  },
 );

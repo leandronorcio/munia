@@ -9,7 +9,7 @@ import { verifyAccessToComment } from './verifyAccessToComment';
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { commentId: string } }
+  { params }: { params: { commentId: string } },
 ) {
   const commentId = parseInt(params.commentId);
   if (!verifyAccessToComment(commentId)) {

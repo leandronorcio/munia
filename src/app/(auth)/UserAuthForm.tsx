@@ -61,10 +61,10 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
 
   return (
     <>
-      <h1 className="font-bold text-5xl mb-5">
+      <h1 className="mb-5 text-5xl font-bold">
         {mode === 'login' ? 'Log In' : 'Sign Up'}
       </h1>
-      <p className="text-lg text-gray-500 mb-4">
+      <p className="mb-4 text-lg text-gray-500">
         Enter your email to {mode === 'login' ? 'login' : 'create an account'}
       </p>
       <div className="mb-4">
@@ -90,8 +90,8 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
           Sign {mode === 'login' ? 'in' : 'up'} with Email
         </Button>
       </div>
-      <p className="text-lg text-center text-gray-500 mb-4">Or continue with</p>
-      <div className="flex gap-2 mb-10">
+      <p className="mb-4 text-center text-lg text-gray-500">Or continue with</p>
+      <div className="mb-10 flex gap-2">
         <Button
           onClick={() => {
             setLoading((prev) => ({
@@ -131,18 +131,18 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
       </div>
       {mode === 'login' ? (
         <>
-          <p className="text-lg text-gray-500 mb-1">No account yet?</p>
+          <p className="mb-1 text-lg text-gray-500">No account yet?</p>
           <Link href="/register">
-            <p className="text-lg font-semibold text-violet-800 hover:opacity-80 cursor-pointer">
+            <p className="cursor-pointer text-lg font-semibold text-violet-800 hover:opacity-80">
               Create an account
             </p>
           </Link>
         </>
       ) : (
         <>
-          <p className="text-lg text-gray-500 mb-1">Alreay have an account?</p>
+          <p className="mb-1 text-lg text-gray-500">Alreay have an account?</p>
           <Link href="/login">
-            <p className="text-lg font-semibold text-violet-800 hover:opacity-80 cursor-pointer">
+            <p className="cursor-pointer text-lg font-semibold text-violet-800 hover:opacity-80">
               Login
             </p>
           </Link>

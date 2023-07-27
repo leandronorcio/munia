@@ -7,7 +7,7 @@ import { getServerUser } from '@/lib/getServerUser';
 
 export async function PUT(
   request: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: { userId: string } },
 ) {
   const [user] = await getServerUser();
   if (!user || user.id !== params.userId)
@@ -29,9 +29,9 @@ export async function PUT(
     website: nonEmptyStringSchema
       .regex(
         new RegExp(
-          /^(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(?:\/[^\s]*)?$/
+          /^(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(?:\/[^\s]*)?$/,
         ),
-        { message: 'Invalid website' }
+        { message: 'Invalid website' },
       )
       .optional()
       .nullable(),
@@ -39,7 +39,7 @@ export async function PUT(
     phoneNumber: nonEmptyStringSchema
       .regex(
         new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/),
-        'Invalid phone number'
+        'Invalid phone number',
       )
       .optional()
       .nullable(),
@@ -86,7 +86,7 @@ export async function PUT(
         if (e.code === 'P2002') {
           return NextResponse.json(
             { error: 'User ID already taken.' },
-            { status: 409 }
+            { status: 409 },
           );
         }
       }
@@ -94,7 +94,7 @@ export async function PUT(
   } else {
     return NextResponse.json(
       { error: validate.error.issues[0].message },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }

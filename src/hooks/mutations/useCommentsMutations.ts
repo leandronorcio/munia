@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 export function useCommentsMutations(
   queryKey: QueryKey,
-  setCommentText: Dispatch<SetStateAction<string>>
+  setCommentText: Dispatch<SetStateAction<string>>,
 ) {
   const qc = useQueryClient();
   const { showToast } = useToast();
@@ -87,7 +87,7 @@ export function useCommentsMutations(
 
         // Find the index of the updated comment
         const index = newComments.findIndex(
-          (comment) => comment.id === commentId
+          (comment) => comment.id === commentId,
         );
 
         // Update the comment

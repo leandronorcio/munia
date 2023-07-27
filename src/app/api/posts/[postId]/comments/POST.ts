@@ -13,7 +13,7 @@ import { getServerUser } from '@/lib/getServerUser';
 
 export async function POST(
   request: Request,
-  { params }: { params: { postId: string } }
+  { params }: { params: { postId: string } },
 ) {
   const [user] = await getServerUser();
   if (!user) return NextResponse.json({}, { status: 401 });

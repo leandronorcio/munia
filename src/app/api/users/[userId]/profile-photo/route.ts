@@ -4,7 +4,7 @@ import { getServerUser } from '@/lib/getServerUser';
 
 export async function POST(
   request: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: { userId: string } },
 ) {
   const [user] = await getServerUser();
   if (!user || user.id !== params.userId)

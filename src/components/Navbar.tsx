@@ -2,8 +2,8 @@ import { Logo } from '@/svg_components';
 
 export default function Navbar() {
   return (
-    <div className="w-full px-8 py-4 bg-white flex flex-row">
-      <Logo className="w-12 h-12" />
+    <div className="flex w-full flex-row bg-white px-8 py-4">
+      <Logo className="h-12 w-12" />
     </div>
   );
 }

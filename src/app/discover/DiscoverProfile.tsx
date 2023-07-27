@@ -12,8 +12,8 @@ export const DiscoverProfile = memo(
 
     return (
       <div className="gap-4 drop-shadow-sm">
-        <div className="py-8 bg-gradient-to-r from-purple-300/50 to-blue-300/50 hover:from-red-300/25 hover:to-green-300/25 flex flex-col items-center gap-4 rounded-t-3xl">
-          <div className="w-24 h-24">
+        <div className="flex flex-col items-center gap-4 rounded-t-3xl bg-gradient-to-r from-purple-300/50 to-blue-300/50 py-8 hover:from-red-300/25 hover:to-green-300/25">
+          <div className="h-24 w-24">
             <ProfilePhoto
               photoUrl={user.profilePhoto || undefined}
               username={user.username}
@@ -22,22 +22,22 @@ export const DiscoverProfile = memo(
           </div>
           <ProfileActionButtons targetUserId={user.id} />
         </div>
-        <div className="flex flex-col items-center py-8 bg-gray-50 rounded-b-3xl">
+        <div className="flex flex-col items-center rounded-b-3xl bg-gray-50 py-8">
           <h2
-            className="font-semibold text-2xl mb-3 px-2 text-center cursor-pointer hover:underline"
+            className="mb-3 cursor-pointer px-2 text-center text-2xl font-semibold hover:underline"
             onClick={handleNameClick}
           >
             {user.name}
           </h2>
-          <p className="text-gray-500 mb-4 text-center">
+          <p className="mb-4 text-center text-gray-500">
             {user.bio || 'No bio yet'}
           </p>
           <div className="flex gap-6">
-            <p className="text-lg  font-semibold flex gap-1 justify-center">
+            <p className="flex  justify-center gap-1 text-lg font-semibold">
               <span>{user.followerCount}</span>{' '}
               <span className="text-gray-500">Followers</span>
             </p>
-            <p className="text-lg  font-semibold flex gap-1 justify-center">
+            <p className="flex  justify-center gap-1 text-lg font-semibold">
               <span>{user.followingCount}</span>{' '}
               <span className="text-gray-500">Followers</span>
             </p>
@@ -46,5 +46,5 @@ export const DiscoverProfile = memo(
       </div>
     );
   },
-  (prevProps, nextProps) => prevProps.user.id === nextProps.user.id
+  (prevProps, nextProps) => prevProps.user.id === nextProps.user.id,
 );

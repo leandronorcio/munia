@@ -7,14 +7,14 @@ import { CreatePostModalContextData } from '@/contexts/CreatePostModalContext';
 
 export function CreatePostModal() {
   const { shown, shouldOpenFileInputOnMount, toEditValues } = useContext(
-    CreatePostModalContextData
+    CreatePostModalContextData,
   );
 
   return (
     <AnimatePresence>
       {shown && (
         <ModalWrapper key="create-post-modal-wrapper" zIndex={10}>
-          <div className="w-full h-full grid place-items-center py-8 overflow-y-auto">
+          <div className="grid h-full w-full place-items-center overflow-y-auto py-8">
             <ResponsiveContainer>
               <CreatePost
                 toEditValues={toEditValues}

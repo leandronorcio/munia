@@ -26,7 +26,7 @@ const CreatePostTabs = memo(
               const isActive = item === activeCreatePostTab;
               return (
                 <div
-                  className="flex flex-col gap-2 items-center px-3 py-4 cursor-pointer"
+                  className="flex cursor-pointer flex-col items-center gap-2 px-3 py-4"
                   onClick={() =>
                     setActiveCreatePostTab(item as 'preview' | 'sort')
                   }
@@ -37,7 +37,7 @@ const CreatePostTabs = memo(
                       'text-xl font-semibold',
                       isActive
                         ? 'text-black'
-                        : 'text-gray-500 hover:text-gray-700'
+                        : 'text-gray-500 hover:text-gray-700',
                     )}
                   >
                     {capitalizeFirstLetter(item)}
@@ -51,8 +51,8 @@ const CreatePostTabs = memo(
           <div className="overflow-hidden">
             <div
               className={cn(
-                'grid grid-cols-2 w-[200%] transition-transform duration-500',
-                activeCreatePostTab === 'sort' && 'translate-x-[-50%]'
+                'grid w-[200%] grid-cols-2 transition-transform duration-500',
+                activeCreatePostTab === 'sort' && 'translate-x-[-50%]',
               )}
             >
               <div className="basis-1/2">
@@ -87,7 +87,7 @@ const CreatePostTabs = memo(
     }
 
     return true;
-  }
+  },
 );
 
 export { CreatePostTabs };

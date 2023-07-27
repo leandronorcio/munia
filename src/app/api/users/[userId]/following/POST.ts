@@ -16,7 +16,7 @@ import { z } from 'zod';
 
 export async function POST(
   request: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: { userId: string } },
 ) {
   const [user] = await getServerUser();
   if (!user || user.id !== params.userId)
@@ -37,7 +37,7 @@ export async function POST(
       if (error.code === 'P2002') {
         return NextResponse.json(
           { error: 'You are already following this user.' },
-          { status: 409 }
+          { status: 409 },
         );
       }
     }

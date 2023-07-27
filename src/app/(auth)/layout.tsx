@@ -6,7 +6,7 @@ import Link from 'next/link';
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <div className="fixed top-4 sm:top-8 pr-6 sm:px-10 w-full flex justify-between">
+      <div className="fixed top-4 flex w-full justify-between pr-6 sm:top-8 sm:px-10">
         <div>
           <Link href="/">
             <Button mode="ghost" Icon={BackArrow}>
@@ -18,7 +18,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <SvgLogo width={52} height={52} />
           <Link href="/">
             <h1
-              className="text-4xl font-bold bg-clip-text text-transparent cursor-pointer"
+              className="cursor-pointer bg-clip-text text-4xl font-bold text-transparent"
               style={{
                 backgroundImage:
                   'linear-gradient(95.08deg, #AE5388 2.49%, #3D1052 97.19%)',
@@ -29,7 +29,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </Link>
         </div>
       </div>
-      <div className="h-screen grid place-items-center">
+      <div className="grid h-screen place-items-center">
         <div className="w-[320px] md:w-[428px]">{children}</div>
       </div>
     </>

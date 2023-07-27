@@ -25,7 +25,7 @@ export default function CreatePost({
   const mode: 'create' | 'edit' = toEditValues === null ? 'create' : 'edit';
   const [content, setContent] = useState(toEditValues?.initialContent || '');
   const [visualMedia, setVisualMedia] = useState<VisualMedia[]>(
-    toEditValues?.initialVisualMedia || []
+    toEditValues?.initialVisualMedia || [],
   );
   const { createPostMutation, updatePostMutation } = useCreatePostMutations({
     content,
@@ -98,21 +98,21 @@ export default function CreatePost({
   };
 
   return (
-    <div className="rounded-xl overflow-hidden bg-white mb-6">
-      <div className="mb-4 py-3 bg-gray-100 rounded-t-xl relative">
-        <h3 className="text-lg font-semibold text-center">
+    <div className="mb-6 overflow-hidden rounded-xl bg-white">
+      <div className="relative mb-4 rounded-t-xl bg-gray-100 py-3">
+        <h3 className="text-center text-lg font-semibold">
           {capitalizeFirstLetter(mode)} Post
         </h3>
         <CloseButton
-          className="absolute top-[50%] translate-y-[-50%] right-3"
+          className="absolute right-3 top-[50%] translate-y-[-50%]"
           onClick={handleClickCloseButton}
         />
       </div>
-      <div className="flex flex-row mb-[18px] px-4">
-        <div className="w-11 h-11">
+      <div className="mb-[18px] flex flex-row px-4">
+        <div className="h-11 w-11">
           <ProfilePhotoOwn />
         </div>
-        <div className="flex-grow flex flex-col justify-center">
+        <div className="flex flex-grow flex-col justify-center">
           <TextArea
             value={content}
             onChange={(e) => setContent(e.target.value)}

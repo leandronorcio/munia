@@ -24,7 +24,7 @@ export function ProfilePhoto({
   return (
     <img
       src={photoUrl || '/default-profile-photo.jpg'}
-      className="w-full h-full object-cover rounded-full cursor-pointer"
+      className="h-full w-full cursor-pointer rounded-full object-cover"
       onClick={handleClick}
     />
   );

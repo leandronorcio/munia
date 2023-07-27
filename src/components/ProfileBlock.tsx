@@ -20,15 +20,15 @@ export default function ProfileBlock({
   const handleClick = () => goToProfile({ userId, username });
 
   return (
-    <div className="flex gap-3 overflow-x-auto no-scrollbar">
-      <div className="w-12 h-12 flex-shrink-0">
+    <div className="no-scrollbar flex gap-3 overflow-x-auto">
+      <div className="h-12 w-12 flex-shrink-0">
         <ProfilePhoto photoUrl={photoUrl} username={username} />
       </div>
 
       <div className="flex flex-col">
         <div className="flex items-center gap-1 sm:gap-3">
           <h2
-            className="font-semibold text-lg text-gray-700 cursor-pointer hover:underline"
+            className="cursor-pointer text-lg font-semibold text-gray-700 hover:underline"
             onClick={handleClick}
           >
             {name}

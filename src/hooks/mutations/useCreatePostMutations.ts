@@ -77,7 +77,7 @@ export function useCreatePostMutations({
               pages: newPages,
               pageParams: newPageParams,
             };
-          }
+          },
         );
         showToast({ title: 'Successfully Posted', type: 'success' });
         exitCreatePostModal();
@@ -85,7 +85,7 @@ export function useCreatePostMutations({
       onError: () => {
         showToast({ title: 'Error Creating Post', type: 'error' });
       },
-    }
+    },
   );
 
   const updatePostMutation = useMutation(
@@ -114,7 +114,7 @@ export function useCreatePostMutations({
 
             // Find the index of the updated post
             const index = oldPosts?.findIndex(
-              (post) => post.id === updatedPost.id
+              (post) => post.id === updatedPost.id,
             );
 
             // Write the updated post
@@ -124,7 +124,7 @@ export function useCreatePostMutations({
               pages: chunk(oldPosts, POSTS_PER_PAGE),
               pageParams: oldData.pageParams,
             };
-          }
+          },
         );
         showToast({ title: 'Successfully Edited', type: 'success' });
         exitCreatePostModal();
@@ -132,7 +132,7 @@ export function useCreatePostMutations({
       onError: () => {
         showToast({ title: 'Error Editing Post', type: 'error' });
       },
-    }
+    },
   );
 
   return { createPostMutation, updatePostMutation };

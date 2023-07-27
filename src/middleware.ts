@@ -45,7 +45,7 @@ export default withAuth(
       // Return true here so that the middleware function is always called.
       authorized: () => true,
     },
-  }
+  },
 );
 
 export const config = {

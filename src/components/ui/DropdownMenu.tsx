@@ -35,7 +35,7 @@ export function DropdownMenu({
         <div onClick={() => setVisible((prev) => !prev)}>{trigger}</div>
       ) : (
         <div
-          className="cursor-pointer p-3 rounded-full hover:bg-slate-200"
+          className="cursor-pointer rounded-full p-3 hover:bg-slate-200"
           onClick={() => setVisible((prev) => !prev)}
         >
           <MoreVert fill="black" />
@@ -44,7 +44,7 @@ export function DropdownMenu({
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: visible ? 1 : 0, originX: '100%', originY: 0 }}
-        className="absolute z-10 py-2 bg-slate-100 top-full right-0 border border-gray-300 rounded-xl cursor-pointer"
+        className="absolute right-0 top-full z-10 cursor-pointer rounded-xl border border-gray-300 bg-slate-100 py-2"
         style={{
           width: width || '320px',
         }}

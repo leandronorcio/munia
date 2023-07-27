@@ -14,7 +14,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(
   request: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: { userId: string } },
 ) {
   const [user] = await getServerUser();
   if (!user || params.userId !== user.id)

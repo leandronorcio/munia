@@ -12,7 +12,7 @@ export default function ModalWrapper({
       initial={{ backdropFilter: 'blur(0)', opacity: 0 }}
       animate={{ backdropFilter: 'blur(4px)', opacity: 1 }}
       exit={{ backdropFilter: 'blur(0)', opacity: 0 }}
-      className="fixed top-0 left-0 w-full h-screen"
+      className="fixed left-0 top-0 h-screen w-full"
       style={{ zIndex }}
     >
       {children}

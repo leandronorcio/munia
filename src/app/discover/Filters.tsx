@@ -48,7 +48,7 @@ export function Filters() {
   };
 
   return (
-    <div className="flex flex-wrap gap-4 mb-6">
+    <div className="mb-6 flex flex-wrap gap-4">
       <DropdownMenu
         width="115%"
         trigger={

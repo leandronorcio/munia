@@ -44,7 +44,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={cn('bg-violet-100 overflow-y-scroll', poppins.className)}
+        className={cn('overflow-y-scroll bg-violet-100', poppins.className)}
       >
         <ToastContextProvider>
           <ReactQueryProvider>
@@ -55,16 +55,16 @@ export default async function RootLayout({
                     <CountContextProvider>
                       {user ? (
                         <>
-                          <div className="w-full fixed z-[1] top-0">
+                          <div className="fixed top-0 z-[1] w-full">
                             <Navbar />
                           </div>
-                          <div className="fixed z-[1] top-0 left-0 pt-[80px] h-screen hidden md:block">
+                          <div className="fixed left-0 top-0 z-[1] hidden h-screen pt-[80px] md:block">
                             <Sidebar />
                           </div>
-                          <div className="w-full fixed z-[1] bottom-0 block md:hidden">
+                          <div className="fixed bottom-0 z-[1] block w-full md:hidden">
                             <BottomMenu />
                           </div>
-                          <div className="ml-0 md:ml-[220px] mt-[80px]">
+                          <div className="ml-0 mt-[80px] md:ml-[220px]">
                             <ResponsiveContainer>
                               {children}
                             </ResponsiveContainer>

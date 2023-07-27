@@ -7,7 +7,7 @@ import { useToast } from './useToast';
 import { useSessionUserDataMutation } from './mutations/useSessionUserDataMutation';
 
 export function useUpdateProfileAndCoverPhotoClient(
-  toUpdate: 'profile' | 'cover'
+  toUpdate: 'profile' | 'cover',
 ) {
   const { data: session } = useSession();
   const userId = session?.user.id;
@@ -50,7 +50,7 @@ export function useUpdateProfileAndCoverPhotoClient(
             message: 'There was an error uploading your photo.',
           });
         },
-      }
+      },
     );
 
     if (inputFileRef.current === null) return;

@@ -8,7 +8,7 @@ import { GetComment } from 'types';
 
 export async function GET(
   request: Request,
-  { params }: { params: { postId: string } }
+  { params }: { params: { postId: string } },
 ) {
   const res: GetComment[] = await prisma.comment.findMany({
     where: {

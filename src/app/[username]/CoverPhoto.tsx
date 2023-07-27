@@ -17,7 +17,7 @@ export default function CoverPhoto({
 
   return (
     <div
-      className="w-full h-full bg-cover bg-center"
+      className="h-full w-full bg-cover bg-center"
       style={{
         backgroundImage: photoUrl ? `url("${photoUrl}")` : 'none',
       }}
@@ -34,11 +34,11 @@ export default function CoverPhoto({
             initialSlide: 0,
           })
         }
-        className="w-full h-full absolute bg-black/30 md:rounded-3xl opacity-0 active:opacity-100 cursor-pointer"
+        className="absolute h-full w-full cursor-pointer bg-black/30 opacity-0 active:opacity-100 md:rounded-3xl"
       ></div>
       {isOwnProfile && (
         <label>
-          <div className="absolute right-4 bottom-4">
+          <div className="absolute bottom-4 right-4">
             <input
               type="file"
               name="file"

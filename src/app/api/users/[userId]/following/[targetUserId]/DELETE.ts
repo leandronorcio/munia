@@ -9,7 +9,7 @@ import { NextResponse } from 'next/server';
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { userId: string; targetUserId: string } }
+  { params }: { params: { userId: string; targetUserId: string } },
 ) {
   const [user] = await getServerUser();
   if (!user || user.id !== params.userId)
@@ -36,7 +36,7 @@ export async function DELETE(
   } else {
     return NextResponse.json(
       { error: 'You are not following this user.' },
-      { status: 409 }
+      { status: 409 },
     );
   }
 }

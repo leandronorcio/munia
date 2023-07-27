@@ -10,7 +10,7 @@ import { unlink } from 'fs/promises';
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { postId: string } }
+  { params }: { params: { postId: string } },
 ) {
   const postId = parseInt(params.postId);
   if (!verifyAccessToPost(postId)) {

@@ -10,10 +10,10 @@ export const CreatePostOptions = forwardRef<
   }
 >(({ handleVisualMediaChange }, ref) => {
   return (
-    <div className="flex flex-row gap-6 justify-center sm:justify-start px-4 pb-5">
-      <label className="flex flex-row items-center gap-4 cursor-pointer group">
+    <div className="flex flex-row justify-center gap-6 px-4 pb-5 sm:justify-start">
+      <label className="group flex cursor-pointer flex-row items-center gap-4">
         <Image fill="black" width={24} height={24} />
-        <p className="text-gray-500 group-hover:text-black font-semibold text-base">
+        <p className="text-base font-semibold text-gray-500 group-hover:text-black">
           Image / Video
         </p>
         <input
@@ -26,9 +26,9 @@ export const CreatePostOptions = forwardRef<
           multiple
         />
       </label>
-      <label className="flex flex-row items-center gap-4 cursor-pointer group">
+      <label className="group flex cursor-pointer flex-row items-center gap-4">
         <EmojiHappySmile stroke="black" width={24} height={24} />
-        <p className="text-gray-500 group-hover:text-black font-semibold text-base">
+        <p className="text-base font-semibold text-gray-500 group-hover:text-black">
           Mood
         </p>
       </label>

@@ -15,12 +15,12 @@ export function Option({
       onClick={() => {
         isSelected ? onChange('') : onChange(value);
       }}
-      className="px-6 py-2 flex items-center gap-[18px] hover:bg-slate-200 "
+      className="flex items-center gap-[18px] px-6 py-2 hover:bg-slate-200 "
     >
       <div
         className={cn(
-          'w-6 h-6 rounded-md grid place-items-center',
-          isSelected ? 'bg-violet-600' : 'bg-slate-300'
+          'grid h-6 w-6 place-items-center rounded-md',
+          isSelected ? 'bg-violet-600' : 'bg-slate-300',
         )}
       >
         {isSelected && (

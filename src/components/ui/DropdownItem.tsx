@@ -11,7 +11,7 @@ export function DropdownItem({ children, active, ...rest }: DropdownItemProps) {
     <div
       className={cn(
         'px-6 py-2 text-gray-600 hover:bg-slate-200 active:text-black',
-        active && 'bg-slate-200 text-black'
+        active && 'bg-slate-200 text-black',
       )}
       {...rest}
     >

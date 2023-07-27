@@ -16,7 +16,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       <div>
         <label className="relative block">
           {Icon && (
-            <div className="absolute top-[50%] translate-y-[-50%] left-5">
+            <div className="absolute left-5 top-[50%] translate-y-[-50%]">
               <Icon
                 className={cn(error ? 'stroke-red-900' : 'stroke-gray-500')}
                 width={24}
@@ -27,9 +27,9 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           <input
             {...rest}
             className={cn(
-              'pt-8 pb-2 pr-5 outline-none rounded-2xl focus:ring-2 ring-black peer',
+              'peer rounded-2xl pb-2 pr-5 pt-8 outline-none ring-black focus:ring-2',
               Icon ? 'pl-16' : 'pl-5',
-              error ? 'bg-red-200 ring-2 ring-red-900' : 'bg-slate-100'
+              error ? 'bg-red-200 ring-2 ring-red-900' : 'bg-slate-100',
             )}
             style={{ width: width || '320px' }}
             placeholder=" "
@@ -37,16 +37,16 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           />
           <div
             className={cn(
-              'absolute z-0 transition-all top-[9px] translate-y-0 text-sm peer-focus:top-[9px] peer-focus:translate-y-0 peer-focus:text-sm peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-placeholder-shown:text-lg cursor-text',
+              'absolute top-[9px] z-0 translate-y-0 cursor-text text-sm transition-all peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-placeholder-shown:text-lg peer-focus:top-[9px] peer-focus:translate-y-0 peer-focus:text-sm',
               Icon ? 'left-16' : 'left-5',
-              error ? 'text-red-900' : 'text-gray-500'
+              error ? 'text-red-900' : 'text-gray-500',
             )}
           >
             {placeholder}
           </div>
         </label>
-        {error && <p className="text-red-800 font-semibold mt-2">{error}</p>}
+        {error && <p className="mt-2 font-semibold text-red-800">{error}</p>}
       </div>
     );
-  }
+  },
 );

@@ -40,14 +40,14 @@ function VisualMediaModalContextProvider({
 }) {
   const [shown, setShown] = useState(false);
   const [modal, setModal] = useState<VisualMediaModalType>(
-    VisualMediaModalDefault
+    VisualMediaModalDefault,
   );
   const memoizedContextApiValue = useMemo(
     () => ({
       setShown,
       setModal,
     }),
-    []
+    [],
   );
 
   return (

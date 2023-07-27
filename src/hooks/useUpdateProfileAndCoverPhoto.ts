@@ -5,7 +5,7 @@ import prisma from '@/lib/prisma/prisma';
 export async function useUpdateProfileAndCoverPhoto(
   request: Request,
   userId: string,
-  toUpdate: 'profilePhoto' | 'coverPhoto'
+  toUpdate: 'profilePhoto' | 'coverPhoto',
 ) {
   const formData = await request.formData();
   const file = formData.get('file') as Blob | null;
@@ -13,7 +13,7 @@ export async function useUpdateProfileAndCoverPhoto(
   if (!file) {
     return NextResponse.json(
       { error: 'File blob is required.' },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -23,7 +23,7 @@ export async function useUpdateProfileAndCoverPhoto(
     if (!allowedFileTypes.includes(file.type)) {
       return NextResponse.json(
         { error: 'Unsupported file type.' },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const buffer = Buffer.from(await file.arrayBuffer());

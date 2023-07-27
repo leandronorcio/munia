@@ -7,8 +7,8 @@ export function CloseButton({ ...rest }: CloseButtonProps) {
     <div
       {...rest}
       className={cn(
-        'p-2 bg-gray-300/50 hover:bg-gray-300 rounded-full cursor-pointer',
-        rest.className
+        'cursor-pointer rounded-full bg-gray-300/50 p-2 hover:bg-gray-300',
+        rest.className,
       )}
     >
       <Close stroke="black" width={24} height={24} />

@@ -15,7 +15,7 @@ export default function Sidebar() {
   const username = user?.username || 'user-not-found';
 
   return (
-    <div className="h-full flex flex-col py-8 px-6">
+    <div className="flex h-full flex-col px-6 py-8">
       {[
         {
           title: 'News Feed',

@@ -75,7 +75,7 @@ function BasicDialogsContextProvider({
       setShown,
       setDialog,
     }),
-    []
+    [],
   );
 
   return (

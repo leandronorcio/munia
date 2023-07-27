@@ -10,7 +10,7 @@ import { NextResponse } from 'next/server';
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { userId: string; postId: string } }
+  { params }: { params: { userId: string; postId: string } },
 ) {
   const [user] = await getServerUser();
   if (!user || params.userId !== user.id)

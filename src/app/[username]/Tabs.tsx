@@ -21,7 +21,7 @@ function TabItem({
 
   return (
     <div
-      className="flex flex-col gap-2 items-center px-3 py-4 cursor-pointer mb-2"
+      className="mb-2 flex cursor-pointer flex-col items-center gap-2 px-3 py-4"
       onClick={() => {
         router.push(segment);
       }}
@@ -29,7 +29,7 @@ function TabItem({
       <h2
         className={cn(
           'text-xl font-semibold',
-          isActive ? 'text-black' : 'text-gray-500 hover:text-gray-700'
+          isActive ? 'text-black' : 'text-gray-500 hover:text-gray-700',
         )}
       >
         {children}

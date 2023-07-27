@@ -47,11 +47,11 @@ export const Comment = memo(
             )}
           </>
         </div>
-        <p className="-mt-3 ml-[60px] p-3 bg-slate-200 rounded-2xl">
+        <p className="-mt-3 ml-[60px] rounded-2xl bg-slate-200 p-3">
           {content}
         </p>
       </div>
     );
   },
-  (oldProps, newProps) => isEqual(oldProps, newProps)
+  (oldProps, newProps) => isEqual(oldProps, newProps),
 );

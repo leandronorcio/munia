@@ -10,7 +10,7 @@ const useOnScreen = (ref: RefObject<HTMLDivElement>, rootMargin = '0px') => {
       },
       {
         rootMargin,
-      }
+      },
     );
 
     const currentElement = ref?.current;

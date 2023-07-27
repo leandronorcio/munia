@@ -11,7 +11,7 @@ import { GetComment } from 'types';
 
 export async function PUT(
   request: Request,
-  { params }: { params: { commentId: string } }
+  { params }: { params: { commentId: string } },
 ) {
   const commentId = parseInt(params.commentId);
   if (!verifyAccessToComment(commentId)) {

@@ -13,8 +13,8 @@ export function BottomMenuIcon({
   return (
     <Icon
       className={cn(
-        'stroke-gray-800 w-6 h-6 group-hover:stroke-violet-200 group-hover:scale-125 transition-all',
-        isActive && 'stroke-violet-200 scale-125'
+        'h-6 w-6 stroke-gray-800 transition-all group-hover:scale-125 group-hover:stroke-violet-200',
+        isActive && 'scale-125 stroke-violet-200',
       )}
     />
   );

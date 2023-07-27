@@ -55,7 +55,7 @@ export function AboutItem({
           }
           setIsEditing(false);
         },
-      }
+      },
     );
   };
 
@@ -68,26 +68,26 @@ export function AboutItem({
 
   return (
     <div className="mb-2">
-      <div className="flex items-center gap-3 mb-2">
-        <h3 className="font-semibold text-xl text-gray-600">{label}</h3>
+      <div className="mb-2 flex items-center gap-3">
+        <h3 className="text-xl font-semibold text-gray-600">{label}</h3>
         {isOwnProfile && !isEditing && (
           <>
             <Edit
-              className="stroke-gray-600 hover:stroke-black cursor-pointer"
+              className="cursor-pointer stroke-gray-600 hover:stroke-black"
               onClick={() => setIsEditing(true)}
             />
             {value &&
               ['username', 'name', 'email'].includes(field) === false && (
                 <Delete
                   onClick={setToNull}
-                  className="stroke-gray-600 hover:stroke-black cursor-pointer"
+                  className="cursor-pointer stroke-gray-600 hover:stroke-black"
                 />
               )}
           </>
         )}
       </div>
       {!isEditing ? (
-        <p className="text-lg pl-4">{value || 'Not set'}</p>
+        <p className="pl-4 text-lg">{value || 'Not set'}</p>
       ) : (
         <form
           onSubmit={handleSubmit}
@@ -100,7 +100,7 @@ export function AboutItem({
                 ?.toString()
                 .replace('Error: ', '') || undefined,
           })}
-          <div className="w-[320px] flex justify-end gap-2">
+          <div className="flex w-[320px] justify-end gap-2">
             <Button
               type="submit"
               size="small"

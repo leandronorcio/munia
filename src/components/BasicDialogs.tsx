@@ -82,13 +82,13 @@ export function BasicDialogs() {
         <ModalWrapper key="basic-dialogs-modal-wrapper" zIndex={30}>
           <ModalContentWrapper>
             <CloseButton
-              className="absolute top-6 md:top-8 right-6 md:right-8"
+              className="absolute right-6 top-6 md:right-8 md:top-8"
               onClick={hide}
             />
-            <h1 className="text-center text-4xl md:text-5xl font-bold">
+            <h1 className="text-center text-4xl font-bold md:text-5xl">
               {dialog.title}
             </h1>
-            <p className="text-lg text-center text-gray-700">
+            <p className="text-center text-lg text-gray-700">
               {dialog.message}
             </p>
             <div>

@@ -3,7 +3,7 @@ import { DiscoverProfiles } from './DiscoverProfiles';
 
 export default async function Discover() {
   return (
-    <div className="pt-4 px-4">
+    <div className="px-4 pt-4">
       <Filters />
       <DiscoverProfiles />
     </div>

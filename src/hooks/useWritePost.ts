@@ -41,7 +41,7 @@ export async function useWritePost({
           if (!isValidFileType(extension)) {
             return NextResponse.json(
               { error: 'Invalid file type.' },
-              { status: 415 }
+              { status: 415 },
             );
           }
 
@@ -54,7 +54,7 @@ export async function useWritePost({
 
           await writeFile(
             `./public${filePath}`,
-            Buffer.from(await file.arrayBuffer())
+            Buffer.from(await file.arrayBuffer()),
           );
 
           // Only resolve when the last file is saved.
@@ -158,7 +158,7 @@ export async function useWritePost({
 
     return NextResponse.json(
       { error: 'Error creating post.' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

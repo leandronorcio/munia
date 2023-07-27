@@ -164,7 +164,7 @@ export function About({
           value={
             (profileDataControl.relationshipStatus &&
               reverseCapitalizeWithUnderscores(
-                profileDataControl.relationshipStatus
+                profileDataControl.relationshipStatus,
               )) ||
             ''
           }
@@ -174,7 +174,7 @@ export function About({
             setProfileDataControl((prev) => ({
               ...prev,
               relationshipStatus: capitalizeWithUnderscores(
-                value
+                value,
               ) as RelationshipStatus,
             }));
           }}

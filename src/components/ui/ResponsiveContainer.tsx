@@ -12,8 +12,8 @@ export function ResponsiveContainer({
     <div
       {...rest}
       className={cn(
-        'w-full mx-auto lg:w-[650px] xl:w-[800px] transition-[width]',
-        rest.className
+        'mx-auto w-full transition-[width] lg:w-[650px] xl:w-[800px]',
+        rest.className,
       )}
     >
       {children}

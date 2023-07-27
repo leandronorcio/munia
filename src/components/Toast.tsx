@@ -17,8 +17,8 @@ export function Toast() {
       {shown && (
         <motion.div
           className={cn(
-            'w-80 fixed z-40 bottom-20 md:bottom-6 right-6 p-6 rounded-xl',
-            colors[toast.type!].bg
+            'fixed bottom-20 right-6 z-40 w-80 rounded-xl p-6 md:bottom-6',
+            colors[toast.type!].bg,
           )}
           initial={{ opacity: 0, x: 48 }}
           animate={{ opacity: 1, x: 0 }}
@@ -37,7 +37,7 @@ export function Toast() {
             </h3>
           </div>
           {toast.message && (
-            <p className="text-sm text-gray-700 ml-10">{toast.message}</p>
+            <p className="ml-10 text-sm text-gray-700">{toast.message}</p>
           )}
         </motion.div>
       )}

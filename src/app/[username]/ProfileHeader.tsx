@@ -23,7 +23,7 @@ export function ProfileHeader({
     <>
       <div className="relative mb-28">
         <div
-          className="h-60 md:h-72 md:rounded-b-3xl overflow-hidden drop-shadow-xl"
+          className="h-60 overflow-hidden drop-shadow-xl md:h-72 md:rounded-b-3xl"
           style={{
             background:
               'linear-gradient(95.08deg, #AF45DB 2.49%, #EB7B96 97.19%)',
@@ -46,16 +46,16 @@ export function ProfileHeader({
       </div>
 
       <div className="px-4">
-        <h1 className="text-4xl font-bold mb-1">{profile!.name}</h1>
+        <h1 className="mb-1 text-4xl font-bold">{profile!.name}</h1>
         <div className="flex flex-col lg:flex-row">
-          <p className="text-lg text-gray-600 mr-4">@{profile!.username}</p>
+          <p className="mr-4 text-lg text-gray-600">@{profile!.username}</p>
           <div className="flex flex-row">
-            <p className="text-lg mr-6 hidden lg:block">&bull;</p>
-            <p className="text-lg mr-6 font-semibold">
+            <p className="mr-6 hidden text-lg lg:block">&bull;</p>
+            <p className="mr-6 text-lg font-semibold">
               <span>{profile!.followerCount}</span>{' '}
               <span className="text-gray-500">Followers</span>
             </p>
-            <p className="text-lg mr-6">&bull;</p>
+            <p className="mr-6 text-lg">&bull;</p>
             <p className="text-lg font-semibold">
               <span>{profile!.followingCount}</span>{' '}
               <span className="text-gray-500">Following</span>

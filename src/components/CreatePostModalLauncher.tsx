@@ -8,15 +8,15 @@ export function CreatePostModalLauncher() {
   const { launchCreatePost } = useCreatePost();
   return (
     <div className="rounded-xl bg-white  px-4 py-4 sm:px-8 sm:py-6">
-      <div className="flex flex-row mb-[18px]">
-        <div className="w-12 h-12">
+      <div className="mb-[18px] flex flex-row">
+        <div className="h-12 w-12">
           <ProfilePhotoOwn />
         </div>
         <div
           onClick={() => {
             launchCreatePost({ shouldOpenFileInputOnMount: false });
           }}
-          className="flex-grow flex flex-col justify-center"
+          className="flex flex-grow flex-col justify-center"
         >
           <TextArea
             placeholder="What's on your mind?"
@@ -32,16 +32,16 @@ export function CreatePostModalLauncher() {
               shouldOpenFileInputOnMount: true,
             });
           }}
-          className="flex flex-row items-center gap-4 cursor-pointer group"
+          className="group flex cursor-pointer flex-row items-center gap-4"
         >
           <Image fill="black" width={24} height={24} />
-          <p className="text-gray-500 group-hover:text-black font-semibold text-base">
+          <p className="text-base font-semibold text-gray-500 group-hover:text-black">
             Image / Video
           </p>
         </div>
-        <div className="flex flex-row items-center gap-4 cursor-pointer group">
+        <div className="group flex cursor-pointer flex-row items-center gap-4">
           <EmojiHappySmile stroke="black" width={24} height={24} />
-          <p className="text-gray-500 group-hover:text-black font-semibold text-base">
+          <p className="text-base font-semibold text-gray-500 group-hover:text-black">
             Mood
           </p>
         </div>

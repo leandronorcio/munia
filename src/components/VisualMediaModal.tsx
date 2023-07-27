@@ -29,7 +29,7 @@ export default function VisualMediaModal() {
               setIsEnd(swiper.isEnd);
             }}
             onSwiper={(swiper) => console.log(swiper)}
-            className={cn('w-full h-full transition-opacity duration-500')}
+            className={cn('h-full w-full transition-opacity duration-500')}
             zoom={true}
             pagination={{
               clickable: true,
@@ -42,7 +42,7 @@ export default function VisualMediaModal() {
               initial={{ top: '-56px' }}
               animate={{ top: '16px' }}
               exit={{ top: '-56px' }}
-              className="fixed z-20 right-4"
+              className="fixed right-4 z-20"
             >
               <CloseButton
                 onClick={() => {

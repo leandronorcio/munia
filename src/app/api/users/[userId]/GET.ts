@@ -7,7 +7,7 @@ import { getServerUser } from '@/lib/getServerUser';
 
 export async function GET(
   request: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: { userId: string } },
 ) {
   // The user is only for checking whether the requestee
   // is following the user being rquested.

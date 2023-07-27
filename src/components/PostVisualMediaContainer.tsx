@@ -16,7 +16,7 @@ const PostVisualMediaContainer = memo(
 
     return (
       <div
-        className={cn('grid relative', len > 2 ? 'grid-cols-2' : 'grid-cols-1')}
+        className={cn('relative grid', len > 2 ? 'grid-cols-2' : 'grid-cols-1')}
       >
         {visualMedia.length > 0 &&
           visualMedia.map((item, i) => {
@@ -37,7 +37,7 @@ const PostVisualMediaContainer = memo(
             );
           })}
         {len > 4 && (
-          <p className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-5xl text-white font-semibold">
+          <p className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] text-5xl font-semibold text-white">
             +{len - 4}
           </p>
         )}
@@ -58,7 +58,7 @@ const PostVisualMediaContainer = memo(
       if (oldFile.url !== newFile.url) return false;
     }
     return true;
-  }
+  },
 );
 
 export default PostVisualMediaContainer;
