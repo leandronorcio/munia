@@ -5,7 +5,6 @@ import { useQuery } from '@tanstack/react-query';
 /**
  * Always use this query hook when querying user data/subscribing to a user data query.
  * @param userId string | undefined
- * @param initialData GetUser | undefined
  */
 export function useUserQuery(userId?: string) {
   return useQuery({

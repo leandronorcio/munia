@@ -42,6 +42,7 @@ export function DiscoverProfiles() {
 
       const users = (await res.json()) as GetUser[];
 
+      // Update/create a query cache for each of the fetched user data
       for (const user of users) {
         qc.setQueryData(['users', user.id], user);
       }
@@ -79,7 +80,7 @@ export function DiscoverProfiles() {
           data?.pages
             .flat()
             .map((profile) => (
-              <DiscoverProfile key={profile.id} user={profile} />
+              <DiscoverProfile key={profile.id} userId={profile.id} />
             ))
         )}
       </div>

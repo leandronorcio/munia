@@ -1,12 +1,22 @@
 import { ProfileActionButtons } from '@/components/ProfileActionButtons';
 import { ProfilePhoto } from '../../components/ui/ProfilePhoto';
 import { memo } from 'react';
-import { GetUser } from 'types';
 import { useGoToProfile } from '@/hooks/useGoToProfile';
+import { useUserQuery } from '@/hooks/queries/useUserQuery';
 
 export const DiscoverProfile = memo(
-  function DiscoverProfile({ user }: { user: GetUser }) {
+  function DiscoverProfile({ userId }: { userId: string }) {
+    /**
+     * Since the query function of <DiscoverProfiles> already created a query
+     * cache for the user data, we can just access it here using the `useUserQuery()`
+     */
+    const { data: user, isLoading, isError } = useUserQuery(userId);
     const { goToProfile } = useGoToProfile();
+
+    if (isLoading) return <div>Loading...</div>;
+    if (isError) return <div>Error loading profile.</div>;
+    if (!user) return <></>;
+
     const handleNameClick = () =>
       goToProfile({ userId: user.id, username: user.username! });
 
@@ -29,22 +39,22 @@ export const DiscoverProfile = memo(
           >
             {user.name}
           </h2>
-          <p className="mb-4 text-center text-gray-500">
+          <p className="mb-4 px-2 text-center text-gray-500">
             {user.bio || 'No bio yet'}
           </p>
           <div className="flex gap-6">
-            <p className="flex  justify-center gap-1 text-lg font-semibold">
+            <p className="flex justify-center gap-1 text-lg font-semibold">
               <span>{user.followerCount}</span>{' '}
               <span className="text-gray-500">Followers</span>
             </p>
-            <p className="flex  justify-center gap-1 text-lg font-semibold">
+            <p className="flex justify-center gap-1 text-lg font-semibold">
               <span>{user.followingCount}</span>{' '}
-              <span className="text-gray-500">Followers</span>
+              <span className="text-gray-500">Following</span>
             </p>
           </div>
         </div>
       </div>
     );
   },
-  (prevProps, nextProps) => prevProps.user.id === nextProps.user.id,
+  (prevProps, nextProps) => prevProps.userId === nextProps.userId,
 );

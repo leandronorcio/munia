@@ -26,6 +26,7 @@ export function useFollowsMutations({
         return {
           ...oldTargetUser,
           isFollowing: true,
+          followerCount: (oldTargetUser.followerCount || 0) + 1,
         };
       });
 
@@ -55,6 +56,7 @@ export function useFollowsMutations({
         return {
           ...oldTargetUser,
           isFollowing: false,
+          followerCount: (oldTargetUser.followerCount || 0) - 1,
         };
       });
 
