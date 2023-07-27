@@ -15,6 +15,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { GetPost, VisualMedia } from 'types';
 import { isEqual } from 'lodash';
+import { ToggleStepper } from './ui/ToggleStepper';
+import SvgHeart from '@/svg_components/Heart';
 
 export const Post = memo(
   function Post({
@@ -71,7 +73,7 @@ export const Post = memo(
     };
 
     return (
-      <div className="overflow-hidden rounded-2xl bg-slate-50">
+      <div className="overflow-hidden rounded-2xl bg-white">
         <div className="flex items-center justify-between px-4 py-4 sm:px-8 sm:py-6">
           <ProfileBlock
             userId={author.id}
@@ -94,45 +96,24 @@ export const Post = memo(
             visualMedia={sortVisualMedia(visualMedia)}
           />
         )}
-        <div className="px-8 py-4">
-          <p className="mb-8 text-lg text-gray-700">{content}</p>
-          <div className="-ml-4 flex justify-start gap-3">
-            <div
-              className={cn(
-                'flex cursor-pointer items-center gap-3 rounded-xl px-4 py-2 ring-pink-300 hover:bg-pink-200 active:ring-4',
-              )}
+        <div className="pb-2">
+          <p className="mb-4 px-8 pt-4 text-lg text-gray-700">{content}</p>
+          <div className="flex justify-start gap-2 border-t-2 p-2">
+            <ToggleStepper
               onClick={handleLikeClick}
-            >
-              <Heart
-                width={24}
-                height={24}
-                className={cn(
-                  'stroke-black',
-                  isLiked && 'fill-red-500 stroke-none',
-                )}
-              />
-              <p className="hidden text-lg font-semibold text-gray-700 sm:block">
-                {numberOfLikes} {numberOfLikes === 1 ? 'Like' : 'Likes'}
-              </p>
-            </div>
-            <div
-              className={cn(
-                'flex cursor-pointer items-center gap-3 rounded-xl px-4 py-2 ring-blue-300 hover:bg-blue-200 active:ring-4',
-              )}
+              Icon={SvgHeart}
+              isActive={isLiked}
+              quantity={numberOfLikes}
+              noun="Like"
+            />
+            <ToggleStepper
               onClick={handleCommentsTogglerClick}
-            >
-              <SvgComment
-                className={cn(
-                  'stroke-black',
-                  commentsShown && 'fill-blue-500 stroke-none',
-                )}
-                width={24}
-                height={24}
-              />
-              <p className="hidden text-lg font-semibold text-gray-700 sm:block">
-                {_count.comments} Comments
-              </p>
-            </div>
+              Icon={SvgComment}
+              isActive={commentsShown || false}
+              quantity={_count.comments}
+              noun="Comment"
+              color="blue"
+            />
           </div>
         </div>
 
