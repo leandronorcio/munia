@@ -43,9 +43,7 @@ export default async function RootLayout({
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
         />
       </head>
-      <body
-        className={cn('overflow-y-scroll bg-violet-100', poppins.className)}
-      >
+      <body className={cn('overflow-y-scroll bg-gray-50', poppins.className)}>
         <ToastContextProvider>
           <ReactQueryProvider>
             <SessionProviderContext>
@@ -64,7 +62,7 @@ export default async function RootLayout({
                           <div className="fixed bottom-0 z-[1] block w-full md:hidden">
                             <BottomMenu />
                           </div>
-                          <div className="ml-0 mt-[80px] md:ml-[220px]">
+                          <div className="mb-16 ml-0 mt-[80px] md:ml-[220px]">
                             <ResponsiveContainer>
                               {children}
                             </ResponsiveContainer>

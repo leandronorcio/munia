@@ -15,7 +15,7 @@ export default function BottomMenu() {
   const id = session?.user ? session.user.id : '/not-found';
 
   return (
-    <div className="flex h-14 w-full flex-row bg-violet-100 shadow-2xl">
+    <div className="flex h-14 w-full flex-row bg-violet-100 shadow-inner">
       {[
         {
           Icon: GridFeedCards,
