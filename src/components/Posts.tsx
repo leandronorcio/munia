@@ -103,9 +103,19 @@ export function Posts({
             {data.pages.flat().map((post) => (
               <motion.div
                 initial={false}
-                animate={{ height: 'auto', marginTop: '32px', opacity: 1 }}
-                exit={{ height: 0, marginTop: '0px', opacity: 0 }}
-                style={{ originY: 0, overflowY: 'hidden' }}
+                animate={{
+                  height: 'auto',
+                  marginTop: '32px',
+                  opacity: 1,
+                  overflow: 'visible',
+                }}
+                exit={{
+                  height: 0,
+                  marginTop: '0px',
+                  opacity: 0,
+                  overflow: 'hidden',
+                }}
+                style={{ originY: 0 }}
                 transition={{ duration: 0.5 }}
                 key={post.id}
               >

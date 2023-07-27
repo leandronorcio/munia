@@ -73,7 +73,7 @@ export const Post = memo(
     };
 
     return (
-      <div className="overflow-hidden rounded-2xl bg-white">
+      <div className="rounded-2xl bg-white">
         <div className="flex items-center justify-between px-4 py-4 sm:px-8 sm:py-6">
           <ProfileBlock
             userId={author.id}
@@ -122,8 +122,8 @@ export const Post = memo(
             <motion.div
               key={`${postId}-comments`}
               initial={false}
-              animate={{ height: 'auto' }}
-              exit={{ height: 0 }}
+              animate={{ height: 'auto', overflow: 'visible' }}
+              exit={{ height: 0, overflow: 'hidden' }}
             >
               <Comments postId={postId} />
             </motion.div>

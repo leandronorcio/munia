@@ -38,7 +38,7 @@ export function DropdownMenu({
           className="cursor-pointer rounded-full p-3 hover:bg-slate-200"
           onClick={() => setVisible((prev) => !prev)}
         >
-          <MoreVert fill="black" />
+          <MoreVert fill="black" height={24} width={24} />
         </div>
       )}
       <motion.div
