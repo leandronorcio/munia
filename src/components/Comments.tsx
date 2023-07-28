@@ -61,58 +61,69 @@ export function Comments({ postId }: { postId: number }) {
   }, []);
 
   return (
-    <div className="flex flex-col bg-gray-100 px-8 py-6">
-      {isLoading ? (
-        // TODO: Add fixed loading spinner here
-        <></>
-      ) : isError ? (
-        error.message
-      ) : (
-        <AnimatePresence>
-          {comments?.map((comment, i) => (
-            <motion.div
-              key={`${postId}-comments-${comment.id}`}
-              initial={false}
-              animate={{
-                height: 'auto',
-                x: 0,
-                marginTop: '12px',
-                overflow: 'visible',
-              }}
-              exit={{ height: 0, x: 40, marginTop: '0', overflow: 'hidden' }}
-            >
-              <Comment
-                {...comment}
-                {...{ handleEdit, handleDelete }}
-                isOwnComment={session?.user?.id === comment.user.id}
-              />
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      )}
-
-      <div className="mt-3 flex flex-row">
-        <div className="h-11 w-11">
-          <ProfilePhotoOwn />
-        </div>
-        <div className="flex flex-grow flex-col justify-center">
-          <TextArea
-            value={commentText}
-            onChange={(e) => setCommentText(e.target.value)}
-            placeholder="Write your comment here..."
-          />
-        </div>
+    <div>
+      <div className="flex flex-col bg-white pt-2 ">
+        {isLoading ? (
+          <p className="py-2 text-gray-600">Loading comments.</p>
+        ) : isError ? (
+          <p className="py-2 text-gray-600">{error.message}</p>
+        ) : (
+          <AnimatePresence>
+            {comments.length > 0 ? (
+              comments?.map((comment, i) => (
+                <motion.div
+                  key={`${postId}-comments-${comment.id}`}
+                  initial={false}
+                  animate={{
+                    height: 'auto',
+                    x: 0,
+                    marginTop: '6px',
+                    overflow: 'visible',
+                  }}
+                  exit={{
+                    height: 0,
+                    x: 40,
+                    marginTop: '0px',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <Comment
+                    {...comment}
+                    {...{ handleEdit, handleDelete }}
+                    isOwnComment={session?.user?.id === comment.user.id}
+                  />
+                </motion.div>
+              ))
+            ) : (
+              <p className="py-2 text-gray-600">Be the first to comment.</p>
+            )}
+          </AnimatePresence>
+        )}
       </div>
-      <div className="flex justify-end">
-        <Button
-          onClick={handleCreate}
-          mode="secondary"
-          size="small"
-          disabled={commentText === ''}
-          loading={createCommentMutation.isLoading}
-        >
-          Comment
-        </Button>
+      <div className="mt-2 border-t-2 py-4">
+        <div className="flex flex-row">
+          <div className="h-11 w-11">
+            <ProfilePhotoOwn />
+          </div>
+          <div className="flex flex-grow flex-col justify-center">
+            <TextArea
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+              placeholder="Write your comment here..."
+            />
+          </div>
+        </div>
+        <div className="flex justify-end">
+          <Button
+            onClick={handleCreate}
+            mode="secondary"
+            size="small"
+            disabled={commentText === ''}
+            loading={createCommentMutation.isLoading}
+          >
+            Comment
+          </Button>
+        </div>
       </div>
     </div>
   );

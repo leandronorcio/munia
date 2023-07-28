@@ -6,6 +6,10 @@ import { DropdownItem } from './ui/DropdownItem';
 import { GetComment } from 'types';
 import { memo } from 'react';
 import { isEqual } from 'lodash';
+import { ProfilePhoto } from './ui/ProfilePhoto';
+import { ToggleStepper } from './ui/ToggleStepper';
+import SvgHeart from '@/svg_components/Heart';
+import SvgComment from '@/svg_components/Comment';
 
 export const Comment = memo(
   ({
@@ -23,33 +27,51 @@ export const Comment = memo(
   }) => {
     console.log('rendered comment: ' + commentId);
     return (
-      <div className="flex flex-col items-start">
-        <div className="flex w-full justify-between">
-          <>
-            <ProfileBlock
-              type="comment"
-              name={author.name!}
-              username={author.username!}
-              photoUrl={author.profilePhoto!}
-              time={formatDistanceStrict(new Date(createdAt), new Date())}
+      <div className="flex gap-4">
+        <div className="h-10 w-10 flex-shrink-0">
+          <ProfilePhoto
+            userId={author.id}
+            username={author.username}
+            photoUrl={author.profilePhoto}
+          />
+        </div>
+
+        <div>
+          <h3 className="text-md font-semibold">{author.name}</h3>
+          <p className="text-gray-499 text-gray-500">@{author.username}</p>
+          <div className="my-2 self-start rounded-2xl rounded-ss-none bg-slate-100 px-4 py-3">
+            <p className="mb-2 text-gray-700">{content}</p>
+            <p className="ml-auto text-sm text-gray-500">2 minutes ago</p>
+          </div>
+
+          <div className="flex origin-left scale-90">
+            <ToggleStepper
+              onClick={() => {}}
+              Icon={SvgHeart}
+              isActive={false}
+              quantity={2}
+            />
+            <ToggleStepper
+              onClick={() => {}}
+              Icon={SvgComment}
+              isActive={false}
+              quantity={3}
+              color="blue"
             />
             {isOwnComment && (
-              <DropdownMenu>
+              <DropdownMenu width="auto">
                 <DropdownItem onClick={() => handleDelete({ commentId })}>
-                  Delete Comment
+                  Delete
                 </DropdownItem>
                 <DropdownItem
                   onClick={() => handleEdit({ commentId, content })}
                 >
-                  Edit Comment
+                  Edit
                 </DropdownItem>
               </DropdownMenu>
             )}
-          </>
+          </div>
         </div>
-        <p className="-mt-3 ml-[60px] rounded-2xl bg-slate-200 p-3">
-          {content}
-        </p>
       </div>
     );
   },
