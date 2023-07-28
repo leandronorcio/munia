@@ -43,7 +43,7 @@ export default async function RootLayout({
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
         />
       </head>
-      <body className={cn('overflow-y-scroll bg-gray-50', poppins.className)}>
+      <body className={cn('overflow-y-scroll bg-gray-100', poppins.className)}>
         <ToastContextProvider>
           <ReactQueryProvider>
             <SessionProviderContext>

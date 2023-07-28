@@ -53,7 +53,7 @@ export function ToggleStepper({
         height={24}
         className={cn(isActive ? icon({ color }) : 'stroke-black')}
       />
-      <p className="hidden text-lg font-semibold text-gray-700 sm:block">
+      <p className="text-lg font-semibold text-gray-700">
         {quantity}{' '}
         {noun !== undefined ? (quantity === 1 ? noun : `${noun}s`) : ''}
       </p>

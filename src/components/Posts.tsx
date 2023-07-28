@@ -105,7 +105,7 @@ export function Posts({
                 initial={false}
                 animate={{
                   height: 'auto',
-                  marginTop: '32px',
+                  marginTop: '16px',
                   opacity: 1,
                   overflow: 'visible',
                 }}

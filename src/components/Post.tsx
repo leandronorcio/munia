@@ -73,8 +73,8 @@ export const Post = memo(
     };
 
     return (
-      <div className="rounded-2xl bg-white">
-        <div className="flex items-center justify-between px-4 py-4 sm:px-8 sm:py-6">
+      <div className="rounded-2xl bg-white px-4 sm:px-8">
+        <div className="flex items-center justify-between pt-4 sm:pt-5">
           <ProfileBlock
             userId={author.id}
             name={author.name!}
@@ -83,7 +83,7 @@ export const Post = memo(
             photoUrl={author.profilePhoto!}
           />
           {isOwnPost && (
-            <DropdownMenu>
+            <DropdownMenu width="200px">
               <DropdownItem onClick={handleDeleteClick}>
                 Delete Post
               </DropdownItem>
@@ -91,30 +91,37 @@ export const Post = memo(
             </DropdownMenu>
           )}
         </div>
-        {visualMedia.length > 0 && (
-          <PostVisualMediaContainer
-            visualMedia={sortVisualMedia(visualMedia)}
-          />
+        {content && (
+          <p className="mb-4 mt-5 text-lg text-gray-700">{content}</p>
         )}
-        <div className="pb-2">
-          <p className="mb-4 px-8 pt-4 text-lg text-gray-700">{content}</p>
-          <div className="flex justify-start gap-2 border-t-2 p-2">
-            <ToggleStepper
-              onClick={handleLikeClick}
-              Icon={SvgHeart}
-              isActive={isLiked}
-              quantity={numberOfLikes}
-              noun="Like"
-            />
-            <ToggleStepper
-              onClick={handleCommentsTogglerClick}
-              Icon={SvgComment}
-              isActive={commentsShown || false}
-              quantity={_count.comments}
-              noun="Comment"
-              color="blue"
+        {visualMedia.length > 0 && (
+          <div className="mb-4 mt-5 overflow-hidden rounded-2xl">
+            <PostVisualMediaContainer
+              visualMedia={sortVisualMedia(visualMedia)}
             />
           </div>
+        )}
+        <div
+          className={cn([
+            'flex justify-start gap-2 border-y-2 py-2',
+            !commentsShown && 'border-b-transparent',
+          ])}
+        >
+          <ToggleStepper
+            onClick={handleLikeClick}
+            Icon={SvgHeart}
+            isActive={isLiked}
+            quantity={numberOfLikes}
+            noun="Like"
+          />
+          <ToggleStepper
+            onClick={handleCommentsTogglerClick}
+            Icon={SvgComment}
+            isActive={commentsShown || false}
+            quantity={_count.comments}
+            noun="Comment"
+            color="blue"
+          />
         </div>
 
         <AnimatePresence>
