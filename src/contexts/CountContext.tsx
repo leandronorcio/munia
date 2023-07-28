@@ -1,5 +1,5 @@
 'use client';
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 export const CountContext = createContext<{
   count: number;
@@ -12,6 +12,13 @@ export function CountContextProvider({
   children: React.ReactNode;
 }) {
   const [count, setCount] = useState(0);
+  const onPop = () => {
+    console.log('back button clicked');
+  };
+  useEffect(() => {
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, [onPop]);
   return (
     <CountContext.Provider value={{ count, setCount }}>
       {children}

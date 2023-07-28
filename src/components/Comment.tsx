@@ -41,7 +41,9 @@ export const Comment = memo(
           <p className="text-gray-499 text-gray-500">@{author.username}</p>
           <div className="my-2 self-start rounded-2xl rounded-ss-none bg-slate-100 px-4 py-3">
             <p className="mb-2 text-gray-700">{content}</p>
-            <p className="ml-auto text-sm text-gray-500">2 minutes ago</p>
+            <p className="ml-auto text-sm text-gray-500">
+              {formatDistanceStrict(new Date(createdAt), new Date())} ago
+            </p>
           </div>
 
           <div className="flex origin-left scale-90">
