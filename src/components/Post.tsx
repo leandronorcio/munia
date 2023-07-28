@@ -73,7 +73,7 @@ export const Post = memo(
     };
 
     return (
-      <div className="rounded-2xl bg-white px-4 sm:px-8">
+      <div className="rounded-2xl bg-white px-4 shadow sm:px-8">
         <div className="flex items-center justify-between pt-4 sm:pt-5">
           <ProfileBlock
             userId={author.id}

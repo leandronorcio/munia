@@ -7,7 +7,7 @@ import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 export function CreatePostModalLauncher() {
   const { launchCreatePost } = useCreatePost();
   return (
-    <div className="rounded-xl bg-white  px-4 py-4 sm:px-8 sm:py-6">
+    <div className="rounded-xl bg-white px-4 py-4 shadow sm:px-8 sm:py-5">
       <div className="mb-[18px] flex flex-row">
         <div className="h-12 w-12">
           <ProfilePhotoOwn />
