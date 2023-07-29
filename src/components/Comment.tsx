@@ -8,7 +8,7 @@ import { isEqual } from 'lodash';
 import { ProfilePhoto } from './ui/ProfilePhoto';
 import { ToggleStepper } from './ui/ToggleStepper';
 import SvgHeart from '@/svg_components/Heart';
-import SvgComment from '@/svg_components/Comment';
+import SvgArrowReply from '@/svg_components/ArrowReply';
 
 export const Comment = memo(
   ({
@@ -54,7 +54,7 @@ export const Comment = memo(
             />
             <ToggleStepper
               onClick={() => {}}
-              Icon={SvgComment}
+              Icon={SvgArrowReply}
               isActive={false}
               quantity={3}
               color="blue"
