@@ -8,6 +8,7 @@ import { NextResponse } from 'next/server';
 import { verifyAccessToComment } from './verifyAccessToComment';
 import { commentWriteSchema } from '@/lib/validations/comment';
 import { GetComment } from 'types';
+import { includeUserSummary } from '@/lib/prisma/includeUserSummary';
 
 export async function PUT(
   request: Request,
@@ -28,10 +29,8 @@ export async function PUT(
     data: {
       content,
     },
-    include: {
-      user: true,
-    },
+    include: includeUserSummary(),
   });
 
-  return NextResponse.json<GetComment>(res);
+  return NextResponse.json(res as GetComment);
 }

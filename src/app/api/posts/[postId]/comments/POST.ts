@@ -10,6 +10,7 @@ import { GetComment } from 'types';
 import { commentWriteSchema } from '@/lib/validations/comment';
 import { z } from 'zod';
 import { getServerUser } from '@/lib/getServerUser';
+import { includeUserSummary } from '@/lib/prisma/includeUserSummary';
 
 export async function POST(
   request: Request,
@@ -28,9 +29,7 @@ export async function POST(
         userId: user.id,
         postId: parseInt(params.postId),
       },
-      include: {
-        user: true,
-      },
+      include: includeUserSummary(),
     });
 
     return NextResponse.json(res as GetComment);

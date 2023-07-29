@@ -1,15 +1,10 @@
+import { includeUserSummary } from './includeUserSummary';
+
 export const selectPost = (userId: string | undefined) => ({
   id: true,
   content: true,
   createdAt: true,
-  user: {
-    select: {
-      id: true,
-      username: true,
-      name: true,
-      profilePhoto: true,
-    },
-  },
+  ...includeUserSummary(),
   visualMedia: {
     select: {
       type: true,
