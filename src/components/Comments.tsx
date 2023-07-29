@@ -6,22 +6,26 @@ import { TextArea } from './ui/TextArea';
 import { AnimatePresence, motion } from 'framer-motion';
 import { GetComment } from 'types';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchComments } from '@/lib/query-functions/fetchComments';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { useSession } from 'next-auth/react';
 import { useCommentsMutations } from '@/hooks/mutations/useCommentsMutations';
+import { useToast } from '@/hooks/useToast';
+import { errorNotifer } from '@/lib/errorNotifier';
 
 export function Comments({ postId }: { postId: number }) {
+  const qc = useQueryClient();
   const queryKey = ['posts', postId, 'comments'];
   const [commentText, setCommentText] = useState('');
   const {
     createCommentMutation,
     updateCommentMutation,
     deleteCommentMutation,
-  } = useCommentsMutations(queryKey, setCommentText);
+  } = useCommentsMutations();
   const { data: session } = useSession();
   const { prompt, confirm } = useBasicDialogs();
+  const { showToast } = useToast();
 
   const {
     data: comments,
@@ -35,7 +39,21 @@ export function Comments({ postId }: { postId: number }) {
   });
 
   const handleCreate = () => {
-    createCommentMutation.mutate({ postId, content: commentText });
+    createCommentMutation.mutate(
+      { postId, content: commentText },
+      {
+        onSuccess: (createdComment) => {
+          qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
+            if (!oldComments) return;
+            return [...oldComments, createdComment];
+          });
+
+          setCommentText('');
+        },
+
+        onError: (error) => errorNotifer(error),
+      },
+    );
   };
 
   const handleEdit = useCallback(
@@ -44,8 +62,52 @@ export function Comments({ postId }: { postId: number }) {
         title: 'Edit Comment',
         initialPromptValue: content,
         promptType: 'textarea',
-        onSubmit: (value) => {
-          updateCommentMutation.mutate({ commentId, content: value });
+        onSubmit: async (value) => {
+          /**
+           * https://stackoverflow.com/a/71927346/8434369
+           * The `onMutate` only exists on the options that you pass to `useMutation`,
+           * not the ones that you pass to `mutate`.
+           *
+           * However, we can still optimistically update the comments
+           * without relying on `onMutate`.
+           */
+          // Cancel outgoing queries
+          await qc.cancelQueries({ queryKey: queryKey });
+
+          // Snapshot the previous value
+          const prevComments = qc.getQueryData(queryKey);
+
+          // Optimistically update the comment
+          qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
+            if (!oldComments) return;
+
+            // Make a shallow copy of the `oldComments`
+            const newComments = [...oldComments];
+
+            // Find the index of the updated comment
+            const index = newComments.findIndex(
+              (comment) => comment.id === commentId,
+            );
+
+            // Update the comment
+            newComments[index] = {
+              ...newComments[index],
+              content: value,
+            };
+
+            return newComments;
+          });
+
+          updateCommentMutation.mutate(
+            { commentId, content: value },
+            {
+              onError: (error) => {
+                // Revert back to the snapshotted value when there's an error
+                qc.setQueryData(queryKey, prevComments);
+                errorNotifer(error);
+              },
+            },
+          );
         },
       });
     },
@@ -56,7 +118,33 @@ export function Comments({ postId }: { postId: number }) {
     confirm({
       title: 'Confirm Delete',
       message: 'Do you really wish to delete this comment?',
-      onConfirm: () => deleteCommentMutation.mutate({ commentId }),
+      onConfirm: async () => {
+        // Optimistically update the UI when the user confirms the deletion
+        // Cancel outgoing queries
+        await qc.cancelQueries({ queryKey: queryKey });
+
+        // Snapshot the previous value
+        const prevComments = qc.getQueryData(queryKey);
+
+        // Optimistically remove the comment
+        qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
+          if (!oldComments) return;
+
+          // Remove the deleted comment and return the new comments
+          return oldComments.filter((comment) => comment.id !== commentId);
+        });
+
+        deleteCommentMutation.mutate(
+          { commentId },
+          {
+            onError: (error) => {
+              // Revert back to the snapshotted value when there's an error
+              qc.setQueryData(queryKey, prevComments);
+              errorNotifer(error);
+            },
+          },
+        );
+      },
     });
   }, []);
 

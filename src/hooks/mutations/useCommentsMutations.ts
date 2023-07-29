@@ -1,15 +1,7 @@
-import { QueryKey, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { GetComment } from 'types';
-import { useToast } from '../useToast';
-import { Dispatch, SetStateAction } from 'react';
 
-export function useCommentsMutations(
-  queryKey: QueryKey,
-  setCommentText: Dispatch<SetStateAction<string>>,
-) {
-  const qc = useQueryClient();
-  const { showToast } = useToast();
-
+export function useCommentsMutations() {
   const createCommentMutation = useMutation({
     mutationFn: async ({
       postId,
@@ -29,23 +21,10 @@ export function useCommentsMutations(
       });
 
       if (!res.ok) {
-        throw new Error('Error Creating Comment');
+        throw new Error('Error creating comment.');
       }
 
       return (await res.json()) as GetComment;
-    },
-
-    onSuccess: (createdPost) => {
-      qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
-        if (!oldComments) return;
-        return [...oldComments, createdPost];
-      });
-
-      setCommentText('');
-    },
-
-    onError: (err: Error) => {
-      showToast({ type: 'error', title: err.message });
     },
   });
 
@@ -66,47 +45,10 @@ export function useCommentsMutations(
       });
 
       if (!res.ok) {
-        throw new Error('Error Updating Comment');
+        throw new Error('Error updating comment.');
       }
 
       return (await res.json()) as GetComment;
-    },
-
-    onMutate: async ({ commentId, content }) => {
-      await qc.cancelQueries({ queryKey: queryKey });
-
-      // Snapshot the previous value
-      const prevComments = qc.getQueryData(queryKey);
-
-      // Optimistically update
-      qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
-        if (!oldComments) return;
-
-        // Make a shallow copy of the `oldComments`
-        const newComments = [...oldComments];
-
-        // Find the index of the updated comment
-        const index = newComments.findIndex(
-          (comment) => comment.id === commentId,
-        );
-
-        // Update the comment
-        newComments[index] = {
-          ...newComments[index],
-          content,
-        };
-
-        // Return the updated data
-        return newComments;
-      });
-
-      // Return a context object with the snapshotted value
-      return { prevComments };
-    },
-
-    onError: (err: Error, variables, context) => {
-      qc.setQueryData(queryKey, context?.prevComments);
-      showToast({ type: 'error', title: err.message });
     },
   });
 
@@ -117,34 +59,10 @@ export function useCommentsMutations(
       });
 
       if (!res.ok) {
-        throw new Error('Error Deleting Comment');
+        throw new Error('Error deleting comment.');
       }
 
       return (await res.json()) as { id: number };
-    },
-
-    onMutate: async ({ commentId }) => {
-      await qc.cancelQueries({ queryKey: queryKey });
-
-      // Snapshot the previous value
-      const prevComments = qc.getQueryData(queryKey);
-
-      // Optimistically remove
-      qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
-        if (!oldComments) return;
-
-        // Remove the deleted comment and return the new comments
-        return oldComments.filter((comment) => comment.id !== commentId);
-      });
-
-      return {
-        prevComments,
-      };
-    },
-
-    onError: (err: Error, variables, context) => {
-      qc.setQueryData(queryKey, context?.prevComments);
-      showToast({ type: 'error', title: err.message });
     },
   });
 
