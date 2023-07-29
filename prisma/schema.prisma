@@ -60,6 +60,7 @@ model User {
   visualMedia        VisualMedia[]
   postLikes          PostLike[]
   comments           Comment[]
+  commentLikes       CommentLike[]
   followers          Follow[]            @relation("following")
   following          Follow[]            @relation("follower")
 }
@@ -105,13 +106,34 @@ model PostLike {
 }
 
 model Comment {
+  id           Int           @id @default(autoincrement())
+  content      String
+  createdAt    DateTime      @default(now())
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  commentLikes CommentLike[]
+
+  // If there is a `postId`, it is a comment
+  post   Post? @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId Int?
+
+  // If there is a `parentId`, it is a reply
+  parent   Comment? @relation("Replies", fields: [parentId], references: [id], onDelete: Cascade)
+  parentId Int?
+
+  // Self-referential relation
+  replies Comment[] @relation("Replies")
+}
+
+model CommentLike {
   id        Int      @id @default(autoincrement())
-  content   String
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId    Int
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId Int
+
+  @@unique([userId, commentId])
 }
 
 model VisualMedia {
