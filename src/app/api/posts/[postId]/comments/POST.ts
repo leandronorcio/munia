@@ -6,11 +6,12 @@
 
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma/prisma';
-import { GetComment } from 'types';
+import { FindCommentResult, GetComment } from 'types';
 import { commentWriteSchema } from '@/lib/validations/comment';
 import { z } from 'zod';
 import { getServerUser } from '@/lib/getServerUser';
-import { includeUserSummary } from '@/lib/prisma/includeUserSummary';
+import { includeToComment } from '@/lib/prisma/includeToComment';
+import { toGetComment } from '@/lib/prisma/toGetComment';
 
 export async function POST(
   request: Request,
@@ -18,21 +19,22 @@ export async function POST(
 ) {
   const [user] = await getServerUser();
   if (!user) return NextResponse.json({}, { status: 401 });
+  const userId = user.id;
 
   try {
     const body = await request.json();
     const { content } = commentWriteSchema.parse(body);
 
-    const res = await prisma.comment.create({
+    const res: FindCommentResult = await prisma.comment.create({
       data: {
         content: content,
-        userId: user.id,
+        userId: userId,
         postId: parseInt(params.postId),
       },
-      include: includeUserSummary(),
+      include: includeToComment(userId),
     });
 
-    return NextResponse.json(res as GetComment);
+    return NextResponse.json(toGetComment(res));
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(error.issues, { status: 422 });

@@ -21,9 +21,9 @@ export interface FindUserResult extends User {
 }
 
 /**
- * The FindUserResult shall be converted to GetUser, use
+ * The <FindUserResult> shall be converted to <GetUser>, use
  * the ./src/lib/prisma/toGetUser.ts function to do this.
- * GetUser must be the response of GET users route handlers.
+ * <GetUser> must be the response type of GET users route handlers.
  */
 export interface GetUser extends User {
   followerCount: number | null;
@@ -42,7 +42,7 @@ export interface FindPostResult {
   content: string | null;
   createdAt: Date;
   /**
-   * Use postLikes to store the <PostLike>'s id of the user to the Post.
+   * Use `postLikes` to store the <PostLike>'s id of the user to the Post.
    * If there is a <PostLike> id, that means the user requesting has
    * liked the Post.
    */
@@ -58,9 +58,9 @@ export interface FindPostResult {
 }
 
 /**
- * The FindPostResult shall be converted to GetPost, use
+ * The <FindPostResult> shall be converted to <GetPost>, use
  * the ./src/lib/prisma/toGetPost.ts function to do this.
- * GetPost must be the response of GET posts route handlers.
+ * <GetPost> must be the response type of GET posts route handlers.
  */
 export interface GetPost {
   id: number;
@@ -80,12 +80,51 @@ export interface GetPost {
   commentsShown?: boolean;
 }
 
-export interface GetComment {
+// Use this type when finding a Comment in prisma.
+export interface FindCommentResult {
   id: number;
   content: string;
   createdAt: Date;
-  postId: number;
+  userId: string;
+  postId: number | null;
+  parentId: number | null;
+  user: {
+    id: string;
+    username: string | null;
+    name: string | null;
+    profilePhoto: string | null;
+  };
+  /**
+   * Use `commentLikes` to store the <CommentLike>'s id of the user to the Comment.
+   * If there is a <CommentLike> id, that means the user requesting has
+   * liked the Comment.
+   */
+  commentLikes: {
+    id: number;
+  }[];
+  _count: {
+    commentLikes: number;
+    replies: number;
+  };
+}
+
+/**
+ * The <FindCommentResult> shall be converted to <GetComment>, use
+ * the ./src/lib/prisma/toGetComment.ts function to do this.
+ * <GetComment> must be the response type of GET comments route handlers.
+ */
+export interface GetComment {
+  id: number;
+  postId: number | null;
+  parentId: number | null;
+  content: string;
+  createdAt: Date;
   user: UserSummary;
+  isLiked: boolean;
+  _count: {
+    commentLikes: number;
+    replies: number;
+  };
 }
 
 export interface DiscoverFilters {

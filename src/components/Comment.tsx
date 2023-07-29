@@ -1,6 +1,5 @@
 'use client';
 import { formatDistanceStrict } from 'date-fns';
-import ProfileBlock from './ProfileBlock';
 import { DropdownMenu } from './ui/DropdownMenu';
 import { DropdownItem } from './ui/DropdownItem';
 import { GetComment } from 'types';
