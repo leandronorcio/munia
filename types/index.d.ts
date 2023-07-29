@@ -8,6 +8,9 @@ import {
   Follow,
 } from '@prisma/client';
 
+// Use this shortened type of `User`, when the other properties aren't necessary.
+type UserSummary = Pick<User, 'id' | 'username' | 'name' | 'profilePhoto'>;
+
 // Use this type when finding a User in prisma.
 export interface FindUserResult extends User {
   followers: Follow[];
@@ -46,12 +49,7 @@ export interface FindPostResult {
   postLikes: {
     id: number;
   }[];
-  user: {
-    id: string;
-    username: string | null;
-    name: string | null;
-    profilePhoto: string | null;
-  };
+  user: UserSummary;
   visualMedia: VisualMedia[];
   _count: {
     postLikes: number;
@@ -69,16 +67,11 @@ export interface GetPost {
   content: string | null;
   createdAt: Date;
   /**
-   * `The isLiked` is used to check whether the authenticated user requesting
+   * The `isLiked` is used to check whether the authenticated user requesting
    * the post has liked it or not.
    */
   isLiked: boolean;
-  user: {
-    id: string;
-    username: string | null;
-    name: string | null;
-    profilePhoto: string | null;
-  };
+  user: UserSummary;
   visualMedia: VisualMedia[];
   _count: {
     postLikes: number;
@@ -92,12 +85,7 @@ export interface GetComment {
   content: string;
   createdAt: Date;
   postId: number;
-  user: {
-    id: string;
-    username: string | null;
-    name: string | null;
-    profilePhoto: string | null;
-  };
+  user: UserSummary;
 }
 
 export interface DiscoverFilters {
