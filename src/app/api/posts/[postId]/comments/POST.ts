@@ -25,16 +25,8 @@ export async function POST(
     const res = await prisma.comment.create({
       data: {
         content: content,
-        user: {
-          connect: {
-            id: user.id,
-          },
-        },
-        post: {
-          connect: {
-            id: parseInt(params.postId),
-          },
-        },
+        userId: user.id,
+        postId: parseInt(params.postId),
       },
       include: {
         user: true,

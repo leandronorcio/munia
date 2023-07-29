@@ -72,19 +72,11 @@ export async function useWritePost({
               create: savedFiles.map((file) => ({
                 type: file.type,
                 url: file.url,
-                user: {
-                  connect: {
-                    id: userId,
-                  },
-                },
+                userId,
               })),
             },
           }),
-          user: {
-            connect: {
-              id: userId,
-            },
-          },
+          userId,
         },
         select: selectPost(userId),
       });
@@ -132,11 +124,7 @@ export async function useWritePost({
               create: savedFiles.map((file) => ({
                 type: file.type,
                 url: file.url,
-                user: {
-                  connect: {
-                    id: userId,
-                  },
-                },
+                userId,
               })),
             },
           }),
