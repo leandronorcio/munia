@@ -1,14 +1,17 @@
 'use client';
-import { formatDistanceStrict } from 'date-fns';
 import { DropdownMenu } from './ui/DropdownMenu';
 import { DropdownItem } from './ui/DropdownItem';
 import { GetComment } from 'types';
 import { memo } from 'react';
 import { isEqual } from 'lodash';
-import { ProfilePhoto } from './ui/ProfilePhoto';
 import { ToggleStepper } from './ui/ToggleStepper';
 import SvgHeart from '@/svg_components/Heart';
 import SvgArrowReply from '@/svg_components/ArrowReply';
+import { CommentContent } from './CommentContent';
+import { CommentProfilePhoto } from './CommentProfilePhoto';
+import { IconButton } from './ui/IconButton';
+import { useBasicDialogs } from '@/hooks/useBasicDialogs';
+import { useCommentsMutations } from '@/hooks/mutations/useCommentsMutations';
 
 export const Comment = memo(
   ({
@@ -17,6 +20,8 @@ export const Comment = memo(
     createdAt,
     user: author,
     isOwnComment,
+    isLiked,
+    _count,
     handleEdit,
     handleDelete,
   }: GetComment & {
@@ -24,41 +29,48 @@ export const Comment = memo(
     handleEdit: (params: { commentId: number; content: string }) => void;
     handleDelete: (params: { commentId: number }) => void;
   }) => {
-    console.log('rendered comment: ' + commentId);
+    const numberOfLikes = _count.commentLikes;
+    const numberOfReplies = _count.replies;
+    const { prompt } = useBasicDialogs();
+    const { createReplyMutation } = useCommentsMutations();
+    const handleReply = () => {
+      prompt({
+        title: 'Reply',
+        message: `You are replying to ${author.name}'s comment.`,
+        promptType: 'textarea',
+        onSubmit: (value) => {
+          createReplyMutation.mutate({
+            parentId: commentId,
+            content: value,
+          });
+        },
+      });
+    };
+
     return (
       <div className="flex gap-4">
-        <div className="h-10 w-10 flex-shrink-0">
-          <ProfilePhoto
-            userId={author.id}
-            username={author.username}
-            photoUrl={author.profilePhoto}
-          />
-        </div>
+        <CommentProfilePhoto
+          userId={author.id}
+          username={author.username}
+          photoUrl={author.profilePhoto}
+        />
 
         <div>
-          <h3 className="text-md font-semibold">{author.name}</h3>
-          <p className="text-gray-499 text-gray-500">@{author.username}</p>
-          <div className="my-2 self-start rounded-2xl rounded-ss-none bg-slate-100 px-4 py-3">
-            <p className="mb-2 text-gray-700">{content}</p>
-            <p className="ml-auto text-sm text-gray-500">
-              {formatDistanceStrict(new Date(createdAt), new Date())} ago
-            </p>
-          </div>
+          <CommentContent
+            name={author.name}
+            username={author.username}
+            content={content}
+            createdAt={createdAt}
+          />
 
           <div className="flex origin-left scale-90">
             <ToggleStepper
               onClick={() => {}}
               Icon={SvgHeart}
-              isActive={false}
-              quantity={2}
+              isActive={isLiked}
+              quantity={numberOfLikes}
             />
-            <ToggleStepper
-              onClick={() => {}}
-              Icon={SvgArrowReply}
-              isActive={false}
-              quantity={3}
-              color="blue"
-            />
+            <IconButton Icon={SvgArrowReply} onClick={handleReply} />
             {isOwnComment && (
               <DropdownMenu width="auto">
                 <DropdownItem onClick={() => handleDelete({ commentId })}>
@@ -72,6 +84,11 @@ export const Comment = memo(
               </DropdownMenu>
             )}
           </div>
+          {numberOfReplies !== 0 && (
+            <p className="my-1 cursor-pointer text-sm font-semibold text-gray-500 hover:text-gray-800">
+              View {numberOfReplies} replies...
+            </p>
+          )}
         </div>
       </div>
     );

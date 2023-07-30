@@ -11,7 +11,6 @@ import { fetchComments } from '@/lib/query-functions/fetchComments';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { useSession } from 'next-auth/react';
 import { useCommentsMutations } from '@/hooks/mutations/useCommentsMutations';
-import { useToast } from '@/hooks/useToast';
 import { errorNotifer } from '@/lib/errorNotifier';
 
 export function Comments({ postId }: { postId: number }) {
@@ -25,7 +24,6 @@ export function Comments({ postId }: { postId: number }) {
   } = useCommentsMutations();
   const { data: session } = useSession();
   const { prompt, confirm } = useBasicDialogs();
-  const { showToast } = useToast();
 
   const {
     data: comments,
@@ -35,7 +33,7 @@ export function Comments({ postId }: { postId: number }) {
   } = useQuery<GetComment[], Error>({
     queryKey: queryKey,
     queryFn: () => fetchComments({ postId }),
-    staleTime: 1000 * 60 * 5,
+    staleTime: 60000 * 10,
   });
 
   const handleCreate = () => {

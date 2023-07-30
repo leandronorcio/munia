@@ -1,5 +1,4 @@
 import { cn } from '@/lib/cn';
-import { ClassValue } from 'clsx';
 import { MouseEventHandler, SVGProps } from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
 

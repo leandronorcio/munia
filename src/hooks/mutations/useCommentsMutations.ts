@@ -28,6 +28,32 @@ export function useCommentsMutations() {
     },
   });
 
+  const createReplyMutation = useMutation({
+    mutationFn: async ({
+      parentId,
+      content,
+    }: {
+      parentId: number;
+      content: string;
+    }) => {
+      const res = await fetch(`/api/comments/${parentId}/replies`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          content,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error('Error creating comment.');
+      }
+
+      return (await res.json()) as GetComment;
+    },
+  });
+
   const updateCommentMutation = useMutation({
     mutationFn: async ({
       commentId,
@@ -68,6 +94,7 @@ export function useCommentsMutations() {
 
   return {
     createCommentMutation,
+    createReplyMutation,
     updateCommentMutation,
     deleteCommentMutation,
   };
