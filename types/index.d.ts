@@ -125,6 +125,7 @@ export interface GetComment {
     commentLikes: number;
     replies: number;
   };
+  repliesShown?: boolean;
 }
 
 export interface DiscoverFilters {
