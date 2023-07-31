@@ -12,16 +12,15 @@ import { useSession } from 'next-auth/react';
 import { useCommentsMutations } from '@/hooks/mutations/useCommentsMutations';
 import { errorNotifer } from '@/lib/errorNotifier';
 import { useUpdateDeleteComments } from '@/hooks/useUpdateDeleteComments';
-import { useCommentLikesMutations } from '@/hooks/mutations/useCommentLikesMutations';
+import { useLikeUnlikeComments } from '@/hooks/useLikeUnlikeComments';
 
 export function Comments({ postId }: { postId: number }) {
   const qc = useQueryClient();
   const queryKey = ['posts', postId, 'comments'];
   const [commentText, setCommentText] = useState('');
   const { createCommentMutation } = useCommentsMutations();
-  const { likeCommentMutation, unLikeCommentMutation } =
-    useCommentLikesMutations({ queryKey });
   const { handleEdit, handleDelete } = useUpdateDeleteComments({ queryKey });
+  const { likeComment, unLikeComment } = useLikeUnlikeComments({ queryKey });
   const { data: session } = useSession();
 
   const {
@@ -71,14 +70,6 @@ export function Comments({ postId }: { postId: number }) {
       };
       return newComments;
     });
-  }, []);
-
-  const likeComment = useCallback(({ commentId }: { commentId: number }) => {
-    likeCommentMutation.mutate({ commentId });
-  }, []);
-
-  const unLikeComment = useCallback(({ commentId }: { commentId: number }) => {
-    unLikeCommentMutation.mutate({ commentId });
   }, []);
 
   return (
