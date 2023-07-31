@@ -12,12 +12,15 @@ import { useSession } from 'next-auth/react';
 import { useCommentsMutations } from '@/hooks/mutations/useCommentsMutations';
 import { errorNotifer } from '@/lib/errorNotifier';
 import { useUpdateDeleteComments } from '@/hooks/useUpdateDeleteComments';
+import { useCommentLikesMutations } from '@/hooks/mutations/useCommentLikesMutations';
 
 export function Comments({ postId }: { postId: number }) {
   const qc = useQueryClient();
   const queryKey = ['posts', postId, 'comments'];
   const [commentText, setCommentText] = useState('');
   const { createCommentMutation } = useCommentsMutations();
+  const { likeCommentMutation, unLikeCommentMutation } =
+    useCommentLikesMutations({ queryKey });
   const { handleEdit, handleDelete } = useUpdateDeleteComments({ queryKey });
   const { data: session } = useSession();
 
@@ -70,6 +73,14 @@ export function Comments({ postId }: { postId: number }) {
     });
   }, []);
 
+  const likeComment = useCallback(({ commentId }: { commentId: number }) => {
+    likeCommentMutation.mutate({ commentId });
+  }, []);
+
+  const unLikeComment = useCallback(({ commentId }: { commentId: number }) => {
+    unLikeCommentMutation.mutate({ commentId });
+  }, []);
+
   return (
     <div>
       <div className="flex flex-col bg-white pt-2 ">
@@ -99,7 +110,13 @@ export function Comments({ postId }: { postId: number }) {
                 >
                   <Comment
                     {...comment}
-                    {...{ handleEdit, handleDelete, toggleReplies }}
+                    {...{
+                      handleEdit,
+                      handleDelete,
+                      toggleReplies,
+                      likeComment,
+                      unLikeComment,
+                    }}
                     isOwnComment={session?.user?.id === comment.user.id}
                   />
                 </motion.div>

@@ -29,11 +29,15 @@ export const Comment = memo(
     handleEdit,
     handleDelete,
     toggleReplies,
+    likeComment,
+    unLikeComment,
   }: GetComment & {
     isOwnComment: boolean;
     handleEdit: (params: { commentId: number; content: string }) => void;
     handleDelete: (params: { commentId: number }) => void;
     toggleReplies: (params: { commentId: number }) => void;
+    likeComment: (params: { commentId: number }) => void;
+    unLikeComment: (params: { commentId: number }) => void;
   }) => {
     const qc = useQueryClient();
     const numberOfLikes = _count.commentLikes;
@@ -73,7 +77,9 @@ export const Comment = memo(
       });
     };
 
-    const handleToggle = () => toggleReplies({ commentId });
+    const handleLikeClick = () =>
+      !isLiked ? likeComment({ commentId }) : unLikeComment({ commentId });
+    const handleToggleReplies = () => toggleReplies({ commentId });
 
     return (
       <div className="flex gap-4">
@@ -93,7 +99,7 @@ export const Comment = memo(
 
           <div className="flex origin-left scale-90">
             <ToggleStepper
-              onClick={() => {}}
+              onClick={handleLikeClick}
               Icon={SvgHeart}
               isActive={isLiked}
               quantity={numberOfLikes}
@@ -120,7 +126,7 @@ export const Comment = memo(
           {repliesShown && <CommentReplies parentId={commentId} />}
           {numberOfReplies !== 0 && (
             <p
-              onClick={handleToggle}
+              onClick={handleToggleReplies}
               className="my-1 cursor-pointer text-sm font-semibold text-gray-500 hover:text-gray-800"
             >
               {!repliesShown
