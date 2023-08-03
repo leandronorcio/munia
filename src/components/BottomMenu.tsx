@@ -32,7 +32,7 @@ export default function BottomMenu() {
           route: '/notifications',
         },
         { Icon: Profile, route: `/${username}` },
-        { Icon: LogOutCircle, route: `/api/auth/logout` },
+        { Icon: LogOutCircle, route: `/api/auth/signout` },
       ].map((item) => (
         <BottomMenuButton route={item.route} key={item.route}>
           <BottomMenuIcon route={item.route} Icon={item.Icon} />
