@@ -1,10 +1,12 @@
-import { Filters } from './Filters';
+import { DiscoverFilters } from './DiscoverFilters';
 import { DiscoverProfiles } from './DiscoverProfiles';
+import { DiscoverSearch } from './DiscoverSearch';
 
 export default async function Discover() {
   return (
     <div className="px-4 pt-4">
-      <Filters />
+      <DiscoverSearch />
+      <DiscoverFilters />
       <DiscoverProfiles />
     </div>
   );

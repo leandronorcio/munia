@@ -7,7 +7,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { DiscoverFilters } from 'types';
 
-export function Filters() {
+export function DiscoverFilters() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();

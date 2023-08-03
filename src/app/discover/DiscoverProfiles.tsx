@@ -28,6 +28,7 @@ export function DiscoverProfiles() {
       {
         gender: searchParams.get('gender'),
         relationshipStatus: searchParams.get('relationship-status'),
+        search: searchParams.get('search'),
       },
     ],
     queryFn: async ({ pageParam = 0 }) => {

@@ -28,7 +28,7 @@ export default function Sidebar() {
       </Link>
       {[
         {
-          title: 'News Feed',
+          title: 'Feed',
           Icon: GridFeedCards,
           route: '/',
         },

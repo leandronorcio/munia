@@ -27,9 +27,10 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           <input
             {...rest}
             className={cn(
-              'peer rounded-2xl pb-2 pr-5 pt-8 outline-none ring-black focus:ring-2',
+              'peer rounded-2xl bg-slate-100 pb-2 pr-5 pt-8 outline-none ring-black focus:ring-2',
               Icon ? 'pl-16' : 'pl-5',
-              error ? 'bg-red-200 ring-2 ring-red-900' : 'bg-slate-100',
+              error && 'bg-red-200 ring-2 ring-red-900',
+              rest.className,
             )}
             style={{ width: width || '320px' }}
             placeholder=" "

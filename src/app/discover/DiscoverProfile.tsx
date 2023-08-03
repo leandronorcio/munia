@@ -3,6 +3,7 @@ import { ProfilePhoto } from '../../components/ui/ProfilePhoto';
 import { memo } from 'react';
 import { useGoToProfile } from '@/hooks/useGoToProfile';
 import { useUserQuery } from '@/hooks/queries/useUserQuery';
+import { useSession } from 'next-auth/react';
 
 export const DiscoverProfile = memo(
   function DiscoverProfile({ userId }: { userId: string }) {
@@ -12,6 +13,7 @@ export const DiscoverProfile = memo(
      */
     const { data: user, isLoading, isError } = useUserQuery(userId);
     const { goToProfile } = useGoToProfile();
+    const { data: session } = useSession();
 
     if (isLoading) return <div>Loading...</div>;
     if (isError) return <div>Error loading profile.</div>;
@@ -30,7 +32,10 @@ export const DiscoverProfile = memo(
               userId={user.id}
             />
           </div>
-          <ProfileActionButtons targetUserId={user.id} />
+          {/* Only show the action buttons when the profile is not the user's. */}
+          {session?.user.id !== user.id && (
+            <ProfileActionButtons targetUserId={user.id} />
+          )}
         </div>
         <div className="flex flex-col items-center rounded-b-3xl bg-white py-8">
           <h2
