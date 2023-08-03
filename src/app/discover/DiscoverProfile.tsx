@@ -32,7 +32,7 @@ export const DiscoverProfile = memo(
           </div>
           <ProfileActionButtons targetUserId={user.id} />
         </div>
-        <div className="flex flex-col items-center rounded-b-3xl bg-gray-50 py-8">
+        <div className="flex flex-col items-center rounded-b-3xl bg-white py-8">
           <h2
             className="mb-3 cursor-pointer px-2 text-center text-2xl font-semibold hover:underline"
             onClick={handleNameClick}

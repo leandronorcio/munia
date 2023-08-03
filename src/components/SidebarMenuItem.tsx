@@ -24,9 +24,8 @@ export default function SidebarMenuItem({
   return (
     <div
       className={cn([
-        'group relative mt-2 flex h-14 cursor-pointer flex-row items-center gap-4 px-4 duration-300 hover:bg-violet-200',
+        'group relative mt-2 flex h-14 cursor-pointer flex-row items-center gap-4 px-4 duration-300',
         className,
-        isActive && 'bg-violet-200',
       ])}
       onClick={() => {
         if (route === '/api/auth/signout') {
@@ -50,7 +49,7 @@ export default function SidebarMenuItem({
       <span
         className={cn(
           'text-base text-gray-700 transition-colors duration-300 group-hover:text-violet-700',
-          isActive && 'text-violet-700',
+          isActive && 'font-semibold text-violet-700',
         )}
       >
         {children}

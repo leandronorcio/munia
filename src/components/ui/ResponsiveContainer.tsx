@@ -9,13 +9,7 @@ export function ResponsiveContainer({
   ...rest
 }: ResponsiveContainerProps) {
   return (
-    <div
-      {...rest}
-      className={cn(
-        'mx-auto w-full transition-[width] lg:w-[650px] xl:w-[800px]',
-        rest.className,
-      )}
-    >
+    <div {...rest} className={cn('w-full sm:w-[600px]', rest.className)}>
       {children}
     </div>
   );

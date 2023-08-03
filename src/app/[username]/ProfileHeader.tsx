@@ -21,9 +21,9 @@ export function ProfileHeader({
 
   return (
     <>
-      <div className="relative mb-28">
+      <div className="relative mb-28 sm:pt-6">
         <div
-          className="h-60 overflow-hidden drop-shadow-xl md:h-72 md:rounded-b-3xl"
+          className="h-60 overflow-hidden drop-shadow-xl sm:rounded-3xl md:h-72"
           style={{
             background:
               'linear-gradient(95.08deg, #AF45DB 2.49%, #EB7B96 97.19%)',

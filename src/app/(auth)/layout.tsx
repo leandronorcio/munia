@@ -1,3 +1,4 @@
+import { LogoText } from '@/components/LogoText';
 import Button from '@/components/ui/Button';
 import { BackArrow } from '@/svg_components';
 import SvgLogo from '@/svg_components/Logo';
@@ -14,20 +15,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Button>
           </Link>
         </div>
-        <div className="flex flex-row items-center justify-center gap-5">
-          <SvgLogo width={52} height={52} />
-          <Link href="/">
-            <h1
-              className="cursor-pointer bg-clip-text text-4xl font-bold text-transparent"
-              style={{
-                backgroundImage:
-                  'linear-gradient(95.08deg, #AE5388 2.49%, #3D1052 97.19%)',
-              }}
-            >
-              Munia
-            </h1>
-          </Link>
-        </div>
+        <Link href="/">
+          <div className="flex flex-row items-center justify-center gap-5">
+            <SvgLogo width={52} height={52} />
+            <LogoText className="text-4xl" />
+          </div>
+        </Link>
       </div>
       <div className="grid h-screen place-items-center">
         <div className="w-[320px] md:w-[428px]">{children}</div>

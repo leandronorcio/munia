@@ -1,36 +1,38 @@
 'use client';
 import {
   GridFeedCards,
+  LogOutCircle,
   Mail,
   NotificationBell,
   Profile,
   Search,
 } from '@/svg_components';
-import { useSession } from 'next-auth/react';
 import { BottomMenuButton } from './BottomMenuButton';
 import { BottomMenuIcon } from './BottomMenuIcon';
+import { useSessionUserData } from '@/hooks/useSessionUserData';
 
 export default function BottomMenu() {
-  const { data: session } = useSession();
-  const id = session?.user ? session.user.id : '/not-found';
+  const [user] = useSessionUserData();
+  const username = user?.username || 'user-not-found';
 
   return (
-    <div className="flex h-14 w-full flex-row bg-violet-100 shadow-inner">
+    <div className="flex h-12 w-full flex-row bg-white/70 shadow-inner backdrop-blur-sm">
       {[
         {
           Icon: GridFeedCards,
           route: '/',
         },
-        { Icon: Profile, route: `/${id}` },
+        {
+          Icon: Search,
+          route: '/discover',
+        },
         { title: 'Messages', Icon: Mail, route: '/messages' },
         {
           Icon: NotificationBell,
           route: '/notifications',
         },
-        {
-          Icon: Search,
-          route: '/discover',
-        },
+        { Icon: Profile, route: `/${username}` },
+        { Icon: LogOutCircle, route: `/api/auth/logout` },
       ].map((item) => (
         <BottomMenuButton route={item.route} key={item.route}>
           <BottomMenuIcon route={item.route} Icon={item.Icon} />

@@ -34,7 +34,7 @@ export default function CoverPhoto({
             initialSlide: 0,
           })
         }
-        className="absolute h-full w-full cursor-pointer bg-black/30 opacity-0 active:opacity-100 md:rounded-3xl"
+        className="absolute h-full w-full cursor-pointer bg-black/30 opacity-0 active:opacity-100 "
       ></div>
       {isOwnProfile && (
         <label>
