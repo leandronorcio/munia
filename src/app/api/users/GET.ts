@@ -19,6 +19,7 @@ export async function GET(request: Request) {
   const genderParam = searchParams.get('gender');
   const gender = genderParam ? toUpper(snakeCase(genderParam)) : null;
 
+  const search = searchParams.get('search');
   const relationshipStatusParam = searchParams.get('relationship-status');
   const relationshipStatus = relationshipStatusParam
     ? toUpper(snakeCase(relationshipStatusParam))
@@ -30,6 +31,11 @@ export async function GET(request: Request) {
       ...(gender !== null && { gender: gender as Gender }),
       ...(relationshipStatus !== null && {
         relationshipStatus: relationshipStatus as RelationshipStatus,
+      }),
+      ...(search !== null && {
+        name: {
+          search: search?.replaceAll(' ', ' | '),
+        },
       }),
     },
     take: limit,
