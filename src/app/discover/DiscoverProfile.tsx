@@ -4,6 +4,7 @@ import { memo } from 'react';
 import { useGoToProfile } from '@/hooks/useGoToProfile';
 import { useUserQuery } from '@/hooks/queries/useUserQuery';
 import { useSession } from 'next-auth/react';
+import { cn } from '@/lib/cn';
 
 export const DiscoverProfile = memo(
   function DiscoverProfile({ userId }: { userId: string }) {
@@ -24,7 +25,15 @@ export const DiscoverProfile = memo(
 
     return (
       <div className="gap-4 drop-shadow-sm">
-        <div className="flex flex-col items-center gap-4 rounded-t-3xl bg-gradient-to-r from-purple-300/50 to-blue-300/50 py-8 hover:from-red-300/25 hover:to-green-300/25">
+        <div
+          className={cn(
+            'flex flex-col items-center gap-4 rounded-t-3xl bg-gradient-to-r py-8',
+            user.gender === 'MALE' && 'to from-blue-100/50 to-blue-300/50',
+            user.gender === 'FEMALE' && 'to from-pink-100/50 to-pink-300/50',
+            user.gender === 'NONBINARY' &&
+              'from-yellow-200/50 via-purple-200/50 to-black/30',
+          )}
+        >
           <div className="h-24 w-24">
             <ProfilePhoto
               photoUrl={user.profilePhoto || undefined}
