@@ -18,7 +18,7 @@ export default function Sidebar() {
   const username = user?.username || 'user-not-found';
 
   return (
-    <div className="sticky top-0 hidden h-screen flex-col p-4 md:flex">
+    <div className="sticky top-0 hidden h-screen flex-col items-start p-4 md:flex">
       <Link href="/">
         <div className="mb-4 flex items-center gap-2">
           <Logo className="h-12 w-12" />

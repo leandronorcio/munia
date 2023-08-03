@@ -5,6 +5,7 @@ import { cn } from '@/lib/cn';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { SVGProps } from 'react';
+import { motion } from 'framer-motion';
 
 export default function SidebarMenuItem({
   children,
@@ -24,9 +25,13 @@ export default function SidebarMenuItem({
   return (
     <div
       className={cn([
-        'group relative mt-2 flex h-14 cursor-pointer flex-row items-center gap-4 px-4 duration-300',
+        'relative mt-2 flex h-14 cursor-pointer items-center justify-start gap-4 px-6 text-gray-700',
+        isActive ? 'text-violet-700' : 'hover:text-violet-700',
         className,
       ])}
+      style={{
+        WebkitTapHighlightColor: 'transparent',
+      }}
       onClick={() => {
         if (route === '/api/auth/signout') {
           confirm({
@@ -39,21 +44,14 @@ export default function SidebarMenuItem({
         }
       }}
     >
-      <div
-        className={cn(
-          'transition-height absolute left-0 h-0 w-[4px] rounded-r-lg bg-violet-700 duration-300 group-hover:h-10',
-          isActive && 'h-10',
-        )}
-      ></div>
-      <Icon className="h-6 w-6 stroke-gray-700" />{' '}
-      <span
-        className={cn(
-          'text-base text-gray-700 transition-colors duration-300 group-hover:text-violet-700',
-          isActive && 'font-semibold text-violet-700',
-        )}
-      >
-        {children}
-      </span>
+      {isActive && (
+        <motion.div
+          layoutId="sidebar"
+          className="absolute inset-0 h-full w-full rounded-full bg-violet-100"
+        ></motion.div>
+      )}
+      <Icon className="relative z-10 h-6 w-6 stroke-gray-700" />
+      <span className="relative z-10">{children}</span>
     </div>
   );
 }

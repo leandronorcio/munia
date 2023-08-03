@@ -16,8 +16,8 @@ export function BottomMenuButton({
   return (
     <div
       className={cn(
-        'group flex flex-1 cursor-pointer items-center justify-center hover:bg-violet-700',
-        isActive && 'bg-violet-700',
+        'group flex flex-1 cursor-pointer items-center justify-center hover:bg-violet-100',
+        isActive && 'bg-violet-100',
       )}
       onClick={() => router.push(route)}
     >
