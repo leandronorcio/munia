@@ -64,7 +64,6 @@ export function DiscoverProfiles() {
 
   useEffect(() => {
     if (!isBottomOnScreen) return;
-    if (!data) return;
     if (!hasNextPage) return;
 
     fetchNextPage();
@@ -85,7 +84,15 @@ export function DiscoverProfiles() {
             ))
         )}
       </div>
-      <div className="mt-4 h-4" ref={bottomElRef}></div>
+      <div
+        className="mt-4 h-4"
+        ref={bottomElRef}
+        /**
+         * The first page will be initially loaded by React Query
+         * so the bottom loader has to be hidden first
+         */
+        style={{ display: data ? 'block' : 'none' }}
+      ></div>
       {!isFetching && !hasNextPage && <AllCaughtUp />}
     </>
   );
