@@ -37,7 +37,7 @@ export function Posts({
     status,
   } = useInfiniteQuery({
     queryKey: ['users', userId, type, 'posts'],
-    queryFn: ({ pageParam }) => fetchPosts({ pageParam, userId }),
+    queryFn: ({ pageParam }) => fetchPosts({ pageParam, userId, type }),
     getNextPageParam: (lastPage, pages) => {
       // If the `pages` `length` is 0, that means there is not a single post to load
       if (pages.length === 0) return undefined;
@@ -134,7 +134,15 @@ export function Posts({
           </AnimatePresence>
         )}
       </div>
-      <div className="h-6" ref={bottomElRef}></div>
+      <div
+        className="h-6"
+        ref={bottomElRef}
+        /**
+         * The first page will be initially loaded by React Query
+         * so the bottom loader has to be hidden first
+         */
+        style={{ display: data ? 'block' : 'none' }}
+      ></div>
       {!isFetching && !hasNextPage && <AllCaughtUp />}
     </>
   );

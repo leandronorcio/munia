@@ -50,8 +50,8 @@ export default function SidebarMenuItem({
           className="absolute inset-0 h-full w-full rounded-full bg-violet-100"
         ></motion.div>
       )}
-      <Icon className="relative z-10 h-6 w-6 stroke-gray-700" />
-      <span className="relative z-10">{children}</span>
+      <Icon className="relative z-[1] h-6 w-6 stroke-gray-700" />
+      <span className="relative z-[1]">{children}</span>
     </div>
   );
 }
