@@ -4,7 +4,7 @@ import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { cn } from '@/lib/cn';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { SVGProps } from 'react';
+import { SVGProps, useState } from 'react';
 import { motion } from 'framer-motion';
 
 export default function SidebarMenuItem({
@@ -21,17 +21,16 @@ export default function SidebarMenuItem({
   const router = useRouter();
   const [isActive] = useActiveRouteChecker(route);
   const { confirm } = useBasicDialogs();
+  const [hover, setHover] = useState(false);
 
   return (
     <div
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
       className={cn([
-        'relative mt-2 flex h-14 cursor-pointer items-center justify-start gap-4 px-6 text-gray-700',
-        isActive ? 'text-violet-700' : 'hover:text-violet-700',
+        'group relative mt-2 flex h-14 cursor-pointer flex-row items-center gap-4 rounded-lg px-4 duration-300 hover:bg-violet-200',
         className,
       ])}
-      style={{
-        WebkitTapHighlightColor: 'transparent',
-      }}
       onClick={() => {
         if (route === '/api/auth/signout') {
           confirm({
@@ -44,14 +43,20 @@ export default function SidebarMenuItem({
         }
       }}
     >
-      {isActive && (
-        <motion.div
-          layoutId="sidebar"
-          className="absolute inset-0 h-full w-full rounded-full bg-violet-100"
-        ></motion.div>
-      )}
-      <Icon className="relative z-[1] h-6 w-6 stroke-gray-700" />
-      <span className="relative z-[1]">{children}</span>
+      <motion.div
+        animate={{ scaleY: hover || isActive ? 1 : 0 }}
+        style={{ originY: 0 }}
+        className="absolute left-0 h-10 w-[4px] rounded-r-lg bg-violet-700"
+      ></motion.div>
+      <Icon className="h-6 w-6 stroke-gray-700" />{' '}
+      <span
+        className={cn(
+          'text-base text-gray-700 transition-colors duration-300 group-hover:text-violet-700',
+          isActive && 'text-violet-700',
+        )}
+      >
+        {children}
+      </span>
     </div>
   );
 }
