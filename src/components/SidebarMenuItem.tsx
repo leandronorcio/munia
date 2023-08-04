@@ -44,6 +44,7 @@ export default function SidebarMenuItem({
       }}
     >
       <motion.div
+        initial={{ scaleY: 0 }}
         animate={{ scaleY: hover || isActive ? 1 : 0 }}
         style={{ originY: 0 }}
         className="absolute left-0 h-10 w-[4px] rounded-r-lg bg-violet-700"
