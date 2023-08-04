@@ -37,7 +37,7 @@ export async function GET(
         }
       : undefined,
     orderBy: {
-      createdAt: 'desc',
+      id: 'desc',
     },
   });
 
