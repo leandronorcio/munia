@@ -56,8 +56,8 @@ export function DiscoverProfiles() {
       // If the `lastPage` is less than the limit, that means the end is reached
       if (lastPage.length < PROFILES_PER_PAGE) return undefined;
 
-      // This will serve as the `offset`, add 1 to load next page
-      return pages.flat().length + 1;
+      // This will serve as the offset, passed as `pageParam` to `queryFn`
+      return pages.flat().length;
     },
     staleTime: 60000 * 10,
   });
