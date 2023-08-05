@@ -13,7 +13,7 @@ import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { VisualMedia } from 'types';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 import { useCreatePost } from '@/hooks/useCreatePost';
-import { useCreatePostMutations } from '@/hooks/mutations/useCreatePostMutations';
+import { useCreateUpdatePostMutations } from '@/hooks/mutations/useCreateUpdatePostMutations';
 
 export default function CreatePost({
   toEditValues,
@@ -27,10 +27,11 @@ export default function CreatePost({
   const [visualMedia, setVisualMedia] = useState<VisualMedia[]>(
     toEditValues?.initialVisualMedia || [],
   );
-  const { createPostMutation, updatePostMutation } = useCreatePostMutations({
-    content,
-    visualMedia,
-  });
+  const { createPostMutation, updatePostMutation } =
+    useCreateUpdatePostMutations({
+      content,
+      visualMedia,
+    });
   const { exitCreatePostModal } = useCreatePost();
   const { confirm } = useBasicDialogs();
   const inputFileRef = useRef<HTMLInputElement>(null);

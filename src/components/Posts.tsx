@@ -1,15 +1,19 @@
 'use client';
-
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { VisualMedia } from 'types';
+import {
+  InfiniteData,
+  useInfiniteQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
+import { GetPost, PostIds, VisualMedia } from 'types';
 import { useCallback, useEffect, useRef } from 'react';
 import useOnScreen from '@/hooks/useOnScreen';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Post } from './Post';
 import { useCreatePost } from '@/hooks/useCreatePost';
-import { usePostsMutations } from '@/hooks/mutations/usePostsMutations';
-import { fetchPosts } from '@/lib/query-functions/fetchPosts';
+import { useDeletePostMutation } from '@/hooks/mutations/useDeletePostMutation';
 import { AllCaughtUp } from './AllCaughtUp';
+import { POSTS_PER_PAGE } from '@/constants';
+import { chunk } from 'lodash';
 
 export function Posts({
   type,
@@ -18,11 +22,9 @@ export function Posts({
   type: 'profile' | 'feed';
   userId: string;
 }) {
-  const { deleteMutation, likeMutation, unLikeMutation, toggleComments } =
-    usePostsMutations({
-      type,
-      userId,
-    });
+  const qc = useQueryClient();
+  const queryKey = ['users', userId, 'posts', { type }];
+  const { deleteMutation } = useDeletePostMutation();
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
   const { launchEditPost } = useCreatePost();
@@ -35,9 +37,31 @@ export function Posts({
     isFetching,
     isFetchingNextPage,
     status,
-  } = useInfiniteQuery({
-    queryKey: ['users', userId, type, 'posts'],
-    queryFn: ({ pageParam }) => fetchPosts({ pageParam, userId, type }),
+  } = useInfiniteQuery<PostIds[]>({
+    queryKey,
+    queryFn: async ({ pageParam = 0 }) => {
+      const endpoint = type === 'profile' ? 'posts' : 'feed';
+      const params = new URLSearchParams();
+      params.set('limit', POSTS_PER_PAGE.toString());
+      params.set('cursor', pageParam.toString());
+
+      const res = await fetch(
+        `/api/users/${userId}/${endpoint}?${params.toString()}`,
+      );
+
+      if (!res.ok) {
+        throw Error('Failed to load posts.');
+      }
+
+      const posts: GetPost[] = await res.json();
+      return posts.map((post) => {
+        qc.setQueryData(['posts', post.id], post);
+        return {
+          id: post.id,
+          commentsShown: false,
+        };
+      });
+    },
     getNextPageParam: (lastPage, pages) => {
       // If the `pages` `length` is 0, that means there is not a single post to load
       if (pages.length === 0) return undefined;
@@ -83,12 +107,33 @@ export function Posts({
     [],
   );
 
-  const likePost = useCallback(async (postId: number) => {
-    likeMutation.mutate({ postId });
-  }, []);
+  const toggleComments = useCallback(async (postId: number) => {
+    qc.setQueryData<InfiniteData<{ id: number; commentsShown: boolean }[]>>(
+      queryKey,
+      (oldData) => {
+        if (!oldData) return;
 
-  const unLikePost = useCallback(async (postId: number) => {
-    unLikeMutation.mutate({ postId });
+        // Flatten the old pages
+        const newPosts = oldData?.pages.flat();
+
+        // Find the index of the post
+        const index = newPosts.findIndex((post) => post.id === postId);
+
+        // Get the value of the old post
+        const oldPost = newPosts[index];
+
+        // Toggle the `commentsShown` boolean property of the target post
+        newPosts[index] = {
+          ...oldPost,
+          commentsShown: !oldPost.commentsShown,
+        };
+
+        return {
+          pages: chunk(newPosts, POSTS_PER_PAGE),
+          pageParams: oldData.pageParams,
+        };
+      },
+    );
   }, []);
 
   return (
@@ -120,10 +165,9 @@ export function Posts({
                 key={post.id}
               >
                 <Post
-                  {...post}
+                  id={post.id}
+                  commentsShown={post.commentsShown}
                   {...{
-                    likePost,
-                    unLikePost,
                     editPost,
                     deletePost,
                     toggleComments,

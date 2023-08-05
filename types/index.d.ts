@@ -77,7 +77,17 @@ export interface GetPost {
     postLikes: number;
     comments: number;
   };
-  commentsShown?: boolean;
+}
+
+/**
+ * Use `PostIds` when rendering a list of <Post>'s, this type
+ * must be passed to <Post>, and <Post> must use the `id` to
+ * check for queried post data using this `queryKey` format:
+ * ['posts', number] where number is the post's id
+ */
+export interface PostIds {
+  id: number;
+  commentsShown: boolean;
 }
 
 // Use this type when finding a Comment in prisma.

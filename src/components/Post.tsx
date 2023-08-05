@@ -1,8 +1,7 @@
 'use client';
-import { Heart } from '@/svg_components';
 import ProfileBlock from './ProfileBlock';
 import PostVisualMediaContainer from './PostVisualMediaContainer';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { sortVisualMedia } from '@/lib/sortVisualMedia';
 import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/cn';
@@ -13,29 +12,21 @@ import SvgComment from '@/svg_components/Comment';
 import { Comments } from './Comments';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
-import { GetPost, VisualMedia } from 'types';
+import { GetPost, PostIds, VisualMedia } from 'types';
 import { isEqual } from 'lodash';
 import { ToggleStepper } from './ui/ToggleStepper';
 import SvgHeart from '@/svg_components/Heart';
+import { useQuery } from '@tanstack/react-query';
+import { usePostLikesMutations } from '@/hooks/mutations/usePostLikesMutations';
 
 export const Post = memo(
   function Post({
     id: postId,
-    content,
-    createdAt,
-    user: author,
-    visualMedia,
-    isLiked,
-    _count,
     commentsShown,
-    likePost,
-    unLikePost,
     deletePost,
     editPost,
     toggleComments,
-  }: GetPost & {
-    likePost: (postId: number) => void;
-    unLikePost: (postId: number) => void;
+  }: PostIds & {
     deletePost: (postId: number) => void;
     editPost: (params: {
       postId: number;
@@ -46,14 +37,39 @@ export const Post = memo(
   }) {
     const { data: session } = useSession();
     const userId = session?.user?.id;
+
+    const { data } = useQuery<GetPost>({
+      queryKey: ['posts', postId],
+      queryFn: async () => {
+        const res = await fetch(`/api/posts/${postId}`);
+        if (!res.ok) {
+          throw new Error('Error getting post');
+        }
+        return (await res.json()) as GetPost;
+      },
+      staleTime: 60000 * 10,
+    });
+
+    // We can be sure that `data` exists as the <Posts> have already cached the post's data
+    const {
+      content,
+      createdAt,
+      user: author,
+      visualMedia,
+      isLiked,
+      _count,
+    } = data!;
+
     const isOwnPost = userId === author.id;
     const numberOfLikes = _count.postLikes;
-
+    const { likeMutation, unLikeMutation } = usePostLikesMutations({ postId });
+    const likePost = () => likeMutation.mutate();
+    const unLikePost = () => unLikeMutation.mutate();
     const { confirm } = useBasicDialogs();
+    console.log('rendered: ' + postId);
 
-    console.log('rendered + ' + postId);
     const handleLikeClick = () => {
-      !isLiked ? likePost(postId) : unLikePost(postId);
+      !isLiked ? likePost() : unLikePost();
     };
 
     const handleDeleteClick = () => {
