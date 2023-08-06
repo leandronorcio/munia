@@ -44,7 +44,7 @@ export function DiscoverFilters() {
     }
 
     const url = `${pathname}?${newSearchParams.toString()}`;
-    router.push(url);
+    router.push(url, { scroll: false });
   };
 
   return (

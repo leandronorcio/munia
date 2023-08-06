@@ -8,7 +8,13 @@ import { useEffect, useRef } from 'react';
 import { GetUser } from 'types';
 
 const PROFILES_PER_PAGE = 4;
-export function DiscoverProfiles() {
+export function DiscoverProfiles({
+  followersOf,
+  followingOf,
+}: {
+  followersOf?: string;
+  followingOf?: string;
+}) {
   const searchParams = useSearchParams();
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
@@ -26,17 +32,22 @@ export function DiscoverProfiles() {
     queryKey: [
       'discover',
       {
+        search: searchParams.get('search'),
         gender: searchParams.get('gender'),
         relationshipStatus: searchParams.get('relationship-status'),
-        search: searchParams.get('search'),
+        followersOf,
+        followingOf,
       },
     ],
     queryFn: async ({ pageParam = 0 }) => {
-      const newSearchParams = new URLSearchParams(searchParams);
-      newSearchParams.set('limit', PROFILES_PER_PAGE.toString());
-      newSearchParams.set('offset', pageParam);
+      const params = new URLSearchParams(searchParams);
+      params.set('limit', PROFILES_PER_PAGE.toString());
+      params.set('offset', pageParam);
 
-      const res = await fetch(`/api/users?${newSearchParams.toString()}`);
+      if (followersOf) params.set('followers-of', followersOf);
+      if (followingOf) params.set('following-of', followingOf);
+
+      const res = await fetch(`/api/users?${params.toString()}`);
       if (!res.ok) {
         throw new Error('Error fetching discover profiles.');
       }

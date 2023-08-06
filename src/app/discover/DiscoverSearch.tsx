@@ -4,7 +4,11 @@ import SvgSearch from '@/svg_components/Search';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { FormEventHandler, useState } from 'react';
 
-export function DiscoverSearch() {
+export function DiscoverSearch({
+  placeholder = 'Search People',
+}: {
+  placeholder?: string;
+}) {
   const [search, setSearch] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
@@ -31,7 +35,7 @@ export function DiscoverSearch() {
         <TextInput
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search People"
+          placeholder={placeholder}
           width="100%"
           Icon={SvgSearch}
           error={error === '' ? undefined : error}
