@@ -13,6 +13,7 @@ import { useCommentsMutations } from '@/hooks/mutations/useCommentsMutations';
 import { errorNotifer } from '@/lib/errorNotifier';
 import { useUpdateDeleteComments } from '@/hooks/useUpdateDeleteComments';
 import { useLikeUnlikeComments } from '@/hooks/useLikeUnlikeComments';
+import SvgSend from '@/svg_components/Send';
 
 export function Comments({ postId }: { postId: number }) {
   const qc = useQueryClient();
@@ -119,28 +120,27 @@ export function Comments({ postId }: { postId: number }) {
         )}
       </div>
       <div className="mt-2 border-t-2 py-4">
-        <div className="flex flex-row">
+        <div className="flex">
           <div className="h-10 w-10">
             <ProfilePhotoOwn />
           </div>
-          <div className="flex flex-grow flex-col justify-center">
+          <div className="flex flex-1 flex-col justify-center">
             <TextArea
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
               placeholder="Write your comment here..."
             />
           </div>
-        </div>
-        <div className="flex justify-end">
-          <Button
-            onClick={handleCreate}
-            mode="secondary"
-            size="small"
-            disabled={commentText === ''}
-            loading={createCommentMutation.isLoading}
-          >
-            Comment
-          </Button>
+          <div className="self-end">
+            <Button
+              onClick={handleCreate}
+              mode="secondary"
+              size="small"
+              disabled={commentText === ''}
+              loading={createCommentMutation.isLoading}
+              Icon={SvgSend}
+            />
+          </div>
         </div>
       </div>
     </div>
