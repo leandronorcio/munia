@@ -1,3 +1,8 @@
+/**
+ * GET /api/users
+ * - Returns a list of users, it allows filtering by `gender`,
+ * `relationshipStatus` and by followers/following.
+ */
 import { getServerUser } from '@/lib/getServerUser';
 import { includeToUser } from '@/lib/prisma/includeToUser';
 import prisma from '@/lib/prisma/prisma';
@@ -8,36 +13,51 @@ import { NextResponse } from 'next/server';
 import { FindUserResult, GetUser } from 'types';
 
 export async function GET(request: Request) {
+  /**
+   * The [user] will only be used to check whether the
+   * user requesting has followed the Users or not.
+   */
   const [user] = await getServerUser();
-  if (!user) return NextResponse.json({}, { status: 401 });
-
   const { searchParams } = new URL(request.url);
 
   const limit = parseInt(searchParams.get('limit') || '4');
   const offset = parseInt(searchParams.get('offset') || '0');
 
-  const genderParam = searchParams.get('gender');
-  const gender = genderParam ? toUpper(snakeCase(genderParam)) : null;
-
   const search = searchParams.get('search');
-  const relationshipStatusParam = searchParams.get('relationship-status');
-  const relationshipStatus = relationshipStatusParam
-    ? toUpper(snakeCase(relationshipStatusParam))
-    : null;
+  const gender = toUpper(snakeCase(searchParams.get('gender') || undefined));
+  const relationshipStatus = toUpper(
+    snakeCase(searchParams.get('relationship-status') || undefined),
+  );
+  const followersOf = searchParams.get('followers-of');
+  const followingOf = searchParams.get('following-of');
 
   const res: FindUserResult[] | null = await prisma.user.findMany({
-    include: includeToUser(user.id),
     where: {
-      ...(gender !== null && { gender: gender as Gender }),
-      ...(relationshipStatus !== null && {
-        relationshipStatus: relationshipStatus as RelationshipStatus,
-      }),
-      ...(search !== null && {
+      ...(search && {
         name: {
           search: search?.replaceAll(' ', ' | '),
         },
       }),
+      ...(gender && { gender: gender as Gender }),
+      ...(relationshipStatus && {
+        relationshipStatus: relationshipStatus as RelationshipStatus,
+      }),
+      ...(followersOf && {
+        following: {
+          some: {
+            followingId: followersOf,
+          },
+        },
+      }),
+      ...(followingOf && {
+        followers: {
+          some: {
+            followerId: followingOf,
+          },
+        },
+      }),
     },
+    include: includeToUser(user?.id),
     take: limit,
     skip: offset,
   });
