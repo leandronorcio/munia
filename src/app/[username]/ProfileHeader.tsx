@@ -6,6 +6,7 @@ import CoverPhoto from './CoverPhoto';
 import Tabs from './Tabs';
 import { GetUser } from 'types';
 import { useUserQuery } from '@/hooks/queries/useUserQuery';
+import Link from 'next/link';
 
 export function ProfileHeader({
   isOwnProfile,
@@ -51,15 +52,19 @@ export function ProfileHeader({
           <p className="mr-4 text-lg text-gray-600">@{profile!.username}</p>
           <div className="flex flex-row">
             <p className="mr-6 hidden text-lg lg:block">&bull;</p>
-            <p className="mr-6 text-lg font-semibold">
-              <span>{profile!.followerCount}</span>{' '}
-              <span className="text-gray-500">Followers</span>
-            </p>
+            <Link href={`/${profile.username}/followers`}>
+              <p className="mr-6 cursor-pointer text-lg font-semibold hover:underline">
+                <span>{profile!.followerCount}</span>{' '}
+                <span className="text-gray-500">Followers</span>
+              </p>
+            </Link>
             <p className="mr-6 text-lg">&bull;</p>
-            <p className="text-lg font-semibold">
-              <span>{profile!.followingCount}</span>{' '}
-              <span className="text-gray-500">Following</span>
-            </p>
+            <Link href={`/${profile.username}/following`}>
+              <p className="cursor-pointer text-lg font-semibold hover:underline">
+                <span>{profile!.followingCount}</span>{' '}
+                <span className="text-gray-500">Following</span>
+              </p>
+            </Link>
           </div>
         </div>
         <Tabs />
