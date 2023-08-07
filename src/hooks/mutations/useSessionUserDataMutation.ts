@@ -63,7 +63,7 @@ const updateUserData = async ({
   value: string | null;
 }) => {
   const res = await fetch(`/api/users/${userId}`, {
-    method: 'PUT',
+    method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
     },

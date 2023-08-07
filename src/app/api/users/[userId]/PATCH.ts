@@ -1,3 +1,7 @@
+/**
+ * PATCH /api/users/:userId
+ * Allows an authenticated user to update their information.
+ */
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { sub } from 'date-fns';
@@ -5,7 +9,7 @@ import prisma from '@/lib/prisma/prisma';
 import { Prisma } from '@prisma/client';
 import { getServerUser } from '@/lib/getServerUser';
 
-export async function PUT(
+export async function PATCH(
   request: Request,
   { params }: { params: { userId: string } },
 ) {
@@ -18,9 +22,8 @@ export async function PUT(
   const nonEmptyStringSchema = z.string().trim().min(1);
   const userAboutSchema = z.object({
     username: nonEmptyStringSchema
-      .regex(/^[a-zA-Z0-9_-]+$/, {
-        message:
-          'Only alphanumeric characters, underscores, and dashes are allowed.',
+      .regex(/^[a-zA-Z0-9_]+$/, {
+        message: 'Only alphanumeric characters and underscores are allowed.',
       })
       .optional(),
     name: nonEmptyStringSchema.optional(),
