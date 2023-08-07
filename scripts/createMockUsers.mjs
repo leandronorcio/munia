@@ -39,6 +39,7 @@ function createRandomUser() {
   const lastName = faker.person.lastName();
   const fullName = `${firstName} ${lastName}`;
   const id = faker.internet.userName({ firstName, lastName });
+  const username = id.replace(/[.-]/g, '_');
   const email = faker.internet.email({ firstName, lastName });
   const birthDate = faker.date.birthdate({ min: 18, max: 65, mode: 'age' });
   const bio = faker.person.bio();
@@ -73,7 +74,7 @@ function createRandomUser() {
   return {
     user: {
       id,
-      username: id,
+      username,
       name: fullName,
       email,
       gender: isGenderNonBinary ? 'NONBINARY' : gender.toUpperCase(),
