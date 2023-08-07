@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "svgr": "npx @svgr/cli --icon --out-dir ./src/svg_components --ignore-existing --typescript -- ./src/vectors"
+    "svgr": "npx @svgr/cli --icon --out-dir ./src/svg_components --ignore-existing --typescript -- ./src/vectors",
+    "seed": "node ./scripts/createMockUsers.mjs"
   },
   "scriptsComments": {
     "svgr": "Running this command will not work if there is a custom 'prettier.config.js', uncomment that file first before running the 'svgr' command."
