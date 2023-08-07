@@ -21,7 +21,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     }, [localRef.current]);
 
     return (
-      <div>
+      <>
         <textarea
           ref={(el: HTMLTextAreaElement) => {
             if (typeof parentRef === 'function') parentRef(el);
@@ -35,7 +35,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           }}
           {...rest}
           className={cn(
-            'w-full  resize-none overflow-hidden px-4 py-0 text-lg outline-none',
+            'block w-full resize-none overflow-hidden px-4 py-0 text-lg outline-none',
             filled ? 'rounded-2xl bg-slate-100 p-5' : 'bg-transparent',
             error && 'bg-red-200 ring-2 ring-red-900 placeholder:text-red-900',
             rest.className,
@@ -43,7 +43,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           rows={1}
         />
         {error && <p className="mt-2 font-semibold text-red-800">{error}</p>}
-      </div>
+      </>
     );
   },
 );

@@ -1,7 +1,8 @@
 'use client';
 import { MoreVert } from '@/svg_components';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 export function DropdownMenu({
   children,
@@ -13,21 +14,7 @@ export function DropdownMenu({
   width?: string;
 }) {
   const [visible, setVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Hide the DropDown when clicked outside.
-    const handleClickOutside = (e: MouseEvent) => {
-      if (ref.current === null) return;
-      if (!ref.current.contains(e.target as Node)) {
-        setVisible(false);
-      }
-    };
-
-    document.addEventListener('click', handleClickOutside, true);
-    return () =>
-      document.removeEventListener('click', handleClickOutside, true);
-  }, []);
+  const [ref] = useClickOutside(() => setVisible(false));
 
   return (
     <div className="relative inline-block" ref={ref}>
