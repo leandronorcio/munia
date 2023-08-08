@@ -110,7 +110,7 @@ export default function CreatePost({
         />
       </div>
       <div className="mb-[18px] flex flex-row px-4">
-        <div className="h-11 w-11">
+        <div className="mr-3 h-11 w-11">
           <ProfilePhotoOwn />
         </div>
         <div className="flex flex-grow flex-col justify-center">

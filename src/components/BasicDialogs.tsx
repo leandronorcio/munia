@@ -103,14 +103,15 @@ export function BasicDialogs() {
                       error={inputError}
                     />
                   ) : (
-                    <TextArea
-                      value={promptValue}
-                      onChange={(e) => setPromptValue(e.target.value)}
-                      placeholder={dialog.promptLabel || 'Input here'}
-                      ref={textareaRef}
-                      error={inputError}
-                      filled
-                    />
+                    <div className="rounded-2xl bg-slate-100 p-5">
+                      <TextArea
+                        value={promptValue}
+                        onChange={(e) => setPromptValue(e.target.value)}
+                        placeholder={dialog.promptLabel || 'Input here'}
+                        ref={textareaRef}
+                        error={inputError}
+                      />
+                    </div>
                   )}
                 </>
               )}

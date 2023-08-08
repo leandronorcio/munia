@@ -120,8 +120,8 @@ export function Comments({ postId }: { postId: number }) {
         )}
       </div>
       <div className="mt-2 border-t-2 py-4">
-        <div className="flex">
-          <div className="h-10 w-10">
+        <div className="flex ">
+          <div className="mr-3 h-10 w-10">
             <ProfilePhotoOwn />
           </div>
           <div className="flex flex-1 flex-col justify-center">

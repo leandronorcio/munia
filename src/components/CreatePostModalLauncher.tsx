@@ -9,7 +9,7 @@ export function CreatePostModalLauncher() {
   return (
     <div className="rounded-xl bg-white px-4 py-4 shadow sm:px-8 sm:py-5">
       <div className="mb-[18px] flex flex-row">
-        <div className="h-12 w-12">
+        <div className="mr-3 h-12 w-12">
           <ProfilePhotoOwn />
         </div>
         <div
