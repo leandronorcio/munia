@@ -4,13 +4,14 @@ import { useQuery } from '@tanstack/react-query';
 import { UserSummary } from 'types';
 import { ProfilePhoto } from './ui/ProfilePhoto';
 import { useClickOutside } from '@/hooks/useClickOutside';
+import { highlightMentionsAndHashtags } from '@/lib/highlightMentionsAndHashtags';
+import { replaceWordAtCursor } from '@/lib/replaceWordAtCursor';
 
-export function TextAreaWithMentions() {
+export function TextAreaWithMentionsAndHashTags() {
   const [value, setValue] = useState('');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [mentionsShown, setMentionsShown] = useState(false);
-  // `posOfActiveAt` - The position of the active '@' among the array of strings
-  // when converting the `value` to an array using the `.split()` method
+
   const posOfActiveAt = useRef(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [containerRef] = useClickOutside(() => closeMentions());
@@ -35,14 +36,10 @@ export function TextAreaWithMentions() {
   };
 
   const handleSelectUserToMention = (username: string) => {
-    const words = value.split(/\s+/);
-    words[posOfActiveAt.current] = `@${username}`;
-    setValue(words.join(' '));
+    setValue(replaceWordAtCursor(value, posOfActiveAt.current, `@${username}`));
 
     // The cursor position must be right after the inserted string
-    const newCursorPos = words
-      .slice(0, posOfActiveAt.current + 1)
-      .join(' ').length;
+    const newCursorPos = posOfActiveAt.current + username.length + 1;
 
     // Wait for the `setValue()` to finish before focusing the textarea and setting the cursor pos
     setTimeout(() => {
@@ -64,22 +61,29 @@ export function TextAreaWithMentions() {
 
     // While the user is typing, get the current word where the cursor is at
     const textBeforeCursor = text.slice(0, cursorPos);
-    const wordsBeforeCursor = textBeforeCursor.split(/\s+/);
-    const posOfWord = wordsBeforeCursor.length - 1;
-    const currentWord = wordsBeforeCursor[posOfWord];
+    const wordsBeforeCursor = textBeforeCursor.split(/\s/);
+    // If the current word starts with '@', the '@' will be included in `currentWord`
+    const currentWord = wordsBeforeCursor[wordsBeforeCursor.length - 1];
+    const word = currentWord.slice(1);
 
-    // If the current word starts with '@', show the mentions section, otherwise hide it
-    if (currentWord.startsWith('@')) {
+    /**
+     * If the current word starts with '@' and the `word` after it satisfies the
+     * username validation i.e. alphanumeric and underscore characters only, then
+     * show the mentions section, otherwise hide it.
+     */
+    if (currentWord.startsWith('@') && /^[a-zA-Z0-9_]+$/.test(word)) {
       setSearchKeyword(currentWord.slice(1));
       setMentionsShown(true);
-      posOfActiveAt.current = posOfWord;
+
+      // Save the position of the active '@'
+      posOfActiveAt.current = textBeforeCursor.length - currentWord.length;
     } else {
       closeMentions();
     }
   };
 
   return (
-    <div className="relative" ref={containerRef}>
+    <div className="relative block bg-transparent" ref={containerRef}>
       {mentionsShown && (
         <div className="absolute bottom-full max-h-[200px] w-full overflow-y-auto bg-slate-100 ">
           {isLoading ? (
@@ -119,7 +123,14 @@ export function TextAreaWithMentions() {
         ref={textareaRef}
         value={value}
         onChange={handleTextareaChange}
+        className="absolute z-10 bg-transparent text-transparent caret-black"
       />
+      <p
+        className="whitespace-pre-wrap bg-transparent text-lg"
+        dangerouslySetInnerHTML={{
+          __html: highlightMentionsAndHashtags(value),
+        }}
+      ></p>
     </div>
   );
 }
