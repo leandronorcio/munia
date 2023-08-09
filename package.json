@@ -33,6 +33,7 @@
     "eslint": "8.38.0",
     "eslint-config-next": "^13.4.4",
     "framer-motion": "^10.12.17",
+    "html-react-parser": "^4.2.0",
     "lodash": "^4.17.21",
     "next": "^13.4.12",
     "next-auth": "^4.22.1",

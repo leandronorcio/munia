@@ -1,7 +1,7 @@
 'use client';
 import ProfileBlock from './ProfileBlock';
 import PostVisualMediaContainer from './PostVisualMediaContainer';
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 import { sortVisualMedia } from '@/lib/sortVisualMedia';
 import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/cn';
@@ -18,6 +18,7 @@ import { ToggleStepper } from './ui/ToggleStepper';
 import SvgHeart from '@/svg_components/Heart';
 import { useQuery } from '@tanstack/react-query';
 import { usePostLikesMutations } from '@/hooks/mutations/usePostLikesMutations';
+import { HighlightedMentionsAndHashTags } from './HighlightedMentionsAndHashTags';
 
 export const Post = memo(
   function Post({
@@ -108,7 +109,12 @@ export const Post = memo(
           )}
         </div>
         {content && (
-          <p className="mb-4 mt-5 text-lg text-gray-700">{content}</p>
+          <p className="mb-4 mt-5 text-lg text-gray-700">
+            <HighlightedMentionsAndHashTags
+              text={content}
+              shouldAddLinks={true}
+            />
+          </p>
         )}
         {visualMedia.length > 0 && (
           <div className="mb-4 mt-5 overflow-hidden rounded-2xl">

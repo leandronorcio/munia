@@ -11,9 +11,9 @@ import { useQuery } from '@tanstack/react-query';
 import { UserSummary } from 'types';
 import { ProfilePhoto } from './ui/ProfilePhoto';
 import { useClickOutside } from '@/hooks/useClickOutside';
-import { highlightMentionsAndHashtags } from '@/lib/highlightMentionsAndHashtags';
 import { replaceWordAtCursor } from '@/lib/replaceWordAtCursor';
 import { cn } from '@/lib/cn';
+import { HighlightedMentionsAndHashTags } from './HighlightedMentionsAndHashTags';
 
 interface TextAreaWithMentionsAndHashTags
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -162,12 +162,9 @@ export function TextAreaWithMentionsAndHashTags({
         )}
         {...rest}
       />
-      <p
-        className="whitespace-pre-wrap break-words bg-transparent text-lg"
-        dangerouslySetInnerHTML={{
-          __html: highlightMentionsAndHashtags(content),
-        }}
-      ></p>
+      <p className="whitespace-pre-wrap break-words bg-transparent text-lg">
+        <HighlightedMentionsAndHashTags text={content} />
+      </p>
     </div>
   );
 }
