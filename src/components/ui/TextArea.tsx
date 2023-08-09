@@ -9,6 +9,7 @@ interface TextAreaProps
   filled?: boolean;
   error?: string;
 }
+
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   ({ filled = false, error, ...rest }, parentRef) => {
     const localRef = useRef<HTMLTextAreaElement | null>(null);
@@ -16,8 +17,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     useEffect(() => {
       const textarea = localRef.current;
       if (textarea === null) return;
-      textarea.style.height = 'auto';
-      textarea.style.height = textarea.scrollHeight + 'px';
+      resizeTextAreaHeight(textarea);
     }, [localRef.current]);
 
     return (
@@ -30,8 +30,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           }}
           onInput={(e) => {
             const textarea = e.target as HTMLTextAreaElement;
-            textarea.style.height = 'auto';
-            textarea.style.height = textarea.scrollHeight + 'px';
+            resizeTextAreaHeight(textarea);
           }}
           {...rest}
           className={cn(
@@ -46,3 +45,8 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     );
   },
 );
+
+export const resizeTextAreaHeight = (textarea: HTMLTextAreaElement) => {
+  textarea.style.height = 'auto';
+  textarea.style.height = textarea.scrollHeight + 'px';
+};

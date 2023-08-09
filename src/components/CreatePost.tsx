@@ -1,6 +1,5 @@
 'use client';
 import Button from '@/components/ui/Button';
-import { TextArea } from '@/components/ui/TextArea';
 import { CreatePostOptions } from './CreatePostOptions';
 import { useEffect, useRef, useState } from 'react';
 import { CreatePostTabs } from './CreatePostTabs';
@@ -14,6 +13,7 @@ import { VisualMedia } from 'types';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { useCreateUpdatePostMutations } from '@/hooks/mutations/useCreateUpdatePostMutations';
+import { TextAreaWithMentionsAndHashTags } from './TextAreaWithMentionsAndHashTags';
 
 export default function CreatePost({
   toEditValues,
@@ -99,7 +99,7 @@ export default function CreatePost({
   };
 
   return (
-    <div className="mb-6 overflow-hidden rounded-xl bg-white">
+    <div className="mb-6 rounded-xl bg-white">
       <div className="relative mb-4 rounded-t-xl bg-gray-100 py-3">
         <h3 className="text-center text-lg font-semibold">
           {capitalizeFirstLetter(mode)} Post
@@ -109,15 +109,14 @@ export default function CreatePost({
           onClick={handleClickCloseButton}
         />
       </div>
-      <div className="mb-[18px] flex flex-row px-4">
-        <div className="mr-3 h-11 w-11">
+      <div className="mb-[18px] flex flex-row gap-3 px-4">
+        <div className="h-11 w-11">
           <ProfilePhotoOwn />
         </div>
-        <div className="flex flex-grow flex-col justify-center">
-          <TextArea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            ref={textareaRef}
+        <div className="flex flex-1 flex-col justify-center">
+          <TextAreaWithMentionsAndHashTags
+            content={content}
+            setContent={setContent}
             placeholder="What's on your mind?"
           />
         </div>

@@ -1,14 +1,30 @@
-import { ChangeEventHandler, useRef, useState } from 'react';
-import { TextArea } from './ui/TextArea';
+import {
+  ChangeEventHandler,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { TextArea, resizeTextAreaHeight } from './ui/TextArea';
 import { useQuery } from '@tanstack/react-query';
 import { UserSummary } from 'types';
 import { ProfilePhoto } from './ui/ProfilePhoto';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { highlightMentionsAndHashtags } from '@/lib/highlightMentionsAndHashtags';
 import { replaceWordAtCursor } from '@/lib/replaceWordAtCursor';
+import { cn } from '@/lib/cn';
 
-export function TextAreaWithMentionsAndHashTags() {
-  const [value, setValue] = useState('');
+interface TextAreaWithMentionsAndHashTags
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  content: string;
+  setContent: Dispatch<SetStateAction<string>>;
+}
+export function TextAreaWithMentionsAndHashTags({
+  content,
+  setContent,
+  ...rest
+}: TextAreaWithMentionsAndHashTags) {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [mentionsShown, setMentionsShown] = useState(false);
 
@@ -36,15 +52,20 @@ export function TextAreaWithMentionsAndHashTags() {
   };
 
   const handleSelectUserToMention = (username: string) => {
-    setValue(replaceWordAtCursor(value, posOfActiveAt.current, `@${username}`));
+    setContent(
+      replaceWordAtCursor(content, posOfActiveAt.current, `@${username}`),
+    );
 
     // The cursor position must be right after the inserted string
     const newCursorPos = posOfActiveAt.current + username.length + 1;
 
-    // Wait for the `setValue()` to finish before focusing the textarea and setting the cursor pos
+    // Wait for the `setContent()` to finish before focusing the textarea and setting the cursor pos
     setTimeout(() => {
-      textareaRef.current?.focus();
-      textareaRef.current?.setSelectionRange(newCursorPos, newCursorPos);
+      const textarea = textareaRef.current;
+      if (textarea === null) return;
+      textarea.focus();
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+      resizeTextAreaHeight(textarea);
     }, 100);
 
     closeMentions();
@@ -54,7 +75,7 @@ export function TextAreaWithMentionsAndHashTags() {
     event,
   ) => {
     const { target } = event;
-    setValue(target.value);
+    setContent(target.value);
 
     const text = target.value;
     const cursorPos = target.selectionStart;
@@ -71,7 +92,7 @@ export function TextAreaWithMentionsAndHashTags() {
      * username validation i.e. alphanumeric and underscore characters only, then
      * show the mentions section, otherwise hide it.
      */
-    if (currentWord.startsWith('@') && /^[a-zA-Z0-9_]+$/.test(word)) {
+    if (currentWord.startsWith('@') && /^\w+$/.test(word)) {
       setSearchKeyword(currentWord.slice(1));
       setMentionsShown(true);
 
@@ -82,14 +103,28 @@ export function TextAreaWithMentionsAndHashTags() {
     }
   };
 
+  // Since the `TextArea` is in `absolute` position, the container won't auto-resize
+  // according to the height of the `TextArea`, we can set it manually instead
+  useEffect(() => {
+    if (containerRef.current)
+      containerRef.current.style.height =
+        textareaRef.current?.scrollHeight + 'px';
+  }, [content]);
+
+  // Focus the `TextArea` on mount
+  useEffect(() => {
+    textareaRef.current?.focus();
+    // Set the cursor position to the end of the `TextArea`'s value
+    const start = content.length;
+    textareaRef.current?.setSelectionRange(start, start);
+  }, [textareaRef]);
+
   return (
-    <div className="relative block bg-transparent" ref={containerRef}>
+    <div className="relative bg-transparent" ref={containerRef}>
       {mentionsShown && (
-        <div className="absolute bottom-full max-h-[200px] w-full overflow-y-auto bg-slate-100 ">
+        <div className="absolute bottom-full max-h-[200px] w-full overflow-y-auto bg-slate-100">
           {isLoading ? (
-            <div className="flex h-[60px] items-center px-4">
-              Loading users...
-            </div>
+            <div className="flex items-center px-4">Loading users...</div>
           ) : isError ? (
             'Error loading users.'
           ) : data.length > 0 ? (
@@ -113,22 +148,24 @@ export function TextAreaWithMentionsAndHashTags() {
               </div>
             ))
           ) : (
-            <div className="flex h-[60px] items-center px-4">
-              No users found.
-            </div>
+            <div className="flex items-center px-4">No users found.</div>
           )}
         </div>
       )}
       <TextArea
         ref={textareaRef}
-        value={value}
+        value={content}
         onChange={handleTextareaChange}
-        className="absolute z-10 bg-transparent text-transparent caret-black"
+        className={cn(
+          'absolute top-0 break-words bg-transparent text-transparent caret-black',
+          rest.className,
+        )}
+        {...rest}
       />
       <p
-        className="whitespace-pre-wrap bg-transparent text-lg"
+        className="whitespace-pre-wrap break-words bg-transparent text-lg"
         dangerouslySetInnerHTML={{
-          __html: highlightMentionsAndHashtags(value),
+          __html: highlightMentionsAndHashtags(content),
         }}
       ></p>
     </div>

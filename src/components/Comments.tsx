@@ -1,25 +1,19 @@
 'use client';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { Comment } from './Comment';
-import Button from './ui/Button';
-import { TextArea } from './ui/TextArea';
 import { AnimatePresence, motion } from 'framer-motion';
 import { GetComment } from 'types';
-import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchComments } from '@/lib/query-functions/fetchComments';
 import { useSession } from 'next-auth/react';
-import { useCommentsMutations } from '@/hooks/mutations/useCommentsMutations';
-import { errorNotifer } from '@/lib/errorNotifier';
 import { useUpdateDeleteComments } from '@/hooks/useUpdateDeleteComments';
 import { useLikeUnlikeComments } from '@/hooks/useLikeUnlikeComments';
-import SvgSend from '@/svg_components/Send';
+import { CommentCreate } from './CommentCreate';
 
 export function Comments({ postId }: { postId: number }) {
   const qc = useQueryClient();
   const queryKey = ['posts', postId, 'comments'];
-  const [commentText, setCommentText] = useState('');
-  const { createCommentMutation } = useCommentsMutations();
+
   const { handleEdit, handleDelete } = useUpdateDeleteComments({ queryKey });
   const { likeComment, unLikeComment } = useLikeUnlikeComments({ queryKey });
   const { data: session } = useSession();
@@ -34,24 +28,6 @@ export function Comments({ postId }: { postId: number }) {
     queryFn: () => fetchComments({ postId }),
     staleTime: 60000 * 10,
   });
-
-  const handleCreate = () => {
-    createCommentMutation.mutate(
-      { postId, content: commentText },
-      {
-        onSuccess: (createdComment) => {
-          qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
-            if (!oldComments) return;
-            return [...oldComments, createdComment];
-          });
-
-          setCommentText('');
-        },
-
-        onError: (error) => errorNotifer(error),
-      },
-    );
-  };
 
   const toggleReplies = useCallback(({ commentId }: { commentId: number }) => {
     qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
@@ -119,30 +95,7 @@ export function Comments({ postId }: { postId: number }) {
           </AnimatePresence>
         )}
       </div>
-      <div className="mt-2 border-t-2 py-4">
-        <div className="flex ">
-          <div className="mr-3 h-10 w-10">
-            <ProfilePhotoOwn />
-          </div>
-          <div className="flex flex-1 flex-col justify-center">
-            <TextArea
-              value={commentText}
-              onChange={(e) => setCommentText(e.target.value)}
-              placeholder="Write your comment here..."
-            />
-          </div>
-          <div className="self-end">
-            <Button
-              onClick={handleCreate}
-              mode="secondary"
-              size="small"
-              disabled={commentText === ''}
-              loading={createCommentMutation.isLoading}
-              Icon={SvgSend}
-            />
-          </div>
-        </div>
-      </div>
+      <CommentCreate postId={postId} />
     </div>
   );
 }
