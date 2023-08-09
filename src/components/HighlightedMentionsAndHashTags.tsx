@@ -1,5 +1,6 @@
 import parse, { Element, domToReact } from 'html-react-parser';
 import Link from 'next/link';
+import DOMPurify from 'dompurify';
 export function HighlightedMentionsAndHashTags({
   text,
   shouldAddLinks,
@@ -14,13 +15,19 @@ export function HighlightedMentionsAndHashTags({
    * * The second word matches the word which is preceded by `@` or `#`
    */
   const pattern = /(^|\s)(@\w+|#\w+)/g;
+  const cleanText = DOMPurify.sanitize(
+    text.replace(/</g, '&lt;').replace(/>/, '&gt;'),
+  );
 
   // Use replace() method to surround the matches' word with the <span> tag
-  const html = text.replace(pattern, (match, space: string, word: string) => {
-    const coloredWord = `<span class="text-blue-600 hover:underline">${word}</span>`;
-    if (!shouldAddLinks) return `${space}${coloredWord}`;
-    return `${space}<a href="/${word.slice(1)}">${coloredWord}</a>`;
-  });
+  const html = cleanText.replace(
+    pattern,
+    (match, space: string, word: string) => {
+      const coloredWord = `<span class="text-blue-600 hover:underline">${word}</span>`;
+      if (!shouldAddLinks) return `${space}${coloredWord}`;
+      return `${space}<a href="/${word.slice(1)}">${coloredWord}</a>`;
+    },
+  );
 
   if (!shouldAddLinks) return parse(html) as JSX.Element;
   return parse(html, {

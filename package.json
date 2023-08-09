@@ -30,6 +30,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^1.2.1",
     "date-fns": "^2.30.0",
+    "dompurify": "^3.0.5",
     "eslint": "8.38.0",
     "eslint-config-next": "^13.4.4",
     "framer-motion": "^10.12.17",
@@ -52,6 +53,7 @@
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
     "@svgr/cli": "^7.0.0",
+    "@types/dompurify": "^3.0.2",
     "prettier": "3.0.0",
     "prettier-plugin-tailwindcss": "^0.4.1",
     "prisma": "^5.0.0"
