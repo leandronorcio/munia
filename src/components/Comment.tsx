@@ -97,7 +97,7 @@ export const Comment = memo(
             createdAt={createdAt}
           />
 
-          <div className="flex origin-left scale-90">
+          <div className="flex origin-left">
             <ToggleStepper
               onClick={handleLikeClick}
               Icon={SvgHeart}
