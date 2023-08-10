@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "svgr": "npx @svgr/cli --icon --out-dir ./src/svg_components --ignore-existing --typescript -- ./src/vectors",
-    "seed": "node ./scripts/createMockUsers.mjs"
+    "seed": "npx prisma migrate reset && node ./scripts/createMockUsers.mjs"
   },
   "scriptsComments": {
     "svgr": "Running this command will not work if there is a custom 'prettier.config.js', uncomment that file first before running the 'svgr' command."
@@ -18,6 +18,7 @@
     "@dnd-kit/core": "^6.0.8",
     "@dnd-kit/modifiers": "^6.0.1",
     "@dnd-kit/sortable": "^7.0.2",
+    "@paralleldrive/cuid2": "^2.2.2",
     "@prisma/client": "^5.0.0",
     "@tanstack/react-query": "^4.32.0",
     "@tanstack/react-query-devtools": "^4.32.0",

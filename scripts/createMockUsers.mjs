@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import { subHours } from 'date-fns';
+import { createId } from '@paralleldrive/cuid2';
 
 const prisma = new PrismaClient();
 
@@ -38,8 +39,11 @@ function createRandomUser() {
   const firstName = faker.person.firstName(gender);
   const lastName = faker.person.lastName();
   const fullName = `${firstName} ${lastName}`;
-  const id = faker.internet.userName({ firstName, lastName });
-  const username = id.replace(/[.-]/g, '_').toLowerCase();
+  const id = createId();
+  const username = faker.internet
+    .userName({ firstName, lastName })
+    .replace(/[.-]/g, '_')
+    .toLowerCase();
   const email = faker.internet.email({ firstName, lastName });
   const birthDate = faker.date.birthdate({ min: 18, max: 65, mode: 'age' });
   const bio = faker.person.bio();
