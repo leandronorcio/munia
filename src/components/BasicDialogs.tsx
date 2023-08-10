@@ -8,10 +8,9 @@ import {
   BasicDialogsContextApi,
   BasicDialogsContextData,
 } from '@/contexts/BasicDialogsContext';
-import { useToast } from '@/hooks/useToast';
 import { AnimatePresence } from 'framer-motion';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { TextArea } from './ui/TextArea';
+import { TextAreaWithMentionsAndHashTags } from './TextAreaWithMentionsAndHashTags';
 
 export function BasicDialogs() {
   const { shown, dialog } = useContext(BasicDialogsContextData);
@@ -91,7 +90,7 @@ export function BasicDialogs() {
             <p className="text-center text-lg text-gray-700">
               {dialog.message}
             </p>
-            <div>
+            <div className="w-full">
               {dialog.type === 'prompt' && (
                 <>
                   {dialog.promptType === 'input' ? (
@@ -104,12 +103,10 @@ export function BasicDialogs() {
                     />
                   ) : (
                     <div className="rounded-2xl bg-slate-100 p-5">
-                      <TextArea
-                        value={promptValue}
-                        onChange={(e) => setPromptValue(e.target.value)}
+                      <TextAreaWithMentionsAndHashTags
+                        content={promptValue}
+                        setContent={setPromptValue}
                         placeholder={dialog.promptLabel || 'Input here'}
-                        ref={textareaRef}
-                        error={inputError}
                       />
                     </div>
                   )}
