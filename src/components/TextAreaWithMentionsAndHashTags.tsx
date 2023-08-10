@@ -162,7 +162,7 @@ export function TextAreaWithMentionsAndHashTags({
         )}
         {...rest}
       />
-      <p className="whitespace-pre-wrap break-words bg-transparent text-lg">
+      <p className="whitespace-pre-wrap break-words bg-transparent">
         <HighlightedMentionsAndHashTags text={content} />
       </p>
     </div>

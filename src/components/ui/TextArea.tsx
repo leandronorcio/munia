@@ -34,7 +34,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           }}
           {...rest}
           className={cn(
-            'block w-full resize-none overflow-hidden bg-transparent text-lg outline-none',
+            'block w-full resize-none overflow-hidden bg-transparent outline-none',
             error && 'bg-red-200 ring-2 ring-red-900 placeholder:text-red-900',
             rest.className,
           )}
