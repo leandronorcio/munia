@@ -11,6 +11,7 @@ import { FindCommentResult, GetComment } from 'types';
 import { getServerUser } from '@/lib/getServerUser';
 import { includeToComment } from '@/lib/prisma/includeToComment';
 import { toGetComment } from '@/lib/prisma/toGetComment';
+import { convertMentionUsernamesToIds } from '@/lib/convertMentionUsernamesToIds';
 
 export async function PUT(
   request: Request,
@@ -25,7 +26,8 @@ export async function PUT(
   }
 
   const body = await request.json();
-  const { content } = commentWriteSchema.parse(body);
+  let { content } = commentWriteSchema.parse(body);
+  content = await convertMentionUsernamesToIds(content);
 
   const res: FindCommentResult = await prisma.comment.update({
     where: {
@@ -37,5 +39,5 @@ export async function PUT(
     include: includeToComment(userId),
   });
 
-  return NextResponse.json(toGetComment(res));
+  return NextResponse.json<GetComment>(await toGetComment(res));
 }

@@ -6,12 +6,13 @@
 
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma/prisma';
-import { FindCommentResult, GetComment } from 'types';
+import { FindCommentResult } from 'types';
 import { commentWriteSchema } from '@/lib/validations/comment';
 import { z } from 'zod';
 import { getServerUser } from '@/lib/getServerUser';
 import { includeToComment } from '@/lib/prisma/includeToComment';
 import { toGetComment } from '@/lib/prisma/toGetComment';
+import { convertMentionUsernamesToIds } from '@/lib/convertMentionUsernamesToIds';
 
 export async function POST(
   request: Request,
@@ -23,18 +24,19 @@ export async function POST(
 
   try {
     const body = await request.json();
-    const { content } = commentWriteSchema.parse(body);
+    let { content } = commentWriteSchema.parse(body);
+    content = await convertMentionUsernamesToIds(content);
 
     const res: FindCommentResult = await prisma.comment.create({
       data: {
-        content: content,
+        content,
         userId: userId,
         postId: parseInt(params.postId),
       },
       include: includeToComment(userId),
     });
 
-    return NextResponse.json(toGetComment(res));
+    return NextResponse.json(await toGetComment(res));
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(error.issues, { status: 422 });

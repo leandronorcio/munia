@@ -30,7 +30,8 @@ export async function GET(
     },
   });
 
-  const comments = res.map((comment) => toGetComment(comment));
+  const comments: GetComment[] = [];
+  for (const comment of res) comments.push(await toGetComment(comment));
 
-  return NextResponse.json(comments as GetComment[]);
+  return NextResponse.json<GetComment[]>(comments);
 }

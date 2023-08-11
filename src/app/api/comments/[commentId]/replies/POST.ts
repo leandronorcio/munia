@@ -4,6 +4,7 @@
  * a comment specified on the :commentId param.
  */
 
+import { convertMentionUsernamesToIds } from '@/lib/convertMentionUsernamesToIds';
 import { getServerUser } from '@/lib/getServerUser';
 import { includeToComment } from '@/lib/prisma/includeToComment';
 import prisma from '@/lib/prisma/prisma';
@@ -23,7 +24,8 @@ export async function POST(
 
   try {
     const body = await request.json();
-    const { content } = commentWriteSchema.parse(body);
+    let { content } = commentWriteSchema.parse(body);
+    content = await convertMentionUsernamesToIds(content);
 
     const res = await prisma.comment.create({
       data: {
@@ -34,7 +36,7 @@ export async function POST(
       include: includeToComment(userId),
     });
 
-    return NextResponse.json(toGetComment(res) as GetComment);
+    return NextResponse.json((await toGetComment(res)) as GetComment);
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(error.issues, { status: 422 });

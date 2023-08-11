@@ -8,6 +8,7 @@ import prisma from '@/lib/prisma/prisma';
 import { selectPost } from '@/lib/prisma/selectPost';
 import { toGetPost } from '@/lib/prisma/toGetPost';
 import { NextResponse } from 'next/server';
+import { GetPost } from 'types';
 
 export async function GET(
   request: Request,
@@ -26,5 +27,5 @@ export async function GET(
   });
 
   if (res === null) return NextResponse.json(null);
-  return NextResponse.json(toGetPost(res));
+  return NextResponse.json<GetPost>(await toGetPost(res));
 }

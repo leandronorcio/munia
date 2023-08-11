@@ -41,6 +41,7 @@ export async function GET(
     },
   });
 
-  const posts = res.map((post) => toGetPost(post));
+  const posts: GetPost[] = [];
+  for (const post of res) posts.push(await toGetPost(post));
   return NextResponse.json<GetPost[] | null>(posts);
 }

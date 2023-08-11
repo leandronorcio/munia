@@ -9,6 +9,7 @@ import { postWriteSchema } from '@/lib/validations/post';
 import { z } from 'zod';
 import { toGetPost } from '@/lib/prisma/toGetPost';
 import { getServerUser } from '@/lib/getServerUser';
+import { convertMentionUsernamesToIds } from '@/lib/convertMentionUsernamesToIds';
 
 export async function useWritePost({
   formData,
@@ -25,6 +26,9 @@ export async function useWritePost({
   try {
     const body = postWriteSchema.parse(listOfKeyValuesToObject(formData));
     const { content, files } = body;
+    const contentWithIdMentions = content
+      ? await convertMentionUsernamesToIds(content)
+      : '';
     const savedFiles: VisualMedia[] = [];
 
     if (files) {
@@ -66,7 +70,7 @@ export async function useWritePost({
     if (type === 'create') {
       const res = await prisma.post.create({
         data: {
-          content: (content || '') as string,
+          content: contentWithIdMentions as string,
           ...(files !== undefined && {
             visualMedia: {
               create: savedFiles.map((file) => ({
@@ -81,7 +85,7 @@ export async function useWritePost({
         select: selectPost(userId),
       });
 
-      return NextResponse.json<GetPost>(toGetPost(res));
+      return NextResponse.json<GetPost>(await toGetPost(res));
     } else if (type === 'edit') {
       // Delete the associated visualMedia files from the filesystem before updating.
       const post = await prisma.post.findFirst({
@@ -118,7 +122,7 @@ export async function useWritePost({
           id: postId,
         },
         data: {
-          content: (content || '') as string,
+          content: contentWithIdMentions as string,
           ...(files !== undefined && {
             visualMedia: {
               create: savedFiles.map((file) => ({
@@ -137,9 +141,10 @@ export async function useWritePost({
         select: selectPost(userId),
       });
 
-      return NextResponse.json<GetPost>(toGetPost(res));
+      return NextResponse.json<GetPost>(await toGetPost(res));
     }
   } catch (error) {
+    console.log(error);
     if (error instanceof z.ZodError) {
       return NextResponse.json(error.issues, { status: 422 });
     }
