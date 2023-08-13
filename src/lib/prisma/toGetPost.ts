@@ -17,7 +17,8 @@ export async function toGetPost(
 
   // Convert the `@` `id` mentions back to usernames
   const contentWithUsernameMentions =
-    content && (await convertMentionUsernamesToIds(content, true));
+    content &&
+    (await convertMentionUsernamesToIds({ str: content, reverse: true }));
   return {
     ...rest,
     content: contentWithUsernameMentions,

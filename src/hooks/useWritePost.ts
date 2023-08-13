@@ -27,7 +27,7 @@ export async function useWritePost({
     const body = postWriteSchema.parse(listOfKeyValuesToObject(formData));
     const { content, files } = body;
     const contentWithIdMentions = content
-      ? await convertMentionUsernamesToIds(content)
+      ? await convertMentionUsernamesToIds({ str: content })
       : '';
     const savedFiles: VisualMedia[] = [];
 

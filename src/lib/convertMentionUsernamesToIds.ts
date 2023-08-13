@@ -11,10 +11,13 @@ import prisma from './prisma/prisma';
  * @param reverse Whether to convert the other way around - `id` to `username`.
  * @returns The processed string.
  */
-export async function convertMentionUsernamesToIds(
-  str: string,
-  reverse?: boolean,
-) {
+export async function convertMentionUsernamesToIds({
+  str,
+  reverse = false,
+}: {
+  str: string;
+  reverse?: boolean;
+}) {
   const pattern = /(^|\s)(@)(\w+|\w+)/g;
   const matches = str.match(pattern)?.map((match) => match.slice(2));
 

@@ -27,7 +27,7 @@ export async function PUT(
 
   const body = await request.json();
   let { content } = commentWriteSchema.parse(body);
-  content = await convertMentionUsernamesToIds(content);
+  content = await convertMentionUsernamesToIds({ str: content });
 
   const res: FindCommentResult = await prisma.comment.update({
     where: {

@@ -26,7 +26,7 @@ export async function POST(
   try {
     const body = await request.json();
     let { content } = commentWriteSchema.parse(body);
-    content = await convertMentionUsernamesToIds(content);
+    content = await convertMentionUsernamesToIds({ str: content });
 
     const res = await prisma.comment.create({
       data: {
