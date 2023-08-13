@@ -22,7 +22,7 @@ export async function POST(
 
   const { commentId } = await request.json();
 
-  // Check first if the post is already liked
+  // Check first if the comment is already liked
   const isLiked = await prisma.commentLike.count({
     where: {
       userId: user.id,
@@ -30,16 +30,37 @@ export async function POST(
     },
   });
 
+  // Comment is already liked, return 409 Conflict
   if (isLiked) {
-    // Post is already liked, return 409 Conflict
     return NextResponse.json({}, { status: 409 });
   }
 
-  // Like the post
-  await prisma.commentLike.create({
+  // Like the comment
+  const res = await prisma.commentLike.create({
     data: {
       userId: user.id,
       commentId,
+    },
+  });
+
+  // Record the activity
+  const comment = await prisma.comment.findUnique({
+    where: {
+      id: commentId,
+    },
+    select: {
+      parentId: true,
+      userId: true,
+    },
+  });
+  const type = comment?.parentId ? 'REPLY_LIKE' : 'COMMENT_LIKE';
+  await prisma.activity.create({
+    data: {
+      type,
+      sourceId: res.id,
+      sourceUserId: user.id,
+      targetId: commentId,
+      targetUserId: comment?.userId,
     },
   });
 
