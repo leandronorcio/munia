@@ -5,7 +5,7 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
 }
 
@@ -64,6 +64,8 @@ model User {
   commentLikes       CommentLike[]
   followers          Follow[]            @relation("following")
   following          Follow[]            @relation("follower")
+  activities         Activity[]          @relation("activity")
+  notifications      Activity[]          @relation("notification")
 }
 
 model VerificationToken {
@@ -146,6 +148,43 @@ model VisualMedia {
   userId     String
   post       Post            @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId     Int
+}
+
+// This Activity model is similar to this approach: https://stackoverflow.com/a/1766371/8434369
+// Example:
+// * If the activity type is 'CREATE_COMMENT', the `sourceId` must be the `id` of the Comment and
+// its `targetId` must be the `id` of the Post that was commented on.
+model Activity {
+  id                   Int          @id @default(autoincrement())
+  createdAt            DateTime     @default(now())
+  type                 ActivityType
+  sourceId             Int?
+  targetId             Int?
+  sourceUser           User         @relation("activity", fields: [sourceUserId], references: [id], onDelete: Cascade)
+  sourceUserId         String
+  targetUser           User?        @relation("notification", fields: [targetUserId], references: [id], onDelete: Cascade)
+  targetUserId         String?
+  isNotificationActive Boolean      @default(true)
+  isNotificationRead   Boolean      @default(false)
+}
+
+enum ActivityType {
+  CREATE_POST
+  UPDATE_POST
+  DELETE_POST
+  CREATE_FOLLOW // ✅
+
+  // The following activity type must have a `targetUserId`
+  POST_LIKE // ✅
+  POST_MENTION
+
+  CREATE_COMMENT // ✅
+  COMMENT_LIKE // ✅
+  COMMENT_MENTION
+
+  CREATE_REPLY // ✅
+  REPLY_LIKE // ✅
+  REPLY_MENTION
 }
 
 enum VisualMediaType {
