@@ -30,12 +30,32 @@ export async function DELETE(
     return NextResponse.json({}, { status: 409 });
   }
 
-  await prisma.commentLike.delete({
+  const res = await prisma.commentLike.delete({
     where: {
       userId_commentId: {
         userId: user.id,
         commentId,
       },
+    },
+  });
+
+  // Delete the associated 'COMMENT_LIKE' or 'REPLY_LIKE' activity
+  const comment = await prisma.comment.findUnique({
+    where: {
+      id: commentId,
+    },
+    select: {
+      parentId: true,
+      userId: true,
+    },
+  });
+  const type = comment?.parentId ? 'REPLY_LIKE' : 'COMMENT_LIKE';
+  await prisma.activity.deleteMany({
+    where: {
+      type,
+      sourceUserId: user.id,
+      sourceId: res.id,
+      targetId: commentId,
     },
   });
 
