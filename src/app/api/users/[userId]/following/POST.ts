@@ -24,10 +24,20 @@ export async function POST(
 
   try {
     const { userIdToFollow } = followPostSchema.parse(await request.json());
-    await prisma.follow.create({
+    const res = await prisma.follow.create({
       data: {
         followerId: user.id,
         followingId: userIdToFollow,
+      },
+    });
+
+    // Record the activity
+    await prisma.activity.create({
+      data: {
+        type: 'CREATE_FOLLOW',
+        sourceId: res.id,
+        sourceUserId: user.id,
+        targetUserId: userIdToFollow,
       },
     });
 
