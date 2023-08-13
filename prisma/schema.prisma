@@ -169,9 +169,6 @@ model Activity {
 }
 
 enum ActivityType {
-  CREATE_POST
-  UPDATE_POST
-  DELETE_POST
   CREATE_FOLLOW // ✅
 
   // The following activity type must have a `targetUserId`
