@@ -23,12 +23,22 @@ export async function DELETE(
   });
 
   if (isFollowing) {
-    await prisma.follow.delete({
+    const res = await prisma.follow.delete({
       where: {
         followerId_followingId: {
           followerId: user.id,
           followingId: params.targetUserId,
         },
+      },
+    });
+
+    // Delete the associated 'CREATE_FOLLOW' activity
+    await prisma.activity.deleteMany({
+      where: {
+        type: 'CREATE_FOLLOW',
+        sourceId: res.id,
+        sourceUserId: user.id,
+        targetUserId: params.targetUserId,
       },
     });
 
