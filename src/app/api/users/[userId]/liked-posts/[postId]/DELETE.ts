@@ -30,12 +30,22 @@ export async function DELETE(
     return NextResponse.json({}, { status: 409 });
   }
 
-  await prisma.postLike.delete({
+  const res = await prisma.postLike.delete({
     where: {
       userId_postId: {
         userId: user.id,
         postId,
       },
+    },
+  });
+
+  // Delete the associated 'POST_LIKE' activity
+  await prisma.activity.deleteMany({
+    where: {
+      type: 'POST_LIKE',
+      sourceUserId: user.id,
+      sourceId: res.id,
+      targetId: postId,
     },
   });
 
