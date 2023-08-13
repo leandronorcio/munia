@@ -6,11 +6,13 @@
 import prisma from '@/lib/prisma/prisma';
 import { NextResponse } from 'next/server';
 import { verifyAccessToComment } from './verifyAccessToComment';
+import { getServerUser } from '@/lib/getServerUser';
 
 export async function DELETE(
   request: Request,
   { params }: { params: { commentId: string } },
 ) {
+  const [user] = await getServerUser();
   const commentId = parseInt(params.commentId);
   if (!verifyAccessToComment(commentId)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
@@ -19,6 +21,18 @@ export async function DELETE(
   const res = await prisma.comment.delete({
     where: {
       id: commentId,
+    },
+  });
+
+  // Delete the associated 'CREATE_REPLY' or 'CREATE_COMMENT' activity logs
+  // If `isComment` is false, it is a reply
+  const type = res?.parentId ? 'CREATE_REPLY' : 'CREATE_COMMENT';
+  await prisma.activity.deleteMany({
+    where: {
+      type,
+      sourceUserId: user?.id,
+      sourceId: res.id,
+      targetId: type === 'CREATE_COMMENT' ? res.postId : res.parentId,
     },
   });
 
