@@ -19,8 +19,9 @@ export async function POST(
   { params }: { params: { commentId: string } },
 ) {
   const [user] = await getServerUser();
-  if (!user) NextResponse.json({}, { status: 401 });
-  const userId = user?.id!;
+  if (!user) return NextResponse.json({}, { status: 401 });
+  const userId = user.id;
+  const commentId = parseInt(params.commentId);
 
   try {
     const body = await request.json();
@@ -31,9 +32,29 @@ export async function POST(
       data: {
         content,
         userId,
-        parentId: parseInt(params.commentId),
+        parentId: commentId,
       },
       include: includeToComment(userId),
+    });
+
+    // Record the activity
+    // Find the owner of the comment being replied to
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: commentId,
+      },
+      select: {
+        userId: true,
+      },
+    });
+    await prisma.activity.create({
+      data: {
+        type: 'CREATE_REPLY',
+        sourceId: res.id,
+        sourceUserId: user?.id,
+        targetId: commentId,
+        targetUserId: comment?.userId,
+      },
     });
 
     return NextResponse.json((await toGetComment(res)) as GetComment);
