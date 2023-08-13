@@ -31,7 +31,7 @@ export async function POST(
       },
     });
 
-    // Record the activity
+    // Record a 'CREATE_FOLLOW' activity
     await prisma.activity.create({
       data: {
         type: 'CREATE_FOLLOW',

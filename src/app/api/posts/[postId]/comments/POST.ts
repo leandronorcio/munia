@@ -37,7 +37,7 @@ export async function POST(
       include: includeToComment(userId),
     });
 
-    // Record the activity
+    // Record a 'CREATE_COMMENT' activity
     // Find the owner of the post
     const post = await prisma.post.findUnique({
       where: {

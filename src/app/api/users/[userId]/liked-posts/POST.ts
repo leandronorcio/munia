@@ -43,7 +43,7 @@ export async function POST(
     },
   });
 
-  // Record the activity
+  // Record a 'POST_LIKE' activity
   const postOwner = await prisma.post.findUnique({
     where: {
       id: postId,

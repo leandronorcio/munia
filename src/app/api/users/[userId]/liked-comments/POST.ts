@@ -43,7 +43,7 @@ export async function POST(
     },
   });
 
-  // Record the activity
+  // Record a 'REPLY_LIKE' or a 'COMMENT_LIKE' activity
   const comment = await prisma.comment.findUnique({
     where: {
       id: commentId,
