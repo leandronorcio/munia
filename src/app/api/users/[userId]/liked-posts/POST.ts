@@ -36,10 +36,29 @@ export async function POST(
   }
 
   // Like the post
-  await prisma.postLike.create({
+  const res = await prisma.postLike.create({
     data: {
       userId: user.id,
       postId,
+    },
+  });
+
+  // Record the activity
+  const postOwner = await prisma.post.findUnique({
+    where: {
+      id: postId,
+    },
+    select: {
+      userId: true,
+    },
+  });
+  await prisma.activity.create({
+    data: {
+      type: 'POST_LIKE',
+      sourceId: res.id,
+      sourceUserId: user.id,
+      targetId: postId,
+      targetUserId: postOwner?.userId,
     },
   });
 
