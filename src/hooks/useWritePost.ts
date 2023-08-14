@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { toGetPost } from '@/lib/prisma/toGetPost';
 import { getServerUser } from '@/lib/getServerUser';
 import { convertMentionUsernamesToIds } from '@/lib/convertMentionUsernamesToIds';
+import { mentionsActivityLogger } from '@/lib/mentionsActivityLogger';
 
 export async function useWritePost({
   formData,
@@ -21,14 +22,15 @@ export async function useWritePost({
   postId?: number;
 }) {
   const [user] = await getServerUser();
-  const userId = user?.id!;
+  if (!user) return NextResponse.json({}, { status: 401 });
+  const userId = user.id;
 
   try {
     const body = postWriteSchema.parse(listOfKeyValuesToObject(formData));
     const { content, files } = body;
-    const contentWithIdMentions = content
-      ? await convertMentionUsernamesToIds({ str: content })
-      : '';
+    const { str, usersMentioned } = await convertMentionUsernamesToIds({
+      str: content || '',
+    });
     const savedFiles: VisualMedia[] = [];
 
     if (files) {
@@ -70,7 +72,7 @@ export async function useWritePost({
     if (type === 'create') {
       const res = await prisma.post.create({
         data: {
-          content: contentWithIdMentions as string,
+          content: str,
           ...(files !== undefined && {
             visualMedia: {
               create: savedFiles.map((file) => ({
@@ -83,6 +85,17 @@ export async function useWritePost({
           userId,
         },
         select: selectPost(userId),
+      });
+
+      // Log the 'POST_MENTION' activity if applicable
+      await mentionsActivityLogger({
+        usersMentioned,
+        activity: {
+          type: 'POST_MENTION',
+          sourceUserId: userId,
+          sourceId: res.id,
+        },
+        isUpdate: false,
       });
 
       return NextResponse.json<GetPost>(await toGetPost(res));
@@ -122,7 +135,7 @@ export async function useWritePost({
           id: postId,
         },
         data: {
-          content: contentWithIdMentions as string,
+          content: str,
           ...(files !== undefined && {
             visualMedia: {
               create: savedFiles.map((file) => ({
@@ -141,10 +154,20 @@ export async function useWritePost({
         select: selectPost(userId),
       });
 
+      // Log the 'POST_MENTION' activity if applicable
+      await mentionsActivityLogger({
+        usersMentioned,
+        activity: {
+          type: 'POST_MENTION',
+          sourceUserId: userId,
+          sourceId: res.id,
+        },
+        isUpdate: true,
+      });
+
       return NextResponse.json<GetPost>(await toGetPost(res));
     }
   } catch (error) {
-    console.log(error);
     if (error instanceof z.ZodError) {
       return NextResponse.json(error.issues, { status: 422 });
     }

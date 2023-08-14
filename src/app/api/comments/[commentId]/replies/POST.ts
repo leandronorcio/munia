@@ -6,6 +6,7 @@
 
 import { convertMentionUsernamesToIds } from '@/lib/convertMentionUsernamesToIds';
 import { getServerUser } from '@/lib/getServerUser';
+import { mentionsActivityLogger } from '@/lib/mentionsActivityLogger';
 import { includeToComment } from '@/lib/prisma/includeToComment';
 import prisma from '@/lib/prisma/prisma';
 import { toGetComment } from '@/lib/prisma/toGetComment';
@@ -26,7 +27,10 @@ export async function POST(
   try {
     const body = await request.json();
     let { content } = commentWriteSchema.parse(body);
-    content = await convertMentionUsernamesToIds({ str: content });
+    const { str, usersMentioned } = await convertMentionUsernamesToIds({
+      str: content,
+    });
+    content = str;
 
     const res = await prisma.comment.create({
       data: {
@@ -55,6 +59,18 @@ export async function POST(
         targetId: commentId,
         targetUserId: comment?.userId,
       },
+    });
+
+    // Log the 'REPLY_MENTION' activity if applicable
+    await mentionsActivityLogger({
+      usersMentioned,
+      activity: {
+        type: 'REPLY_MENTION',
+        sourceUserId: userId,
+        sourceId: res.id,
+        targetId: res.parentId,
+      },
+      isUpdate: false,
     });
 
     return NextResponse.json((await toGetComment(res)) as GetComment);
