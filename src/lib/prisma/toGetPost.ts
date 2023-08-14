@@ -16,12 +16,13 @@ export async function toGetPost(
   const { postLikes, content, ...rest } = findPostResult;
 
   // Convert the `@` `id` mentions back to usernames
-  const contentWithUsernameMentions =
-    content &&
-    (await convertMentionUsernamesToIds({ str: content, reverse: true }));
+  const { str } = await convertMentionUsernamesToIds({
+    str: content || '',
+    reverse: true,
+  });
   return {
     ...rest,
-    content: contentWithUsernameMentions,
+    content: str,
     isLiked: postLikes.length > 0,
   };
 }

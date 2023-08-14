@@ -8,12 +8,13 @@ export async function toGetComment(
   const isLiked = commentLikes.length > 0;
 
   // Convert the `@` `id` mentions back to usernames
-  const contentWithUsernameMentions =
-    content &&
-    (await convertMentionUsernamesToIds({ str: content, reverse: true }));
+  const { str } = await convertMentionUsernamesToIds({
+    str: content,
+    reverse: true,
+  });
   return {
     isLiked,
-    content: contentWithUsernameMentions,
+    content: str,
     ...rest,
   };
 }
