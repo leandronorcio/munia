@@ -67,7 +67,7 @@ export function ProfileHeader({
             </Link>
           </div>
         </div>
-        <Tabs />
+        <Tabs isOwnProfile={isOwnProfile} />
       </div>
     </>
   );

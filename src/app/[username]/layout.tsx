@@ -11,8 +11,9 @@ export default async function Layout({
 }) {
   const [user] = await getServerUser();
   const profile = await getProfile(params.username);
-  if (profile === null) return <></>;
-  const isOwnProfile = profile?.id === user?.id;
+  if (!profile)
+    return <p>This user does not exist or may have changed their username.</p>;
+  const isOwnProfile = profile.id === user?.id;
 
   return (
     <>

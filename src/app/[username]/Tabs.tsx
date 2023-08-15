@@ -8,7 +8,7 @@ import {
   useSelectedLayoutSegment,
 } from 'next/navigation';
 
-export default function Tabs() {
+export default function Tabs({ isOwnProfile }: { isOwnProfile: boolean }) {
   const selectedSegment = useSelectedLayoutSegment();
   const parentLayoutSegment = `/${usePathname().split('/')[1]}`;
 
@@ -18,7 +18,13 @@ export default function Tabs() {
         { title: 'Posts', segment: parentLayoutSegment },
         { title: 'Photos', segment: `${parentLayoutSegment}/photos` },
         { title: 'About', segment: `${parentLayoutSegment}/about` },
+        ...[
+          isOwnProfile
+            ? { title: 'Activity', segment: `${parentLayoutSegment}/activity` }
+            : undefined,
+        ],
       ].map((item) => {
+        if (!item) return;
         const { title, segment } = item;
         return (
           <TabItem
