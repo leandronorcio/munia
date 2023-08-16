@@ -44,6 +44,7 @@ export function CommentCreate({ postId }: { postId: number }) {
             content={content}
             setContent={setContent}
             placeholder="Write your comment here..."
+            shouldFocusOnMount={false}
           />
         </div>
         <div className="self-end">

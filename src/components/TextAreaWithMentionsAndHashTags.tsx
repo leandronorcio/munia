@@ -19,10 +19,12 @@ interface TextAreaWithMentionsAndHashTags
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   content: string;
   setContent: Dispatch<SetStateAction<string>>;
+  shouldFocusOnMount?: boolean;
 }
 export function TextAreaWithMentionsAndHashTags({
   content,
   setContent,
+  shouldFocusOnMount = true,
   ...rest
 }: TextAreaWithMentionsAndHashTags) {
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -111,8 +113,10 @@ export function TextAreaWithMentionsAndHashTags({
         textareaRef.current?.scrollHeight + 'px';
   }, [content]);
 
-  // Focus the `TextArea` on mount
+  // Focus the `TextArea` on mount if requested
   useEffect(() => {
+    if (!shouldFocusOnMount) return;
+
     textareaRef.current?.focus();
     // Set the cursor position to the end of the `TextArea`'s value
     const start = content.length;
