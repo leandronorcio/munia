@@ -51,15 +51,17 @@ export async function POST(
         userId: true,
       },
     });
-    await prisma.activity.create({
-      data: {
-        type: 'CREATE_REPLY',
-        sourceId: res.id,
-        sourceUserId: user?.id,
-        targetId: commentId,
-        targetUserId: comment?.userId,
-      },
-    });
+    if (comment) {
+      await prisma.activity.create({
+        data: {
+          type: 'CREATE_REPLY',
+          sourceId: res.id,
+          sourceUserId: userId,
+          targetId: commentId,
+          targetUserId: comment.userId,
+        },
+      });
+    }
 
     // Log the 'REPLY_MENTION' activity if applicable
     await mentionsActivityLogger({

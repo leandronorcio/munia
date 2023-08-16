@@ -19,13 +19,14 @@ export async function POST(
   const [user] = await getServerUser();
   if (!user || params.userId !== user.id)
     return NextResponse.json({}, { status: 401 });
+  const userId = user.id;
 
   const { commentId } = await request.json();
 
   // Check first if the comment is already liked
   const isLiked = await prisma.commentLike.count({
     where: {
-      userId: user.id,
+      userId: userId,
       commentId,
     },
   });
@@ -38,7 +39,7 @@ export async function POST(
   // Like the comment
   const res = await prisma.commentLike.create({
     data: {
-      userId: user.id,
+      userId: userId,
       commentId,
     },
   });
@@ -53,16 +54,18 @@ export async function POST(
       userId: true,
     },
   });
-  const type = comment?.parentId ? 'REPLY_LIKE' : 'COMMENT_LIKE';
-  await prisma.activity.create({
-    data: {
-      type,
-      sourceId: res.id,
-      sourceUserId: user.id,
-      targetId: commentId,
-      targetUserId: comment?.userId,
-    },
-  });
+  if (comment) {
+    const type = comment?.parentId ? 'REPLY_LIKE' : 'COMMENT_LIKE';
+    await prisma.activity.create({
+      data: {
+        type,
+        sourceId: res.id,
+        sourceUserId: userId,
+        targetId: commentId,
+        targetUserId: comment?.userId,
+      },
+    });
+  }
 
   return NextResponse.json({});
 }
