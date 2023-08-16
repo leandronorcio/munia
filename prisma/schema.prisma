@@ -117,8 +117,8 @@ model Comment {
   commentLikes CommentLike[]
 
   // If there is a `postId`, it is a comment
-  post   Post? @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId Int?
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId Int
 
   // If there is a `parentId`, it is a reply
   parent   Comment? @relation("Replies", fields: [parentId], references: [id], onDelete: Cascade)

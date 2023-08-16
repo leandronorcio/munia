@@ -32,25 +32,34 @@ export async function POST(
     });
     content = str;
 
-    const res = await prisma.comment.create({
-      data: {
-        content,
-        userId,
-        parentId: commentId,
-      },
-      include: includeToComment(userId),
-    });
-
-    // Record a 'CREATE_REPLY' activity
-    // Find the owner of the comment being replied to
     const comment = await prisma.comment.findUnique({
       where: {
         id: commentId,
       },
       select: {
         userId: true,
+        postId: true,
       },
     });
+
+    if (!comment)
+      return NextResponse.json(
+        { error: 'The comment to reply to does not exist.' },
+        { status: 404 },
+      );
+
+    const res = await prisma.comment.create({
+      data: {
+        content,
+        userId,
+        parentId: commentId,
+        postId: comment.postId,
+      },
+      include: includeToComment(userId),
+    });
+
+    // Record a 'CREATE_REPLY' activity
+    // Find the owner of the comment being replied to
     if (comment) {
       await prisma.activity.create({
         data: {

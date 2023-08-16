@@ -97,7 +97,7 @@ export interface FindCommentResult {
   content: string;
   createdAt: Date;
   userId: string;
-  postId: number | null;
+  postId: number;
   parentId: number | null;
   user: {
     id: string;
@@ -126,7 +126,7 @@ export interface FindCommentResult {
  */
 export interface GetComment {
   id: number;
-  postId: number | null;
+  postId: number;
   parentId: number | null;
   content: string;
   createdAt: Date;
