@@ -4,12 +4,11 @@ import {
   useInfiniteQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { GetPost, PostIds, VisualMedia } from 'types';
+import { GetPost, PostIds } from 'types';
 import { useCallback, useEffect, useRef } from 'react';
 import useOnScreen from '@/hooks/useOnScreen';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Post } from './Post';
-import { useCreatePost } from '@/hooks/useCreatePost';
 import { useDeletePostMutation } from '@/hooks/mutations/useDeletePostMutation';
 import { AllCaughtUp } from './AllCaughtUp';
 import { POSTS_PER_PAGE } from '@/constants';
@@ -27,7 +26,6 @@ export function Posts({
   const { deleteMutation } = useDeletePostMutation();
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
-  const { launchEditPost } = useCreatePost();
 
   const {
     data,
@@ -54,6 +52,8 @@ export function Posts({
       }
 
       const posts: GetPost[] = await res.json();
+
+      // Set query data for each post, these queries will be used by the <Post> component
       return posts.map((post) => {
         qc.setQueryData(['posts', post.id], post);
         return {
@@ -87,25 +87,6 @@ export function Posts({
   const deletePost = useCallback((postId: number) => {
     deleteMutation.mutate({ postId });
   }, []);
-
-  const editPost = useCallback(
-    ({
-      postId,
-      content,
-      visualMedia,
-    }: {
-      postId: number;
-      content: string;
-      visualMedia?: VisualMedia[];
-    }) => {
-      launchEditPost({
-        postId,
-        initialContent: content,
-        initialVisualMedia: visualMedia || [],
-      });
-    },
-    [],
-  );
 
   const toggleComments = useCallback(async (postId: number) => {
     qc.setQueryData<InfiniteData<{ id: number; commentsShown: boolean }[]>>(
@@ -167,11 +148,8 @@ export function Posts({
                 <Post
                   id={post.id}
                   commentsShown={post.commentsShown}
-                  {...{
-                    editPost,
-                    deletePost,
-                    toggleComments,
-                  }}
+                  deletePost={deletePost}
+                  toggleComments={toggleComments}
                 />
               </motion.div>
             ))}
