@@ -6,6 +6,7 @@ import {
   User,
   About,
   Follow,
+  ActivityType,
 } from '@prisma/client';
 
 // Use this shortened type of `User`, when the other properties aren't necessary.
@@ -141,4 +142,14 @@ export interface GetComment {
 export interface DiscoverFilters {
   gender?: 'MALE' | 'FEMALE' | 'NONBINARY';
   relationshipStatus?: 'SINGLE' | 'IN_A_RELATIONSHIP' | 'ENGAGED' | 'MARRIED';
+}
+
+interface GetActivity {
+  id: number;
+  type: ActivityType;
+  sourceId: number | null;
+  targetId: number | null;
+  createdAt: Date;
+  sourceUser: UserSummary;
+  targetUser: UserSummary;
 }
