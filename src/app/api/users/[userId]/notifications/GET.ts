@@ -1,8 +1,7 @@
 /**
- * GET /api/users/:userId/activity
- * - Returns the activity logs of the authenticated user.
+ * GET /api/users/:userId/notifications
+ * - Returns the notifications of an authenticated user.
  */
-
 import { getServerUser } from '@/lib/getServerUser';
 import prisma from '@/lib/prisma/prisma';
 import { NextResponse } from 'next/server';
@@ -26,9 +25,13 @@ export async function GET(request: Request) {
       gender: true,
     },
   };
-  const activities: GetActivity[] = await prisma.activity.findMany({
+
+  const notifications: GetActivity[] = await prisma.activity.findMany({
     where: {
-      sourceUserId: userId,
+      targetUserId: userId,
+      sourceUserId: {
+        not: userId,
+      },
     },
     select: {
       id: true,
@@ -51,5 +54,5 @@ export async function GET(request: Request) {
     },
   });
 
-  return NextResponse.json(activities);
+  return NextResponse.json(notifications);
 }

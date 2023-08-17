@@ -7,6 +7,7 @@ import {
   About,
   Follow,
   ActivityType,
+  Gender,
 } from '@prisma/client';
 
 // Use this shortened type of `User`, when the other properties aren't necessary.
@@ -150,6 +151,6 @@ interface GetActivity {
   sourceId: number | null;
   targetId: number | null;
   createdAt: Date;
-  sourceUser: UserSummary;
-  targetUser: UserSummary;
+  sourceUser: UserSummary & { gender: Gender | null };
+  targetUser: UserSummary & { gender: Gender | null };
 }
