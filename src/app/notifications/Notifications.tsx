@@ -1,14 +1,19 @@
 'use client';
-import { AllCaughtUp } from '@/components/AllCaughtUp';
+
 import useOnScreen from '@/hooks/useOnScreen';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { GetActivity } from 'types';
-import { Activity } from '../../../components/Activity';
+import { Activity } from '../../components/Activity';
+import { AllCaughtUp } from '../../components/AllCaughtUp';
+import { useSession } from 'next-auth/react';
 
-export function Activities({ userId }: { userId: string }) {
+export function Notifications() {
+  const { data: session } = useSession();
+  const userId = session?.user.id;
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
+
   const {
     data,
     error,
@@ -18,13 +23,13 @@ export function Activities({ userId }: { userId: string }) {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery<GetActivity[]>({
-    queryKey: ['users', userId, 'activity'],
+    queryKey: ['users', userId, 'notifications'],
     queryFn: async ({ pageParam = 0 }) => {
       const res = await fetch(
-        `/api/users/${userId}/activity?limit=5&cursor=${pageParam}`,
+        `/api/users/${userId}/notifications?limit=5&cursor=${pageParam}`,
       );
       if (!res.ok) {
-        throw new Error('Failed to load activities.');
+        throw new Error('Failed to load notifications.');
       }
 
       return (await res.json()) as GetActivity[];

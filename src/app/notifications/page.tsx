@@ -1,23 +1,10 @@
-'use client';
-import { CountContext } from '@/contexts/CountContext';
-import Link from 'next/link';
-import { useContext } from 'react';
+import { Notifications } from '@/app/notifications/Notifications';
 
-export default function Messages() {
-  const { count, setCount } = useContext(CountContext);
+export default async function Page() {
   return (
-    <div>
-      <div className="h-[200px] w-full bg-green-200"></div>
-      <div className="h-[200px] w-full bg-red-200"></div>
-      <p>{count}</p>
-      <div className="h-[200px] w-full bg-green-200"></div>
-      <div className="h-[200px] w-full bg-red-200"></div>
-      <button onClick={() => setCount((prev) => prev + 1)}>Add</button>
-      <div className="h-[200px] w-full bg-green-200"></div>
-      <div className="h-[200px] w-full bg-red-200"></div>
-      <Link href={'/leandronorcio'}>Go to Profile</Link>
-      <div className="h-[200px] w-full bg-green-200"></div>
-      <div className="h-[200px] w-full bg-red-200"></div>
+    <div className="pt-4">
+      <h1 className="mb-6 text-4xl font-bold">Notifications</h1>
+      <Notifications />
     </div>
   );
 }
