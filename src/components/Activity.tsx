@@ -1,8 +1,8 @@
 import { GetActivity } from 'types';
 import { ActivityCard } from './ActivityCard';
 import { SemiBold } from '@/components/ui/SemiBold';
-import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 /** Use this component to render individual activities or notifications. */
 export function Activity({
@@ -12,9 +12,11 @@ export function Activity({
   targetId,
   targetUser,
   createdAt,
+  isNotificationRead,
 }: GetActivity) {
   const { data: session } = useSession();
   const userId = session?.user.id;
+  const router = useRouter();
 
   // If this is an activity, the `sourceUser.id` is guaranteed to equal the `userId`.
   const isActivity = sourceUser.id === userId;
@@ -33,136 +35,142 @@ export function Activity({
   const targetProperNoun = isNotification ? 'you' : targetUser.name;
   const targetPossessiveNoun = isNotification ? 'your' : `${targetUser.name}'s`;
 
+  const isRead = isActivity || isNotificationRead;
+  const navigate = (href: string) => {
+    router.push(href);
+    console.log('do something here');
+  };
+
   if (type === 'CREATE_FOLLOW') {
     return (
-      <Link href={`/${isActivity ? targetUser.username : sourceUser.username}`}>
-        <ActivityCard
-          type={type}
-          user={userToDisplay}
-          date={new Date(createdAt)}
-        >
-          <SemiBold>{sourceProperNoun}</SemiBold> started following{' '}
-          <SemiBold>{targetProperNoun}</SemiBold>!
-        </ActivityCard>
-      </Link>
+      <ActivityCard
+        type={type}
+        user={userToDisplay}
+        date={new Date(createdAt)}
+        isRead={isRead}
+        onClick={() =>
+          navigate(`/${isActivity ? targetUser.username : sourceUser.username}`)
+        }
+      >
+        <SemiBold>{sourceProperNoun}</SemiBold> started following{' '}
+        <SemiBold>{targetProperNoun}</SemiBold>!
+      </ActivityCard>
     );
   }
 
   if (type === 'POST_LIKE') {
     return (
-      <Link href={`/posts/${targetId}`}>
-        <ActivityCard
-          type={type}
-          user={userToDisplay}
-          date={new Date(createdAt)}
-        >
-          <SemiBold>{sourceProperNoun}</SemiBold> liked{' '}
-          <SemiBold>{targetPossessiveNoun}</SemiBold> post.
-        </ActivityCard>
-      </Link>
+      <ActivityCard
+        type={type}
+        user={userToDisplay}
+        date={new Date(createdAt)}
+        isRead={isRead}
+        onClick={() => navigate(`/posts/${targetId}`)}
+      >
+        <SemiBold>{sourceProperNoun}</SemiBold> liked{' '}
+        <SemiBold>{targetPossessiveNoun}</SemiBold> post.
+      </ActivityCard>
     );
   }
   if (type === 'POST_MENTION') {
     return (
-      <Link href={`/posts/${sourceId}`}>
-        <ActivityCard
-          type={type}
-          user={userToDisplay}
-          date={new Date(createdAt)}
-        >
-          <SemiBold>{sourceProperNoun}</SemiBold> mentioned{' '}
-          <SemiBold>{targetProperNoun}</SemiBold> in {sourcePossessiveNoun}{' '}
-          post.
-        </ActivityCard>
-      </Link>
+      <ActivityCard
+        type={type}
+        user={userToDisplay}
+        date={new Date(createdAt)}
+        isRead={isRead}
+        onClick={() => navigate(`/posts/${sourceId}`)}
+      >
+        <SemiBold>{sourceProperNoun}</SemiBold> mentioned{' '}
+        <SemiBold>{targetProperNoun}</SemiBold> in {sourcePossessiveNoun} post.
+      </ActivityCard>
     );
   }
 
   if (type === 'CREATE_COMMENT') {
     return (
-      <Link href={`/comments/${sourceId}`}>
-        <ActivityCard
-          type={type}
-          user={userToDisplay}
-          date={new Date(createdAt)}
-        >
-          <SemiBold>{sourceProperNoun}</SemiBold> commented on{' '}
-          <SemiBold>{targetPossessiveNoun}</SemiBold> post.
-        </ActivityCard>
-      </Link>
+      <ActivityCard
+        type={type}
+        user={userToDisplay}
+        date={new Date(createdAt)}
+        isRead={isRead}
+        onClick={() => navigate(`/comments/${sourceId}`)}
+      >
+        <SemiBold>{sourceProperNoun}</SemiBold> commented on{' '}
+        <SemiBold>{targetPossessiveNoun}</SemiBold> post.
+      </ActivityCard>
     );
   }
   if (type === 'COMMENT_LIKE') {
     return (
-      <Link href={`/comments/${targetId}`}>
-        <ActivityCard
-          type={type}
-          user={userToDisplay}
-          date={new Date(createdAt)}
-        >
-          <SemiBold>{sourceProperNoun}</SemiBold> liked{' '}
-          <SemiBold>{targetPossessiveNoun}</SemiBold> comment.
-        </ActivityCard>
-      </Link>
+      <ActivityCard
+        type={type}
+        user={userToDisplay}
+        date={new Date(createdAt)}
+        isRead={isRead}
+        onClick={() => navigate(`/comments/${targetId}`)}
+      >
+        <SemiBold>{sourceProperNoun}</SemiBold> liked{' '}
+        <SemiBold>{targetPossessiveNoun}</SemiBold> comment.
+      </ActivityCard>
     );
   }
   if (type === 'COMMENT_MENTION') {
     return (
-      <Link href={`/comments/${sourceId}`}>
-        <ActivityCard
-          type={type}
-          user={userToDisplay}
-          date={new Date(createdAt)}
-        >
-          <SemiBold>{sourceProperNoun}</SemiBold> mentioned{' '}
-          <SemiBold>{targetProperNoun}</SemiBold> in {sourcePossessiveNoun}{' '}
-          comment.
-        </ActivityCard>
-      </Link>
+      <ActivityCard
+        type={type}
+        user={userToDisplay}
+        date={new Date(createdAt)}
+        isRead={isRead}
+        onClick={() => navigate(`/comments/${sourceId}`)}
+      >
+        <SemiBold>{sourceProperNoun}</SemiBold> mentioned{' '}
+        <SemiBold>{targetProperNoun}</SemiBold> in {sourcePossessiveNoun}{' '}
+        comment.
+      </ActivityCard>
     );
   }
 
   if (type === 'CREATE_REPLY') {
     return (
-      <Link href={`/comments/${sourceId}`}>
-        <ActivityCard
-          type={type}
-          user={userToDisplay}
-          date={new Date(createdAt)}
-        >
-          <SemiBold>{sourceProperNoun}</SemiBold> replied to{' '}
-          <SemiBold>{targetPossessiveNoun}</SemiBold> comment.
-        </ActivityCard>
-      </Link>
+      <ActivityCard
+        type={type}
+        user={userToDisplay}
+        date={new Date(createdAt)}
+        isRead={isRead}
+        onClick={() => navigate(`/comments/${sourceId}`)}
+      >
+        <SemiBold>{sourceProperNoun}</SemiBold> replied to{' '}
+        <SemiBold>{targetPossessiveNoun}</SemiBold> comment.
+      </ActivityCard>
     );
   }
   if (type === 'REPLY_LIKE') {
     return (
-      <Link href={`/comments/${targetId}`}>
-        <ActivityCard
-          type={type}
-          user={userToDisplay}
-          date={new Date(createdAt)}
-        >
-          <SemiBold>{sourceProperNoun}</SemiBold> liked{' '}
-          <SemiBold>{targetPossessiveNoun}</SemiBold> reply.
-        </ActivityCard>
-      </Link>
+      <ActivityCard
+        type={type}
+        user={userToDisplay}
+        date={new Date(createdAt)}
+        isRead={isRead}
+        onClick={() => navigate(`/comments/${targetId}`)}
+      >
+        <SemiBold>{sourceProperNoun}</SemiBold> liked{' '}
+        <SemiBold>{targetPossessiveNoun}</SemiBold> reply.
+      </ActivityCard>
     );
   }
   if (type === 'REPLY_MENTION') {
     return (
-      <Link href={`/comments/${sourceId}`}>
-        <ActivityCard
-          type={type}
-          user={userToDisplay}
-          date={new Date(createdAt)}
-        >
-          <SemiBold>{sourceProperNoun}</SemiBold> mentioned{' '}
-          <SemiBold>{targetProperNoun}</SemiBold> in {sourcePossessiveNoun}{' '}
-          reply.
-        </ActivityCard>
-      </Link>
+      <ActivityCard
+        type={type}
+        user={userToDisplay}
+        date={new Date(createdAt)}
+        isRead={isRead}
+        onClick={() => navigate(`/comments/${sourceId}`)}
+      >
+        <SemiBold>{sourceProperNoun}</SemiBold> mentioned{' '}
+        <SemiBold>{targetProperNoun}</SemiBold> in {sourcePossessiveNoun} reply.
+      </ActivityCard>
     );
   }
 
