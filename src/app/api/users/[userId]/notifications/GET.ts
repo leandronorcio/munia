@@ -39,6 +39,7 @@ export async function GET(request: Request) {
       sourceId: true,
       targetId: true,
       createdAt: true,
+      isNotificationRead: true,
       sourceUser: selectUser,
       targetUser: selectUser,
     },

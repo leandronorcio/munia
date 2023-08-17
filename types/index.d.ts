@@ -151,6 +151,7 @@ interface GetActivity {
   sourceId: number | null;
   targetId: number | null;
   createdAt: Date;
+  isNotificationRead: boolean;
   sourceUser: UserSummary & { gender: Gender | null };
   targetUser: UserSummary & { gender: Gender | null };
 }
