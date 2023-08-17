@@ -2,7 +2,7 @@
 import { DropdownMenu } from './ui/DropdownMenu';
 import { DropdownItem } from './ui/DropdownItem';
 import { GetComment } from 'types';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { isEqual } from 'lodash';
 import { ToggleStepper } from './ui/ToggleStepper';
 import SvgHeart from '@/svg_components/Heart';
@@ -15,6 +15,7 @@ import { useCommentsMutations } from '@/hooks/mutations/useCommentsMutations';
 import { CommentReplies } from './CommentReplies';
 import { errorNotifer } from '@/lib/errorNotifier';
 import { useQueryClient } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
 
 export const Comment = memo(
   ({
@@ -44,6 +45,20 @@ export const Comment = memo(
     const numberOfReplies = _count.replies;
     const { prompt } = useBasicDialogs();
     const { createReplyMutation } = useCommentsMutations();
+
+    const searchParams = useSearchParams();
+    // Highlight comment if the `commentId` is equal to the `comment-id` search param
+    const shouldHighlight =
+      searchParams.get('comment-id') === commentId.toString();
+
+    // Show the replies if the comment to be highlighted is a reply to this comment
+    useEffect(() => {
+      const shouldOpenRepliesOnMount =
+        searchParams.get('comment-parent-id') === commentId.toString();
+      if (!shouldOpenRepliesOnMount) return;
+      if (repliesShown) return;
+      toggleReplies({ commentId });
+    }, []);
 
     const handleCreateReply = () => {
       prompt({
@@ -95,6 +110,7 @@ export const Comment = memo(
             username={author.username}
             content={content}
             createdAt={createdAt}
+            shouldHighlight={shouldHighlight}
           />
 
           <div className="flex origin-left">

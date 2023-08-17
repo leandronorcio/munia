@@ -8,6 +8,7 @@ import { ToggleStepper } from './ui/ToggleStepper';
 import SvgHeart from '@/svg_components/Heart';
 import { CommentContent } from './CommentContent';
 import { CommentProfilePhoto } from './CommentProfilePhoto';
+import { useSearchParams } from 'next/navigation';
 
 export const CommentReply = memo(
   ({
@@ -33,6 +34,11 @@ export const CommentReply = memo(
     const handleLikeClick = () =>
       !isLiked ? likeComment({ commentId }) : unLikeComment({ commentId });
 
+    const searchParams = useSearchParams();
+    // Highlight comment if the `commentId` is equal to the `comment-id` search param
+    const shouldHighlight =
+      searchParams.get('comment-id') === commentId.toString();
+
     return (
       <div className="flex gap-4">
         <CommentProfilePhoto
@@ -47,6 +53,7 @@ export const CommentReply = memo(
             username={author.username}
             content={content}
             createdAt={createdAt}
+            shouldHighlight={shouldHighlight}
           />
 
           <div className="flex origin-left">

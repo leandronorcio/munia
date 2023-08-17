@@ -25,7 +25,7 @@ export default async function Page({
 
   const searchParams = new URLSearchParams('');
   searchParams.set('comment-id', commentId.toString());
-  if (parentId) searchParams.set('parent-id', parentId.toString());
+  if (parentId) searchParams.set('comment-parent-id', parentId.toString());
 
   return redirect(`/posts/${postId}?${searchParams.toString()}`);
 }

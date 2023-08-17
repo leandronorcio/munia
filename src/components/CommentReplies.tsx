@@ -20,8 +20,16 @@ export function CommentReplies({ parentId }: { parentId: number }) {
   const { handleEdit, handleDelete } = useUpdateDeleteComments({ queryKey });
   const { likeComment, unLikeComment } = useLikeUnlikeComments({ queryKey });
 
-  if (isLoading) return <p>Loading comments...</p>;
-  if (isError) return <p>Error loading comments.</p>;
+  if (isLoading)
+    return (
+      <p className="text-sm font-semibold text-gray-500">Loading replies...</p>
+    );
+  if (isError)
+    return (
+      <p className="text-sm font-semibold text-gray-500">
+        Error loading replies.
+      </p>
+    );
   return (
     <div>
       {replies.map((reply) => (
