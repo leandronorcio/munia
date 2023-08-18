@@ -5,6 +5,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { GetActivity } from 'types';
 import { Activity } from '../../../components/Activity';
+import { ACTIVITIES_PER_PAGE } from '@/constants';
 
 export function Activities({ userId }: { userId: string }) {
   const bottomElRef = useRef<HTMLDivElement>(null);
@@ -21,7 +22,7 @@ export function Activities({ userId }: { userId: string }) {
     queryKey: ['users', userId, 'activity'],
     queryFn: async ({ pageParam = 0 }) => {
       const res = await fetch(
-        `/api/users/${userId}/activity?limit=5&cursor=${pageParam}`,
+        `/api/users/${userId}/activity?limit=${ACTIVITIES_PER_PAGE}&cursor=${pageParam}`,
       );
       if (!res.ok) {
         throw new Error('Failed to load activities.');

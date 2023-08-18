@@ -3,9 +3,11 @@ import { ActivityCard } from './ActivityCard';
 import { SemiBold } from '@/components/ui/SemiBold';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useNotificationsReadStatusMutations } from '@/hooks/mutations/useNotificationsReadStatusMutations';
 
 /** Use this component to render individual activities or notifications. */
 export function Activity({
+  id,
   type,
   sourceId,
   sourceUser,
@@ -17,6 +19,7 @@ export function Activity({
   const { data: session } = useSession();
   const userId = session?.user.id;
   const router = useRouter();
+  const { markAsReadMutation } = useNotificationsReadStatusMutations();
 
   // If this is an activity, the `sourceUser.id` is guaranteed to equal the `userId`.
   const isActivity = sourceUser.id === userId;
@@ -38,7 +41,10 @@ export function Activity({
   const isRead = isActivity || isNotificationRead;
   const navigate = (href: string) => {
     router.push(href);
-    console.log('do something here');
+
+    // Set the notification as read
+    if (!isNotification) return;
+    markAsReadMutation.mutate({ notificationId: id });
   };
 
   if (type === 'CREATE_FOLLOW') {

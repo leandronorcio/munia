@@ -7,12 +7,17 @@ import { GetActivity } from 'types';
 import { Activity } from '../../components/Activity';
 import { AllCaughtUp } from '../../components/AllCaughtUp';
 import { useSession } from 'next-auth/react';
+import { DropdownMenu } from '@/components/ui/DropdownMenu';
+import { DropdownItem } from '@/components/ui/DropdownItem';
+import { useNotificationsReadStatusMutations } from '@/hooks/mutations/useNotificationsReadStatusMutations';
+import { ACTIVITIES_PER_PAGE } from '@/constants';
 
 export function Notifications() {
   const { data: session } = useSession();
   const userId = session?.user.id;
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
+  const { markAllAsReadMutation } = useNotificationsReadStatusMutations();
 
   const {
     data,
@@ -26,7 +31,7 @@ export function Notifications() {
     queryKey: ['users', userId, 'notifications'],
     queryFn: async ({ pageParam = 0 }) => {
       const res = await fetch(
-        `/api/users/${userId}/notifications?limit=5&cursor=${pageParam}`,
+        `/api/users/${userId}/notifications?limit=${ACTIVITIES_PER_PAGE}&cursor=${pageParam}`,
       );
       if (!res.ok) {
         throw new Error('Failed to load notifications.');
@@ -46,6 +51,7 @@ export function Notifications() {
       return lastPage.slice(-1)[0].id;
     },
     refetchOnWindowFocus: false,
+    staleTime: Infinity,
   });
 
   useEffect(() => {
@@ -56,8 +62,16 @@ export function Notifications() {
     fetchNextPage();
   }, [isBottomOnScreen]);
 
+  const markAllAsRead = () => markAllAsReadMutation.mutate();
+
   return (
     <div>
+      <div className="flex justify-between">
+        <h1 className="mb-6 text-4xl font-bold">Notifications</h1>
+        <DropdownMenu>
+          <DropdownItem onClick={markAllAsRead}>Mark all as read</DropdownItem>
+        </DropdownMenu>
+      </div>
       {data?.pages.flat().map((activity) => {
         return <Activity key={activity.id} {...activity} />;
       })}

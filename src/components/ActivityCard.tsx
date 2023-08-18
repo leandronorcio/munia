@@ -4,7 +4,6 @@ import { formatDistanceToNowStrict } from 'date-fns';
 import { ComponentProps } from 'react';
 import { UserSummary } from 'types';
 import { ActivityIcon } from './ActivityIcon';
-import { cn } from '@/lib/cn';
 
 interface ActivityCardProps extends ComponentProps<'div'> {
   children: React.ReactNode;
@@ -24,10 +23,7 @@ export function ActivityCard({
 }: ActivityCardProps) {
   return (
     <div
-      className={cn(
-        'mb-4 flex cursor-pointer gap-3 rounded-3xl p-4 hover:bg-gray-200/70',
-        isRead ? 'bg-gray-100' : 'bg-slate-200/70',
-      )}
+      className="mb-4 flex cursor-pointer gap-3 rounded-3xl bg-gray-100 p-4 hover:bg-gray-200/70"
       {...rest}
     >
       <div className="relative flex-initial">
@@ -40,12 +36,19 @@ export function ActivityCard({
         </div>
         <ActivityIcon type={type} />
       </div>
-      <div className="my-auto">
+
+      <div className="my-auto flex-1">
         <p>{children}</p>
         <p className="text-sm text-gray-600">
           {formatDistanceToNowStrict(date)} ago
         </p>
       </div>
+
+      {!isRead && (
+        <div className="grid place-items-center">
+          <div className="h-3 w-3 rounded-full bg-violet-500"></div>
+        </div>
+      )}
     </div>
   );
 }
