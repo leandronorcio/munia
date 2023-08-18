@@ -111,7 +111,7 @@ export function useCreateUpdatePostMutations({
       // Update the query for the updated post
       qc.setQueryData(['posts', updatedPost.id], updatedPost);
 
-      // Update the inifinite query of `PostIds[]`
+      // Update the inifinite query of `PostIds[]` TODO: There might be no need for `setQueriesData`
       qc.setQueriesData<InfiniteData<PostIds[]>>(queryKey, (oldData) => {
         if (!oldData) return;
 

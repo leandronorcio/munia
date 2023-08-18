@@ -9,6 +9,7 @@ import { chunk } from 'lodash';
 import { POSTS_PER_PAGE } from '@/constants';
 import { useSession } from 'next-auth/react';
 import { errorNotifer } from '@/lib/errorNotifier';
+import { PostIds } from 'types';
 
 export function useDeletePostMutation() {
   const qc = useQueryClient();
@@ -34,34 +35,31 @@ export function useDeletePostMutation() {
       // Snapshot the previous posts
       const previousPosts = qc.getQueryData(queryKey);
 
-      // Optimistically remove the
-      qc.setQueriesData<InfiniteData<{ id: number; commentsShown: boolean }[]>>(
-        queryKey,
-        (oldData) => {
-          if (!oldData) return;
+      // Optimistically remove the post
+      qc.setQueriesData<InfiniteData<PostIds[]>>(queryKey, (oldData) => {
+        if (!oldData) return;
 
-          // Flatten the old pages first
-          const oldPosts = oldData.pages.flat();
+        // Flatten the old pages first
+        const oldPosts = oldData.pages.flat();
 
-          // Remove the deleted post from the `oldPosts`
-          const newPosts = oldPosts.filter((post) => post.id !== postId);
+        // Remove the deleted post from the `oldPosts`
+        const newPosts = oldPosts.filter((post) => post.id !== postId);
 
-          // Chunk the `newPosts` depending on the number of posts per page
-          const newPages = chunk(newPosts, POSTS_PER_PAGE);
+        // Chunk the `newPosts` depending on the number of posts per page
+        const newPages = chunk(newPosts, POSTS_PER_PAGE);
 
-          const newPageParams = [
-            // The first `pageParam` is undefined as the initial page does not use a `pageParam`
-            undefined,
-            // Create the new `pageParams`, it must contain the id of each page's (except last page's) last post
-            ...newPages.slice(0, -1).map((page) => page.at(-1)?.id),
-          ];
+        const newPageParams = [
+          // The first `pageParam` is undefined as the initial page does not use a `pageParam`
+          undefined,
+          // Create the new `pageParams`, it must contain the id of each page's (except last page's) last post
+          ...newPages.slice(0, -1).map((page) => page.at(-1)?.id),
+        ];
 
-          return {
-            pages: newPages,
-            pageParams: newPageParams,
-          };
-        },
-      );
+        return {
+          pages: newPages,
+          pageParams: newPageParams,
+        };
+      });
 
       // Return a context object with the snapshotted value
       return { previousPosts };
