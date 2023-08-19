@@ -36,7 +36,7 @@ export const Post = memo(
     const { likeMutation, unLikeMutation } = usePostLikesMutations({ postId });
     const { launchEditPost } = useCreatePost();
 
-    const { data, isLoading, isError } = useQuery<GetPost>({
+    const { data, isPending, isError } = useQuery<GetPost>({
       queryKey: ['posts', postId],
       queryFn: async () => {
         const res = await fetch(`/api/posts/${postId}`);
@@ -91,7 +91,7 @@ export const Post = memo(
       toggleComments(postId);
     };
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isPending) return <p>Loading...</p>;
     if (isError) return <p>Error loading post.</p>;
     if (!data) return <p>This post no longer exists.</p>;
 

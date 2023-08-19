@@ -127,7 +127,7 @@ export default function CreatePost({
             size="small"
             disabled={content === '' && visualMedia.length === 0}
             loading={
-              createPostMutation.isLoading || updatePostMutation.isLoading
+              createPostMutation.isPending || updatePostMutation.isPending
             }
           >
             Post

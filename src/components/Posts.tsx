@@ -1,6 +1,8 @@
 'use client';
 import {
+  DefaultError,
   InfiniteData,
+  QueryKey,
   useInfiniteQuery,
   useQueryClient,
 } from '@tanstack/react-query';
@@ -35,9 +37,16 @@ export function Posts({
     isFetching,
     isFetchingNextPage,
     status,
-  } = useInfiniteQuery<PostIds[]>({
+  } = useInfiniteQuery<
+    PostIds[],
+    Error,
+    InfiniteData<PostIds[], unknown>,
+    QueryKey,
+    number
+  >({
     queryKey,
-    queryFn: async ({ pageParam = 0 }) => {
+    defaultPageParam: 0,
+    queryFn: async ({ pageParam }) => {
       const endpoint = type === 'profile' ? 'posts' : 'feed';
       const params = new URLSearchParams();
       params.set('limit', POSTS_PER_PAGE.toString());
@@ -52,7 +61,6 @@ export function Posts({
       }
 
       const posts: GetPost[] = await res.json();
-
       // Set query data for each post, these queries will be used by the <Post> component
       return posts.map((post) => {
         qc.setQueryData(['posts', post.id], post);
@@ -120,7 +128,7 @@ export function Posts({
   return (
     <>
       <div className="flex flex-col">
-        {status === 'loading' ? (
+        {status === 'pending' ? (
           <p>Loading posts...</p>
         ) : status === 'error' ? (
           <p>Error loading posts.</p>

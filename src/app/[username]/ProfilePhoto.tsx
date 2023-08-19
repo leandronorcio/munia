@@ -11,7 +11,7 @@ export default function ProfilePhoto({
   isOwnProfile: boolean;
   photoUrl: string | null;
 }) {
-  const { inputFileRef, openInput, handleChange, isLoading } =
+  const { inputFileRef, openInput, handleChange, isPending } =
     useUpdateProfileAndCoverPhotoClient('profile');
   const { showVisualMediaModal } = useVisualMediaModal();
 
@@ -51,7 +51,7 @@ export default function ProfilePhoto({
               Icon={Camera}
               onClick={openInput}
               size="small"
-              loading={isLoading}
+              loading={isPending}
             />
           </div>
         </label>

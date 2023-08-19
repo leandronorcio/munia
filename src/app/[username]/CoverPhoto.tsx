@@ -11,7 +11,7 @@ export default function CoverPhoto({
   isOwnProfile: boolean;
   photoUrl: string | null;
 }) {
-  const { inputFileRef, openInput, handleChange, isLoading } =
+  const { inputFileRef, openInput, handleChange, isPending } =
     useUpdateProfileAndCoverPhotoClient('cover');
   const { showVisualMediaModal } = useVisualMediaModal();
 
@@ -51,7 +51,7 @@ export default function CoverPhoto({
               Icon={Image}
               onClick={openInput}
               size="small"
-              loading={isLoading}
+              loading={isPending}
             />
           </div>
         </label>

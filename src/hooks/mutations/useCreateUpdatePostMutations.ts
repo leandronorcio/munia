@@ -61,7 +61,7 @@ export function useCreateUpdatePostMutations({
       qc.setQueryData(['posts', createdPost.id], createdPost);
 
       // Update the inifinite query of `PostIds[]`
-      qc.setQueriesData<InfiniteData<PostIds[]>>(queryKey, (oldData) => {
+      qc.setQueriesData<InfiniteData<PostIds[]>>({ queryKey }, (oldData) => {
         if (!oldData) return;
 
         // Flatten the old pages first then prepend the newly created post
@@ -112,7 +112,7 @@ export function useCreateUpdatePostMutations({
       qc.setQueryData(['posts', updatedPost.id], updatedPost);
 
       // Update the inifinite query of `PostIds[]` TODO: There might be no need for `setQueriesData`
-      qc.setQueriesData<InfiniteData<PostIds[]>>(queryKey, (oldData) => {
+      qc.setQueriesData<InfiniteData<PostIds[]>>({ queryKey }, (oldData) => {
         if (!oldData) return;
 
         // Flatten the old pages first

@@ -20,7 +20,7 @@ export function Comments({ postId }: { postId: number }) {
 
   const {
     data: comments,
-    isLoading,
+    isPending,
     isError,
     error,
   } = useQuery<GetComment[], Error>({
@@ -52,7 +52,7 @@ export function Comments({ postId }: { postId: number }) {
   return (
     <div>
       <div className="flex flex-col bg-white pt-2 ">
-        {isLoading ? (
+        {isPending ? (
           <p className="py-2 text-gray-600">Loading comments.</p>
         ) : isError ? (
           <p className="py-2 text-gray-600">{error.message}</p>

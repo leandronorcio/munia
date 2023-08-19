@@ -123,7 +123,7 @@ export const Comment = memo(
             <IconButton
               Icon={SvgArrowReply}
               onClick={handleCreateReply}
-              loading={createReplyMutation.isLoading}
+              loading={createReplyMutation.isPending}
             />
             {isOwnComment && (
               <DropdownMenu width="auto">

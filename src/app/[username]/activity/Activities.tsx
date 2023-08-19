@@ -1,7 +1,11 @@
 'use client';
 import { AllCaughtUp } from '@/components/AllCaughtUp';
 import useOnScreen from '@/hooks/useOnScreen';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import {
+  InfiniteData,
+  QueryKey,
+  useInfiniteQuery,
+} from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { GetActivity } from 'types';
 import { Activity } from '../../../components/Activity';
@@ -18,9 +22,16 @@ export function Activities({ userId }: { userId: string }) {
     isFetching,
     isFetchingNextPage,
     status,
-  } = useInfiniteQuery<GetActivity[]>({
+  } = useInfiniteQuery<
+    GetActivity[],
+    Error,
+    InfiniteData<GetActivity[], unknown>,
+    QueryKey,
+    number
+  >({
     queryKey: ['users', userId, 'activity'],
-    queryFn: async ({ pageParam = 0 }) => {
+    defaultPageParam: 0,
+    queryFn: async ({ pageParam }) => {
       const res = await fetch(
         `/api/users/${userId}/activity?limit=${ACTIVITIES_PER_PAGE}&cursor=${pageParam}`,
       );

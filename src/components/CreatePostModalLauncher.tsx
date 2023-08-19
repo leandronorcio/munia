@@ -1,6 +1,5 @@
 'use client';
 import { EmojiHappySmile, Image } from '@/svg_components';
-import { TextArea } from './ui/TextArea';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 
@@ -18,11 +17,7 @@ export function CreatePostModalLauncher() {
           }}
           className="flex flex-grow flex-col justify-center"
         >
-          <TextArea
-            placeholder="What's on your mind?"
-            className="cursor-pointer"
-            disabled
-          />
+          <p className="text-gray-400">What's on your mind?</p>
         </div>
       </div>
       <div className="flex flex-row gap-4">

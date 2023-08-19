@@ -32,7 +32,8 @@ export function Notifications() {
     status,
   } = useInfiniteQuery<GetActivity[]>({
     queryKey: ['users', userId, 'notifications'],
-    queryFn: async ({ pageParam = 0 }) => {
+    defaultPageParam: 0,
+    queryFn: async ({ pageParam }) => {
       const res = await fetch(
         `/api/users/${userId}/notifications?limit=${ACTIVITIES_PER_PAGE}&cursor=${pageParam}`,
       );

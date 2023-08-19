@@ -12,11 +12,11 @@ export const DiscoverProfile = memo(
      * Since the query function of <DiscoverProfiles> already created a query
      * cache for the user data, we can just access it here using the `useUserQuery()`
      */
-    const { data: user, isLoading, isError } = useUserQuery(userId);
+    const { data: user, isPending, isError } = useUserQuery(userId);
     const { goToProfile } = useGoToProfile();
     const { data: session } = useSession();
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isPending) return <div>Loading...</div>;
     if (isError) return <div>Error loading profile.</div>;
     if (!user) return <></>;
 

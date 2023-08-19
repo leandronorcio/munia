@@ -104,7 +104,7 @@ export function AboutItem({
             <Button
               type="submit"
               size="small"
-              loading={updateSessionUserDataMutation.isLoading}
+              loading={updateSessionUserDataMutation.isPending}
             >
               Save
             </Button>

@@ -53,7 +53,7 @@ export function CommentCreate({ postId }: { postId: number }) {
             mode="secondary"
             size="small"
             disabled={content === ''}
-            loading={createCommentMutation.isLoading}
+            loading={createCommentMutation.isPending}
             Icon={SvgSend}
           />
         </div>

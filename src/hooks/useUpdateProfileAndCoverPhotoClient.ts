@@ -61,6 +61,6 @@ export function useUpdateProfileAndCoverPhotoClient(
     inputFileRef,
     openInput,
     handleChange,
-    isLoading: updateSessionUserPhotosMutation.isLoading,
+    isPending: updateSessionUserPhotosMutation.isPending,
   };
 }

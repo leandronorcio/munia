@@ -9,7 +9,7 @@ export function ProfileActionButtons({
 }: {
   targetUserId: string;
 }) {
-  const { data: targetUser, isLoading } = useUserQuery(targetUserId);
+  const { data: targetUser, isPending } = useUserQuery(targetUserId);
   const isFollowing = targetUser?.isFollowing;
   const { followMutation, unFollowMutation } = useFollowsMutations({
     targetUserId,
@@ -25,7 +25,7 @@ export function ProfileActionButtons({
         onClick={handleClick}
         mode={isFollowing ? 'subtle' : 'primary'}
         shape="pill"
-        loading={isLoading}
+        loading={isPending}
       >
         {isFollowing ? 'Unfollow' : 'Follow'}
       </Button>

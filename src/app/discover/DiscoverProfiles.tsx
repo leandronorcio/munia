@@ -2,7 +2,12 @@
 import { DiscoverProfile } from '@/app/discover/DiscoverProfile';
 import { AllCaughtUp } from '@/components/AllCaughtUp';
 import useOnScreen from '@/hooks/useOnScreen';
-import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  InfiniteData,
+  QueryKey,
+  useInfiniteQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { GetUser } from 'types';
@@ -28,7 +33,13 @@ export function DiscoverProfiles({
     isFetching,
     isFetchingNextPage,
     status,
-  } = useInfiniteQuery({
+  } = useInfiniteQuery<
+    GetUser[],
+    Error,
+    InfiniteData<GetUser[], unknown>,
+    QueryKey,
+    number
+  >({
     queryKey: [
       'discover',
       {
@@ -39,10 +50,11 @@ export function DiscoverProfiles({
         followingOf,
       },
     ],
-    queryFn: async ({ pageParam = 0 }) => {
+    defaultPageParam: 0,
+    queryFn: async ({ pageParam }) => {
       const params = new URLSearchParams(searchParams);
       params.set('limit', PROFILES_PER_PAGE.toString());
-      params.set('offset', pageParam);
+      params.set('offset', pageParam.toString());
 
       if (followersOf) params.set('followers-of', followersOf);
       if (followingOf) params.set('following-of', followingOf);
@@ -83,7 +95,7 @@ export function DiscoverProfiles({
   return (
     <>
       <div className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2">
-        {status === 'loading' ? (
+        {status === 'pending' ? (
           <p>Loading profiles...</p>
         ) : status === 'error' ? (
           <p>Error loading profiles.</p>

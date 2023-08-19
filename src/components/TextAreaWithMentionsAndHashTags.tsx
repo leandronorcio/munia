@@ -35,7 +35,7 @@ export function TextAreaWithMentionsAndHashTags({
   const [containerRef] = useClickOutside(() => closeMentions());
 
   // This query will refetch every time the `searchKeyword` state changess
-  const { data, isLoading, isError } = useQuery({
+  const { data, isPending, isError } = useQuery({
     queryKey: ['mentions', 'search', { keyword: searchKeyword }],
     queryFn: async () => {
       const res = await fetch(`/api/users-basic?search=${searchKeyword}`);
@@ -127,7 +127,7 @@ export function TextAreaWithMentionsAndHashTags({
     <div className="relative bg-transparent" ref={containerRef}>
       {mentionsShown && (
         <div className="absolute bottom-full max-h-[200px] w-full overflow-y-auto bg-slate-100">
-          {isLoading ? (
+          {isPending ? (
             <div className="flex items-center px-4">Loading users...</div>
           ) : isError ? (
             'Error loading users.'

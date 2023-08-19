@@ -10,7 +10,7 @@ export function CommentReplies({ parentId }: { parentId: number }) {
   const queryKey = ['comments', parentId, 'replies'];
   const {
     data: replies,
-    isLoading,
+    isPending,
     isError,
   } = useQuery({
     queryKey: queryKey,
@@ -20,7 +20,7 @@ export function CommentReplies({ parentId }: { parentId: number }) {
   const { handleEdit, handleDelete } = useUpdateDeleteComments({ queryKey });
   const { likeComment, unLikeComment } = useLikeUnlikeComments({ queryKey });
 
-  if (isLoading)
+  if (isPending)
     return (
       <p className="text-sm font-semibold text-gray-500">Loading replies...</p>
     );
