@@ -9,7 +9,6 @@ import { Poppins } from 'next/font/google';
 import { BasicDialogsContextProvider } from '@/contexts/BasicDialogsContext';
 import { ToastContextProvider } from '@/contexts/ToastContext';
 import { VisualMediaModalContextProvider } from '@/contexts/VisualMediaModalContext';
-import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import { CreatePostModalContextProvider } from '@/contexts/CreatePostModalContext';
 import { cn } from '@/lib/cn';

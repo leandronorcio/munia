@@ -12,10 +12,12 @@ import SidebarMenuItem from './SidebarMenuItem';
 import { useSessionUserData } from '@/hooks/useSessionUserData';
 import Link from 'next/link';
 import { LogoText } from './LogoText';
+import { useNotificationsCountQuery } from '@/hooks/queries/useNotificationsCountQuery';
 
 export default function Sidebar() {
   const [user] = useSessionUserData();
   const username = user?.username || 'user-not-found';
+  const { data: notificationCount } = useNotificationsCountQuery();
 
   return (
     <div className="sticky top-0 hidden h-screen flex-col items-start p-4 md:flex">
@@ -42,6 +44,7 @@ export default function Sidebar() {
           title: 'Notifications',
           Icon: NotificationBell,
           route: '/notifications',
+          badge: notificationCount,
         },
         { title: 'My Profile', Icon: Profile, route: `/${username}` },
         {
@@ -51,12 +54,7 @@ export default function Sidebar() {
           route: '/api/auth/signout',
         },
       ].map((item, i) => (
-        <SidebarMenuItem
-          Icon={item.Icon}
-          className={item.className}
-          route={item.route}
-          key={i}
-        >
+        <SidebarMenuItem key={i} {...item}>
           {item.title}
         </SidebarMenuItem>
       ))}

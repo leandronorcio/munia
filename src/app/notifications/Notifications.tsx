@@ -11,14 +11,17 @@ import { DropdownMenu } from '@/components/ui/DropdownMenu';
 import { DropdownItem } from '@/components/ui/DropdownItem';
 import { useNotificationsReadStatusMutations } from '@/hooks/mutations/useNotificationsReadStatusMutations';
 import { ACTIVITIES_PER_PAGE } from '@/constants';
+import { Badge } from '@/components/ui/Badge';
+import { useNotificationsCountQuery } from '@/hooks/queries/useNotificationsCountQuery';
 
 export function Notifications() {
   const { data: session } = useSession();
   const userId = session?.user.id;
-  const bottomElRef = useRef<HTMLDivElement>(null);
-  const isBottomOnScreen = useOnScreen(bottomElRef);
+  const { data: notificationCount } = useNotificationsCountQuery();
   const { markAllAsReadMutation } = useNotificationsReadStatusMutations();
 
+  const bottomElRef = useRef<HTMLDivElement>(null);
+  const isBottomOnScreen = useOnScreen(bottomElRef);
   const {
     data,
     error,
@@ -67,7 +70,10 @@ export function Notifications() {
   return (
     <div>
       <div className="flex justify-between">
-        <h1 className="mb-6 text-4xl font-bold">Notifications</h1>
+        <div className="mb-6 flex items-center gap-2">
+          <h1 className="text-4xl font-bold">Notifications</h1>
+          {notificationCount && <Badge>{notificationCount}</Badge>}
+        </div>
         <DropdownMenu>
           <DropdownItem onClick={markAllAsRead}>Mark all as read</DropdownItem>
         </DropdownMenu>
