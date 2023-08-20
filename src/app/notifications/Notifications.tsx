@@ -86,6 +86,7 @@ export function Notifications() {
     refetchOnWindowFocus: false,
     staleTime: Infinity,
     retry: false,
+    enabled: !!userId,
   });
 
   useEffect(() => {

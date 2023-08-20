@@ -17,5 +17,6 @@ export function useNotificationsCountQuery() {
       return await res.json();
     },
     refetchInterval: 5000,
+    enabled: !!userId,
   });
 }
