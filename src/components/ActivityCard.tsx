@@ -23,7 +23,7 @@ export function ActivityCard({
 }: ActivityCardProps) {
   return (
     <div
-      className="mb-4 flex cursor-pointer gap-3 rounded-3xl bg-gray-100 p-4 hover:bg-gray-200/70"
+      className="mb-4 flex cursor-pointer gap-3 rounded-3xl bg-gray-100 p-4 last:mb-0 hover:bg-gray-200/70"
       {...rest}
     >
       <div className="relative flex-initial">

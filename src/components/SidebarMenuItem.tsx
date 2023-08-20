@@ -62,7 +62,7 @@ export default function SidebarMenuItem({
         {children}
       </p>
       <div className="ml-2">
-        {badge && badge !== 0 && <Badge>{badge}</Badge>}
+        {badge !== undefined && badge !== 0 && <Badge>{badge}</Badge>}
       </div>
     </div>
   );
