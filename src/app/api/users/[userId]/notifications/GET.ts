@@ -30,10 +30,32 @@ export async function GET(request: Request) {
 
   const notifications: GetActivity[] = await prisma.activity.findMany({
     where: {
+      /**
+       * This is an alternative approach to Prisma's cursor-based pagination
+       * that does not return the expected results when the cursor no longer
+       * exists.
+       * The issue links:
+       * https://github.com/prisma/prisma/issues/3362
+       * https://github.com/prisma/prisma/issues/8560
+       */
+      ...(cursor && {
+        id: {
+          ...(sortDirection === 'desc' && {
+            lt: cursor,
+          }),
+          ...(sortDirection === 'asc' && {
+            gt: cursor,
+          }),
+        },
+      }),
       targetUserId: userId,
       sourceUserId: {
         not: userId,
       },
+    },
+    take: limit,
+    orderBy: {
+      id: sortDirection,
     },
     select: {
       id: true,
@@ -44,16 +66,6 @@ export async function GET(request: Request) {
       isNotificationRead: true,
       sourceUser: selectUser,
       targetUser: selectUser,
-    },
-    take: limit,
-    skip: cursor ? 1 : undefined,
-    cursor: cursor
-      ? {
-          id: cursor,
-        }
-      : undefined,
-    orderBy: {
-      id: sortDirection,
     },
   });
 
