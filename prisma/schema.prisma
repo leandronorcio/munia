@@ -164,7 +164,7 @@ model Activity {
   id                   Int          @id @default(autoincrement())
   createdAt            DateTime     @default(now())
   type                 ActivityType
-  sourceId             Int?
+  sourceId             Int
   targetId             Int?
   sourceUser           User         @relation("activity", fields: [sourceUserId], references: [id], onDelete: Cascade)
   sourceUserId         String
@@ -175,18 +175,18 @@ model Activity {
 }
 
 enum ActivityType {
-  CREATE_FOLLOW
+  CREATE_FOLLOW // CREATE_FOLLOW does not use a `targetId`, only `targetUserId`
 
   POST_LIKE
-  POST_MENTION
+  POST_MENTION // POST_MENTION does not use a `targetId`, only `targetUserId`
 
   CREATE_COMMENT
-  COMMENT_LIKE
   COMMENT_MENTION
+  COMMENT_LIKE
 
   CREATE_REPLY
-  REPLY_LIKE
   REPLY_MENTION
+  REPLY_LIKE
 }
 
 enum VisualMediaType {
