@@ -5,8 +5,9 @@
 
 import { getServerUser } from '@/lib/getServerUser';
 import prisma from '@/lib/prisma/prisma';
+import { toGetActivities } from '@/lib/prisma/toGetActivities';
 import { NextResponse } from 'next/server';
-import { GetActivity } from 'types';
+import { FindActivityResults } from 'types';
 
 export async function GET(request: Request) {
   const [user] = await getServerUser();
@@ -26,7 +27,7 @@ export async function GET(request: Request) {
       gender: true,
     },
   };
-  const activities: GetActivity[] = await prisma.activity.findMany({
+  const activities: FindActivityResults = await prisma.activity.findMany({
     where: {
       sourceUserId: userId,
     },
@@ -52,5 +53,5 @@ export async function GET(request: Request) {
     },
   });
 
-  return NextResponse.json(activities);
+  return NextResponse.json(await toGetActivities(activities));
 }

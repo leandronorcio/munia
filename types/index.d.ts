@@ -9,6 +9,7 @@ import {
   ActivityType,
   Gender,
 } from '@prisma/client';
+import { type } from 'os';
 
 // Use this shortened type of `User`, when the other properties aren't necessary.
 type UserSummary = Pick<User, 'id' | 'username' | 'name' | 'profilePhoto'>;
@@ -145,13 +146,19 @@ export interface DiscoverFilters {
   relationshipStatus?: 'SINGLE' | 'IN_A_RELATIONSHIP' | 'ENGAGED' | 'MARRIED';
 }
 
-interface GetActivity {
+interface FindActivityResult {
   id: number;
   type: ActivityType;
-  sourceId: number | null;
+  sourceId: number;
   targetId: number | null;
   createdAt: Date;
   isNotificationRead: boolean;
   sourceUser: UserSummary & { gender: Gender | null };
   targetUser: UserSummary & { gender: Gender | null };
 }
+export type FindActivityResults = FindActivityResult[];
+
+interface GetActivity extends FindActivityResult {
+  content?: string | null;
+}
+export type GetActivities = GetActivity[];

@@ -15,6 +15,7 @@ export function Activity({
   targetUser,
   createdAt,
   isNotificationRead,
+  content,
 }: GetActivity) {
   const { data: session } = useSession();
   const userId = session?.user.id;
@@ -74,7 +75,7 @@ export function Activity({
         onClick={() => navigate(`/posts/${targetId}`)}
       >
         <SemiBold>{sourceProperNoun}</SemiBold> liked{' '}
-        <SemiBold>{targetPossessiveNoun}</SemiBold> post.
+        <SemiBold>{targetPossessiveNoun}</SemiBold> post: "{content}"
       </ActivityCard>
     );
   }
@@ -88,7 +89,8 @@ export function Activity({
         onClick={() => navigate(`/posts/${sourceId}`)}
       >
         <SemiBold>{sourceProperNoun}</SemiBold> mentioned{' '}
-        <SemiBold>{targetProperNoun}</SemiBold> in {sourcePossessiveNoun} post.
+        <SemiBold>{targetProperNoun}</SemiBold> in {sourcePossessiveNoun} post:
+        "{content}"
       </ActivityCard>
     );
   }
@@ -103,7 +105,7 @@ export function Activity({
         onClick={() => navigate(`/comments/${sourceId}`)}
       >
         <SemiBold>{sourceProperNoun}</SemiBold> commented on{' '}
-        <SemiBold>{targetPossessiveNoun}</SemiBold> post.
+        <SemiBold>{targetPossessiveNoun}</SemiBold> post: "{content}"
       </ActivityCard>
     );
   }
@@ -117,7 +119,7 @@ export function Activity({
         onClick={() => navigate(`/comments/${targetId}`)}
       >
         <SemiBold>{sourceProperNoun}</SemiBold> liked{' '}
-        <SemiBold>{targetPossessiveNoun}</SemiBold> comment.
+        <SemiBold>{targetPossessiveNoun}</SemiBold> comment: "{content}"
       </ActivityCard>
     );
   }
@@ -132,7 +134,7 @@ export function Activity({
       >
         <SemiBold>{sourceProperNoun}</SemiBold> mentioned{' '}
         <SemiBold>{targetProperNoun}</SemiBold> in {sourcePossessiveNoun}{' '}
-        comment.
+        comment: "{content}"
       </ActivityCard>
     );
   }
@@ -147,7 +149,7 @@ export function Activity({
         onClick={() => navigate(`/comments/${sourceId}`)}
       >
         <SemiBold>{sourceProperNoun}</SemiBold> replied to{' '}
-        <SemiBold>{targetPossessiveNoun}</SemiBold> comment.
+        <SemiBold>{targetPossessiveNoun}</SemiBold> comment: "{content}"
       </ActivityCard>
     );
   }
@@ -161,7 +163,7 @@ export function Activity({
         onClick={() => navigate(`/comments/${targetId}`)}
       >
         <SemiBold>{sourceProperNoun}</SemiBold> liked{' '}
-        <SemiBold>{targetPossessiveNoun}</SemiBold> reply.
+        <SemiBold>{targetPossessiveNoun}</SemiBold> reply: "{content}"
       </ActivityCard>
     );
   }
@@ -175,7 +177,8 @@ export function Activity({
         onClick={() => navigate(`/comments/${sourceId}`)}
       >
         <SemiBold>{sourceProperNoun}</SemiBold> mentioned{' '}
-        <SemiBold>{targetProperNoun}</SemiBold> in {sourcePossessiveNoun} reply.
+        <SemiBold>{targetProperNoun}</SemiBold> in {sourcePossessiveNoun} reply:{' '}
+        "{content}"
       </ActivityCard>
     );
   }

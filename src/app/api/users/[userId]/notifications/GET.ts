@@ -4,8 +4,9 @@
  */
 import { getServerUser } from '@/lib/getServerUser';
 import prisma from '@/lib/prisma/prisma';
+import { toGetActivities } from '@/lib/prisma/toGetActivities';
 import { NextResponse } from 'next/server';
-import { GetActivity } from 'types';
+import { FindActivityResults } from 'types';
 
 export async function GET(request: Request) {
   const [user] = await getServerUser();
@@ -28,7 +29,7 @@ export async function GET(request: Request) {
     },
   };
 
-  const notifications: GetActivity[] = await prisma.activity.findMany({
+  const activities: FindActivityResults = await prisma.activity.findMany({
     where: {
       /**
        * This is an alternative approach to Prisma's cursor-based pagination
@@ -69,5 +70,5 @@ export async function GET(request: Request) {
     },
   });
 
-  return NextResponse.json(notifications);
+  return NextResponse.json(await toGetActivities(activities));
 }
