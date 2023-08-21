@@ -52,7 +52,14 @@ export default function SidebarMenuItem({
         style={{ originY: 0 }}
         className="absolute left-0 h-10 w-[4px] rounded-r-lg bg-violet-700"
       ></motion.div>
-      <Icon className="mr-3 h-6 w-6 stroke-gray-700" />{' '}
+      <div className="relative mr-3">
+        <Icon className="h-6 w-6 stroke-gray-700" />
+        {badge !== undefined && badge !== 0 && (
+          <div className="absolute right-[-25%] top-[-50%]">
+            <Badge>{badge}</Badge>
+          </div>
+        )}
+      </div>
       <p
         className={cn(
           'text-base text-gray-700 transition-colors duration-300 group-hover:text-violet-700',
@@ -61,9 +68,6 @@ export default function SidebarMenuItem({
       >
         {children}
       </p>
-      <div className="ml-2">
-        {badge !== undefined && badge !== 0 && <Badge>{badge}</Badge>}
-      </div>
     </div>
   );
 }
