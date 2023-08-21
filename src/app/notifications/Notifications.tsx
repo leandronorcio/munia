@@ -107,7 +107,7 @@ export function Notifications() {
   return (
     <div>
       <div className="flex justify-between">
-        <div className="mb-6 flex items-center gap-2">
+        <div className="mb-4 flex items-center gap-2">
           <h1 className="text-4xl font-bold">Notifications</h1>
         </div>
         <DropdownMenu>
