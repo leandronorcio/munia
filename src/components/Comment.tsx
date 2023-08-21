@@ -146,7 +146,7 @@ export const Comment = memo(
               className="my-1 cursor-pointer text-sm font-semibold text-gray-500 hover:text-gray-800"
             >
               {!repliesShown
-                ? `View ${numberOfReplies} replies...`
+                ? `Show ${numberOfReplies} replies...`
                 : 'Hide replies'}
             </p>
           )}

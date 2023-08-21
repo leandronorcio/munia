@@ -40,7 +40,7 @@ export const CommentReply = memo(
       searchParams.get('comment-id') === commentId.toString();
 
     return (
-      <div className="flex gap-4">
+      <div className="mt-2 flex gap-4">
         <CommentProfilePhoto
           userId={author.id}
           username={author.username}

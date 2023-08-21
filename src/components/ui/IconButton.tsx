@@ -14,7 +14,7 @@ export function IconButton({ loading, Icon, ...rest }: IconButtonProps) {
       {...rest}
     >
       {!loading ? (
-        <Icon width={24} height={24} />
+        <Icon width={24} height={24} stroke="black" />
       ) : (
         <SvgLoader
           width={24}
