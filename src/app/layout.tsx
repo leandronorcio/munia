@@ -9,10 +9,9 @@ import { Poppins } from 'next/font/google';
 import { BasicDialogsContextProvider } from '@/contexts/BasicDialogsContext';
 import { ToastContextProvider } from '@/contexts/ToastContext';
 import { VisualMediaModalContextProvider } from '@/contexts/VisualMediaModalContext';
-import Sidebar from '../components/Sidebar';
+import { MenuBar } from '../components/MenuBar';
 import { CreatePostModalContextProvider } from '@/contexts/CreatePostModalContext';
 import { cn } from '@/lib/cn';
-import BottomMenu from '@/components/BottomMenu';
 import { CountContextProvider } from '@/contexts/CountContext';
 import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 import { ReactQueryProvider } from '@/contexts/ReactQueryProvider';
@@ -52,15 +51,12 @@ export default async function RootLayout({
                     <CountContextProvider>
                       {user ? (
                         <>
-                          <div className="flex justify-center gap-2">
-                            <Sidebar />
+                          <div className="md:flex md:justify-center md:gap-2">
+                            <MenuBar />
 
                             <ResponsiveContainer className="pb-12 md:pb-4">
                               {children}
                             </ResponsiveContainer>
-                          </div>
-                          <div className="fixed bottom-0 z-[1] block w-full md:hidden">
-                            <BottomMenu />
                           </div>
                         </>
                       ) : (

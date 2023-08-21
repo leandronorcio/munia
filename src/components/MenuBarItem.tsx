@@ -1,16 +1,13 @@
-'use client';
 import { useActiveRouteChecker } from '@/hooks/useActiveRouteChecker';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { cn } from '@/lib/cn';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { SVGProps, useState } from 'react';
-import { motion } from 'framer-motion';
+import { SVGProps } from 'react';
 import { Badge } from './ui/Badge';
 
-export default function SidebarMenuItem({
+export function MenuBarItem({
   children,
-  className,
   Icon,
   route,
   badge,
@@ -24,15 +21,11 @@ export default function SidebarMenuItem({
   const router = useRouter();
   const [isActive] = useActiveRouteChecker(route);
   const { confirm } = useBasicDialogs();
-  const [hover, setHover] = useState(false);
 
   return (
     <div
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
       className={cn([
-        'group relative mt-2 flex h-14 cursor-pointer flex-row items-center rounded-lg px-4 duration-300 hover:bg-violet-200',
-        className,
+        'group relative flex h-14 flex-1 cursor-pointer flex-row items-center justify-center px-4 duration-300 hover:bg-violet-200 md:mt-2 md:flex-none md:rounded-lg md:last:mt-auto',
       ])}
       onClick={() => {
         if (route === '/api/auth/signout') {
@@ -46,13 +39,19 @@ export default function SidebarMenuItem({
         }
       }}
     >
-      <motion.div
-        initial={{ scaleY: 0 }}
-        animate={{ scaleY: hover || isActive ? 1 : 0 }}
-        style={{ originY: 0 }}
-        className="absolute left-0 h-10 w-[4px] rounded-r-lg bg-violet-700"
-      ></motion.div>
-      <div className="relative mr-3">
+      <div
+        className={cn(
+          'absolute left-0 hidden h-10 w-[4px] scale-y-0 rounded-r-lg bg-violet-700 transition-transform group-hover:scale-y-100 md:block',
+          isActive && 'scale-y-100',
+        )}
+      ></div>
+      <div
+        className={cn(
+          'absolute bottom-0 h-[4px] w-[70%] scale-x-0 rounded-t-lg bg-violet-700 transition-transform group-hover:scale-x-100 md:hidden',
+          isActive && 'scale-x-100',
+        )}
+      ></div>
+      <div className="relative md:mr-3">
         <Icon className="h-6 w-6 stroke-gray-700" />
         {badge !== undefined && badge !== 0 && (
           <div className="absolute right-[-25%] top-[-50%]">
@@ -62,7 +61,7 @@ export default function SidebarMenuItem({
       </div>
       <p
         className={cn(
-          'text-base text-gray-700 transition-colors duration-300 group-hover:text-violet-700',
+          'hidden text-base text-gray-700 transition-colors duration-300 group-hover:text-violet-700 md:block',
           isActive && 'text-violet-700',
         )}
       >

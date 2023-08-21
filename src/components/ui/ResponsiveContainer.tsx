@@ -9,7 +9,7 @@ export function ResponsiveContainer({
   ...rest
 }: ResponsiveContainerProps) {
   return (
-    <div {...rest} className={cn('w-full sm:w-[600px]', rest.className)}>
+    <div {...rest} className={cn('w-full md:w-[600px]', rest.className)}>
       {children}
     </div>
   );
