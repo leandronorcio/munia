@@ -13,7 +13,7 @@ export default async function Page({
   return (
     <>
       <h1 className="mb-6 text-4xl font-bold">Followers</h1>
-      <DiscoverSearch placeholder="Search Followers" />
+      <DiscoverSearch label="Search Followers" />
       <DiscoverFilters />
       <DiscoverProfiles followersOf={profile?.id} />
     </>

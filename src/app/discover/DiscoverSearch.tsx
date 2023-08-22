@@ -5,9 +5,9 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { FormEventHandler, useState } from 'react';
 
 export function DiscoverSearch({
-  placeholder = 'Search People',
+  label = 'Search People',
 }: {
-  placeholder?: string;
+  label?: string;
 }) {
   const [search, setSearch] = useState('');
   const [error, setError] = useState('');
@@ -35,7 +35,7 @@ export function DiscoverSearch({
         <TextInput
           value={search}
           onChange={(text) => setSearch(text)}
-          placeholder={placeholder}
+          label={label}
           width="100%"
           Icon={SvgSearch}
           error={error === '' ? undefined : error}

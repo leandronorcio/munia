@@ -1,10 +1,10 @@
 'use client';
 import { cn } from '@/lib/cn';
 import { SVGProps, forwardRef, useRef } from 'react';
-import { AriaTextFieldOptions, useTextField } from 'react-aria';
+import { AriaTextFieldProps, useTextField } from 'react-aria';
 import { v4 as uuidv4 } from 'uuid';
 
-interface TextInputProps extends AriaTextFieldOptions<'input'> {
+interface TextInputProps extends AriaTextFieldProps {
   className?: string;
   Icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
   error?: string;
@@ -19,7 +19,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
     const id = uuidv4();
     return (
-      <div className="relative block">
+      <div className={cn('relative block', error && 'mb-8')}>
         {Icon && (
           <div className="absolute left-5 top-[50%] translate-y-[-50%]">
             <Icon
@@ -54,7 +54,10 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           {rest.label}
         </label>
         {error && (
-          <p className="mt-2 font-semibold text-red-800" {...errorMessageProps}>
+          <p
+            className="absolute top-full font-semibold text-red-800"
+            {...errorMessageProps}
+          >
             {error}
           </p>
         )}
