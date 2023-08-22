@@ -37,7 +37,7 @@
     "framer-motion": "^10.12.17",
     "html-react-parser": "^4.2.0",
     "lodash": "^4.17.21",
-    "next": "^13.4.12",
+    "next": "^13.4.20-canary.2",
     "next-auth": "^4.22.1",
     "nodemailer": "^6.9.3",
     "postcss": "8.4.22",
