@@ -45,7 +45,7 @@ export function Select({
           label={label}
           onSelect={() => setOptionsVisible((prev) => !prev)}
           isReadOnly
-          error={error}
+          errorMessage={error}
           name={name}
         />
         <div className="absolute right-5 top-5 z-10">

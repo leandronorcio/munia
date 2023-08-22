@@ -38,7 +38,7 @@ export function DiscoverSearch({
           label={label}
           width="100%"
           Icon={SvgSearch}
-          error={error === '' ? undefined : error}
+          errorMessage={error === '' ? undefined : error}
         />
       </form>
     </div>

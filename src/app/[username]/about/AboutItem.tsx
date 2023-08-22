@@ -89,25 +89,15 @@ export function AboutItem({
       {!isEditing ? (
         <p className="pl-4 text-lg">{value || 'Not set'}</p>
       ) : (
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col items-start gap-4"
-        >
-          {/* Pass the `error` prop to the <TextInput> element. */}
+        <form onSubmit={handleSubmit} className="flex flex-col items-start">
+          {/* Pass the mutation `error` to the <TextInput> element if there's any. */}
           {cloneElement(children, {
-            error:
+            errorMessage:
               updateSessionUserDataMutation.error
                 ?.toString()
                 .replace('Error: ', '') || undefined,
           })}
-          <div className="flex w-[320px] justify-end gap-2">
-            <Button
-              type="submit"
-              size="small"
-              loading={updateSessionUserDataMutation.isPending}
-            >
-              Save
-            </Button>
+          <div className="mt-2 flex w-[320px] justify-end gap-2">
             <Button
               type="button"
               size="small"
@@ -115,6 +105,13 @@ export function AboutItem({
               onPress={() => setIsEditing(false)}
             >
               Cancel
+            </Button>
+            <Button
+              type="submit"
+              size="small"
+              loading={updateSessionUserDataMutation.isPending}
+            >
+              Save
             </Button>
           </div>
         </form>

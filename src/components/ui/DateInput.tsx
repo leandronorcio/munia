@@ -45,7 +45,7 @@ const CustomDateInput = forwardRef<
       label={label}
       onSelect={onClick}
       ref={ref}
-      error={error}
+      errorMessage={error}
       isReadOnly
       name={nameText}
     />
