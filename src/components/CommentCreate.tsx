@@ -50,7 +50,7 @@ export function CommentCreate({ postId }: { postId: number }) {
         <div className="self-end">
           <Button
             onPress={handleCreate}
-            mode="secondary"
+            mode="ghost"
             size="small"
             isDisabled={content === ''}
             loading={createCommentMutation.isPending}

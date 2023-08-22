@@ -7,7 +7,7 @@ import { VariantProps, cva } from 'class-variance-authority';
 import SvgLoader from '@/svg_components/Loader';
 
 const button = cva(
-  'group flex flex-row items-center justify-center font-semibold focus:outline-none focus:ring focus:ring-violet-300 disabled:cursor-not-allowed disabled:opacity-70',
+  'group flex flex-row items-center justify-center font-semibold ring-violet-300 focus:outline-none focus:ring-2 active:ring-4 disabled:cursor-not-allowed disabled:opacity-70',
   {
     variants: {
       size: {
@@ -18,12 +18,13 @@ const button = cva(
       },
       mode: {
         primary:
-          'border-2 border-transparent bg-violet-600 text-white  hover:bg-violet-700',
+          'border-2 border-transparent bg-violet-600 text-white hover:bg-violet-700',
         secondary:
-          'border-2 border-violet-600 bg-transparent text-violet-600    hover:border-violet-800 hover:text-violet-800',
+          'border-2 border-violet-600 bg-transparent text-violet-600 hover:border-violet-800 hover:text-violet-800',
         subtle:
-          'border-2 border-violet-200 bg-transparent text-violet-800  hover:border-violet-400 hover:text-violet-900',
-        ghost: 'font-semibold text-gray-600 hover:text-gray-900 ',
+          'border-2 border-violet-200 bg-transparent text-violet-800 hover:border-violet-400 hover:text-violet-900',
+        ghost:
+          'font-semibold text-gray-600 ring-gray-300 hover:text-gray-900 focus:bg-gray-100',
       },
       expand: {
         full: 'w-full',

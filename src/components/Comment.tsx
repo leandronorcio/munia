@@ -9,13 +9,13 @@ import SvgHeart from '@/svg_components/Heart';
 import SvgArrowReply from '@/svg_components/ArrowReply';
 import { CommentContent } from './CommentContent';
 import { CommentProfilePhoto } from './CommentProfilePhoto';
-import { IconButton } from './ui/IconButton';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { useCommentsMutations } from '@/hooks/mutations/useCommentsMutations';
 import { CommentReplies } from './CommentReplies';
 import { errorNotifer } from '@/lib/errorNotifier';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
+import Button from './ui/Button';
 
 export const Comment = memo(
   ({
@@ -113,18 +113,20 @@ export const Comment = memo(
             shouldHighlight={shouldHighlight}
           />
 
-          <div className="flex origin-left">
+          <div className="flex gap-2">
             <ToggleStepper
               isSelected={isLiked}
               onChange={handleLikeToggle}
               Icon={SvgHeart}
               quantity={numberOfLikes}
             />
-            <IconButton
+            <Button
+              onPress={handleCreateReply}
               Icon={SvgArrowReply}
-              onClick={handleCreateReply}
               loading={createReplyMutation.isPending}
+              mode="ghost"
             />
+
             {isOwnComment && (
               <DropdownMenu width="auto">
                 <DropdownItem onClick={() => handleDelete({ commentId })}>

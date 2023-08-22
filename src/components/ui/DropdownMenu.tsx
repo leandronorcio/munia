@@ -3,6 +3,7 @@ import { MoreVert } from '@/svg_components';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useClickOutside } from '@/hooks/useClickOutside';
+import Button from './Button';
 
 export function DropdownMenu({
   children,
@@ -16,17 +17,14 @@ export function DropdownMenu({
   const [visible, setVisible] = useState(false);
   const [ref] = useClickOutside(() => setVisible(false));
 
+  const toggle = () => setVisible((prev) => !prev);
+
   return (
     <div className="relative inline-block" ref={ref}>
       {trigger ? (
-        <div onClick={() => setVisible((prev) => !prev)}>{trigger}</div>
+        <div onClick={toggle}>{trigger}</div>
       ) : (
-        <div
-          className="cursor-pointer rounded-full p-3 hover:bg-slate-200"
-          onClick={() => setVisible((prev) => !prev)}
-        >
-          <MoreVert fill="black" height={24} width={24} />
-        </div>
+        <Button onPress={toggle} Icon={MoreVert} mode="ghost" size="small" />
       )}
       <motion.div
         initial={{ scale: 0 }}
