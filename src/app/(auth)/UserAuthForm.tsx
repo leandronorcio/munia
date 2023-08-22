@@ -132,20 +132,16 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
       {mode === 'login' ? (
         <>
           <p className="mb-1 text-lg text-gray-500">No account yet?</p>
-          <Link href="/register">
-            <p className="cursor-pointer text-lg font-semibold text-violet-800 hover:opacity-80">
-              Create an account
-            </p>
-          </Link>
+          <p className="cursor-pointer text-lg font-semibold text-violet-800 hover:opacity-80">
+            <Link href="/register">Create an account</Link>
+          </p>
         </>
       ) : (
         <>
           <p className="mb-1 text-lg text-gray-500">Alreay have an account?</p>
-          <Link href="/login">
-            <p className="cursor-pointer text-lg font-semibold text-violet-800 hover:opacity-80">
-              Login
-            </p>
-          </Link>
+          <p className="cursor-pointer text-lg font-semibold text-violet-800 hover:opacity-80">
+            <Link href="/login">Login</Link>
+          </p>
         </>
       )}
     </>

@@ -1,5 +1,5 @@
 'use client';
-import { AriaButtonOptions, useButton } from 'react-aria';
+import { AriaButtonProps, useButton } from 'react-aria';
 import { useRef } from 'react';
 import { cn } from '@/lib/cn';
 import { SVGProps } from 'react';
@@ -68,7 +68,7 @@ const icon = cva('', {
 
 export interface ButtonProps
   extends VariantProps<typeof button>,
-    AriaButtonOptions<'button'> {
+    AriaButtonProps {
   children?: React.ReactNode;
   Icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
   loading?: boolean;
