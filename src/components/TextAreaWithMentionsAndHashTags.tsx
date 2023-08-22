@@ -1,12 +1,13 @@
 import {
   ChangeEventHandler,
   Dispatch,
+  FormEvent,
   SetStateAction,
   useEffect,
   useRef,
   useState,
 } from 'react';
-import { TextArea, resizeTextAreaHeight } from './ui/TextArea';
+import { resizeTextAreaHeight } from './ui/TextArea';
 import { useQuery } from '@tanstack/react-query';
 import { UserSummary } from 'types';
 import { ProfilePhoto } from './ui/ProfilePhoto';
@@ -14,25 +15,33 @@ import { useClickOutside } from '@/hooks/useClickOutside';
 import { replaceWordAtCursor } from '@/lib/replaceWordAtCursor';
 import { cn } from '@/lib/cn';
 import { HighlightedMentionsAndHashTags } from './HighlightedMentionsAndHashTags';
+import { AriaTextFieldProps, mergeProps, useTextField } from 'react-aria';
 
-interface TextAreaWithMentionsAndHashTags
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface TextAreaWithMentionsAndHashTagsProps extends AriaTextFieldProps {
   content: string;
   setContent: Dispatch<SetStateAction<string>>;
+  placeholder: string;
   shouldFocusOnMount?: boolean;
 }
 export function TextAreaWithMentionsAndHashTags({
   content,
   setContent,
+  placeholder,
   shouldFocusOnMount = true,
   ...rest
-}: TextAreaWithMentionsAndHashTags) {
+}: TextAreaWithMentionsAndHashTagsProps) {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [mentionsShown, setMentionsShown] = useState(false);
 
   const posOfActiveAt = useRef(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [containerRef] = useClickOutside(() => closeMentions());
+
+  let { inputProps, labelProps, errorMessageProps } = useTextField(
+    { ...rest, inputElementType: 'textarea', label: placeholder },
+    textareaRef,
+  );
+  const { errorMessage } = rest;
 
   // This query will refetch every time the `searchKeyword` state changess
   const { data, isPending, isError } = useQuery({
@@ -124,51 +133,69 @@ export function TextAreaWithMentionsAndHashTags({
   }, [textareaRef]);
 
   return (
-    <div className="relative bg-transparent" ref={containerRef}>
-      {mentionsShown && (
-        <div className="absolute bottom-full max-h-[200px] w-full overflow-y-auto bg-slate-100">
-          {isPending ? (
-            <div className="flex items-center px-4">Loading users...</div>
-          ) : isError ? (
-            'Error loading users.'
-          ) : data.length > 0 ? (
-            data.map((user) => (
-              <div
-                onClick={() => handleSelectUserToMention(user.username!)}
-                key={user.id}
-                className="flex cursor-pointer items-center gap-3 border-b-2 px-4 py-2 last:border-b-0 hover:bg-slate-200/70"
-              >
-                <div className="h-8 w-8">
-                  <ProfilePhoto
-                    userId={user.id}
-                    username={user.username}
-                    photoUrl={user.profilePhoto}
-                  />
+    <>
+      <div className="relative bg-transparent" ref={containerRef}>
+        {mentionsShown && (
+          <div className="absolute bottom-full max-h-[200px] w-full overflow-y-auto bg-slate-100">
+            {isPending ? (
+              <div className="flex items-center px-4">Loading users...</div>
+            ) : isError ? (
+              'Error loading users.'
+            ) : data.length > 0 ? (
+              data.map((user) => (
+                <div
+                  onClick={() => handleSelectUserToMention(user.username!)}
+                  key={user.id}
+                  className="flex cursor-pointer items-center gap-3 border-b-2 px-4 py-2 last:border-b-0 hover:bg-slate-200/70"
+                >
+                  <div className="h-8 w-8">
+                    <ProfilePhoto
+                      userId={user.id}
+                      username={user.username}
+                      photoUrl={user.profilePhoto}
+                    />
+                  </div>
+                  <div>
+                    <p className="font-semibold">{user.name}</p>
+                    <p className="text-sm text-gray-600">@{user.username}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-semibold">{user.name}</p>
-                  <p className="text-sm text-gray-600">@{user.username}</p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="flex items-center px-4">No users found.</div>
-          )}
-        </div>
-      )}
-      <TextArea
-        ref={textareaRef}
-        value={content}
-        onChange={handleTextareaChange}
-        className={cn(
-          'absolute top-0 break-words bg-transparent text-transparent caret-black',
-          rest.className,
+              ))
+            ) : (
+              <div className="flex items-center px-4">No users found.</div>
+            )}
+          </div>
         )}
-        {...rest}
-      />
-      <p className="whitespace-pre-wrap break-words bg-transparent">
-        <HighlightedMentionsAndHashTags text={content} />
-      </p>
-    </div>
+        <label {...labelProps} className="sr-only">
+          {placeholder}
+        </label>
+        <textarea
+          ref={textareaRef}
+          {...mergeProps(inputProps, {
+            value: content,
+            onChange: handleTextareaChange,
+            onInput: (e: FormEvent<HTMLTextAreaElement>) => {
+              const textarea = e.target as HTMLTextAreaElement;
+              resizeTextAreaHeight(textarea);
+            },
+            rows: 1,
+            placeholder,
+          })}
+          className={cn(
+            'absolute top-0 block w-full resize-none overflow-hidden break-words bg-transparent text-transparent caret-black outline-none',
+            rest.errorMessage &&
+              'rounded-sm ring-2 ring-red-900 ring-offset-4 placeholder:text-red-900',
+          )}
+        />
+        <p className="whitespace-pre-wrap break-words bg-transparent">
+          <HighlightedMentionsAndHashTags text={content} />
+        </p>
+      </div>
+      {errorMessage !== undefined && (
+        <p {...errorMessageProps} className="mt-4 font-semibold text-red-800">
+          {errorMessage}
+        </p>
+      )}
+    </>
   );
 }

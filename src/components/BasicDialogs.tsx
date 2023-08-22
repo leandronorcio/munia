@@ -99,16 +99,15 @@ export function BasicDialogs() {
                       onChange={(text) => setPromptValue(text)}
                       placeholder={dialog.promptLabel || 'Input here'}
                       ref={inputRef}
-                      error={inputError}
+                      errorMessage={inputError || undefined}
                     />
                   ) : (
-                    <div className="rounded-2xl bg-slate-100 p-5">
-                      <TextAreaWithMentionsAndHashTags
-                        content={promptValue}
-                        setContent={setPromptValue}
-                        placeholder={dialog.promptLabel || 'Input here'}
-                      />
-                    </div>
+                    <TextAreaWithMentionsAndHashTags
+                      content={promptValue}
+                      setContent={setPromptValue}
+                      placeholder={dialog.promptLabel || 'Input here'}
+                      errorMessage={inputError || undefined}
+                    />
                   )}
                 </>
               )}
