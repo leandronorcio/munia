@@ -1,5 +1,5 @@
 import { LogoText } from '@/components/LogoText';
-import Button from '@/components/ui/Button';
+import { ButtonLink } from '@/components/ui/ButtonLink';
 import { BackArrow } from '@/svg_components';
 import SvgLogo from '@/svg_components/Logo';
 import Link from 'next/link';
@@ -9,11 +9,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <>
       <div className="fixed top-4 flex w-full justify-between pr-6 sm:top-8 sm:px-10">
         <div>
-          <Link href="/">
-            <Button mode="ghost" Icon={BackArrow}>
-              Back
-            </Button>
-          </Link>
+          <ButtonLink href="/" mode="ghost" Icon={BackArrow}>
+            Back
+          </ButtonLink>
         </div>
         <Link href="/">
           <div className="flex flex-row items-center justify-center gap-5">

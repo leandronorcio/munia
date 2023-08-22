@@ -96,7 +96,7 @@ export function BasicDialogs() {
                   {dialog.promptType === 'input' ? (
                     <TextInput
                       value={promptValue}
-                      onChange={(e) => setPromptValue(e.target.value)}
+                      onChange={(text) => setPromptValue(text)}
                       placeholder={dialog.promptLabel || 'Input here'}
                       ref={inputRef}
                       error={inputError}
@@ -113,11 +113,11 @@ export function BasicDialogs() {
                 </>
               )}
             </div>
-            <Button onClick={handleAffirmative} shape="pill" expand="half">
+            <Button onPress={handleAffirmative} shape="pill" expand="half">
               {affirmativeTexts[dialog.type]}
             </Button>
             {dialog.type !== 'alert' && (
-              <Button onClick={hide} shape="pill" mode="ghost">
+              <Button onPress={hide} shape="pill" mode="ghost">
                 Cancel
               </Button>
             )}

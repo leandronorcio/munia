@@ -112,7 +112,7 @@ export function AboutItem({
               type="button"
               size="small"
               mode="secondary"
-              onClick={() => setIsEditing(false)}
+              onPress={() => setIsEditing(false)}
             >
               Cancel
             </Button>

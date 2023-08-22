@@ -5,13 +5,13 @@ import { TextInput } from './TextInput';
 export function DateInput({
   value,
   onChange,
-  placeholderText,
+  label,
   error,
   name,
 }: {
   value: Date | null;
   onChange: (value: Date) => void;
-  placeholderText: string;
+  label: string;
   error?: string;
   name?: string;
 }) {
@@ -20,11 +20,7 @@ export function DateInput({
       selected={value}
       onChange={(date) => onChange(date!)}
       customInput={
-        <CustomDateInput
-          error={error}
-          placeholderText={placeholderText}
-          nameText={name}
-        />
+        <CustomDateInput error={error} label={label} nameText={name} />
       }
       showYearDropdown
       showMonthDropdown
@@ -39,18 +35,18 @@ const CustomDateInput = forwardRef<
     value?: string;
     error?: string;
     onClick?: MouseEventHandler<HTMLInputElement>;
-    placeholderText: string;
+    label: string;
     nameText?: string;
   }
->(({ value, error, onClick, placeholderText, nameText }, ref) => {
+>(({ value, error, onClick, label, nameText }, ref) => {
   return (
     <TextInput
       value={value}
-      placeholder={placeholderText}
-      onClick={onClick}
+      label={label}
+      onSelect={onClick}
       ref={ref}
       error={error}
-      readOnly
+      isReadOnly
       name={nameText}
     />
   );

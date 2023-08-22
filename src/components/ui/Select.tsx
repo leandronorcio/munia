@@ -8,14 +8,14 @@ import { cn } from '@/lib/cn';
 export function Select({
   options,
   value,
-  placeholder,
+  label,
   onChange,
   error,
   name,
 }: {
   options: any[];
   value: string;
-  placeholder: string;
+  label: string;
   onChange: (value: string) => void;
   error?: string;
   name?: string;
@@ -42,9 +42,9 @@ export function Select({
       <div className="relative w-full">
         <TextInput
           value={value}
-          placeholder={placeholder}
-          onClick={() => setOptionsVisible((prev) => !prev)}
-          readOnly
+          label={label}
+          onSelect={() => setOptionsVisible((prev) => !prev)}
+          isReadOnly
           error={error}
           name={name}
         />

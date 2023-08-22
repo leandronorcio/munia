@@ -1,27 +1,29 @@
 'use client';
+import { AriaButtonOptions, useButton } from 'react-aria';
+import { useRef } from 'react';
 import { cn } from '@/lib/cn';
 import { SVGProps } from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
 import SvgLoader from '@/svg_components/Loader';
 
 const button = cva(
-  'group flex flex-row items-center justify-center font-semibold disabled:cursor-not-allowed disabled:opacity-70',
+  'group flex flex-row items-center justify-center font-semibold focus:outline-none focus:ring focus:ring-violet-300 disabled:cursor-not-allowed disabled:opacity-70',
   {
     variants: {
       size: {
-        huge: 'gap-4 rounded-2xl px-8 py-5 text-lg active:ring-8',
-        large: 'gap-4 rounded-2xl px-8 py-5 text-base active:ring-8',
-        medium: 'gap-3 rounded-xl px-6 py-4 text-base active:ring-8',
-        small: 'gap-3 rounded-lg px-4 py-[9px] text-[13px] active:ring-4',
+        huge: 'gap-4 rounded-2xl px-8 py-5 text-lg ',
+        large: 'gap-4 rounded-2xl px-8 py-5 text-base ',
+        medium: 'gap-3 rounded-xl px-6 py-4 text-base ',
+        small: 'gap-3 rounded-lg px-4 py-[9px] text-[13px] ',
       },
       mode: {
         primary:
-          'border-2 border-transparent bg-violet-600 text-white ring-violet-400 hover:bg-violet-700',
+          'border-2 border-transparent bg-violet-600 text-white  hover:bg-violet-700',
         secondary:
-          'border-2 border-violet-600 bg-transparent text-violet-600  ring-violet-400  hover:border-violet-800 hover:text-violet-800',
+          'border-2 border-violet-600 bg-transparent text-violet-600    hover:border-violet-800 hover:text-violet-800',
         subtle:
-          'border-2 border-violet-200 bg-transparent text-violet-800 ring-violet-200 hover:border-violet-400 hover:text-violet-900',
-        ghost: 'font-semibold text-gray-600 hover:text-gray-900 active:ring-0',
+          'border-2 border-violet-200 bg-transparent text-violet-800  hover:border-violet-400 hover:text-violet-900',
+        ghost: 'font-semibold text-gray-600 hover:text-gray-900 ',
       },
       expand: {
         full: 'w-full',
@@ -63,9 +65,9 @@ const icon = cva('', {
   },
 });
 
-interface ButtonProps
+export interface ButtonProps
   extends VariantProps<typeof button>,
-    React.ButtonHTMLAttributes<HTMLButtonElement> {
+    AriaButtonOptions<'button'> {
   children?: React.ReactNode;
   Icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
   loading?: boolean;
@@ -82,6 +84,8 @@ export default function Button({
   ...rest
 }: ButtonProps) {
   const iconOnly = children === undefined;
+  let ref = useRef<HTMLButtonElement>(null);
+  let { buttonProps } = useButton(rest, ref);
 
   return (
     <button
@@ -89,9 +93,9 @@ export default function Button({
         [button({ size, mode, shape, expand })],
         iconOnly && 'rounded-full p-3',
       )}
-      disabled={rest.disabled || (loading && true)}
-      type="button"
-      {...rest}
+      {...buttonProps}
+      ref={ref}
+      disabled={buttonProps.disabled || loading}
     >
       {!loading ? (
         Icon && (

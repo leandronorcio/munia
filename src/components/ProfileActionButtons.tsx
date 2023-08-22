@@ -22,14 +22,14 @@ export function ProfileActionButtons({
   return (
     <div className="flex flex-row items-center gap-2 md:gap-4">
       <Button
-        onClick={handleClick}
+        onPress={handleClick}
         mode={isFollowing ? 'subtle' : 'primary'}
         shape="pill"
         loading={isPending}
       >
         {isFollowing ? 'Unfollow' : 'Follow'}
       </Button>
-      <Button Icon={Mail} onClick={() => {}} mode="secondary" size="medium" />
+      <Button Icon={Mail} onPress={() => {}} mode="secondary" size="medium" />
     </div>
   );
 }

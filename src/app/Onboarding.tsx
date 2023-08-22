@@ -1,7 +1,6 @@
 import SvgLogo from '@/svg_components/Logo';
 import { LogInSquare, TwoPeople } from '@/svg_components';
-import Link from 'next/link';
-import Button from '@/components/ui/Button';
+import { ButtonLink } from '@/components/ui/ButtonLink';
 
 export function Onboarding() {
   return (
@@ -13,16 +12,17 @@ export function Onboarding() {
       }}
     >
       <div className="absolute right-10 top-10 flex flex-row gap-4">
-        <Link href="/login">
-          <Button size="medium" shape="pill" Icon={LogInSquare}>
-            Login
-          </Button>
-        </Link>
-        <Link href="/register">
-          <Button size="medium" shape="pill" Icon={TwoPeople}>
-            Sign Up
-          </Button>
-        </Link>
+        <ButtonLink href="/login" size="medium" shape="pill" Icon={LogInSquare}>
+          Login
+        </ButtonLink>
+        <ButtonLink
+          href="/register"
+          size="medium"
+          shape="pill"
+          Icon={TwoPeople}
+        >
+          Sign Up
+        </ButtonLink>
       </div>
       <div
         className="flex h-56 w-full flex-row items-center justify-center gap-4 rounded-none md:w-[550px] md:rounded-3xl"

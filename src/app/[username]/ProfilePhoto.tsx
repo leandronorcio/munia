@@ -49,7 +49,7 @@ export default function ProfilePhoto({
             />
             <Button
               Icon={Camera}
-              onClick={openInput}
+              onPress={openInput}
               size="small"
               loading={isPending}
             />

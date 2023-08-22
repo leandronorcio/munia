@@ -35,13 +35,13 @@ export function About({
         isOwnProfile={isOwnProfile}
       >
         <TextInput
-          placeholder="Enter name"
+          label="Enter name"
           value={profileDataControl.name || ''}
           name="name"
-          onChange={(e) => {
+          onChange={(text) => {
             setProfileDataControl((prev) => ({
               ...prev,
-              name: e.target.value,
+              name: text,
             }));
           }}
         />
@@ -54,13 +54,13 @@ export function About({
         isOwnProfile={isOwnProfile}
       >
         <TextInput
-          placeholder="Enter Username"
+          label="Enter Username"
           value={profileDataControl.username || ''}
           name="username"
-          onChange={(e) => {
+          onChange={(text) => {
             setProfileDataControl((prev) => ({
               ...prev,
-              username: e.target.value,
+              username: text,
             }));
           }}
         />
@@ -73,13 +73,13 @@ export function About({
         isOwnProfile={isOwnProfile}
       >
         <TextInput
-          placeholder="Enter Email"
+          label="Enter Email"
           value={profileDataControl.email || ''}
           name="email"
-          onChange={(e) => {
+          onChange={(text) => {
             setProfileDataControl((prev) => ({
               ...prev,
-              email: e.target.value,
+              email: text,
             }));
           }}
         />
@@ -92,13 +92,13 @@ export function About({
         isOwnProfile={isOwnProfile}
       >
         <TextInput
-          placeholder="Enter Bio"
+          label="Enter Bio"
           value={profileDataControl.bio || ''}
           name="bio"
-          onChange={(e) => {
+          onChange={(text) => {
             setProfileDataControl((prev) => ({
               ...prev,
-              bio: e.target.value,
+              bio: text,
             }));
           }}
         />
@@ -111,13 +111,13 @@ export function About({
         isOwnProfile={isOwnProfile}
       >
         <TextInput
-          placeholder="Enter Website"
+          label="Enter Website"
           value={profileDataControl.website || ''}
           name="website"
-          onChange={(e) => {
+          onChange={(text) => {
             setProfileDataControl((prev) => ({
               ...prev,
-              website: e.target.value,
+              website: text,
             }));
           }}
         />
@@ -133,7 +133,7 @@ export function About({
         isOwnProfile={isOwnProfile}
       >
         <Select
-          placeholder="Enter Gender"
+          label="Enter Gender"
           value={
             (profileDataControl.gender &&
               reverseCapitalizeWithUnderscores(profileDataControl.gender)) ||
@@ -160,7 +160,7 @@ export function About({
         isOwnProfile={isOwnProfile}
       >
         <Select
-          placeholder="Enter Relationship Status"
+          label="Enter Relationship Status"
           value={
             (profileDataControl.relationshipStatus &&
               reverseCapitalizeWithUnderscores(
@@ -192,7 +192,7 @@ export function About({
         isOwnProfile={isOwnProfile}
       >
         <DateInput
-          placeholderText="Enter Birth Date"
+          label="Enter Birth Date"
           value={new Date(profileDataControl.birthDate!)}
           name="birthDate"
           onChange={(date) => {
@@ -211,13 +211,13 @@ export function About({
         isOwnProfile={isOwnProfile}
       >
         <TextInput
-          placeholder="Enter Phone Number"
+          label="Enter Phone Number"
           value={profileDataControl.phoneNumber || ''}
           name="phoneNumber"
-          onChange={(e) => {
+          onChange={(text) => {
             setProfileDataControl((prev) => ({
               ...prev,
-              phoneNumber: e.target.value,
+              phoneNumber: text,
             }));
           }}
         />
@@ -230,13 +230,13 @@ export function About({
         isOwnProfile={isOwnProfile}
       >
         <TextInput
-          placeholder="Enter Address"
+          label="Enter Address"
           value={profileDataControl.address || ''}
           name="address"
-          onChange={(e) => {
+          onChange={(text) => {
             setProfileDataControl((prev) => ({
               ...prev,
-              address: e.target.value,
+              address: text,
             }));
           }}
         />

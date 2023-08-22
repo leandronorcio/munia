@@ -49,10 +49,10 @@ export function CommentCreate({ postId }: { postId: number }) {
         </div>
         <div className="self-end">
           <Button
-            onClick={handleCreate}
+            onPress={handleCreate}
             mode="secondary"
             size="small"
-            disabled={content === ''}
+            isDisabled={content === ''}
             loading={createCommentMutation.isPending}
             Icon={SvgSend}
           />

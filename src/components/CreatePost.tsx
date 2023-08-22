@@ -123,9 +123,9 @@ export default function CreatePost({
         <div>
           <Button
             mode="secondary"
-            onClick={handleClickPostButton}
+            onPress={handleClickPostButton}
             size="small"
-            disabled={content === '' && visualMedia.length === 0}
+            isDisabled={content === '' && visualMedia.length === 0}
             loading={
               createPostMutation.isPending || updatePostMutation.isPending
             }

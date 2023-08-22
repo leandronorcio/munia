@@ -49,7 +49,7 @@ export default function CoverPhoto({
             />
             <Button
               Icon={Image}
-              onClick={openInput}
+              onPress={openInput}
               size="small"
               loading={isPending}
             />

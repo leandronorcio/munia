@@ -34,7 +34,7 @@ export function DiscoverSearch({
       <form onSubmit={handleSubmit}>
         <TextInput
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(text) => setSearch(text)}
           placeholder={placeholder}
           width="100%"
           Icon={SvgSearch}

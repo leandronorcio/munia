@@ -70,10 +70,10 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
       <div className="mb-4">
         <TextInput
           value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
+          onChange={(text) => {
+            setEmail(text);
           }}
-          placeholder="Email"
+          label="Email"
           error={inputError || undefined}
           width={'100%'}
           Icon={AtSign}
@@ -81,7 +81,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
       </div>
       <div className="mb-5">
         <Button
-          onClick={submitEmail}
+          onPress={submitEmail}
           shape="pill"
           expand="full"
           Icon={LogInSquare}
@@ -93,7 +93,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
       <p className="mb-4 text-center text-lg text-gray-500">Or continue with</p>
       <div className="mb-10 flex gap-2">
         <Button
-          onClick={() => {
+          onPress={() => {
             setLoading((prev) => ({
               ...prev,
               github: true,
@@ -111,7 +111,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
           Github
         </Button>
         <Button
-          onClick={() => {
+          onPress={() => {
             setLoading((prev) => ({
               ...prev,
               facebook: true,
