@@ -92,8 +92,8 @@ export const Comment = memo(
       });
     };
 
-    const handleLikeClick = () =>
-      !isLiked ? likeComment({ commentId }) : unLikeComment({ commentId });
+    const handleLikeToggle = (isSelected: boolean) =>
+      isSelected ? likeComment({ commentId }) : unLikeComment({ commentId });
     const handleToggleReplies = () => toggleReplies({ commentId });
 
     return (
@@ -115,9 +115,9 @@ export const Comment = memo(
 
           <div className="flex origin-left">
             <ToggleStepper
-              onClick={handleLikeClick}
+              isSelected={isLiked}
+              onChange={handleLikeToggle}
               Icon={SvgHeart}
-              isActive={isLiked}
               quantity={numberOfLikes}
             />
             <IconButton

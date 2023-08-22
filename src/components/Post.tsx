@@ -52,8 +52,8 @@ export const Post = memo(
     const unLikePost = () => unLikeMutation.mutate();
     const { confirm } = useBasicDialogs();
 
-    const handleLikeClick = () => {
-      !isLiked ? likePost() : unLikePost();
+    const handleLikeToggle = (isSelected: boolean) => {
+      isSelected ? likePost() : unLikePost();
     };
 
     const handleDeleteClick = () => {
@@ -147,16 +147,16 @@ export const Post = memo(
           ])}
         >
           <ToggleStepper
-            onClick={handleLikeClick}
+            isSelected={isLiked}
+            onChange={handleLikeToggle}
             Icon={SvgHeart}
-            isActive={isLiked}
             quantity={numberOfLikes}
             noun="Like"
           />
           <ToggleStepper
-            onClick={handleCommentsTogglerClick}
+            isSelected={commentsShown || false}
+            onChange={handleCommentsTogglerClick}
             Icon={SvgComment}
-            isActive={commentsShown || false}
             quantity={_count.comments}
             noun="Comment"
             color="blue"

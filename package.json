@@ -45,6 +45,7 @@
     "react-aria": "^3.27.0",
     "react-datepicker": "^4.15.0",
     "react-dom": "^18.2.0",
+    "react-stately": "^3.25.0",
     "server-only": "^0.0.1",
     "swiper": "^9.4.1",
     "tailwind-merge": "^1.12.0",
