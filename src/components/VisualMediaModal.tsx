@@ -10,7 +10,8 @@ import {
   VisualMediaModalContextApi,
   VisualMediaModalContextData,
 } from '@/contexts/VisualMediaModalContext';
-import { CloseButton } from './ui/CloseButton';
+import Button from './ui/Button';
+import { Close } from '@/svg_components';
 
 export default function VisualMediaModal() {
   const { shown, modal } = useContext(VisualMediaModalContextData);
@@ -44,10 +45,12 @@ export default function VisualMediaModal() {
               exit={{ top: '-56px' }}
               className="fixed right-4 z-20"
             >
-              <CloseButton
-                onClick={() => {
+              <Button
+                onPress={() => {
                   setShown(false);
                 }}
+                Icon={Close}
+                mode="ghost"
               />
             </motion.div>
             {visualMedia.length > 1 && (

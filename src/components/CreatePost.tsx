@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from 'react';
 import { CreatePostTabs } from './CreatePostTabs';
 import { AnimatePresence } from 'framer-motion';
 import { motion } from 'framer-motion';
-import { CloseButton } from './ui/CloseButton';
 import { capitalizeFirstLetter } from '@/lib/capitalizeFirstLettet';
 import { ToEditValues } from '@/contexts/CreatePostModalContext';
 import { useBasicDialogs } from '@/hooks/useBasicDialogs';
@@ -14,6 +13,7 @@ import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { useCreateUpdatePostMutations } from '@/hooks/mutations/useCreateUpdatePostMutations';
 import { TextAreaWithMentionsAndHashTags } from './TextAreaWithMentionsAndHashTags';
+import { Close } from '@/svg_components';
 
 export default function CreatePost({
   toEditValues,
@@ -104,10 +104,14 @@ export default function CreatePost({
         <h3 className="text-center text-lg font-semibold">
           {capitalizeFirstLetter(mode)} Post
         </h3>
-        <CloseButton
-          className="absolute right-3 top-[50%] translate-y-[-50%]"
-          onClick={handleClickCloseButton}
-        />
+        <div className="absolute right-3 top-[50%] translate-y-[-50%]">
+          <Button
+            onPress={handleClickCloseButton}
+            Icon={Close}
+            mode="ghost"
+            size="small"
+          />
+        </div>
       </div>
       <div className="mb-[18px] flex flex-row gap-3 px-4">
         <div className="h-11 w-11">

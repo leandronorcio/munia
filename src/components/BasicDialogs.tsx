@@ -2,7 +2,6 @@
 import ModalContentWrapper from '@/components/ModalContentWrapper';
 import ModalWrapper from '@/components/ModalWrapper';
 import Button from '@/components/ui/Button';
-import { CloseButton } from '@/components/ui/CloseButton';
 import { TextInput } from '@/components/ui/TextInput';
 import {
   BasicDialogsContextApi,
@@ -11,6 +10,7 @@ import {
 import { AnimatePresence } from 'framer-motion';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { TextAreaWithMentionsAndHashTags } from './TextAreaWithMentionsAndHashTags';
+import { Close } from '@/svg_components';
 
 export function BasicDialogs() {
   const { shown, dialog } = useContext(BasicDialogsContextData);
@@ -80,10 +80,15 @@ export function BasicDialogs() {
       {shown && (
         <ModalWrapper key="basic-dialogs-modal-wrapper" zIndex={30}>
           <ModalContentWrapper>
-            <CloseButton
-              className="absolute right-6 top-6 md:right-8 md:top-8"
-              onClick={hide}
-            />
+            <div className="absolute right-6 top-6 md:right-8 md:top-8">
+              <Button
+                onPress={() => {
+                  setShown(false);
+                }}
+                Icon={Close}
+                mode="ghost"
+              />
+            </div>
             <h1 className="text-center text-4xl font-bold md:text-5xl">
               {dialog.title}
             </h1>
