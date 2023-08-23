@@ -6,7 +6,6 @@ import 'swiper/css/pagination';
 import 'react-datepicker/dist/react-datepicker.css';
 import SessionProviderContext from '@/contexts/SessionProviderContext';
 import { Poppins } from 'next/font/google';
-import { BasicDialogsContextProvider } from '@/contexts/BasicDialogsContext';
 import { ToastContextProvider } from '@/contexts/ToastContext';
 import { VisualMediaModalContextProvider } from '@/contexts/VisualMediaModalContext';
 import { MenuBar } from '../components/MenuBar';
@@ -16,6 +15,7 @@ import { CountContextProvider } from '@/contexts/CountContext';
 import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 import { ReactQueryProvider } from '@/contexts/ReactQueryProvider';
 import { getServerUser } from '@/lib/getServerUser';
+import { DialogsContextProvider } from '@/contexts/DialogsContext';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
@@ -41,11 +41,11 @@ export default async function RootLayout({
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
         />
       </head>
-      <body className={cn('overflow-y-scroll bg-gray-50', poppins.className)}>
+      <body className={cn('bg-gray-50', poppins.className)}>
         <ToastContextProvider>
           <ReactQueryProvider>
             <SessionProviderContext>
-              <BasicDialogsContextProvider>
+              <DialogsContextProvider>
                 <VisualMediaModalContextProvider>
                   <CreatePostModalContextProvider>
                     <CountContextProvider>
@@ -65,7 +65,7 @@ export default async function RootLayout({
                     </CountContextProvider>
                   </CreatePostModalContextProvider>
                 </VisualMediaModalContextProvider>
-              </BasicDialogsContextProvider>
+              </DialogsContextProvider>
             </SessionProviderContext>
           </ReactQueryProvider>
         </ToastContextProvider>

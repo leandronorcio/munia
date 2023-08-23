@@ -1,4 +1,4 @@
-import { useBasicDialogs } from '@/hooks/useBasicDialogs';
+import { useDialogs } from '@/hooks/useDialogs';
 import { errorNotifer } from '@/lib/errorNotifier';
 import { QueryKey, useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
@@ -9,7 +9,7 @@ export function useUpdateDeleteComments({ queryKey }: { queryKey: QueryKey }) {
   const qc = useQueryClient();
   const { updateCommentMutation, deleteCommentMutation } =
     useCommentsMutations();
-  const { prompt, confirm } = useBasicDialogs();
+  const { prompt, confirm } = useDialogs();
 
   const handleEdit = useCallback(
     ({ commentId, content }: { commentId: number; content: string }) => {

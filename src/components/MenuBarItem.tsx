@@ -1,5 +1,5 @@
 import { useActiveRouteChecker } from '@/hooks/useActiveRouteChecker';
-import { useBasicDialogs } from '@/hooks/useBasicDialogs';
+import { useDialogs } from '@/hooks/useDialogs';
 import { cn } from '@/lib/cn';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -20,7 +20,7 @@ export function MenuBarItem({
 }) {
   const router = useRouter();
   const [isActive] = useActiveRouteChecker(route);
-  const { confirm } = useBasicDialogs();
+  const { confirm } = useDialogs();
 
   return (
     <div

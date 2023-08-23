@@ -11,7 +11,7 @@ import formatDistanceStrict from 'date-fns/formatDistanceStrict';
 import SvgComment from '@/svg_components/Comment';
 import { Comments } from './Comments';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useBasicDialogs } from '@/hooks/useBasicDialogs';
+import { useDialogs } from '@/hooks/useDialogs';
 import { GetPost, PostIds, VisualMedia } from 'types';
 import { isEqual } from 'lodash';
 import { ToggleStepper } from './ui/ToggleStepper';
@@ -50,7 +50,7 @@ export const Post = memo(
 
     const likePost = () => likeMutation.mutate();
     const unLikePost = () => unLikeMutation.mutate();
-    const { confirm } = useBasicDialogs();
+    const { confirm } = useDialogs();
 
     const handleLikeToggle = (isSelected: boolean) => {
       isSelected ? likePost() : unLikePost();

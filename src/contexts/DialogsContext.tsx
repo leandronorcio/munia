@@ -1,0 +1,156 @@
+'use client';
+
+import {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { useOverlayTriggerState } from 'react-stately';
+import { DialogModal } from '../components/DialogModal';
+import { Dialog } from '../components/Dialog';
+import Button from '@/components/ui/Button';
+import { TextInput } from '@/components/ui/TextInput';
+import { TextAreaWithMentionsAndHashTags } from '@/components/TextAreaWithMentionsAndHashTags';
+import { AnimatePresence } from 'framer-motion';
+
+interface BasicDialogType {
+  type: 'alert' | 'confirm' | 'prompt';
+  title: string;
+  message: string;
+  onConfirm?: Function;
+  promptLabel?: string;
+  initialPromptValue?: string;
+  promptType?: 'input' | 'textarea';
+  onSubmit?: (value: string) => void;
+}
+
+export const DialogsContext = createContext<{
+  setShown: (isOpen: boolean) => void;
+  setDialog: Dispatch<SetStateAction<BasicDialogType>>;
+}>({
+  setShown: () => {},
+  setDialog: () => {},
+});
+
+export function DialogsContextProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const state = useOverlayTriggerState({});
+  const [dialog, setDialog] = useState<BasicDialogType>({
+    type: 'alert',
+    title: '',
+    message: '',
+  });
+
+  const [promptValue, setPromptValue] = useState('');
+  const [inputError, setInputError] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (dialog.initialPromptValue) setPromptValue(dialog.initialPromptValue);
+  }, [dialog.initialPromptValue]);
+
+  useEffect(() => {
+    if (state.isOpen === false) return;
+    if (dialog.promptType === 'input') {
+      if (inputRef.current === null) return;
+      inputRef.current.focus();
+    } else {
+      if (textareaRef.current === null) return;
+      textareaRef.current.focus();
+    }
+  }, [state.isOpen]);
+
+  const hide = () => {
+    state.close();
+    setDialog({
+      type: 'alert',
+      title: '',
+      message: '',
+      onConfirm: undefined,
+      onSubmit: undefined,
+      initialPromptValue: '',
+    });
+    setPromptValue('');
+    setInputError('');
+  };
+
+  const handleAffirmative = () => {
+    if (dialog.type === 'alert') {
+      hide();
+      return;
+    }
+    if (dialog.type === 'confirm') {
+      dialog.onConfirm && dialog.onConfirm();
+      hide();
+      return;
+    }
+    if (dialog.type === 'prompt') {
+      if (promptValue === '') {
+        setInputError('This cannot be empty.');
+        return;
+      }
+      dialog.onSubmit && dialog.onSubmit(promptValue);
+      hide();
+    }
+  };
+
+  const affirmativeTexts = {
+    alert: 'Okay',
+    confirm: 'Confirm',
+    prompt: 'Submit',
+  };
+
+  return (
+    <DialogsContext.Provider value={{ setShown: state.setOpen, setDialog }}>
+      {children}
+      <AnimatePresence>
+        {state.isOpen && (
+          <DialogModal state={state}>
+            <Dialog title={dialog.title}>
+              <p className="text-center text-lg text-gray-700">
+                {dialog.message}
+              </p>
+              <div className="w-full">
+                {dialog.type === 'prompt' && (
+                  <>
+                    {dialog.promptType === 'input' ? (
+                      <TextInput
+                        value={promptValue}
+                        onChange={(text) => setPromptValue(text)}
+                        placeholder={dialog.promptLabel || 'Input here'}
+                        ref={inputRef}
+                        errorMessage={inputError || undefined}
+                      />
+                    ) : (
+                      <TextAreaWithMentionsAndHashTags
+                        content={promptValue}
+                        setContent={setPromptValue}
+                        placeholder={dialog.promptLabel || 'Input here'}
+                        errorMessage={inputError || undefined}
+                      />
+                    )}
+                  </>
+                )}
+              </div>
+              <Button onPress={handleAffirmative} shape="pill" expand="half">
+                {affirmativeTexts[dialog.type]}
+              </Button>
+              {dialog.type !== 'alert' && (
+                <Button onPress={hide} shape="pill" mode="ghost">
+                  Cancel
+                </Button>
+              )}
+            </Dialog>
+          </DialogModal>
+        )}
+      </AnimatePresence>
+    </DialogsContext.Provider>
+  );
+}

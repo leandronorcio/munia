@@ -9,13 +9,13 @@ import SvgHeart from '@/svg_components/Heart';
 import SvgArrowReply from '@/svg_components/ArrowReply';
 import { CommentContent } from './CommentContent';
 import { CommentProfilePhoto } from './CommentProfilePhoto';
-import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { useCommentsMutations } from '@/hooks/mutations/useCommentsMutations';
 import { CommentReplies } from './CommentReplies';
 import { errorNotifer } from '@/lib/errorNotifier';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import Button from './ui/Button';
+import { useDialogs } from '@/hooks/useDialogs';
 
 export const Comment = memo(
   ({
@@ -43,7 +43,7 @@ export const Comment = memo(
     const qc = useQueryClient();
     const numberOfLikes = _count.commentLikes;
     const numberOfReplies = _count.replies;
-    const { prompt } = useBasicDialogs();
+    const { prompt } = useDialogs();
     const { createReplyMutation } = useCommentsMutations();
 
     const searchParams = useSearchParams();

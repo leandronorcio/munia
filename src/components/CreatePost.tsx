@@ -7,13 +7,13 @@ import { AnimatePresence } from 'framer-motion';
 import { motion } from 'framer-motion';
 import { capitalizeFirstLetter } from '@/lib/capitalizeFirstLettet';
 import { ToEditValues } from '@/contexts/CreatePostModalContext';
-import { useBasicDialogs } from '@/hooks/useBasicDialogs';
 import { VisualMedia } from 'types';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { useCreateUpdatePostMutations } from '@/hooks/mutations/useCreateUpdatePostMutations';
 import { TextAreaWithMentionsAndHashTags } from './TextAreaWithMentionsAndHashTags';
 import { Close } from '@/svg_components';
+import { useDialogs } from '@/hooks/useDialogs';
 
 export default function CreatePost({
   toEditValues,
@@ -33,7 +33,7 @@ export default function CreatePost({
       visualMedia,
     });
   const { exitCreatePostModal } = useCreatePost();
-  const { confirm } = useBasicDialogs();
+  const { confirm } = useDialogs();
   const inputFileRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 

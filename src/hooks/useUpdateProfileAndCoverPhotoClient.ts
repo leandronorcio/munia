@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 import { useRef } from 'react';
-import { useBasicDialogs } from './useBasicDialogs';
+import { useDialogs } from './useDialogs';
 import { useToast } from './useToast';
 import { useSessionUserDataMutation } from './mutations/useSessionUserDataMutation';
 
@@ -12,7 +12,7 @@ export function useUpdateProfileAndCoverPhotoClient(
   const { data: session } = useSession();
   const userId = session?.user.id;
   const { updateSessionUserPhotosMutation } = useSessionUserDataMutation();
-  const { alert } = useBasicDialogs();
+  const { alert } = useDialogs();
   const { showToast } = useToast();
   const inputFileRef = useRef<HTMLInputElement>(null);
 

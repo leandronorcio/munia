@@ -1,8 +1,8 @@
-import { BasicDialogsContextApi } from '@/contexts/BasicDialogsContext';
+import { DialogsContext } from '@/contexts/DialogsContext';
 import { useContext } from 'react';
 
-export function useBasicDialogs() {
-  const { setShown, setDialog } = useContext(BasicDialogsContextApi);
+export function useDialogs() {
+  const { setShown, setDialog } = useContext(DialogsContext);
 
   const show = () => {
     setShown(true);
