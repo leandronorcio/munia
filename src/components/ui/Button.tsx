@@ -110,7 +110,7 @@ export default function Button({
           )}
         />
       )}
-      {children && <span>{children}</span>}
+      {children}
     </button>
   );
 }
