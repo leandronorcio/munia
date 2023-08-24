@@ -1,25 +1,22 @@
 'use client';
 import ProfileBlock from './ProfileBlock';
 import PostVisualMediaContainer from './PostVisualMediaContainer';
-import { memo, useCallback } from 'react';
+import { memo } from 'react';
 import { sortVisualMedia } from '@/lib/sortVisualMedia';
 import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/cn';
-import { DropdownItem } from './ui/DropdownItem';
-import { DropdownMenu } from './ui/DropdownMenu';
 import formatDistanceStrict from 'date-fns/formatDistanceStrict';
 import SvgComment from '@/svg_components/Comment';
 import { Comments } from './Comments';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useDialogs } from '@/hooks/useDialogs';
-import { GetPost, PostIds, VisualMedia } from 'types';
+import { GetPost, PostIds } from 'types';
 import { isEqual } from 'lodash';
 import { ToggleStepper } from './ui/ToggleStepper';
 import SvgHeart from '@/svg_components/Heart';
 import { useQuery } from '@tanstack/react-query';
 import { usePostLikesMutations } from '@/hooks/mutations/usePostLikesMutations';
 import { HighlightedMentionsAndHashTags } from './HighlightedMentionsAndHashTags';
-import { useCreatePost } from '@/hooks/useCreatePost';
+import { PostOptions } from './PostOptions';
 
 export const Post = memo(
   function Post({
@@ -34,7 +31,6 @@ export const Post = memo(
     const { data: session } = useSession();
     const userId = session?.user?.id;
     const { likeMutation, unLikeMutation } = usePostLikesMutations({ postId });
-    const { launchEditPost } = useCreatePost();
 
     const { data, isPending, isError } = useQuery<GetPost>({
       queryKey: ['posts', postId],
@@ -50,44 +46,13 @@ export const Post = memo(
 
     const likePost = () => likeMutation.mutate();
     const unLikePost = () => unLikeMutation.mutate();
-    const { confirm } = useDialogs();
 
     const handleLikeToggle = (isSelected: boolean) => {
       isSelected ? likePost() : unLikePost();
     };
+    console.log('rendered: ' + postId);
 
-    const handleDeleteClick = () => {
-      confirm({
-        title: 'Delete Post',
-        message: 'Do you really wish to delete this post?',
-        onConfirm: () => deletePost(postId),
-      });
-    };
-
-    const editPost = useCallback(
-      ({
-        postId,
-        content,
-        visualMedia,
-      }: {
-        postId: number;
-        content: string;
-        visualMedia?: VisualMedia[];
-      }) => {
-        launchEditPost({
-          postId,
-          initialContent: content,
-          initialVisualMedia: visualMedia || [],
-        });
-      },
-      [],
-    );
-
-    const handleEditClick = () => {
-      editPost({ postId, content: content || '', visualMedia });
-    };
-
-    const handleCommentsTogglerClick = () => {
+    const handleCommentsToggle = () => {
       toggleComments(postId);
     };
 
@@ -117,12 +82,12 @@ export const Post = memo(
             photoUrl={author.profilePhoto!}
           />
           {isOwnPost && (
-            <DropdownMenu width="200px">
-              <DropdownItem onClick={handleDeleteClick}>
-                Delete Post
-              </DropdownItem>
-              <DropdownItem onClick={handleEditClick}>Edit Post</DropdownItem>
-            </DropdownMenu>
+            <PostOptions
+              postId={postId}
+              content={content}
+              visualMedia={visualMedia}
+              deletePost={deletePost}
+            />
           )}
         </div>
         {content && (
@@ -155,7 +120,7 @@ export const Post = memo(
           />
           <ToggleStepper
             isSelected={commentsShown || false}
-            onChange={handleCommentsTogglerClick}
+            onChange={handleCommentsToggle}
             Icon={SvgComment}
             quantity={_count.comments}
             noun="Comment"

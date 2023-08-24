@@ -1,6 +1,4 @@
 'use client';
-import { DropdownMenu } from './ui/DropdownMenu';
-import { DropdownItem } from './ui/DropdownItem';
 import { GetComment } from 'types';
 import { memo, useEffect } from 'react';
 import { isEqual } from 'lodash';
@@ -16,6 +14,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import Button from './ui/Button';
 import { useDialogs } from '@/hooks/useDialogs';
+import { DropdownMenuButton } from './ui/DropdownMenuButton';
+import { Item, Section } from 'react-stately';
 
 export const Comment = memo(
   ({
@@ -45,7 +45,7 @@ export const Comment = memo(
     const numberOfReplies = _count.replies;
     const { prompt } = useDialogs();
     const { createReplyMutation } = useCommentsMutations();
-
+    console.log(`comment: ` + commentId);
     const searchParams = useSearchParams();
     // Highlight comment if the `commentId` is equal to the `comment-id` search param
     const shouldHighlight =
@@ -128,16 +128,20 @@ export const Comment = memo(
             />
 
             {isOwnComment && (
-              <DropdownMenu width="auto">
-                <DropdownItem onClick={() => handleDelete({ commentId })}>
-                  Delete
-                </DropdownItem>
-                <DropdownItem
-                  onClick={() => handleEdit({ commentId, content })}
-                >
-                  Edit
-                </DropdownItem>
-              </DropdownMenu>
+              <DropdownMenuButton
+                key={`comments-${commentId}-options`}
+                label="Comment options"
+                onAction={(key) => {
+                  key === 'edit'
+                    ? handleEdit({ commentId, content })
+                    : handleDelete({ commentId });
+                }}
+              >
+                <Section>
+                  <Item key="edit">Edit comment</Item>
+                  <Item key="delete">Delete comment</Item>
+                </Section>
+              </DropdownMenuButton>
             )}
           </div>
 

@@ -1,6 +1,4 @@
 'use client';
-import { DropdownMenu } from './ui/DropdownMenu';
-import { DropdownItem } from './ui/DropdownItem';
 import { GetComment } from 'types';
 import { memo } from 'react';
 import { isEqual } from 'lodash';
@@ -9,6 +7,8 @@ import SvgHeart from '@/svg_components/Heart';
 import { CommentContent } from './CommentContent';
 import { CommentProfilePhoto } from './CommentProfilePhoto';
 import { useSearchParams } from 'next/navigation';
+import { DropdownMenuButton } from './ui/DropdownMenuButton';
+import { Item, Section } from 'react-stately';
 
 export const CommentReply = memo(
   ({
@@ -58,22 +58,26 @@ export const CommentReply = memo(
 
           <div className="flex origin-left">
             <ToggleStepper
-              onClick={handleLikeClick}
+              isSelected={isLiked}
+              onPress={handleLikeClick}
               Icon={SvgHeart}
-              isActive={isLiked}
               quantity={numberOfLikes}
             />
             {isOwnReply && (
-              <DropdownMenu width="auto">
-                <DropdownItem onClick={() => handleDelete({ commentId })}>
-                  Delete
-                </DropdownItem>
-                <DropdownItem
-                  onClick={() => handleEdit({ commentId, content })}
-                >
-                  Edit
-                </DropdownItem>
-              </DropdownMenu>
+              <DropdownMenuButton
+                key={`replies-${commentId}-options`}
+                label="Reply options"
+                onAction={(key) => {
+                  key === 'edit'
+                    ? handleEdit({ commentId, content })
+                    : handleDelete({ commentId });
+                }}
+              >
+                <Section>
+                  <Item key="edit">Edit reply</Item>
+                  <Item key="delete">Delete reply</Item>
+                </Section>
+              </DropdownMenuButton>
             )}
           </div>
         </div>

@@ -11,10 +11,10 @@ import { GetActivity } from 'types';
 import { Activity } from '../../components/Activity';
 import { AllCaughtUp } from '../../components/AllCaughtUp';
 import { useSession } from 'next-auth/react';
-import { DropdownMenu } from '@/components/ui/DropdownMenu';
-import { DropdownItem } from '@/components/ui/DropdownItem';
 import { useNotificationsReadStatusMutations } from '@/hooks/mutations/useNotificationsReadStatusMutations';
 import { ACTIVITIES_PER_PAGE } from '@/constants';
+import { DropdownMenuButton } from '@/components/ui/DropdownMenuButton';
+import { Section, Item } from 'react-stately';
 
 export function Notifications() {
   const { data: session } = useSession();
@@ -110,9 +110,16 @@ export function Notifications() {
         <div className="mb-4 flex items-center gap-2">
           <h1 className="text-4xl font-bold">Notifications</h1>
         </div>
-        <DropdownMenu>
-          <DropdownItem onClick={markAllAsRead}>Mark all as read</DropdownItem>
-        </DropdownMenu>
+        <DropdownMenuButton
+          key="notifications-option"
+          label="Notifications option"
+          onAction={(key) => key === 'mark-all' && markAllAsRead()}
+          disabledKeys={['mark-all']}
+        >
+          <Section>
+            <Item key="mark-all">Mark all as read</Item>
+          </Section>
+        </DropdownMenuButton>
       </div>
       <div>
         {data?.pages.flat().map((activity) => {

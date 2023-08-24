@@ -1,7 +1,5 @@
 'use client';
 import Button from '@/components/ui/Button';
-import { DropdownItem } from '@/components/ui/DropdownItem';
-import { DropdownMenu } from '@/components/ui/DropdownMenu';
 import { kebabCase, lowerCase, startCase } from 'lodash';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
@@ -49,7 +47,7 @@ export function DiscoverFilters() {
 
   return (
     <div className="mb-6 flex flex-wrap gap-4">
-      <DropdownMenu
+      {/* <DropdownMenu
         width="115%"
         trigger={
           <Button mode="subtle" shape="pill">
@@ -104,7 +102,7 @@ export function DiscoverFilters() {
             </DropdownItem>
           );
         })}
-      </DropdownMenu>
+      </DropdownMenu> */}
     </div>
   );
 }
