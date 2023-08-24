@@ -1,10 +1,11 @@
 'use client';
 import { AriaButtonProps, useButton } from 'react-aria';
-import { useRef } from 'react';
+import { forwardRef, useRef } from 'react';
 import { cn } from '@/lib/cn';
 import { SVGProps } from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
 import SvgLoader from '@/svg_components/Loader';
+import { useObjectRef } from '@react-aria/utils';
 
 const button = cva(
   'group flex flex-row items-center justify-center font-semibold ring-violet-300 focus:outline-none focus:ring-2 active:ring-4 disabled:cursor-not-allowed disabled:opacity-70',
@@ -24,7 +25,7 @@ const button = cva(
         subtle:
           'border-2 border-violet-200 bg-transparent text-violet-800 hover:border-violet-400 hover:text-violet-900',
         ghost:
-          'font-semibold text-gray-600 ring-gray-300 hover:text-gray-900 focus:bg-gray-100',
+          'font-semibold text-gray-600 ring-gray-300 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100',
       },
       expand: {
         full: 'w-full',
@@ -74,43 +75,42 @@ export interface ButtonProps
   loading?: boolean;
 }
 
-export default function Button({
-  children,
-  size,
-  mode,
-  shape,
-  expand,
-  Icon,
-  loading,
-  ...rest
-}: ButtonProps) {
-  const iconOnly = children === undefined;
-  let ref = useRef<HTMLButtonElement>(null);
-  let { buttonProps } = useButton(rest, ref);
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    { children, size, mode, shape, expand, Icon, loading, ...rest },
+    forwardedRef,
+  ) => {
+    const iconOnly = children === undefined;
+    const localRef = useRef<HTMLButtonElement>(null);
+    const ref = useObjectRef(forwardedRef || localRef);
+    const { buttonProps } = useButton(rest, ref);
 
-  return (
-    <button
-      className={cn(
-        [button({ size, mode, shape, expand })],
-        iconOnly && 'rounded-full p-3',
-      )}
-      {...buttonProps}
-      ref={ref}
-      disabled={buttonProps.disabled || loading}
-    >
-      {!loading ? (
-        Icon && (
-          <Icon height={24} width={24} className={cn(icon({ size, mode }))} />
-        )
-      ) : (
-        <SvgLoader
-          className={cn(
-            ['animate-spin fill-violet-800 text-violet-300'],
-            icon({ size, mode }),
-          )}
-        />
-      )}
-      {children}
-    </button>
-  );
-}
+    return (
+      <button
+        className={cn(
+          [button({ size, mode, shape, expand })],
+          iconOnly && 'rounded-full p-3',
+        )}
+        {...buttonProps}
+        ref={ref}
+        disabled={buttonProps.disabled || loading}
+      >
+        {!loading ? (
+          Icon && (
+            <Icon height={24} width={24} className={cn(icon({ size, mode }))} />
+          )
+        ) : (
+          <SvgLoader
+            className={cn(
+              ['animate-spin fill-violet-800 text-violet-300'],
+              icon({ size, mode }),
+            )}
+          />
+        )}
+        {children}
+      </button>
+    );
+  },
+);
+
+export default Button;
