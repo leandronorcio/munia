@@ -5,6 +5,7 @@ import {
   SetStateAction,
   createContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -107,8 +108,18 @@ export function DialogsContextProvider({
     prompt: 'Submit',
   };
 
+  // This prevents unncessesary rerenders of the `DialogsContext` consumers
+  // Even if the states change, the consumers will not rerender
+  const memoizedValues = useMemo(
+    () => ({
+      setShown: state.setOpen,
+      setDialog,
+    }),
+    [],
+  );
+
   return (
-    <DialogsContext.Provider value={{ setShown: state.setOpen, setDialog }}>
+    <DialogsContext.Provider value={memoizedValues}>
       {children}
       <AnimatePresence>
         {state.isOpen && (
