@@ -1,42 +1,36 @@
-'use client';
-import { MoreVert } from '@/svg_components';
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useClickOutside } from '@/hooks/useClickOutside';
-import Button from './Button';
+import { Key, useRef } from 'react';
+import { AriaMenuProps, useMenu } from 'react-aria';
+import { useTreeState } from 'react-stately';
+import { DropdownMenuSection } from './DropdownMenuSection';
 
-export function DropdownMenu({
-  children,
-  trigger,
-  width,
-}: {
-  children: React.ReactNode;
-  trigger?: React.ReactNode;
-  width?: string;
-}) {
-  const [visible, setVisible] = useState(false);
-  const [ref] = useClickOutside(() => setVisible(false));
+interface MenuProps<T extends object> extends AriaMenuProps<T> {
+  onAction: (key: Key) => void;
+  onClose: () => void;
+}
 
-  const toggle = () => setVisible((prev) => !prev);
+export function DropdownMenu<T extends object>(props: MenuProps<T>) {
+  // Create state based on the incoming props
+  let state = useTreeState(props);
+
+  // Get props for the menu element
+  let ref = useRef(null);
+  let { menuProps } = useMenu(props, state, ref);
 
   return (
-    <div className="relative inline-block" ref={ref}>
-      {trigger ? (
-        <div onClick={toggle}>{trigger}</div>
-      ) : (
-        <Button onPress={toggle} Icon={MoreVert} mode="ghost" size="small" />
-      )}
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: visible ? 1 : 0, originX: '100%', originY: 0 }}
-        className="absolute right-0 top-full z-10 cursor-pointer rounded-xl border border-gray-300 bg-slate-100 py-2"
-        style={{
-          width: width || '320px',
-        }}
-        onClick={() => setVisible(false)}
-      >
-        {children}
-      </motion.div>
-    </div>
+    <ul
+      {...menuProps}
+      ref={ref}
+      className="shadow-xs min-w-[200px] origin-top-right scale-95 rounded-xl border border-gray-300 bg-slate-100 py-2 transition-transform focus-within:scale-100 focus:scale-100 focus:outline-none"
+    >
+      {[...state.collection].map((item) => (
+        <DropdownMenuSection
+          key={item.key}
+          section={item}
+          state={state}
+          onAction={props.onAction}
+          onClose={props.onClose}
+        />
+      ))}
+    </ul>
   );
 }
