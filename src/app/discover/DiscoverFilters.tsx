@@ -1,6 +1,6 @@
 'use client';
-import Button from '@/components/ui/Button';
-import { kebabCase, lowerCase, startCase } from 'lodash';
+import { Item, Select } from '@/components/ui/Select';
+import { kebabCase, lowerCase, snakeCase, startCase, toUpper } from 'lodash';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { DiscoverFilters } from 'types';
@@ -46,63 +46,43 @@ export function DiscoverFilters() {
   };
 
   return (
-    <div className="mb-6 flex flex-wrap gap-4">
-      {/* <DropdownMenu
-        width="115%"
-        trigger={
-          <Button mode="subtle" shape="pill">
-            Gender: <b>{startCase(filters.gender) || 'All'}</b>
-          </Button>
-        }
+    <div className="mb-6 flex  gap-4">
+      <Select
+        label="Filter by Gender"
+        selectedKey={toUpper(snakeCase(filters.gender)) || 'ALL'}
+        onSelectionChange={(key) => {
+          const value = (
+            key === 'ALL' ? undefined : key
+          ) as DiscoverFilters['gender'];
+          updateParams({
+            title: 'gender',
+            value: value,
+          });
+        }}
       >
-        <DropdownItem
-          onClick={() => updateParams({ title: 'gender', value: undefined })}
-        >
-          Clear
-        </DropdownItem>
-        {genderFilters.map((gender) => {
+        {['ALL', ...genderFilters].map((gender) => {
+          return <Item key={gender}>{startCase(lowerCase(gender))}</Item>;
+        })}
+      </Select>
+      <Select
+        label="Filter by Status"
+        selectedKey={toUpper(snakeCase(filters.relationshipStatus)) || 'ALL'}
+        onSelectionChange={(key) => {
+          const value = (
+            key === 'ALL' ? undefined : key
+          ) as DiscoverFilters['relationshipStatus'];
+          updateParams({
+            title: 'relationship-status',
+            value: value,
+          });
+        }}
+      >
+        {['ALL', ...relationshipStatusFilters].map((relationship) => {
           return (
-            <DropdownItem
-              key={gender}
-              onClick={() => updateParams({ title: 'gender', value: gender })}
-            >
-              {startCase(lowerCase(gender))}
-            </DropdownItem>
+            <Item key={relationship}>{startCase(lowerCase(relationship))}</Item>
           );
         })}
-      </DropdownMenu>
-      <DropdownMenu
-        width="100%"
-        trigger={
-          <Button mode="subtle" shape="pill">
-            Relationship Status:{' '}
-            <b>{startCase(filters.relationshipStatus) || 'All'}</b>
-          </Button>
-        }
-      >
-        <DropdownItem
-          onClick={() =>
-            updateParams({ title: 'relationship-status', value: undefined })
-          }
-        >
-          Clear
-        </DropdownItem>
-        {relationshipStatusFilters.map((relationship) => {
-          return (
-            <DropdownItem
-              key={relationship}
-              onClick={() =>
-                updateParams({
-                  title: 'relationship-status',
-                  value: relationship,
-                })
-              }
-            >
-              {startCase(lowerCase(relationship))}
-            </DropdownItem>
-          );
-        })}
-      </DropdownMenu> */}
+      </Select>
     </div>
   );
 }

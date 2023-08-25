@@ -122,8 +122,8 @@ export function About({
           }}
         />
       </AboutItem>
-
-      <AboutItem
+      {/* TODO: Implement */}
+      {/* <AboutItem
         field="gender"
         value={
           profileData.gender &&
@@ -148,9 +148,9 @@ export function About({
             }));
           }}
         />
-      </AboutItem>
+      </AboutItem> */}
 
-      <AboutItem
+      {/* <AboutItem
         field="relationshipStatus"
         value={
           profileData.relationshipStatus &&
@@ -179,7 +179,7 @@ export function About({
             }));
           }}
         />
-      </AboutItem>
+      </AboutItem> */}
 
       <AboutItem
         field="birthDate"
