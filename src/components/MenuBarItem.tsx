@@ -5,6 +5,7 @@ import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { SVGProps } from 'react';
 import { Badge } from './ui/Badge';
+import { ButtonNaked } from './ui/ButtonNaked';
 
 export function MenuBarItem({
   children,
@@ -23,11 +24,9 @@ export function MenuBarItem({
   const { confirm } = useDialogs();
 
   return (
-    <div
-      className={cn([
-        'group relative flex h-14 flex-1 cursor-pointer flex-row items-center justify-center px-4 duration-300 hover:bg-violet-200 md:mt-2 md:flex-none md:rounded-lg md:last:mt-auto',
-      ])}
-      onClick={() => {
+    <ButtonNaked
+      className="group relative flex h-14 flex-1 cursor-pointer flex-row items-center justify-center px-4 hover:bg-violet-200 md:mt-2 md:flex-none md:rounded-lg md:last:mt-auto"
+      onPress={() => {
         if (route === '/api/auth/signout') {
           confirm({
             title: 'Confirm Logout',
@@ -67,6 +66,6 @@ export function MenuBarItem({
       >
         {children}
       </p>
-    </div>
+    </ButtonNaked>
   );
 }

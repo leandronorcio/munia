@@ -16,6 +16,7 @@ import Button from './ui/Button';
 import { useDialogs } from '@/hooks/useDialogs';
 import { DropdownMenuButton } from './ui/DropdownMenuButton';
 import { Item, Section } from 'react-stately';
+import { ButtonNaked } from './ui/ButtonNaked';
 
 export const Comment = memo(
   ({
@@ -147,14 +148,14 @@ export const Comment = memo(
 
           {repliesShown && <CommentReplies parentId={commentId} />}
           {numberOfReplies !== 0 && (
-            <p
-              onClick={handleToggleReplies}
+            <ButtonNaked
+              onPress={handleToggleReplies}
               className="my-1 cursor-pointer text-sm font-semibold text-gray-500 hover:text-gray-800"
             >
               {!repliesShown
                 ? `Show ${numberOfReplies} replies...`
                 : 'Hide replies'}
-            </p>
+            </ButtonNaked>
           )}
         </div>
       </div>

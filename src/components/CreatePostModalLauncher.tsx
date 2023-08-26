@@ -2,6 +2,7 @@
 import { EmojiHappySmile, Image } from '@/svg_components';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
+import { ButtonNaked } from './ui/ButtonNaked';
 
 export function CreatePostModalLauncher() {
   const { launchCreatePost } = useCreatePost();
@@ -11,18 +12,18 @@ export function CreatePostModalLauncher() {
         <div className="mr-3 h-12 w-12">
           <ProfilePhotoOwn />
         </div>
-        <div
-          onClick={() => {
+        <ButtonNaked
+          onPress={() => {
             launchCreatePost({ shouldOpenFileInputOnMount: false });
           }}
           className="flex flex-grow flex-col justify-center"
         >
           <p className="text-gray-400">What's on your mind?</p>
-        </div>
+        </ButtonNaked>
       </div>
       <div className="flex flex-row gap-4">
-        <div
-          onClick={() => {
+        <ButtonNaked
+          onPress={() => {
             launchCreatePost({
               shouldOpenFileInputOnMount: true,
             });
@@ -33,13 +34,13 @@ export function CreatePostModalLauncher() {
           <p className="text-base font-semibold text-gray-500 group-hover:text-black">
             Image / Video
           </p>
-        </div>
-        <div className="group flex cursor-pointer flex-row items-center gap-4">
+        </ButtonNaked>
+        <ButtonNaked className="group flex cursor-pointer flex-row items-center gap-4">
           <EmojiHappySmile stroke="black" width={24} height={24} />
           <p className="text-base font-semibold text-gray-500 group-hover:text-black">
             Mood
           </p>
-        </div>
+        </ButtonNaked>
       </div>
     </div>
   );
