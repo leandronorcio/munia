@@ -2,7 +2,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Zoom, Navigation, Pagination, Keyboard } from 'swiper';
 import { useContext, useState } from 'react';
-import { PhotosModalNavigationButton } from './PhotosModalNavigationButton';
+import { VisualMediaModalNavigationButton } from './VisualMediaModalNavigationButton';
 import ModalWrapper from './ModalWrapper';
 import { cn } from '@/lib/cn';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -51,16 +51,17 @@ export default function VisualMediaModal() {
                 }}
                 Icon={Close}
                 mode="ghost"
+                className="bg-gray-200/70"
               />
             </motion.div>
             {visualMedia.length > 1 && (
               <>
-                <PhotosModalNavigationButton
+                <VisualMediaModalNavigationButton
                   type="prev"
                   isBeginning={isBeginning}
                   isEnd={isEnd}
                 />
-                <PhotosModalNavigationButton
+                <VisualMediaModalNavigationButton
                   type="next"
                   isBeginning={isBeginning}
                   isEnd={isEnd}
