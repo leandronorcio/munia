@@ -1,0 +1,31 @@
+import { useRef } from 'react';
+import { AriaModalOverlayProps, Overlay, useModalOverlay } from 'react-aria';
+import { OverlayTriggerState } from 'react-stately';
+import { motion } from 'framer-motion';
+
+interface ModalProps extends AriaModalOverlayProps {
+  children: React.ReactNode;
+  state: OverlayTriggerState;
+}
+
+export function Modal({ state, children, ...rest }: ModalProps) {
+  let ref = useRef(null);
+  let { modalProps, underlayProps } = useModalOverlay(rest, state, ref);
+
+  return (
+    <Overlay>
+      <div {...underlayProps} className="fixed inset-0 z-30 h-screen w-screen">
+        <motion.div
+          initial={{ backdropFilter: 'blur(0)', opacity: 0 }}
+          animate={{ backdropFilter: 'blur(4px)', opacity: 1 }}
+          exit={{ backdropFilter: 'blur(0)', opacity: 0 }}
+          className="h-full w-full"
+        >
+          <div {...modalProps} ref={ref} className="h-full w-full">
+            {children}
+          </div>
+        </motion.div>
+      </div>
+    </Overlay>
+  );
+}

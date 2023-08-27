@@ -10,7 +10,7 @@ import {
   useState,
 } from 'react';
 import { useOverlayTriggerState } from 'react-stately';
-import { DialogModal } from '../components/DialogModal';
+import { Modal } from '../components/Modal';
 import { Dialog } from '../components/Dialog';
 import Button from '@/components/ui/Button';
 import { TextInput } from '@/components/ui/TextInput';
@@ -123,8 +123,8 @@ export function DialogsContextProvider({
       {children}
       <AnimatePresence>
         {state.isOpen && (
-          <DialogModal state={state}>
-            <Dialog title={dialog.title}>
+          <Modal state={state}>
+            <Dialog title={dialog.title} onClose={state.close}>
               <p className="text-center text-lg text-gray-700">
                 {dialog.message}
               </p>
@@ -159,7 +159,7 @@ export function DialogsContextProvider({
                 </Button>
               )}
             </Dialog>
-          </DialogModal>
+          </Modal>
         )}
       </AnimatePresence>
     </DialogsContext.Provider>
