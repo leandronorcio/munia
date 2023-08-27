@@ -1,7 +1,12 @@
 import { cn } from '@/lib/cn';
 import { MouseEventHandler, SVGProps, useRef } from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
-import { AriaToggleButtonProps, useToggleButton } from 'react-aria';
+import {
+  AriaToggleButtonProps,
+  mergeProps,
+  useFocusRing,
+  useToggleButton,
+} from 'react-aria';
 import { useToggleState } from 'react-stately';
 
 const toggle = cva(
@@ -9,10 +14,9 @@ const toggle = cva(
   {
     variants: {
       color: {
-        red: 'ring-red-300 hover:bg-red-200 focus:bg-red-100 focus:outline-none focus:ring-2',
-        blue: 'ring-blue-300 hover:bg-blue-200 focus:bg-blue-100 focus:outline-none focus:ring-2',
-        purple:
-          'ring-purple-300 hover:bg-purple-200 focus:bg-purple-100 focus:outline-none focus:ring-2',
+        red: 'ring-red-300 hover:bg-red-200 focus:outline-none',
+        blue: 'ring-blue-300 hover:bg-blue-200 focus:outline-none',
+        purple: 'ring-purple-300 hover:bg-purple-200 focus:outline-none',
       },
     },
     defaultVariants: {
@@ -51,10 +55,18 @@ export function ToggleStepper({
 }: ToggleStepperProps) {
   const ref = useRef<HTMLButtonElement>(null);
   const state = useToggleState(rest);
-  const { buttonProps, isPressed } = useToggleButton(rest, state, ref);
+  const { buttonProps } = useToggleButton(rest, state, ref);
+  const { isFocusVisible, focusProps } = useFocusRing();
 
   return (
-    <button {...buttonProps} ref={ref} className={cn(toggle({ color }))}>
+    <button
+      {...mergeProps(buttonProps, focusProps)}
+      ref={ref}
+      className={cn(
+        toggle({ color }),
+        isFocusVisible && 'ring-2 ring-violet-500 ring-offset-2',
+      )}
+    >
       <Icon
         width={24}
         height={24}

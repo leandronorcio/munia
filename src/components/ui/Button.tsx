@@ -1,31 +1,31 @@
 'use client';
-import { AriaButtonProps, useButton } from 'react-aria';
+import { AriaButtonProps, useButton, useFocusRing } from 'react-aria';
 import { forwardRef, useRef } from 'react';
 import { cn } from '@/lib/cn';
 import { SVGProps } from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
 import SvgLoader from '@/svg_components/Loader';
-import { useObjectRef } from '@react-aria/utils';
+import { mergeProps, useObjectRef } from '@react-aria/utils';
 
 const button = cva(
-  'group flex flex-row items-center justify-center font-semibold ring-violet-300 focus:outline-none focus:ring-2 active:ring-4 disabled:cursor-not-allowed disabled:opacity-70',
+  'group flex flex-row items-center justify-center font-semibold focus:outline-none active:ring-4 disabled:cursor-not-allowed disabled:opacity-70',
   {
     variants: {
       size: {
-        huge: 'gap-4 rounded-2xl px-8 py-5 text-lg ',
-        large: 'gap-4 rounded-2xl px-8 py-5 text-base ',
-        medium: 'gap-3 rounded-xl px-6 py-4 text-base ',
-        small: 'gap-3 rounded-lg px-4 py-[9px] text-[13px] ',
+        huge: 'gap-4 rounded-2xl px-8 py-5 text-lg',
+        large: 'gap-4 rounded-2xl px-8 py-5 text-base',
+        medium: 'gap-3 rounded-xl px-6 py-4 text-base',
+        small: 'gap-3 rounded-lg px-4 py-[9px] text-[13px]',
       },
       mode: {
         primary:
-          'border-2 border-transparent bg-violet-600 text-white hover:bg-violet-700',
+          'border-2 border-transparent bg-violet-600 text-white hover:bg-violet-700 active:ring-violet-400',
         secondary:
-          'border-2 border-violet-600 bg-transparent text-violet-600 hover:border-violet-800 hover:text-violet-800',
+          'border-2 border-violet-600 bg-transparent text-violet-600 hover:border-violet-800 hover:text-violet-800 active:ring-violet-400',
         subtle:
-          'border-2 border-violet-200 bg-transparent text-violet-800 hover:border-violet-400 hover:text-violet-900',
+          'border-2 border-violet-200 bg-transparent text-violet-800 hover:border-violet-400 hover:text-violet-900 active:ring-violet-400',
         ghost:
-          'font-semibold text-gray-600 ring-gray-300 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100',
+          'font-semibold text-gray-600 hover:bg-gray-200 hover:text-gray-900 active:ring-gray-300',
       },
       expand: {
         full: 'w-full',
@@ -84,15 +84,17 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const localRef = useRef<HTMLButtonElement>(null);
     const ref = useObjectRef(forwardedRef || localRef);
     const { buttonProps } = useButton(rest, ref);
+    const { isFocusVisible, focusProps } = useFocusRing();
 
     return (
       <button
+        {...mergeProps(buttonProps, focusProps)}
+        ref={ref}
         className={cn(
           [button({ size, mode, shape, expand })],
           iconOnly && 'rounded-full p-3',
+          isFocusVisible && 'ring-2 ring-violet-500 ring-offset-2',
         )}
-        {...buttonProps}
-        ref={ref}
         disabled={buttonProps.disabled || loading}
       >
         {!loading ? (
