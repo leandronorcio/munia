@@ -57,8 +57,8 @@ const icon = cva('', {
     mode: {
       primary: 'stroke-white',
       secondary: 'stroke-violet-600 group-hover:stroke-violet-800',
-      ghost: 'stroke-gray-600 group-hover:stroke-gray-900',
       subtle: 'stroke-violet-800 group-hover:stroke-violet-900',
+      ghost: 'stroke-gray-600 group-hover:stroke-gray-900',
     },
   },
   defaultVariants: {
@@ -73,11 +73,12 @@ export interface ButtonProps
   children?: React.ReactNode;
   Icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
   loading?: boolean;
+  className?: string;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { children, size, mode, shape, expand, Icon, loading, ...rest },
+    { children, size, mode, shape, expand, Icon, loading, className, ...rest },
     forwardedRef,
   ) => {
     const iconOnly = children === undefined;
@@ -94,6 +95,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           [button({ size, mode, shape, expand })],
           iconOnly && 'rounded-full p-3',
           isFocusVisible && 'ring-2 ring-violet-500 ring-offset-2',
+          className,
         )}
         disabled={buttonProps.disabled || loading}
       >
