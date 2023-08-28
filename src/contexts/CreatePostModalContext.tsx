@@ -1,13 +1,17 @@
 'use client';
-import { CreatePostModal } from '@/components/CreatePostModal';
 import { VisualMedia } from 'types';
 import {
   Dispatch,
   SetStateAction,
   createContext,
   useMemo,
+  useRef,
   useState,
 } from 'react';
+import { useOverlayTriggerState } from 'react-stately';
+import { AnimatePresence } from 'framer-motion';
+import { Modal } from '@/components/Modal';
+import { CreatePostDialog } from '@/components/CreatePostDialog';
 
 export interface ToEditValues {
   postId: number;
@@ -16,17 +20,15 @@ export interface ToEditValues {
 }
 
 const CreatePostModalContextData = createContext<{
-  shown: boolean;
   toEditValues: ToEditValues | null;
   shouldOpenFileInputOnMount: boolean;
 }>({
-  shown: false,
   toEditValues: null,
   shouldOpenFileInputOnMount: false,
 });
 
 const CreatePostModalContextApi = createContext<{
-  setShown: Dispatch<SetStateAction<boolean>>;
+  setShown: (isOpen: boolean) => void;
   setToEditValues: Dispatch<SetStateAction<ToEditValues | null>>;
   setShouldOpenFileInputOnMount: Dispatch<SetStateAction<boolean>>;
 }>({
@@ -40,26 +42,34 @@ function CreatePostModalContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [shown, setShown] = useState(false);
+  const state = useOverlayTriggerState({});
   const [toEditValues, setToEditValues] = useState<ToEditValues | null>(null);
   const [shouldOpenFileInputOnMount, setShouldOpenFileInputOnMount] =
     useState(false);
 
   const memoizedContextApiValue = useMemo(
     () => ({
-      setShown,
+      setShown: state.setOpen,
       setToEditValues,
       setShouldOpenFileInputOnMount,
     }),
     [],
   );
+
   return (
     <CreatePostModalContextData.Provider
-      value={{ shown, shouldOpenFileInputOnMount, toEditValues }}
+      value={{ shouldOpenFileInputOnMount, toEditValues }}
     >
       <CreatePostModalContextApi.Provider value={memoizedContextApiValue}>
-        <CreatePostModal />
         {children}
+        <AnimatePresence>
+          {state.isOpen && (
+            // Set `isKeyboardDismissDisabled`, clicking the `Escape` key must be handled by <CreatePost> instead.
+            <Modal state={state} isKeyboardDismissDisabled>
+              <CreatePostDialog onClose={state.close}></CreatePostDialog>
+            </Modal>
+          )}
+        </AnimatePresence>
       </CreatePostModalContextApi.Provider>
     </CreatePostModalContextData.Provider>
   );

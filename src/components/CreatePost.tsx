@@ -1,12 +1,12 @@
 'use client';
 import Button from '@/components/ui/Button';
 import { CreatePostOptions } from './CreatePostOptions';
-import { useEffect, useRef, useState } from 'react';
+import { DOMAttributes, useContext, useEffect, useRef, useState } from 'react';
 import { CreatePostTabs } from './CreatePostTabs';
 import { AnimatePresence } from 'framer-motion';
 import { motion } from 'framer-motion';
 import { capitalizeFirstLetter } from '@/lib/capitalizeFirstLettet';
-import { ToEditValues } from '@/contexts/CreatePostModalContext';
+import { CreatePostModalContextData } from '@/contexts/CreatePostModalContext';
 import { VisualMedia } from 'types';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 import { useCreatePost } from '@/hooks/useCreatePost';
@@ -14,14 +14,16 @@ import { useCreateUpdatePostMutations } from '@/hooks/mutations/useCreateUpdateP
 import { TextAreaWithMentionsAndHashTags } from './TextAreaWithMentionsAndHashTags';
 import { Close } from '@/svg_components';
 import { useDialogs } from '@/hooks/useDialogs';
+import { ResponsiveContainer } from './ui/ResponsiveContainer';
 
 export default function CreatePost({
-  toEditValues,
-  shouldOpenFileInputOnMount,
+  titleProps,
 }: {
-  toEditValues: ToEditValues | null;
-  shouldOpenFileInputOnMount: boolean;
+  titleProps: DOMAttributes<{}>;
 }) {
+  const { toEditValues, shouldOpenFileInputOnMount } = useContext(
+    CreatePostModalContextData,
+  );
   const mode: 'create' | 'edit' = toEditValues === null ? 'create' : 'edit';
   const [content, setContent] = useState(toEditValues?.initialContent || '');
   const [visualMedia, setVisualMedia] = useState<VisualMedia[]>(
@@ -36,16 +38,6 @@ export default function CreatePost({
   const { confirm } = useDialogs();
   const inputFileRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    if (inputFileRef.current === null) return;
-    if (shouldOpenFileInputOnMount) inputFileRef.current.click();
-  }, [inputFileRef.current]);
-
-  useEffect(() => {
-    if (textareaRef.current === null) return;
-    textareaRef.current.focus();
-  }, [textareaRef.current]);
 
   const handleVisualMediaChange: React.ChangeEventHandler<
     HTMLInputElement
@@ -64,23 +56,20 @@ export default function CreatePost({
   };
 
   const handleClickPostButton = () => {
-    setTimeout(() => {
-      if (mode === 'create') {
-        createPostMutation.mutate();
-      } else {
-        updatePostMutation.mutate({ postId: toEditValues?.postId! });
-      }
-    }, 50);
+    if (mode === 'create') return createPostMutation.mutate();
+    if (!toEditValues) return;
+    updatePostMutation.mutate({ postId: toEditValues.postId });
   };
 
-  const handleClickCloseButton = () => {
-    const confirmExit = () => {
-      confirm({
-        title: 'Exit',
-        message: "Do you really wish to exit? Changes won't be saved.",
-        onConfirm: () => setTimeout(() => exitCreatePostModal(), 300),
-      });
-    };
+  const confirmExit = () => {
+    confirm({
+      title: 'Unsaved Changes',
+      message: 'Do you really wish to exit?',
+      onConfirm: () => setTimeout(() => exitCreatePostModal(), 300),
+    });
+  };
+
+  const handleClose = () => {
     if (mode === 'create') {
       if (content !== '' || visualMedia.length > 0) {
         confirmExit();
@@ -98,65 +87,89 @@ export default function CreatePost({
     exitCreatePostModal();
   };
 
+  useEffect(() => {
+    if (inputFileRef.current === null) return;
+    if (shouldOpenFileInputOnMount) inputFileRef.current.click();
+  }, [inputFileRef.current]);
+
+  useEffect(() => {
+    if (textareaRef.current === null) return;
+    textareaRef.current.focus();
+  }, [textareaRef.current]);
+
+  useEffect(() => {
+    const escPressed = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') handleClose();
+    };
+
+    document.addEventListener('keydown', escPressed, false);
+    return () => {
+      document.removeEventListener('keydown', escPressed, false);
+    };
+  }, [handleClose]);
+
   return (
-    <div className="mb-6 rounded-xl bg-white">
-      <div className="relative mb-4 rounded-t-xl bg-gray-100 py-3">
-        <h3 className="text-center text-lg font-semibold">
-          {capitalizeFirstLetter(mode)} Post
-        </h3>
-        <div className="absolute right-3 top-[50%] translate-y-[-50%]">
-          <Button
-            onPress={handleClickCloseButton}
-            Icon={Close}
-            mode="ghost"
-            size="small"
-          />
-        </div>
-      </div>
-      <div className="mb-[18px] flex flex-row gap-3 px-4">
-        <div className="h-11 w-11">
-          <ProfilePhotoOwn />
-        </div>
-        <div className="flex flex-1 flex-col justify-center">
-          <TextAreaWithMentionsAndHashTags
-            content={content}
-            setContent={setContent}
-            placeholder="What's on your mind?"
-          />
-        </div>
-        <div>
-          <Button
-            mode="secondary"
-            onPress={handleClickPostButton}
-            size="small"
-            isDisabled={content === '' && visualMedia.length === 0}
-            loading={
-              createPostMutation.isPending || updatePostMutation.isPending
-            }
-          >
-            Post
-          </Button>
-        </div>
-      </div>
-      <CreatePostOptions
-        handleVisualMediaChange={handleVisualMediaChange}
-        ref={inputFileRef}
-      />
-      <AnimatePresence>
-        {visualMedia.length > 0 && (
-          <motion.div
-            initial={{ height: 0 }}
-            animate={{ height: 'auto' }}
-            exit={{ height: 0 }}
-            className="overflow-hidden"
-          >
-            <CreatePostTabs
-              visualMedia={visualMedia}
-              setVisualMedia={setVisualMedia}
+    <ResponsiveContainer>
+      <div className="mb-6 rounded-xl bg-white">
+        <div className="relative mb-4 rounded-t-xl bg-gray-100 py-4">
+          <h3 {...titleProps} className="text-center text-lg font-semibold">
+            {capitalizeFirstLetter(mode)} Post
+          </h3>
+          <div className="absolute right-3 top-[50%] translate-y-[-50%]">
+            <Button
+              onPress={handleClose}
+              Icon={Close}
+              mode="ghost"
+              size="small"
+              className="bg-gray-200/70"
             />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+          </div>
+        </div>
+        <div className="mb-[18px] flex flex-row gap-3 px-4">
+          <div className="h-11 w-11">
+            <ProfilePhotoOwn />
+          </div>
+          <div className="flex flex-1 flex-col justify-center">
+            <TextAreaWithMentionsAndHashTags
+              content={content}
+              setContent={setContent}
+              placeholder="What's on your mind?"
+            />
+          </div>
+          <div>
+            <Button
+              mode="secondary"
+              onPress={handleClickPostButton}
+              size="small"
+              isDisabled={content === '' && visualMedia.length === 0}
+              loading={
+                createPostMutation.isPending || updatePostMutation.isPending
+              }
+            >
+              Post
+            </Button>
+          </div>
+        </div>
+        <CreatePostOptions
+          handleVisualMediaChange={handleVisualMediaChange}
+          ref={inputFileRef}
+        />
+        <AnimatePresence>
+          {visualMedia.length > 0 && (
+            <motion.div
+              initial={{ height: 0 }}
+              animate={{ height: 'auto' }}
+              exit={{ height: 0 }}
+              className="overflow-hidden"
+            >
+              <CreatePostTabs
+                visualMedia={visualMedia}
+                setVisualMedia={setVisualMedia}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </ResponsiveContainer>
   );
 }

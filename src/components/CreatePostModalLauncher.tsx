@@ -35,12 +35,12 @@ export function CreatePostModalLauncher() {
             Image / Video
           </p>
         </ButtonNaked>
-        <ButtonNaked className="group flex cursor-pointer flex-row items-center gap-4">
+        {/* <ButtonNaked className="group flex cursor-pointer flex-row items-center gap-4">
           <EmojiHappySmile stroke="black" width={24} height={24} />
           <p className="text-base font-semibold text-gray-500 group-hover:text-black">
             Mood
           </p>
-        </ButtonNaked>
+        </ButtonNaked> */}
       </div>
     </div>
   );
