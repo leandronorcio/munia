@@ -10,12 +10,19 @@ import {
 import { resizeTextAreaHeight } from './ui/TextArea';
 import { useQuery } from '@tanstack/react-query';
 import { UserSummary } from 'types';
-import { ProfilePhoto } from './ui/ProfilePhoto';
-import { useClickOutside } from '@/hooks/useClickOutside';
 import { replaceWordAtCursor } from '@/lib/replaceWordAtCursor';
 import { cn } from '@/lib/cn';
 import { HighlightedMentionsAndHashTags } from './HighlightedMentionsAndHashTags';
-import { AriaTextFieldProps, mergeProps, useTextField } from 'react-aria';
+import {
+  AriaTextFieldProps,
+  mergeProps,
+  useKeyboard,
+  useTextField,
+} from 'react-aria';
+import { useOverlayTriggerState } from 'react-stately';
+import { Popover } from './ui/Popover';
+import { useClickOutside } from '@/hooks/useClickOutside';
+import { TextAreaMentionItem } from './TextAreaMentionItem';
 
 interface TextAreaWithMentionsAndHashTagsProps extends AriaTextFieldProps {
   content: string;
@@ -31,17 +38,23 @@ export function TextAreaWithMentionsAndHashTags({
   ...rest
 }: TextAreaWithMentionsAndHashTagsProps) {
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [mentionsShown, setMentionsShown] = useState(false);
+  const [focused, setFocused] = useState<string>('');
 
   const posOfActiveAt = useRef(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [containerRef] = useClickOutside(() => closeMentions());
+  const containerRef = useRef<HTMLDivElement>(null);
 
   let { inputProps, labelProps, errorMessageProps } = useTextField(
     { ...rest, inputElementType: 'textarea', label: placeholder },
     textareaRef,
   );
   const { errorMessage } = rest;
+
+  const popoverState = useOverlayTriggerState({});
+  const { isOpen: mentionsShown, setOpen: setMentionsShown } = popoverState;
+  // If the <Popover> `isNonModal` is `true`, it will not be closed
+  // when the user clicks outside, but we can handle it manually
+  const [popoverRef] = useClickOutside(() => closeMentions());
 
   // This query will refetch every time the `searchKeyword` state changess
   const { data, isPending, isError } = useQuery({
@@ -54,23 +67,32 @@ export function TextAreaWithMentionsAndHashTags({
       return (await res.json()) as UserSummary[];
     },
     staleTime: 60000 * 10,
+    enabled: !!searchKeyword,
   });
+
+  // Focus the first item when `data` changes
+  useEffect(() => {
+    if (!data) return;
+    setFocused(data[0]?.username || '');
+  }, [data]);
 
   const closeMentions = () => {
     setSearchKeyword('');
     setMentionsShown(false);
+    setFocused('');
     posOfActiveAt.current = 0;
   };
 
   const handleSelectUserToMention = (username: string) => {
     setContent(
-      replaceWordAtCursor(content, posOfActiveAt.current, `@${username}`),
+      replaceWordAtCursor(content, posOfActiveAt.current, `@${username} `),
+      //                                                               ^ add one space character
     );
 
     // The cursor position must be right after the inserted string
-    const newCursorPos = posOfActiveAt.current + username.length + 1;
+    const newCursorPos = posOfActiveAt.current + username.length + 2;
 
-    // Wait for the `setContent()` to finish before focusing the textarea and setting the cursor pos
+    // Wait for the `setContent()` to finish before resizing the textarea
     setTimeout(() => {
       const textarea = textareaRef.current;
       if (textarea === null) return;
@@ -87,30 +109,35 @@ export function TextAreaWithMentionsAndHashTags({
   ) => {
     const { target } = event;
     setContent(target.value);
+  };
+
+  const handleToggleMentions = () => {
+    const target = textareaRef.current;
+    if (!target) return;
 
     const text = target.value;
     const cursorPos = target.selectionStart;
 
-    // While the user is typing, get the current word where the cursor is at
     const textBeforeCursor = text.slice(0, cursorPos);
     const wordsBeforeCursor = textBeforeCursor.split(/\s/);
-    // If the current word starts with '@', the '@' will be included in `currentWord`
     const currentWord = wordsBeforeCursor[wordsBeforeCursor.length - 1];
-    const word = currentWord.slice(1);
 
     /**
-     * If the current word starts with '@' and the `word` after it satisfies the
+     * If the `currentWord` starts with '@' and the word after it satisfies the
      * username validation i.e. alphanumeric and underscore characters only, then
-     * show the mentions section, otherwise hide it.
+     * show the mentions section, otherwise hide it
      */
-    if (currentWord.startsWith('@') && /^\w+$/.test(word)) {
-      setSearchKeyword(currentWord.slice(1));
-      setMentionsShown(true);
+    if (currentWord.startsWith('@')) {
+      const keyword = currentWord.slice(1);
+      if (/^\w+$/.test(keyword)) {
+        setSearchKeyword(keyword);
+        setMentionsShown(true);
 
-      // Save the position of the active '@'
-      posOfActiveAt.current = textBeforeCursor.length - currentWord.length;
+        // Save the position of the active '@'
+        posOfActiveAt.current = textBeforeCursor.length - currentWord.length;
+      }
     } else {
-      closeMentions();
+      if (mentionsShown) closeMentions();
     }
   };
 
@@ -132,48 +159,89 @@ export function TextAreaWithMentionsAndHashTags({
     textareaRef.current?.setSelectionRange(start, start);
   }, [textareaRef]);
 
+  const { keyboardProps } = useKeyboard({
+    onKeyDown: (e) => {
+      // Propagate if mentions are not shown
+      if (!mentionsShown || !data) return e.continuePropagation();
+
+      // Allow navigating thru the mentions using the keyboard's arrow keys etc.
+      const length = data.length;
+      const firstIndex = 0;
+      const focusedIndex = data.findIndex((user) => user.username === focused);
+      const lastIndex = length - 1;
+
+      const prevIndex =
+        focusedIndex === firstIndex ? lastIndex : focusedIndex - 1;
+      const nextIndex = focusedIndex === lastIndex ? 0 : focusedIndex + 1;
+
+      if (
+        [
+          'Escape',
+          'ArrowUp',
+          'ArrowDown',
+          'Home',
+          'End',
+          'Enter',
+          'Tab',
+        ].includes(e.key)
+      ) {
+        e.preventDefault();
+      }
+      if (e.key === 'Escape') return closeMentions();
+      if (e.key === 'ArrowUp') return setFocused(data[prevIndex].username!);
+      if (e.key === 'ArrowDown') return setFocused(data[nextIndex].username!);
+      if (e.key === 'Home') return setFocused(data[firstIndex].username!);
+      if (e.key === 'End') return setFocused(data[lastIndex].username!);
+      if (['Enter', 'Tab'].includes(e.key)) {
+        handleSelectUserToMention(data[focusedIndex].username!);
+      }
+    },
+    onKeyUp: (e) => {
+      if (e.key === 'Escape') return;
+      handleToggleMentions();
+    },
+  });
+
   return (
     <>
-      <div className="relative bg-transparent" ref={containerRef}>
-        {mentionsShown && (
-          <div className="absolute bottom-full max-h-[200px] w-full overflow-y-auto bg-slate-100">
+      {mentionsShown && (
+        <Popover
+          triggerRef={textareaRef}
+          popoverRef={popoverRef}
+          state={popoverState}
+          isNonModal={true}
+          placement="top"
+          className="min-w-[200px]"
+        >
+          <ul className="max-h-[242px] w-full overflow-auto border border-gray-300 bg-slate-100 outline-none">
             {isPending ? (
-              <div className="flex items-center px-4">Loading users...</div>
+              <li>Loading...</li>
             ) : isError ? (
-              'Error loading users.'
-            ) : data.length > 0 ? (
-              data.map((user) => (
-                <div
-                  onClick={() => handleSelectUserToMention(user.username!)}
-                  key={user.id}
-                  className="flex cursor-pointer items-center gap-3 border-b-2 px-4 py-2 last:border-b-0 hover:bg-slate-200/70"
-                >
-                  <div className="h-8 w-8">
-                    <ProfilePhoto
-                      userId={user.id}
-                      username={user.username}
-                      photoUrl={user.profilePhoto}
-                    />
-                  </div>
-                  <div>
-                    <p className="font-semibold">{user.name}</p>
-                    <p className="text-sm text-gray-600">@{user.username}</p>
-                  </div>
-                </div>
-              ))
+              <li>Error Loading users.</li>
             ) : (
-              <div className="flex items-center px-4">No users found.</div>
+              data.length > 0 &&
+              data.map((user) => (
+                <TextAreaMentionItem
+                  key={user.id}
+                  {...user}
+                  {...{ handleSelectUserToMention }}
+                  focused={user.username === focused}
+                />
+              ))
             )}
-          </div>
-        )}
+          </ul>
+        </Popover>
+      )}
+      <div className="relative bg-transparent" ref={containerRef}>
         <label {...labelProps} className="sr-only">
           {placeholder}
         </label>
         <textarea
           ref={textareaRef}
-          {...mergeProps(inputProps, {
+          {...mergeProps(inputProps, keyboardProps, {
             value: content,
             onChange: handleTextareaChange,
+            onClick: handleToggleMentions,
             onInput: (e: FormEvent<HTMLTextAreaElement>) => {
               const textarea = e.target as HTMLTextAreaElement;
               resizeTextAreaHeight(textarea);
