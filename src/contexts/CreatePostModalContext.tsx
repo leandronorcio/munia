@@ -5,7 +5,6 @@ import {
   SetStateAction,
   createContext,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 import { useOverlayTriggerState } from 'react-stately';
@@ -66,7 +65,7 @@ function CreatePostModalContextProvider({
           {state.isOpen && (
             // Set `isKeyboardDismissDisabled`, clicking the `Escape` key must be handled by <CreatePost> instead.
             <Modal state={state} isKeyboardDismissDisabled>
-              <CreatePostDialog onClose={state.close}></CreatePostDialog>
+              <CreatePostDialog></CreatePostDialog>
             </Modal>
           )}
         </AnimatePresence>
