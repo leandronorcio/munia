@@ -1,5 +1,4 @@
 'use client';
-import VisualMediaModal from '@/components/VisualMediaModal';
 import {
   Dispatch,
   SetStateAction,
@@ -7,29 +6,23 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { useOverlayTriggerState } from 'react-stately';
 import { VisualMedia } from 'types';
+import { AnimatePresence } from 'framer-motion';
+import { Modal } from '@/components/Modal';
+import { VisualMediaDialog } from '@/components/VisualMediaDialog';
+import VisualMediaSlider from '@/components/VisualMediaSlider';
 
-interface VisualMediaModalType {
+export interface VisualMediaModalType {
   visualMedia: VisualMedia[];
   initialSlide: number;
 }
-const VisualMediaModalDefault = {
-  visualMedia: [],
-  initialSlide: 0,
-};
 
-const VisualMediaModalContextData = createContext<{
-  shown: boolean;
-  modal: VisualMediaModalType;
-}>({
-  shown: false,
-  modal: VisualMediaModalDefault,
-});
 const VisualMediaModalContextApi = createContext<{
-  setShown: Dispatch<SetStateAction<boolean>>;
+  show: () => void;
   setModal: Dispatch<SetStateAction<VisualMediaModalType>>;
 }>({
-  setShown: () => {},
+  show: () => {},
   setModal: () => {},
 });
 
@@ -38,30 +31,33 @@ function VisualMediaModalContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [shown, setShown] = useState(false);
-  const [modal, setModal] = useState<VisualMediaModalType>(
-    VisualMediaModalDefault,
-  );
+  const state = useOverlayTriggerState({});
+  const [modal, setModal] = useState<VisualMediaModalType>({
+    visualMedia: [],
+    initialSlide: 0,
+  });
   const memoizedContextApiValue = useMemo(
     () => ({
-      setShown,
+      show: state.open,
       setModal,
     }),
     [],
   );
 
   return (
-    <VisualMediaModalContextData.Provider value={{ shown, modal }}>
-      <VisualMediaModalContextApi.Provider value={memoizedContextApiValue}>
-        <VisualMediaModal />
-        {children}
-      </VisualMediaModalContextApi.Provider>
-    </VisualMediaModalContextData.Provider>
+    <VisualMediaModalContextApi.Provider value={memoizedContextApiValue}>
+      {children}
+      <AnimatePresence>
+        {state.isOpen && (
+          <Modal state={state}>
+            <VisualMediaDialog>
+              <VisualMediaSlider {...modal} onClose={state.close} />
+            </VisualMediaDialog>
+          </Modal>
+        )}
+      </AnimatePresence>
+    </VisualMediaModalContextApi.Provider>
   );
 }
 
-export {
-  VisualMediaModalContextData,
-  VisualMediaModalContextApi,
-  VisualMediaModalContextProvider,
-};
+export { VisualMediaModalContextApi, VisualMediaModalContextProvider };

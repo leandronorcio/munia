@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { VisualMedia } from 'types';
 
 export function useVisualMediaModal() {
-  const { setModal, setShown } = useContext(VisualMediaModalContextApi);
+  const { setModal, show } = useContext(VisualMediaModalContextApi);
   const showVisualMediaModal = ({
     visualMedia,
     initialSlide,
@@ -15,7 +15,7 @@ export function useVisualMediaModal() {
       visualMedia,
       initialSlide,
     });
-    setShown(true);
+    show();
   };
 
   return { showVisualMediaModal };
