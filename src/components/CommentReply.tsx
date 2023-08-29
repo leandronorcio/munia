@@ -42,7 +42,6 @@ export const CommentReply = memo(
     return (
       <div className="mt-2 flex gap-4">
         <CommentProfilePhoto
-          userId={author.id}
           username={author.username}
           photoUrl={author.profilePhoto}
         />

@@ -28,11 +28,7 @@ export function ActivityCard({
     >
       <div className="relative flex-initial">
         <div className="h-16 w-16 sm:h-20 sm:w-20">
-          <ProfilePhoto
-            photoUrl={user.profilePhoto}
-            username={user.username}
-            userId={user.username}
-          />
+          <ProfilePhoto photoUrl={user.profilePhoto} username={user.username} />
         </div>
         <ActivityIcon type={type} />
       </div>

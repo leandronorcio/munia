@@ -1,6 +1,6 @@
 import parse, { Element, domToReact } from 'html-react-parser';
 import DOMPurify from 'dompurify';
-import { useGoToProfile } from '@/hooks/useGoToProfile';
+import Link from 'next/link';
 export function HighlightedMentionsAndHashTags({
   text,
   shouldAddLinks,
@@ -19,7 +19,6 @@ export function HighlightedMentionsAndHashTags({
   const cleanText = DOMPurify.sanitize(
     text.replace(/</g, '&lt;').replace(/>/, '&gt;'),
   );
-  const { goToProfile } = useGoToProfile();
 
   // Use replace() method to surround the matches' word with the <span> tag
   const html = cleanText.replace(
@@ -37,12 +36,9 @@ export function HighlightedMentionsAndHashTags({
     replace: (domNode) => {
       if (domNode instanceof Element && domNode.attribs && domNode.children)
         return (
-          <span
-            className="cursor-pointer hover:underline"
-            onClick={() => goToProfile({ username: domNode.attribs.href })}
-          >
+          <Link href={domNode.attribs.href}>
             {domToReact(domNode.children)}
-          </span>
+          </Link>
         );
     },
   }) as JSX.Element;

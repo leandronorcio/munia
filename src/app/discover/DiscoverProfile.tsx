@@ -1,10 +1,10 @@
 import { ProfileActionButtons } from '@/components/ProfileActionButtons';
 import { ProfilePhoto } from '../../components/ui/ProfilePhoto';
 import { memo } from 'react';
-import { useGoToProfile } from '@/hooks/useGoToProfile';
 import { useUserQuery } from '@/hooks/queries/useUserQuery';
 import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/cn';
+import { useRouter } from 'next/navigation';
 
 export const DiscoverProfile = memo(
   function DiscoverProfile({ userId }: { userId: string }) {
@@ -13,15 +13,14 @@ export const DiscoverProfile = memo(
      * cache for the user data, we can just access it here using the `useUserQuery()`
      */
     const { data: user, isPending, isError } = useUserQuery(userId);
-    const { goToProfile } = useGoToProfile();
     const { data: session } = useSession();
+    const router = useRouter();
 
     if (isPending) return <div>Loading...</div>;
     if (isError) return <div>Error loading profile.</div>;
     if (!user) return <></>;
 
-    const handleNameClick = () =>
-      goToProfile({ userId: user.id, username: user.username! });
+    const handleNameClick = () => router.push(`/${user.username}`);
 
     return (
       <div className="gap-4 drop-shadow-sm">
@@ -38,7 +37,6 @@ export const DiscoverProfile = memo(
             <ProfilePhoto
               photoUrl={user.profilePhoto || undefined}
               username={user.username}
-              userId={user.id}
             />
           </div>
           {/* Only show the action buttons when the profile is not the user's. */}

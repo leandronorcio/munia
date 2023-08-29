@@ -1,4 +1,4 @@
-import { useGoToProfile } from '@/hooks/useGoToProfile';
+import { useRouter } from 'next/navigation';
 import { ProfilePhoto } from './ui/ProfilePhoto';
 
 export default function ProfileBlock({
@@ -16,8 +16,8 @@ export default function ProfileBlock({
   time: string;
   photoUrl: string;
 }) {
-  const { goToProfile } = useGoToProfile();
-  const handleClick = () => goToProfile({ userId, username });
+  const router = useRouter();
+  const handleClick = () => router.push(`/${username}`);
 
   return (
     <div className="no-scrollbar flex gap-3 overflow-x-auto">

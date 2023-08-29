@@ -9,7 +9,6 @@ export function PostVisualMediaContainer({
 }: {
   visualMedia: VisualMedia[];
 }) {
-  console.log('rendered PostVisualMediaContainer');
   const { showVisualMediaModal } = useVisualMediaModal();
   const len = visualMedia.length;
 

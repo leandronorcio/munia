@@ -6,7 +6,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { GetPost, PostIds } from 'types';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import useOnScreen from '@/hooks/useOnScreen';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Post } from './Post';
@@ -25,6 +25,21 @@ export function Posts({
   const queryKey = ['users', userId, 'posts', { type }];
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
+  const [shouldRender, setShouldRender] = useState(false);
+
+  useEffect(() => {
+    /**
+     * What's this?
+     *  This runs after the first render and prevents instant rendering of cached
+     * React Query posts (if there's any), avoiding interference with NextJS scroll behavior
+     * i.e scroll to top when navigating to a new route.
+     *
+     * Why do this?
+     *  NextJS's scroll behavior is messed up when interfered by the instant rendering of posts,
+     * this trick solves this issue.
+     */
+    setShouldRender(true);
+  }, []);
 
   const {
     data,
@@ -120,42 +135,44 @@ export function Posts({
 
   return (
     <>
-      <div className="flex flex-col">
-        {status === 'pending' ? (
-          <p>Loading posts...</p>
-        ) : status === 'error' ? (
-          <p>Error loading posts.</p>
-        ) : (
-          <AnimatePresence>
-            {data.pages.flat().map((post) => (
-              <motion.div
-                initial={false}
-                animate={{
-                  height: 'auto',
-                  marginTop: '16px',
-                  opacity: 1,
-                  overflow: 'visible',
-                }}
-                exit={{
-                  height: 0,
-                  marginTop: '0px',
-                  opacity: 0,
-                  overflow: 'hidden',
-                }}
-                style={{ originY: 0 }}
-                transition={{ duration: 0.5 }}
-                key={post.id}
-              >
-                <Post
-                  id={post.id}
-                  commentsShown={post.commentsShown}
-                  toggleComments={toggleComments}
-                />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        )}
-      </div>
+      {shouldRender && (
+        <div className="flex flex-col">
+          {status === 'pending' ? (
+            <p>Loading posts...</p>
+          ) : status === 'error' ? (
+            <p>Error loading posts.</p>
+          ) : (
+            <AnimatePresence>
+              {data.pages.flat().map((post) => (
+                <motion.div
+                  initial={false}
+                  animate={{
+                    height: 'auto',
+                    marginTop: '16px',
+                    opacity: 1,
+                    overflow: 'visible',
+                  }}
+                  exit={{
+                    height: 0,
+                    marginTop: '0px',
+                    opacity: 0,
+                    overflow: 'hidden',
+                  }}
+                  style={{ originY: 0 }}
+                  transition={{ duration: 0.5 }}
+                  key={post.id}
+                >
+                  <Post
+                    id={post.id}
+                    commentsShown={post.commentsShown}
+                    toggleComments={toggleComments}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          )}
+        </div>
+      )}
       <div
         className="h-6"
         ref={bottomElRef}
@@ -165,7 +182,7 @@ export function Posts({
          */
         style={{ display: data ? 'block' : 'none' }}
       ></div>
-      {!isFetching && !hasNextPage && <AllCaughtUp />}
+      {!isFetching && !isFetchingNextPage && !hasNextPage && <AllCaughtUp />}
     </>
   );
 }
