@@ -1,6 +1,5 @@
 'use client';
 import {
-  DefaultError,
   InfiniteData,
   QueryKey,
   useInfiniteQuery,
@@ -11,7 +10,6 @@ import { useCallback, useEffect, useRef } from 'react';
 import useOnScreen from '@/hooks/useOnScreen';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Post } from './Post';
-import { useDeletePostMutation } from '@/hooks/mutations/useDeletePostMutation';
 import { AllCaughtUp } from './AllCaughtUp';
 import { POSTS_PER_PAGE } from '@/constants';
 import { chunk } from 'lodash';
@@ -25,7 +23,6 @@ export function Posts({
 }) {
   const qc = useQueryClient();
   const queryKey = ['users', userId, 'posts', { type }];
-  const { deleteMutation } = useDeletePostMutation();
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
 
@@ -92,10 +89,6 @@ export function Posts({
     fetchNextPage();
   }, [isBottomOnScreen]);
 
-  const deletePost = useCallback((postId: number) => {
-    deleteMutation.mutate({ postId });
-  }, []);
-
   const toggleComments = useCallback(async (postId: number) => {
     qc.setQueryData<InfiniteData<{ id: number; commentsShown: boolean }[]>>(
       queryKey,
@@ -156,7 +149,6 @@ export function Posts({
                 <Post
                   id={post.id}
                   commentsShown={post.commentsShown}
-                  deletePost={deletePost}
                   toggleComments={toggleComments}
                 />
               </motion.div>

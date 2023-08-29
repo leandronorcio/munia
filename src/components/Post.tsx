@@ -22,10 +22,8 @@ export const Post = memo(
   function Post({
     id: postId,
     commentsShown,
-    deletePost,
     toggleComments,
   }: PostIds & {
-    deletePost: (postId: number) => void;
     toggleComments: (postId: number) => void;
   }) {
     const { data: session } = useSession();
@@ -85,7 +83,6 @@ export const Post = memo(
               postId={postId}
               content={content}
               visualMedia={visualMedia}
-              deletePost={deletePost}
             />
           )}
         </div>
