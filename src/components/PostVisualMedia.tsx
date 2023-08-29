@@ -3,7 +3,7 @@ import { Play } from '@/svg_components';
 import { VisualMediaType } from '@prisma/client';
 import { mergeProps, useFocusRing, usePress } from 'react-aria';
 
-export default function PostVisualMedia({
+export function PostVisualMedia({
   type,
   url,
   onClick,

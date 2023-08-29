@@ -1,6 +1,6 @@
 'use client';
 import ProfileBlock from './ProfileBlock';
-import PostVisualMediaContainer from './PostVisualMediaContainer';
+import { PostVisualMediaContainer } from './PostVisualMediaContainer';
 import { memo } from 'react';
 import { sortVisualMedia } from '@/lib/sortVisualMedia';
 import { useSession } from 'next-auth/react';
