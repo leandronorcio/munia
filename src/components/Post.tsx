@@ -50,7 +50,6 @@ export const Post = memo(
     const handleLikeToggle = (isSelected: boolean) => {
       isSelected ? likePost() : unLikePost();
     };
-    console.log('rendered: ' + postId);
 
     const handleCommentsToggle = () => {
       toggleComments(postId);

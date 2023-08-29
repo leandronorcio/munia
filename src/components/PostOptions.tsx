@@ -19,7 +19,6 @@ export function PostOptions({
   const { confirm } = useDialogs();
   const { launchEditPost } = useCreatePost();
 
-  console.log('rendered: ' + postId);
   const handleDeleteClick = () => {
     confirm({
       title: 'Delete Post',

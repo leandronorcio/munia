@@ -46,7 +46,7 @@ export const Comment = memo(
     const numberOfReplies = _count.replies;
     const { prompt } = useDialogs();
     const { createReplyMutation } = useCommentsMutations();
-    console.log(`comment: ` + commentId);
+
     const searchParams = useSearchParams();
     // Highlight comment if the `commentId` is equal to the `comment-id` search param
     const shouldHighlight =
@@ -74,7 +74,6 @@ export const Comment = memo(
             },
             {
               onSuccess: (createdReply) => {
-                console.log(createdReply);
                 qc.setQueryData<GetComment[]>(
                   ['comments', commentId, 'replies'],
                   (oldReplies) => {
