@@ -22,9 +22,9 @@ export function ProfileHeader({
 
   return (
     <>
-      <div className="relative mb-28 md:pt-6">
+      <div className="relative mb-[72px] md:pt-6">
         <div
-          className="h-60 overflow-hidden drop-shadow-xl md:h-72 md:rounded-3xl"
+          className="h-60 overflow-hidden drop-shadow-xl md:rounded-3xl"
           style={{
             background:
               'linear-gradient(95.08deg, #AF45DB 2.49%, #EB7B96 97.19%)',
@@ -32,40 +32,35 @@ export function ProfileHeader({
         >
           <CoverPhoto
             isOwnProfile={isOwnProfile}
-            photoUrl={profile!.coverPhoto}
+            photoUrl={profile.coverPhoto}
           />
         </div>
         <ProfilePhoto
           isOwnProfile={isOwnProfile}
-          photoUrl={profile!.profilePhoto}
+          photoUrl={profile.profilePhoto}
         />
         {!isOwnProfile && (
           <div className="absolute -bottom-20 right-2 md:right-0">
-            <ProfileActionButtons targetUserId={profile!.id} />
+            <ProfileActionButtons targetUserId={profile.id} />
           </div>
         )}
       </div>
 
       <div className="px-4">
-        <h1 className="mb-1 text-4xl font-bold">{profile!.name}</h1>
-        <div className="flex flex-col lg:flex-row">
-          <p className="mr-4 text-lg text-gray-600">@{profile!.username}</p>
-          <div className="flex flex-row">
-            <p className="mr-6 hidden text-lg lg:block">&bull;</p>
-            <Link href={`/${profile.username}/followers`}>
-              <p className="mr-6 cursor-pointer text-lg font-semibold hover:underline">
-                <span>{profile!.followerCount}</span>{' '}
-                <span className="text-gray-500">Followers</span>
-              </p>
-            </Link>
-            <p className="mr-6 text-lg">&bull;</p>
-            <Link href={`/${profile.username}/following`}>
-              <p className="cursor-pointer text-lg font-semibold hover:underline">
-                <span>{profile!.followingCount}</span>{' '}
-                <span className="text-gray-500">Following</span>
-              </p>
-            </Link>
-          </div>
+        <h1 className="text-lg font-bold">{profile.name}</h1>
+        <p className="mb-2 font-mono text-sm text-slate-500">
+          @{profile.username}
+        </p>
+        <p className="text-slate-800">{profile.bio}</p>
+        <div className="flex flex-row gap-3">
+          <Link href={`/${profile.username}/followers`} className="link">
+            <span className="font-semibold">{profile.followerCount}</span>{' '}
+            <span className="text-slate-500">Followers</span>
+          </Link>
+          <Link href={`/${profile.username}/following`} className="link">
+            <span className="font-semibold">{profile.followingCount}</span>{' '}
+            <span className="text-slate-500">Following</span>
+          </Link>
         </div>
         <Tabs isOwnProfile={isOwnProfile} />
       </div>

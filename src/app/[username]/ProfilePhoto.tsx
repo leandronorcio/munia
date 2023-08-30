@@ -17,7 +17,7 @@ export default function ProfilePhoto({
 
   return (
     <div
-      className="absolute -bottom-24 h-48 w-48 rounded-full border-8 border-white bg-cover"
+      className="absolute -bottom-[72px] h-36 w-36 rounded-full border-2 border-white bg-cover"
       style={{
         backgroundImage: `url("${photoUrl || 'default-profile-photo.jpg'}")`,
       }}

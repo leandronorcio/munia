@@ -13,7 +13,7 @@ export default function Tabs({ isOwnProfile }: { isOwnProfile: boolean }) {
   const parentLayoutSegment = `/${usePathname().split('/')[1]}`;
 
   return (
-    <div className="mt-6 flex flex-row gap-6">
+    <div className="mt-2 flex flex-row gap-6 overflow-x-auto">
       {[
         { title: 'Posts', segment: parentLayoutSegment },
         { title: 'Photos', segment: `${parentLayoutSegment}/photos` },
