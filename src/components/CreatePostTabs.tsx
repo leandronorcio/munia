@@ -5,6 +5,7 @@ import { Ellipse } from '@/svg_components';
 import { memo, useState } from 'react';
 import { CreatePostSort } from './CreatePostSort';
 import { VisualMedia } from 'types';
+import { TabButton } from './TabButton';
 
 const CreatePostTabs = memo(function CreatePostTabs({
   visualMedia,
@@ -24,25 +25,13 @@ const CreatePostTabs = memo(function CreatePostTabs({
           {['preview', 'sort'].map((item, i) => {
             const isActive = item === activeCreatePostTab;
             return (
-              <div
-                className="flex cursor-pointer flex-col items-center gap-2 px-3 py-4"
-                onClick={() =>
+              <TabButton
+                title={item}
+                isActive={isActive}
+                onPress={() =>
                   setActiveCreatePostTab(item as 'preview' | 'sort')
                 }
-                key={item}
-              >
-                <h2
-                  className={cn(
-                    'text-xl font-semibold',
-                    isActive
-                      ? 'text-black'
-                      : 'text-gray-500 hover:text-gray-700',
-                  )}
-                >
-                  {capitalizeFirstLetter(item)}
-                </h2>
-                {isActive && <Ellipse width={8} height={8} />}
-              </div>
+              />
             );
           })}
         </div>
