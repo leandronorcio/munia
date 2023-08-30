@@ -13,7 +13,6 @@ const CreatePostTabs = memo(function CreatePostTabs({
   visualMedia: VisualMedia[];
   setVisualMedia: React.Dispatch<React.SetStateAction<VisualMedia[]>>;
 }) {
-  console.log('rendered CreatePostTabs');
   const [activeCreatePostTab, setActiveCreatePostTab] = useState<
     'preview' | 'sort'
   >('preview');
@@ -49,22 +48,14 @@ const CreatePostTabs = memo(function CreatePostTabs({
         </div>
 
         <div className="overflow-hidden">
-          <div
-            className={cn(
-              'grid w-[200%] grid-cols-2 transition-transform duration-500',
-              activeCreatePostTab === 'sort' && 'translate-x-[-50%]',
-            )}
-          >
-            <div className="basis-1/2">
-              <PostVisualMediaContainer visualMedia={visualMedia} />
-            </div>
-            <div className="basis-1/2">
-              <CreatePostSort
-                visualMedia={visualMedia}
-                setVisualMedia={setVisualMedia}
-              />
-            </div>
-          </div>
+          {activeCreatePostTab === 'preview' ? (
+            <PostVisualMediaContainer visualMedia={visualMedia} />
+          ) : (
+            <CreatePostSort
+              visualMedia={visualMedia}
+              setVisualMedia={setVisualMedia}
+            />
+          )}
         </div>
       </div>
     </>
