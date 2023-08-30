@@ -23,7 +23,11 @@ export function PostOptions({
     confirm({
       title: 'Delete Post',
       message: 'Do you really wish to delete this post?',
-      onConfirm: () => deleteMutation.mutate({ postId }),
+      onConfirm: () => {
+        // Wait for the dialog to close before deleting the comment to pass the focus to
+        // the next element first, preventing the focus from resetting to the top
+        setTimeout(() => deleteMutation.mutate({ postId }), 300);
+      },
     });
   };
 

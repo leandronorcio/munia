@@ -73,32 +73,36 @@ export function useUpdateDeleteComments({ queryKey }: { queryKey: QueryKey }) {
     confirm({
       title: 'Confirm Delete',
       message: 'Do you really wish to delete this comment?',
-      onConfirm: async () => {
-        // Optimistically update the UI when the user confirms the deletion
-        // Cancel outgoing queries
-        await qc.cancelQueries({ queryKey: queryKey });
+      onConfirm: () => {
+        // Wait for the dialog to close before deleting the comment to pass the focus to
+        // the next element first, preventing the focus from resetting to the top
+        setTimeout(async () => {
+          // Optimistically update the UI when the user confirms the deletion
+          // Cancel outgoing queries
+          await qc.cancelQueries({ queryKey: queryKey });
 
-        // Snapshot the previous value
-        const prevComments = qc.getQueryData(queryKey);
+          // Snapshot the previous value
+          const prevComments = qc.getQueryData(queryKey);
 
-        // Optimistically remove the comment
-        qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
-          if (!oldComments) return;
+          // Optimistically remove the comment
+          qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
+            if (!oldComments) return;
 
-          // Remove the deleted comment and return the new comments
-          return oldComments.filter((comment) => comment.id !== commentId);
-        });
+            // Remove the deleted comment and return the new comments
+            return oldComments.filter((comment) => comment.id !== commentId);
+          });
 
-        deleteCommentMutation.mutate(
-          { commentId },
-          {
-            onError: (error) => {
-              // Revert back to the snapshotted value when there's an error
-              qc.setQueryData(queryKey, prevComments);
-              errorNotifer(error);
+          deleteCommentMutation.mutate(
+            { commentId },
+            {
+              onError: (error) => {
+                // Revert back to the snapshotted value when there's an error
+                qc.setQueryData(queryKey, prevComments);
+                errorNotifer(error);
+              },
             },
-          },
-        );
+          );
+        }, 300);
       },
     });
   }, []);
