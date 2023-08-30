@@ -2,6 +2,7 @@ import { formatDistanceToNowStrict } from 'date-fns';
 import { HighlightedMentionsAndHashTags } from './HighlightedMentionsAndHashTags';
 import { cn } from '@/lib/cn';
 import { useEffect, useRef } from 'react';
+import Link from 'next/link';
 
 export function CommentContent({
   name,
@@ -24,7 +25,11 @@ export function CommentContent({
 
   return (
     <div ref={ref}>
-      <h3 className="text-md font-semibold">{name}</h3>
+      <h3 className="text-md font-semibold">
+        <Link href={`/${username}`} className="link">
+          {name}
+        </Link>
+      </h3>
       <p className="text-gray-499 text-gray-500">@{username}</p>
       <div
         className={cn(

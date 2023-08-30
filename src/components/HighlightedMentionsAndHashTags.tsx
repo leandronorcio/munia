@@ -36,7 +36,7 @@ export function HighlightedMentionsAndHashTags({
     replace: (domNode) => {
       if (domNode instanceof Element && domNode.attribs && domNode.children)
         return (
-          <Link href={domNode.attribs.href}>
+          <Link href={domNode.attribs.href} className="link">
             {domToReact(domNode.children)}
           </Link>
         );

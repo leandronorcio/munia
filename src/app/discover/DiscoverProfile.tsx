@@ -4,7 +4,7 @@ import { memo } from 'react';
 import { useUserQuery } from '@/hooks/queries/useUserQuery';
 import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/cn';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export const DiscoverProfile = memo(
   function DiscoverProfile({ userId }: { userId: string }) {
@@ -14,13 +14,10 @@ export const DiscoverProfile = memo(
      */
     const { data: user, isPending, isError } = useUserQuery(userId);
     const { data: session } = useSession();
-    const router = useRouter();
 
     if (isPending) return <div>Loading...</div>;
     if (isError) return <div>Error loading profile.</div>;
     if (!user) return <></>;
-
-    const handleNameClick = () => router.push(`/${user.username}`);
 
     return (
       <div className="gap-4 drop-shadow-sm">
@@ -45,11 +42,10 @@ export const DiscoverProfile = memo(
           )}
         </div>
         <div className="flex flex-col items-center rounded-b-3xl bg-white py-8">
-          <h2
-            className="mb-3 cursor-pointer px-2 text-center text-2xl font-semibold hover:underline"
-            onClick={handleNameClick}
-          >
-            {user.name}
+          <h2 className="mb-3 cursor-pointer px-2 text-center text-2xl font-semibold">
+            <Link href={`/${user.username}`} className="link">
+              {user.name}
+            </Link>
           </h2>
           <p className="mb-4 px-2 text-center text-gray-500">
             {user.bio || 'No bio yet'}
