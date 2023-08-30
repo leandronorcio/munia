@@ -2,7 +2,6 @@ import { LogoText } from '@/components/LogoText';
 import { ButtonLink } from '@/components/ui/ButtonLink';
 import { BackArrow } from '@/svg_components';
 import SvgLogo from '@/svg_components/Logo';
-import Link from 'next/link';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -13,12 +12,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             Back
           </ButtonLink>
         </div>
-        <Link href="/">
-          <div className="flex flex-row items-center justify-center gap-5">
-            <SvgLogo width={52} height={52} />
-            <LogoText className="text-4xl" />
-          </div>
-        </Link>
+        <div className="flex flex-row items-center justify-center gap-5">
+          <SvgLogo width={52} height={52} />
+          <LogoText className="text-4xl" />
+        </div>
       </div>
       <div className="grid h-screen place-items-center">
         <div className="w-[320px] md:w-[428px]">{children}</div>

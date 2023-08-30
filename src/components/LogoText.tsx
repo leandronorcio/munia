@@ -1,4 +1,5 @@
 import { cn } from '@/lib/cn';
+import Link from 'next/link';
 
 interface LogoTextProps extends React.HTMLAttributes<HTMLHeadElement> {}
 export function LogoText({ ...rest }: LogoTextProps) {
@@ -14,7 +15,9 @@ export function LogoText({ ...rest }: LogoTextProps) {
           'linear-gradient(95.08deg, #AE5388 2.49%, #3D1052 97.19%)',
       }}
     >
-      Munia
+      <Link href="/" className="link">
+        Munia
+      </Link>
     </h1>
   );
 }
