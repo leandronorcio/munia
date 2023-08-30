@@ -11,7 +11,7 @@ import { VisualMediaModalContextProvider } from '@/contexts/VisualMediaModalCont
 import { MenuBar } from '../components/MenuBar';
 import { CreatePostModalContextProvider } from '@/contexts/CreatePostModalContext';
 import { cn } from '@/lib/cn';
-import { CountContextProvider } from '@/contexts/CountContext';
+import { ShouldAnimateContextProvider } from '@/contexts/ShouldAnimateContext';
 import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 import { ReactQueryProvider } from '@/contexts/ReactQueryProvider';
 import { getServerUser } from '@/lib/getServerUser';
@@ -48,7 +48,7 @@ export default async function RootLayout({
               <DialogsContextProvider>
                 <VisualMediaModalContextProvider>
                   <CreatePostModalContextProvider>
-                    <CountContextProvider>
+                    <ShouldAnimateContextProvider>
                       {user ? (
                         <>
                           <div className="md:flex md:justify-center md:gap-2">
@@ -62,7 +62,7 @@ export default async function RootLayout({
                       ) : (
                         children
                       )}
-                    </CountContextProvider>
+                    </ShouldAnimateContextProvider>
                   </CreatePostModalContextProvider>
                 </VisualMediaModalContextProvider>
               </DialogsContextProvider>
