@@ -13,6 +13,7 @@ import { Post } from './Post';
 import { AllCaughtUp } from './AllCaughtUp';
 import { POSTS_PER_PAGE } from '@/constants';
 import { chunk } from 'lodash';
+import { useShouldAnimate } from '@/hooks/useShouldAnimate';
 
 export function Posts({
   type,
@@ -25,20 +26,19 @@ export function Posts({
   const queryKey = ['users', userId, 'posts', { type }];
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
-  const [shouldRender, setShouldRender] = useState(false);
-
+  // `shouldAnimate` is `false` when the browser's back button is pressed
+  const { shouldAnimate } = useShouldAnimate();
+  // When going back, render the cached posts right away to store the scroll
+  /**
+   *  When pushing a page that renders this component, `shouldRender` must be `false`
+   * to prevent rendering of cached React Query posts (if there's any)
+   * on mount, avoiding interference with NextJS scroll behavior i.e scroll
+   * to top when navigating to a new route. NextJS's scroll behavior is
+   * messed up when interfered by the instant rendering of posts.
+   */
+  const [shouldRender, setShouldRender] = useState(!shouldAnimate);
   useEffect(() => {
-    /**
-     * What's this?
-     *  This runs after the first render and prevents instant rendering of cached
-     * React Query posts (if there's any), avoiding interference with NextJS scroll behavior
-     * i.e scroll to top when navigating to a new route.
-     *
-     * Why do this?
-     *  NextJS's scroll behavior is messed up when interfered by the instant rendering of posts,
-     * this trick solves this issue.
-     */
-    setShouldRender(true);
+    if (!shouldRender) setShouldRender(true);
   }, []);
 
   const {
@@ -133,6 +133,20 @@ export function Posts({
     );
   }, []);
 
+  const variants = {
+    start: {
+      height: 0,
+      opacity: 0.2,
+      marginTop: '0px',
+      overflow: 'hidden',
+    },
+    animate: {
+      height: 'auto',
+      opacity: 1,
+      marginTop: '16px',
+      overflow: 'visible',
+    },
+  };
   return (
     <>
       {shouldRender && (
@@ -143,32 +157,23 @@ export function Posts({
             <p>Error loading posts.</p>
           ) : (
             <AnimatePresence>
-              {data.pages.flat().map((post) => (
-                <motion.div
-                  initial={false}
-                  animate={{
-                    height: 'auto',
-                    marginTop: '16px',
-                    opacity: 1,
-                    overflow: 'visible',
-                  }}
-                  exit={{
-                    height: 0,
-                    marginTop: '0px',
-                    opacity: 0,
-                    overflow: 'hidden',
-                  }}
-                  style={{ originY: 0 }}
-                  transition={{ duration: 0.5 }}
-                  key={post.id}
-                >
-                  <Post
-                    id={post.id}
-                    commentsShown={post.commentsShown}
-                    toggleComments={toggleComments}
-                  />
-                </motion.div>
-              ))}
+              {data.pages.map((page) =>
+                page.map((post) => (
+                  <motion.div
+                    variants={variants}
+                    initial={shouldAnimate ? 'start' : false}
+                    animate="animate"
+                    exit="start"
+                    key={post.id}
+                  >
+                    <Post
+                      id={post.id}
+                      commentsShown={post.commentsShown}
+                      toggleComments={toggleComments}
+                    />
+                  </motion.div>
+                )),
+              )}
             </AnimatePresence>
           )}
         </div>
