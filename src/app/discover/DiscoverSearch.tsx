@@ -36,7 +36,6 @@ export function DiscoverSearch({
           value={search}
           onChange={(text) => setSearch(text)}
           label={label}
-          width="100%"
           Icon={SvgSearch}
           errorMessage={error === '' ? undefined : error}
         />

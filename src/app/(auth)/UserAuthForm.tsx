@@ -75,7 +75,6 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
           }}
           label="Email"
           errorMessage={inputError || undefined}
-          width={'100%'}
           Icon={AtSign}
         />
       </div>

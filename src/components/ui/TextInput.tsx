@@ -6,10 +6,9 @@ import { AriaTextFieldProps, useTextField } from 'react-aria';
 interface TextInputProps extends AriaTextFieldProps {
   className?: string;
   Icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
-  width?: string | number;
 }
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-  ({ className, Icon, width, ...rest }, ref) => {
+  ({ className, Icon, ...rest }, ref) => {
     const localRef = useRef<HTMLInputElement>(null);
     const inputRef = ref || localRef;
     const { errorMessage, label } = rest;
@@ -35,12 +34,11 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             {...inputProps}
             ref={inputRef}
             className={cn(
-              'peer rounded-2xl bg-slate-100 pb-2 pr-5 pt-8 outline-none ring-black focus:ring-2',
+              'peer w-full rounded-2xl bg-slate-100 pb-2 pr-5 pt-8 outline-none ring-black focus:ring-2',
               Icon ? 'pl-16' : 'pl-5',
               isError && 'bg-red-200 ring-2 ring-red-900',
               className,
             )}
-            style={{ width: width || '320px' }}
             placeholder=" "
           />
           <label
