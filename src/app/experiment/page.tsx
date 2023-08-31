@@ -1,21 +1,18 @@
 'use client';
 
-import { Item, Select } from '@/components/ui/Select';
-import { Section } from 'react-stately';
+import { Calendar } from '@/components/ui/Calendar';
+import { DatePicker } from '@/components/ui/DatePicker';
+import { TextInput } from '@/components/ui/TextInput';
+import { parseDate } from '@internationalized/date';
+import { useState } from 'react';
 
 export default function Page() {
+  const [value, setValue] = useState(parseDate('2015-02-03'));
   return (
     <div className="mt-5">
-      <Select label="Favorite Animal" disabledKeys={['cat']}>
-        <Item key="red panda">Red Panda</Item>
-        <Item key="cat">Cat</Item>
-        <Item key="dog">Dog</Item>
-        <Section title="Unique Animals">
-          <Item key="aardvark">Aardvark</Item>
-          <Item key="kangaroo">Kangaroo</Item>
-        </Section>
-        <Item key="snake">Snake</Item>
-      </Select>
+      <DatePicker label="Birth date" />
+      <br />
+      <TextInput label="Name" errorMessage="Shut the fck up" />
     </div>
   );
 }

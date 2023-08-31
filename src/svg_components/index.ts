@@ -5,6 +5,7 @@ export { default as ArrowChevronForward } from "./ArrowChevronForward";
 export { default as ArrowReply } from "./ArrowReply";
 export { default as AtSign } from "./AtSign";
 export { default as BackArrow } from "./BackArrow";
+export { default as Calendar } from "./Calendar";
 export { default as Camera } from "./Camera";
 export { default as Check } from "./Check";
 export { default as CircleActionsAlertInfo } from "./CircleActionsAlertInfo";
