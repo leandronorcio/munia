@@ -4,6 +4,9 @@ import { CommentReply } from './CommentReply';
 import { useSession } from 'next-auth/react';
 import { useUpdateDeleteComments } from '@/hooks/useUpdateDeleteComments';
 import { useLikeUnlikeComments } from '@/hooks/useLikeUnlikeComments';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useShouldAnimate } from '@/hooks/useShouldAnimate';
+import { commentFramerVariants } from '@/lib/commentFramerVariants';
 
 export function CommentReplies({ parentId }: { parentId: number }) {
   const { data: session } = useSession();
@@ -19,6 +22,7 @@ export function CommentReplies({ parentId }: { parentId: number }) {
   });
   const { handleEdit, handleDelete } = useUpdateDeleteComments({ queryKey });
   const { likeComment, unLikeComment } = useLikeUnlikeComments({ queryKey });
+  const { shouldAnimate } = useShouldAnimate();
 
   if (isPending)
     return (
@@ -30,16 +34,26 @@ export function CommentReplies({ parentId }: { parentId: number }) {
         Error loading replies.
       </p>
     );
+
   return (
     <div>
-      {replies.map((reply) => (
-        <CommentReply
-          key={`comments-${parentId}-replies-${reply.id}`}
-          {...reply}
-          {...{ handleEdit, handleDelete, likeComment, unLikeComment }}
-          isOwnReply={session?.user.id === reply.user.id}
-        />
-      ))}
+      <AnimatePresence>
+        {replies.map((reply) => (
+          <motion.div
+            variants={commentFramerVariants}
+            initial={shouldAnimate ? 'start' : false}
+            animate="animate"
+            exit="exit"
+            key={`comments-${parentId}-replies-${reply.id}`}
+          >
+            <CommentReply
+              {...reply}
+              {...{ handleEdit, handleDelete, likeComment, unLikeComment }}
+              isOwnReply={session?.user.id === reply.user.id}
+            />
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </div>
   );
 }

@@ -11,6 +11,7 @@ import {
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { GetUser } from 'types';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const PROFILES_PER_PAGE = 4;
 export function DiscoverProfiles({
@@ -100,11 +101,28 @@ export function DiscoverProfiles({
         ) : status === 'error' ? (
           <p>Error loading profiles.</p>
         ) : (
-          data?.pages
-            .flat()
-            .map((profile) => (
-              <DiscoverProfile key={profile.id} userId={profile.id} />
-            ))
+          <AnimatePresence>
+            {data?.pages.flat().map((profile) => (
+              <motion.div
+                initial={{
+                  scale: 0.8,
+                  opacity: 0.2,
+                }}
+                animate={{
+                  scale: 1,
+                  x: 0,
+                  opacity: 1,
+                }}
+                exit={{
+                  scale: 0.8,
+                  opacity: 0,
+                }}
+                key={profile.id}
+              >
+                <DiscoverProfile userId={profile.id} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
         )}
       </div>
       <div

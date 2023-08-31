@@ -14,6 +14,7 @@ import { AllCaughtUp } from './AllCaughtUp';
 import { POSTS_PER_PAGE } from '@/constants';
 import { chunk } from 'lodash';
 import { useShouldAnimate } from '@/hooks/useShouldAnimate';
+import { deductLowerMultiple } from '@/lib/deductLowerMultiple';
 
 export function Posts({
   type,
@@ -135,16 +136,22 @@ export function Posts({
 
   const variants = {
     start: {
-      height: 0,
-      opacity: 0.2,
+      y: '-50',
+      opacity: 0,
       marginTop: '0px',
       overflow: 'hidden',
     },
     animate: {
-      height: 'auto',
+      y: 0,
       opacity: 1,
       marginTop: '16px',
       overflow: 'visible',
+    },
+    exit: {
+      height: 0,
+      opacity: 0,
+      marginTop: '0px',
+      overflow: 'hidden',
     },
   };
   return (
@@ -158,21 +165,26 @@ export function Posts({
           ) : (
             <AnimatePresence>
               {data.pages.map((page) =>
-                page.map((post) => (
-                  <motion.div
-                    variants={variants}
-                    initial={shouldAnimate ? 'start' : false}
-                    animate="animate"
-                    exit="start"
-                    key={post.id}
-                  >
-                    <Post
-                      id={post.id}
-                      commentsShown={post.commentsShown}
-                      toggleComments={toggleComments}
-                    />
-                  </motion.div>
-                )),
+                page.map((post, i) => {
+                  return (
+                    <motion.div
+                      variants={variants}
+                      initial={shouldAnimate ? 'start' : false}
+                      animate="animate"
+                      exit="exit"
+                      transition={{
+                        delay: deductLowerMultiple(i, POSTS_PER_PAGE) * 0.115,
+                      }}
+                      key={post.id}
+                    >
+                      <Post
+                        id={post.id}
+                        commentsShown={post.commentsShown}
+                        toggleComments={toggleComments}
+                      />
+                    </motion.div>
+                  );
+                }),
               )}
             </AnimatePresence>
           )}

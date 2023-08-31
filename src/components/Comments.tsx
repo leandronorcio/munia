@@ -9,6 +9,8 @@ import { useSession } from 'next-auth/react';
 import { useUpdateDeleteComments } from '@/hooks/useUpdateDeleteComments';
 import { useLikeUnlikeComments } from '@/hooks/useLikeUnlikeComments';
 import { CommentCreate } from './CommentCreate';
+import { useShouldAnimate } from '@/hooks/useShouldAnimate';
+import { commentFramerVariants } from '@/lib/commentFramerVariants';
 
 export function Comments({ postId }: { postId: number }) {
   const qc = useQueryClient();
@@ -17,6 +19,7 @@ export function Comments({ postId }: { postId: number }) {
   const { handleEdit, handleDelete } = useUpdateDeleteComments({ queryKey });
   const { likeComment, unLikeComment } = useLikeUnlikeComments({ queryKey });
   const { data: session } = useSession();
+  const { shouldAnimate } = useShouldAnimate();
 
   const {
     data: comments,
@@ -61,20 +64,11 @@ export function Comments({ postId }: { postId: number }) {
             {comments.length > 0 ? (
               comments?.map((comment) => (
                 <motion.div
+                  variants={commentFramerVariants}
+                  initial={shouldAnimate ? 'start' : false}
+                  animate="animate"
+                  exit="exit"
                   key={`posts-${postId}-comments-${comment.id}`}
-                  initial={false}
-                  animate={{
-                    height: 'auto',
-                    x: 0,
-                    marginTop: '6px',
-                    overflow: 'visible',
-                  }}
-                  exit={{
-                    height: 0,
-                    x: 40,
-                    marginTop: '0px',
-                    overflow: 'hidden',
-                  }}
                 >
                   <Comment
                     {...comment}
