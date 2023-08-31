@@ -82,8 +82,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     forwardedRef,
   ) => {
     const iconOnly = children === undefined;
-    const localRef = useRef<HTMLButtonElement>(null);
-    const ref = useObjectRef(forwardedRef || localRef);
+    // Support forwarded refs: https://github.com/adobe/react-spectrum/pull/2293#discussion_r714337674
+    const ref = useObjectRef(forwardedRef);
     const { buttonProps } = useButton(rest, ref);
     const { isFocusVisible, focusProps } = useFocusRing();
 
