@@ -1,15 +1,16 @@
 import { useDialogs } from '@/hooks/useDialogs';
-import { errorNotifer } from '@/lib/errorNotifier';
 import { QueryKey, useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { GetComment } from 'types';
 import { useCommentsMutations } from './mutations/useCommentsMutations';
+import { useErrorNotifier } from './useErrorNotifier';
 
 export function useUpdateDeleteComments({ queryKey }: { queryKey: QueryKey }) {
   const qc = useQueryClient();
   const { updateCommentMutation, deleteCommentMutation } =
     useCommentsMutations();
   const { prompt, confirm } = useDialogs();
+  const { notifyError } = useErrorNotifier();
 
   const handleEdit = useCallback(
     ({ commentId, content }: { commentId: number; content: string }) => {
@@ -59,7 +60,7 @@ export function useUpdateDeleteComments({ queryKey }: { queryKey: QueryKey }) {
               onError: (error) => {
                 // Revert back to the snapshotted value when there's an error
                 qc.setQueryData(queryKey, prevComments);
-                errorNotifer(error);
+                notifyError(error);
               },
             },
           );
@@ -98,7 +99,7 @@ export function useUpdateDeleteComments({ queryKey }: { queryKey: QueryKey }) {
               onError: (error) => {
                 // Revert back to the snapshotted value when there's an error
                 qc.setQueryData(queryKey, prevComments);
-                errorNotifer(error);
+                notifyError(error);
               },
             },
           );

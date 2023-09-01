@@ -8,13 +8,14 @@ import {
 import { chunk } from 'lodash';
 import { POSTS_PER_PAGE } from '@/constants';
 import { useSession } from 'next-auth/react';
-import { errorNotifer } from '@/lib/errorNotifier';
 import { PostIds } from 'types';
+import { useErrorNotifier } from '../useErrorNotifier';
 
 export function useDeletePostMutation() {
   const qc = useQueryClient();
   const { data: session } = useSession();
   const queryKey = ['users', session?.user.id, 'posts'];
+  const { notifyError } = useErrorNotifier();
 
   const deleteMutation = useMutation({
     mutationFn: async ({ postId }: { postId: number }) => {
@@ -66,7 +67,7 @@ export function useDeletePostMutation() {
     },
     onError: (error, variables, context) => {
       qc.setQueryData(queryKey, context?.previousPosts);
-      errorNotifer(error);
+      notifyError(error);
     },
   });
 

@@ -2,18 +2,19 @@
 import Button from './ui/Button';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 import SvgSend from '@/svg_components/Send';
-import { errorNotifer } from '@/lib/errorNotifier';
 import { useState } from 'react';
 import { useCommentsMutations } from '@/hooks/mutations/useCommentsMutations';
 import { useQueryClient } from '@tanstack/react-query';
 import { GetComment } from 'types';
 import { TextAreaWithMentionsAndHashTags } from './TextAreaWithMentionsAndHashTags';
+import { useErrorNotifier } from '@/hooks/useErrorNotifier';
 
 export function CommentCreate({ postId }: { postId: number }) {
   const [content, setContent] = useState('');
   const { createCommentMutation } = useCommentsMutations();
   const qc = useQueryClient();
   const queryKey = ['posts', postId, 'comments'];
+  const { notifyError } = useErrorNotifier();
 
   const handleCreate = () => {
     createCommentMutation.mutate(
@@ -28,7 +29,7 @@ export function CommentCreate({ postId }: { postId: number }) {
           setContent('');
         },
 
-        onError: (error) => errorNotifer(error),
+        onError: (error) => notifyError(error),
       },
     );
   };
