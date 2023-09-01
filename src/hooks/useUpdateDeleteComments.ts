@@ -1,16 +1,13 @@
 import { useDialogs } from '@/hooks/useDialogs';
-import { QueryKey, useQueryClient } from '@tanstack/react-query';
+import { QueryKey } from '@tanstack/react-query';
 import { useCallback } from 'react';
-import { GetComment } from 'types';
-import { useCommentsMutations } from './mutations/useCommentsMutations';
-import { useErrorNotifier } from './useErrorNotifier';
+import { useUpdateDeleteCommentMutations } from './mutations/useUpdateDeleteCommentMutations';
 
+// Use this hook for updating and deleting comments/replies.
 export function useUpdateDeleteComments({ queryKey }: { queryKey: QueryKey }) {
-  const qc = useQueryClient();
   const { updateCommentMutation, deleteCommentMutation } =
-    useCommentsMutations();
+    useUpdateDeleteCommentMutations({ queryKey });
   const { prompt, confirm } = useDialogs();
-  const { notifyError } = useErrorNotifier();
 
   const handleEdit = useCallback(
     ({ commentId, content }: { commentId: number; content: string }) => {
@@ -19,51 +16,7 @@ export function useUpdateDeleteComments({ queryKey }: { queryKey: QueryKey }) {
         initialPromptValue: content,
         promptType: 'textarea',
         onSubmit: async (value) => {
-          /**
-           * https://stackoverflow.com/a/71927346/8434369
-           * The `onMutate` only exists on the options that you pass to `useMutation`,
-           * not the ones that you pass to `mutate`.
-           *
-           * However, we can still optimistically update the comments
-           * without relying on `onMutate`.
-           */
-          // Cancel outgoing queries
-          await qc.cancelQueries({ queryKey: queryKey });
-
-          // Snapshot the previous value
-          const prevComments = qc.getQueryData(queryKey);
-
-          // Optimistically update the comment
-          qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
-            if (!oldComments) return;
-
-            // Make a shallow copy of the `oldComments`
-            const newComments = [...oldComments];
-
-            // Find the index of the updated comment
-            const index = newComments.findIndex(
-              (comment) => comment.id === commentId,
-            );
-
-            // Update the comment
-            newComments[index] = {
-              ...newComments[index],
-              content: value,
-            };
-
-            return newComments;
-          });
-
-          updateCommentMutation.mutate(
-            { commentId, content: value },
-            {
-              onError: (error) => {
-                // Revert back to the snapshotted value when there's an error
-                qc.setQueryData(queryKey, prevComments);
-                notifyError(error);
-              },
-            },
-          );
+          updateCommentMutation.mutate({ commentId, content: value });
         },
       });
     },
@@ -78,31 +31,7 @@ export function useUpdateDeleteComments({ queryKey }: { queryKey: QueryKey }) {
         // Wait for the dialog to close before deleting the comment to pass the focus to
         // the next element first, preventing the focus from resetting to the top
         setTimeout(async () => {
-          // Optimistically update the UI when the user confirms the deletion
-          // Cancel outgoing queries
-          await qc.cancelQueries({ queryKey: queryKey });
-
-          // Snapshot the previous value
-          const prevComments = qc.getQueryData(queryKey);
-
-          // Optimistically remove the comment
-          qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
-            if (!oldComments) return;
-
-            // Remove the deleted comment and return the new comments
-            return oldComments.filter((comment) => comment.id !== commentId);
-          });
-
-          deleteCommentMutation.mutate(
-            { commentId },
-            {
-              onError: (error) => {
-                // Revert back to the snapshotted value when there's an error
-                qc.setQueryData(queryKey, prevComments);
-                notifyError(error);
-              },
-            },
-          );
+          deleteCommentMutation.mutate({ commentId });
         }, 300);
       },
     });

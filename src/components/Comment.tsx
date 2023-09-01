@@ -7,16 +7,14 @@ import SvgHeart from '@/svg_components/Heart';
 import SvgArrowReply from '@/svg_components/ArrowReply';
 import { CommentContent } from './CommentContent';
 import { CommentProfilePhoto } from './CommentProfilePhoto';
-import { useCommentsMutations } from '@/hooks/mutations/useCommentsMutations';
 import { CommentReplies } from './CommentReplies';
-import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import Button from './ui/Button';
 import { useDialogs } from '@/hooks/useDialogs';
 import { DropdownMenuButton } from './ui/DropdownMenuButton';
 import { Item, Section } from 'react-stately';
 import { ButtonNaked } from './ui/ButtonNaked';
-import { useErrorNotifier } from '@/hooks/useErrorNotifier';
+import { useCreateCommentMutations } from '@/hooks/mutations/useCreateCommentMutations';
 
 export const Comment = memo(
   ({
@@ -41,12 +39,10 @@ export const Comment = memo(
     likeComment: (params: { commentId: number }) => void;
     unLikeComment: (params: { commentId: number }) => void;
   }) => {
-    const qc = useQueryClient();
     const numberOfLikes = _count.commentLikes;
     const numberOfReplies = _count.replies;
     const { prompt } = useDialogs();
-    const { createReplyMutation } = useCommentsMutations();
-    const { notifyError } = useErrorNotifier();
+    const { createReplyMutation } = useCreateCommentMutations();
 
     const searchParams = useSearchParams();
     // Highlight comment if the `commentId` is equal to the `comment-id` search param
@@ -74,19 +70,7 @@ export const Comment = memo(
               content: value,
             },
             {
-              onSuccess: (createdReply) => {
-                qc.setQueryData<GetComment[]>(
-                  ['comments', commentId, 'replies'],
-                  (oldReplies) => {
-                    if (!oldReplies) return;
-                    return [...oldReplies, createdReply];
-                  },
-                );
-                if (!repliesShown) toggleReplies({ commentId });
-              },
-              onError: (err) => {
-                notifyError(err);
-              },
+              onSuccess: () => !repliesShown && toggleReplies({ commentId }),
             },
           );
         },
