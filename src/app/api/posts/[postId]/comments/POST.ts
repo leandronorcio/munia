@@ -78,7 +78,10 @@ export async function POST(
     return NextResponse.json(await toGetComment(res));
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json(error.issues, { status: 422 });
+      return NextResponse.json(null, {
+        status: 422,
+        statusText: error.issues[0].message || 'Input validation error',
+      });
     }
 
     return NextResponse.json(null, { status: 500 });

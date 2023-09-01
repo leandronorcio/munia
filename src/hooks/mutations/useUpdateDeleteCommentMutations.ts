@@ -27,10 +27,7 @@ export function useUpdateDeleteCommentMutations({
         body: JSON.stringify({ content: content }),
       });
 
-      if (!res.ok) {
-        throw new Error('Error updating comment.');
-      }
-
+      if (!res.ok) throw new Error(res.statusText);
       return (await res.json()) as GetComment;
     },
     onMutate: async ({ commentId, content }) => {
@@ -77,10 +74,7 @@ export function useUpdateDeleteCommentMutations({
         method: 'DELETE',
       });
 
-      if (!res.ok) {
-        throw new Error('Error deleting comment.');
-      }
-
+      if (!res.ok) throw new Error('Error deleting comment.');
       return (await res.json()) as { id: number };
     },
     onMutate: async ({ commentId }) => {
