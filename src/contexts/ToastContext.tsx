@@ -1,55 +1,54 @@
 'use client';
-import { Toast } from '@/components/Toast';
-import {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useMemo,
-  useState,
-} from 'react';
+import { ToastRegion } from '@/components/ui/ToastRegion';
+import { ToastState, useToastState } from '@react-stately/toast';
+import { AnimatePresence, motion } from 'framer-motion';
+import { createContext, useMemo } from 'react';
 
 export interface ToastType {
   title: string;
   message?: string;
-  duration?: number;
   type?: 'default' | 'success' | 'warning' | 'error';
 }
 
-const ToastDefault: ToastType = {
-  title: '',
-  message: '',
-  duration: 5000,
-  type: 'default',
-};
-
-const ToastContextData = createContext<{
-  shown: boolean;
-  toast: ToastType;
+export const ToastContext = createContext<{
+  addToast: ToastState<ToastType>['add'] | null;
 }>({
-  shown: false,
-  toast: ToastDefault,
-});
-const ToastContextApi = createContext<{
-  setShown: Dispatch<SetStateAction<boolean>>;
-  setToast: Dispatch<SetStateAction<ToastType>>;
-}>({
-  setShown: () => {},
-  setToast: () => {},
+  addToast: null,
 });
 
-function ToastContextProvider({ children }: { children: React.ReactNode }) {
-  const [shown, setShown] = useState(false);
-  const [toast, setToast] = useState<ToastType>(ToastDefault);
+export function ToastContextProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  let state = useToastState<ToastType>({
+    maxVisibleToasts: 5,
+  });
 
-  const memoizedContextApiValue = useMemo(() => ({ setShown, setToast }), []);
+  // This prevents unncessesary rerenders of the `ToastContext` consumers
+  // Even if the states change, the consumers will not rerender
+  const memoizedValue = useMemo(
+    () => ({
+      addToast: state.add,
+    }),
+    [],
+  );
+
   return (
-    <ToastContextData.Provider value={{ shown, toast }}>
-      <ToastContextApi.Provider value={memoizedContextApiValue}>
-        <Toast />
-        {children}
-      </ToastContextApi.Provider>
-    </ToastContextData.Provider>
+    <ToastContext.Provider value={memoizedValue}>
+      <AnimatePresence>
+        {state.visibleToasts.length > 0 && (
+          <motion.div
+            key="toast-region"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <ToastRegion state={state} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {children}
+    </ToastContext.Provider>
   );
 }
-
-export { ToastContextData, ToastContextApi, ToastContextProvider };

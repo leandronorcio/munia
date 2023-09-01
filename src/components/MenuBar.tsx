@@ -19,7 +19,7 @@ export function MenuBar() {
 
   return (
     <div className="fixed bottom-0 z-[1] flex w-full bg-white/70 shadow-inner backdrop-blur-sm md:sticky md:top-0 md:h-screen md:w-auto md:flex-col md:items-start md:bg-inherit md:p-4 md:shadow-none md:backdrop-blur-none">
-      <div className="mb-4 flex items-center gap-2">
+      <div className="mb-4 hidden items-center gap-2 md:flex">
         <Logo className="h-12 w-12" />
 
         <LogoText className="text-3xl" />

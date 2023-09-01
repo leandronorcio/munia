@@ -1,6 +1,6 @@
 'use client';
 import { AriaButtonProps, useButton, useFocusRing } from 'react-aria';
-import { forwardRef, useRef } from 'react';
+import { forwardRef } from 'react';
 import { cn } from '@/lib/cn';
 import { SVGProps } from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
@@ -25,7 +25,7 @@ const button = cva(
         subtle:
           'border-2 border-violet-200 bg-transparent text-violet-800 hover:border-violet-400 hover:text-violet-900 active:ring-violet-400',
         ghost:
-          'font-semibold text-gray-600 hover:bg-gray-200 hover:text-gray-900 active:ring-gray-300',
+          'font-semibold text-gray-600 hover:bg-gray-500/10 hover:text-gray-900 active:ring-gray-300/50',
       },
       expand: {
         full: 'w-full',
@@ -100,9 +100,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={buttonProps.disabled || loading}
       >
         {!loading ? (
-          Icon && (
-            <Icon height={24} width={24} className={cn(icon({ size, mode }))} />
-          )
+          Icon && <Icon className={cn(icon({ size, mode }))} />
         ) : (
           <SvgLoader
             className={cn(
