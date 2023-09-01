@@ -21,7 +21,16 @@ export default function Page() {
           showToast({
             title: 'Success',
             message:
-              'Lorem ipsum dolor sit amet asd d  as as das d as asd sadassad ',
+              "How can we not talk about family, when family's all we got?",
+          })
+        }
+      >
+        Show with Message Toast
+      </Button>
+      <Button
+        onPress={() =>
+          showToast({
+            title: 'Success',
           })
         }
       >

@@ -33,7 +33,10 @@ export function Toast<T extends ToastType>({ state, ...props }: ToastProps<T>) {
     <div
       {...toastProps}
       ref={ref}
-      className={cn('flex gap-4 rounded-xl p-6', colors[type].bg)}
+      className={cn(
+        'flex items-center justify-between gap-4 rounded-xl p-6',
+        colors[type].bg,
+      )}
     >
       <div>
         <div className="flex items-center gap-4">
@@ -49,7 +52,7 @@ export function Toast<T extends ToastType>({ state, ...props }: ToastProps<T>) {
             {title}
           </h4>
         </div>
-        {message !== undefined && (
+        {message !== undefined && message !== '' && (
           <p
             {...descriptionProps}
             className={cn('ml-10 text-sm text-gray-700', colors[type].text)}
@@ -62,7 +65,6 @@ export function Toast<T extends ToastType>({ state, ...props }: ToastProps<T>) {
         {...closeButtonProps}
         mode="ghost"
         size="small"
-        className="self-center"
         Icon={(props) => (
           <Close className={cn(props.className, colors[type].icon)} />
         )}
