@@ -10,6 +10,7 @@ import { useSession } from 'next-auth/react';
 import { useCreatePost } from '../useCreatePost';
 import { VisualMedia } from 'types';
 import { POSTS_PER_PAGE } from '@/constants';
+import { useErrorNotifier } from '../useErrorNotifier';
 
 export function useCreateUpdatePostMutations({
   content,
@@ -23,10 +24,11 @@ export function useCreateUpdatePostMutations({
   const queryKey = ['users', session?.user?.id, 'posts'];
   const { exitCreatePostModal } = useCreatePost();
   const { showToast } = useToast();
+  const { notifyError } = useErrorNotifier();
 
   const generateFormData = async (): Promise<FormData> => {
     const formData = new FormData();
-    formData.append('content', content);
+    if (content) formData.append('content', content);
 
     /**
      * https://developer.mozilla.org/en-US/docs/Web/API/FormData/append
@@ -49,10 +51,7 @@ export function useCreateUpdatePostMutations({
         body: await generateFormData(),
       });
 
-      if (!res) {
-        throw Error('Error creating post.');
-      }
-
+      if (!res.ok) throw new Error(res.statusText);
       // Return the created post to be used by callbacks.
       return (await res.json()) as GetPost;
     },
@@ -88,8 +87,8 @@ export function useCreateUpdatePostMutations({
       showToast({ title: 'Successfully Posted', type: 'success' });
       exitCreatePostModal();
     },
-    onError: () => {
-      showToast({ title: 'Error Creating Post', type: 'error' });
+    onError: (err) => {
+      notifyError(err, 'Error Creating Post');
     },
   });
 
@@ -100,10 +99,7 @@ export function useCreateUpdatePostMutations({
         body: await generateFormData(),
       });
 
-      if (!res) {
-        throw Error('Failed to edit post.');
-      }
-
+      if (!res.ok) throw new Error(res.statusText);
       // Return the created post to be used by callbacks.
       return (await res.json()) as GetPost;
     },
@@ -135,8 +131,8 @@ export function useCreateUpdatePostMutations({
       showToast({ title: 'Successfully Edited', type: 'success' });
       exitCreatePostModal();
     },
-    onError: () => {
-      showToast({ title: 'Error Editing Post', type: 'error' });
+    onError: (err) => {
+      notifyError(err, 'Error Creating Post');
     },
   });
 

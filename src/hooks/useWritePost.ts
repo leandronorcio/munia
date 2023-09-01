@@ -1,3 +1,5 @@
+import 'server-only';
+
 import { selectPost } from '@/lib/prisma/selectPost';
 import { listOfKeyValuesToObject } from '@/lib/listOfKeyValuesToObject';
 import prisma from '@/lib/prisma/prisma';
@@ -169,7 +171,10 @@ export async function useWritePost({
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json(error.issues, { status: 422 });
+      return NextResponse.json(null, {
+        status: 422,
+        statusText: error.issues[0].message,
+      });
     }
 
     return NextResponse.json(
