@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { resizeTextAreaHeight } from './ui/TextArea';
+import { resizeTextAreaHeight } from '@/lib/resizeTextAreaHeight';
 import { useQuery } from '@tanstack/react-query';
 import { UserSummary } from 'types';
 import { replaceWordAtCursor } from '@/lib/replaceWordAtCursor';

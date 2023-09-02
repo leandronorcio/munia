@@ -2,20 +2,25 @@
 
 import Button from '@/components/ui/Button';
 import { DatePicker } from '@/components/ui/DatePicker';
-import { TextInput } from '@/components/ui/TextInput';
+import { Textarea } from '@/components/ui/Textarea';
 import { useToast } from '@/hooks/useToast';
-import { parseDate } from '@internationalized/date';
+import SvgAtSign from '@/svg_components/AtSign';
 import { useState } from 'react';
 
 export default function Page() {
-  const [value, setValue] = useState(parseDate('2015-02-03'));
+  const [value, setValue] = useState('');
   const { showToast } = useToast();
   console.log('rendered experiment');
   return (
     <div className="mt-5">
       <DatePicker label="Birth date" />
       <br />
-      <TextInput label="Name" errorMessage="Shut the fck up" />
+      <Textarea
+        Icon={SvgAtSign}
+        label="Enter Bio"
+        value={value}
+        onChange={setValue}
+      />
       <Button
         onPress={() =>
           showToast({
