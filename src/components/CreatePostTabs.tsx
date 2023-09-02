@@ -1,7 +1,5 @@
 import { PostVisualMediaContainer } from '@/components/PostVisualMediaContainer';
-import { capitalizeFirstLetter } from '@/lib/capitalizeFirstLettet';
 import { cn } from '@/lib/cn';
-import { Ellipse } from '@/svg_components';
 import { memo, useState } from 'react';
 import { CreatePostSort } from './CreatePostSort';
 import { VisualMedia } from 'types';
@@ -31,6 +29,7 @@ const CreatePostTabs = memo(function CreatePostTabs({
                 onPress={() =>
                   setActiveCreatePostTab(item as 'preview' | 'sort')
                 }
+                key={item}
               />
             );
           })}
