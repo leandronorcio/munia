@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { RefCallback, useRef } from 'react';
 import { useDatePickerState } from 'react-stately';
 import { AriaDatePickerProps, DateValue, useDatePicker } from 'react-aria';
 import { Calendar } from './Calendar';
@@ -9,7 +9,16 @@ import { ButtonNaked } from './ButtonNaked';
 import { DatePickerDialog } from './DatePickerDialog';
 import { cn } from '@/lib/cn';
 
-export function DatePicker(props: AriaDatePickerProps<DateValue>) {
+interface DatePickerProps extends AriaDatePickerProps<DateValue> {
+  /**
+   * Expose the button trigger to the parent component using a `RefCallback`,
+   * this is useful for programmatic focusing, e.g. allows `react-hook-form`
+   * to focus the date picker when there is an input error.
+   */
+  triggerRef: RefCallback<HTMLButtonElement>;
+}
+
+export function DatePicker({ triggerRef, ...props }: DatePickerProps) {
   let state = useDatePickerState(props);
   let ref = useRef(null);
   let {
@@ -23,6 +32,7 @@ export function DatePicker(props: AriaDatePickerProps<DateValue>) {
   } = useDatePicker(props, state, ref);
   const isError = props.errorMessage !== undefined;
   // For clearing value: https://github.com/adobe/react-spectrum/issues/4986
+
   return (
     <>
       <div
@@ -41,11 +51,15 @@ export function DatePicker(props: AriaDatePickerProps<DateValue>) {
           {props.label}
         </span>
 
-        <div {...groupProps} ref={ref} className="group ml-5 flex">
-          <ButtonNaked {...buttonProps} className="mr-5">
-            <SvgCalendar className="h-6 w-6 stroke-gray-500 hover:stroke-black group-focus-within:stroke-black" />
-          </ButtonNaked>
-          <div className="relative flex items-center rounded-md border p-1 transition-colors group-focus-within:border-violet-600 group-hover:border-gray-400 group-focus-within:group-hover:border-violet-600">
+        <ButtonNaked
+          {...buttonProps}
+          ref={(node) => triggerRef(node)}
+          className="absolute left-5 top-[50%] translate-y-[-50%]"
+        >
+          <SvgCalendar className="h-6 w-6 stroke-gray-500 hover:stroke-black group-focus-within:stroke-black" />
+        </ButtonNaked>
+        <div {...groupProps} ref={ref} className="group ml-16 flex">
+          <div className="relative flex items-center rounded-md border border-gray-200 p-1 transition-colors group-focus-within:border-black group-hover:border-gray-400 group-focus-within:group-hover:border-black">
             <DateField {...fieldProps} />
             {/* {state.validationState === 'invalid' && (
             <Close className="absolute right-1 h-6 w-6 text-red-500" />

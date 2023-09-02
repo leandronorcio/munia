@@ -51,13 +51,13 @@ function DateSegment({
             : undefined,
       }}
       className={`group box-content rounded-sm px-0.5 text-right tabular-nums outline-none focus:bg-violet-600 focus:text-white ${
-        !segment.isEditable ? 'text-gray-500' : 'text-gray-800'
+        !segment.isEditable ? 'text-gray-500' : 'text-black'
       }`}
     >
       {/* Always reserve space for the placeholder, to prevent layout shift when editing. */}
       <span
         aria-hidden="true"
-        className="block w-full text-center italic text-gray-500 group-focus:text-white"
+        className="block w-full text-center text-gray-500 group-focus:text-white"
         style={{
           visibility: segment.isPlaceholder ? undefined : 'hidden',
           height: segment.isPlaceholder ? '' : 0,
