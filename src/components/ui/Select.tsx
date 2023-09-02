@@ -69,7 +69,7 @@ export const Select = forwardRef(function Select<T extends {}>(
           className={cn(
             'w-full rounded-2xl bg-slate-100 pb-2 pl-5 pr-5 pt-8 text-left outline-none ring-black focus:ring-2',
             Icon ? 'pl-16' : 'pl-5',
-            isError && 'bg-red-200 ring-2 ring-red-900',
+            isError && 'bg-red-200 ring-red-900',
           )}
         >
           <span

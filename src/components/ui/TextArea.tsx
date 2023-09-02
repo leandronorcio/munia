@@ -45,7 +45,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             className={cn(
               'peer block w-full resize-none overflow-hidden rounded-2xl bg-slate-100 pb-2 pr-5 pt-8 outline-none ring-black focus:ring-2',
               Icon ? 'pl-16' : 'pl-5',
-              isError && 'bg-red-200 ring-2 ring-red-900',
+              isError && 'bg-red-200 ring-red-900',
               className,
             )}
             rows={1}

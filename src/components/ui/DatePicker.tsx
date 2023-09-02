@@ -22,13 +22,13 @@ export function DatePicker(props: AriaDatePickerProps<DateValue>) {
     errorMessageProps,
   } = useDatePicker(props, state, ref);
   const isError = props.errorMessage !== undefined;
-
+  // For clearing value: https://github.com/adobe/react-spectrum/issues/4986
   return (
     <>
       <div
         className={cn(
           'relative flex-col rounded-2xl bg-slate-100 pb-2 pr-5 pt-8 text-left outline-none ring-black focus-within:ring-2',
-          isError && 'bg-red-200 ring-2 ring-red-900',
+          isError && 'bg-red-200 ring-red-900',
         )}
       >
         <span

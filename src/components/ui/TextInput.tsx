@@ -1,7 +1,7 @@
 'use client';
 import { cn } from '@/lib/cn';
 import { useObjectRef } from '@react-aria/utils';
-import { SVGProps, forwardRef, useRef } from 'react';
+import { SVGProps, forwardRef } from 'react';
 import { AriaTextFieldProps, useTextField } from 'react-aria';
 
 interface TextInputProps extends AriaTextFieldProps {
@@ -10,11 +10,11 @@ interface TextInputProps extends AriaTextFieldProps {
 }
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   ({ className, Icon, ...rest }, forwardedRef) => {
-    const { errorMessage, label } = rest;
-    const isError = errorMessage !== undefined;
     // Support forwarded refs: https://github.com/adobe/react-spectrum/pull/2293#discussion_r714337674
     const ref = useObjectRef(forwardedRef);
     let { labelProps, inputProps, errorMessageProps } = useTextField(rest, ref);
+    const { errorMessage, label } = rest;
+    const isError = errorMessage !== undefined;
 
     return (
       <>
@@ -34,7 +34,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             className={cn(
               'peer w-full rounded-2xl bg-slate-100 pb-2 pr-5 pt-8 outline-none ring-black focus:ring-2',
               Icon ? 'pl-16' : 'pl-5',
-              isError && 'bg-red-200 ring-2 ring-red-900',
+              isError && 'bg-red-200 ring-red-900',
               className,
             )}
             placeholder=" "
