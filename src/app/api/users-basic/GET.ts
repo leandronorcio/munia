@@ -8,6 +8,7 @@
  * typing a comment or reply.
  */
 import prisma from '@/lib/prisma/prisma';
+import { searchUser } from '@/lib/prisma/searchUser';
 import { NextResponse } from 'next/server';
 import { UserSummary } from 'types';
 
@@ -17,27 +18,7 @@ export async function GET(request: Request) {
 
   const res: UserSummary[] | null = await prisma.user.findMany({
     where: {
-      ...(search && {
-        OR: [
-          {
-            name: {
-              search: search?.replaceAll(' ', ' | '),
-            },
-          },
-          {
-            name: {
-              startsWith: search,
-              mode: 'insensitive',
-            },
-          },
-          {
-            username: {
-              startsWith: search,
-              mode: 'insensitive',
-            },
-          },
-        ],
-      }),
+      ...(search && searchUser(search)),
     },
     select: {
       id: true,

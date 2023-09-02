@@ -6,6 +6,7 @@
 import { getServerUser } from '@/lib/getServerUser';
 import { includeToUser } from '@/lib/prisma/includeToUser';
 import prisma from '@/lib/prisma/prisma';
+import { searchUser } from '@/lib/prisma/searchUser';
 import { toGetUser } from '@/lib/prisma/toGetUser';
 import { Gender, RelationshipStatus } from '@prisma/client';
 import { snakeCase, toUpper } from 'lodash';
@@ -33,11 +34,7 @@ export async function GET(request: Request) {
 
   const res: FindUserResult[] | null = await prisma.user.findMany({
     where: {
-      ...(search && {
-        name: {
-          search: search?.replaceAll(' ', ' | '),
-        },
-      }),
+      ...(search && searchUser(search)),
       ...(gender && { gender: gender as Gender }),
       ...(relationshipStatus && {
         relationshipStatus: relationshipStatus as RelationshipStatus,
