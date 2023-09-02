@@ -63,9 +63,9 @@ function CreatePostModalContextProvider({
         {children}
         <AnimatePresence>
           {state.isOpen && (
-            // Set `isKeyboardDismissDisabled`, clicking the `Escape` key must be handled by <CreatePost> instead.
+            // Set `isKeyboardDismissDisabled`, clicking the `Escape` key must be handled by <CreatePostDialog> instead.
             <Modal state={state} isKeyboardDismissDisabled>
-              <CreatePostDialog></CreatePostDialog>
+              <CreatePostDialog />
             </Modal>
           )}
         </AnimatePresence>
