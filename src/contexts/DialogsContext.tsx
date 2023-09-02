@@ -11,7 +11,7 @@ import {
 } from 'react';
 import { useOverlayTriggerState } from 'react-stately';
 import { Modal } from '../components/Modal';
-import { Dialog } from '../components/Dialog';
+import { AlertDialog } from '../components/AlertDialog';
 import Button from '@/components/ui/Button';
 import { TextInput } from '@/components/ui/TextInput';
 import { TextAreaWithMentionsAndHashTags } from '@/components/TextAreaWithMentionsAndHashTags';
@@ -124,7 +124,7 @@ export function DialogsContextProvider({
       <AnimatePresence>
         {state.isOpen && (
           <Modal state={state}>
-            <Dialog title={dialog.title} onClose={state.close}>
+            <AlertDialog title={dialog.title} onClose={state.close}>
               <p className="text-center text-lg text-gray-700">
                 {dialog.message}
               </p>
@@ -158,7 +158,7 @@ export function DialogsContextProvider({
                   Cancel
                 </Button>
               )}
-            </Dialog>
+            </AlertDialog>
           </Modal>
         )}
       </AnimatePresence>

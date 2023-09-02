@@ -11,7 +11,12 @@ interface DialogProps extends AriaDialogProps {
   title?: React.ReactNode;
 }
 
-export function Dialog({ children, onClose, title, ...props }: DialogProps) {
+export function AlertDialog({
+  children,
+  onClose,
+  title,
+  ...props
+}: DialogProps) {
   let ref = useRef(null);
   let { dialogProps, titleProps } = useDialog(props, ref);
 
