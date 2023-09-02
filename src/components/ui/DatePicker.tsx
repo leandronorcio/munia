@@ -8,6 +8,8 @@ import SvgCalendar from '@/svg_components/Calendar';
 import { ButtonNaked } from './ButtonNaked';
 import { DatePickerDialog } from './DatePickerDialog';
 import { cn } from '@/lib/cn';
+import Button from './Button';
+import SvgClose from '@/svg_components/Close';
 
 interface DatePickerProps extends AriaDatePickerProps<DateValue> {
   /**
@@ -31,7 +33,11 @@ export function DatePicker({ triggerRef, ...props }: DatePickerProps) {
     errorMessageProps,
   } = useDatePicker(props, state, ref);
   const isError = props.errorMessage !== undefined;
-  // For clearing value: https://github.com/adobe/react-spectrum/issues/4986
+
+  // For clearing value: https://github.com/adobe/react-spectrum/issues/4986#issuecomment-1703337523
+  const clear = () => {
+    state.setDateValue(null!);
+  };
 
   return (
     <>
@@ -61,9 +67,6 @@ export function DatePicker({ triggerRef, ...props }: DatePickerProps) {
         <div {...groupProps} ref={ref} className="group ml-16 flex">
           <div className="relative flex items-center rounded-md border border-gray-200 p-1 transition-colors group-focus-within:border-black group-hover:border-gray-400 group-focus-within:group-hover:border-black">
             <DateField {...fieldProps} />
-            {/* {state.validationState === 'invalid' && (
-            <Close className="absolute right-1 h-6 w-6 text-red-500" />
-          )} */}
           </div>
         </div>
         {state.isOpen && (
@@ -73,6 +76,19 @@ export function DatePicker({ triggerRef, ...props }: DatePickerProps) {
             </DatePickerDialog>
           </Popover>
         )}
+        <Button
+          Icon={(props) => (
+            <SvgClose className={cn(props.className, 'stroke-gray-500')} />
+          )}
+          mode="ghost"
+          size="small"
+          onPress={clear}
+          className={cn(
+            'absolute right-5 top-[50%] z-[1] hidden translate-y-[-50%]',
+            state.value !== null && 'block',
+          )}
+          aria-label="Clear"
+        />
       </div>
       {isError && (
         <p className="mt-2 font-semibold text-red-800" {...errorMessageProps}>

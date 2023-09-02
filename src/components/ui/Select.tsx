@@ -6,6 +6,9 @@ import { Popover } from './Popover';
 import { ForwardedRef, SVGProps, forwardRef } from 'react';
 import { cn } from '@/lib/cn';
 import { useObjectRef } from '@react-aria/utils';
+import Button from './Button';
+import SvgClose from '@/svg_components/Close';
+import SvgArrowChevronDown from '@/svg_components/ArrowChevronDown';
 
 interface SelectProps<T> extends AriaSelectProps<T> {
   Icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
@@ -25,10 +28,13 @@ export const Select = forwardRef(function Select<T extends {}>(
 
   // Get props for the button based on the trigger props from useSelect
   const { buttonProps } = useButton(triggerProps, ref);
-  const isThereASelectedValue = state.selectedItem;
+  const isThereASelectedValue = !!state.selectedItem;
 
   const { label, name, errorMessage } = props;
   const isError = errorMessage !== undefined;
+
+  // For clearing value: https://github.com/adobe/react-spectrum/issues/4986#issuecomment-1703337523
+  const clear = () => state.setSelectedKey(null!);
 
   return (
     <>
@@ -67,7 +73,7 @@ export const Select = forwardRef(function Select<T extends {}>(
           {...buttonProps}
           ref={ref}
           className={cn(
-            'w-full rounded-2xl bg-slate-100 pb-2 pl-5 pr-5 pt-8 text-left outline-none ring-black focus:ring-2',
+            ' w-full  rounded-2xl bg-slate-100 pb-2 pl-5 pr-5 pt-8 text-left outline-none ring-black focus:ring-2',
             Icon ? 'pl-16' : 'pl-5',
             isError && 'bg-red-200 ring-red-900',
           )}
@@ -81,6 +87,11 @@ export const Select = forwardRef(function Select<T extends {}>(
               ? state.selectedItem.rendered
               : 'Select an option'}
           </span>
+          {!isThereASelectedValue && (
+            <div className="absolute right-5 top-[50%] z-[1] translate-y-[-50%] p-3">
+              <SvgArrowChevronDown className="h-5 w-5 stroke-gray-500" />
+            </div>
+          )}
         </button>
         {state.isOpen && (
           <Popover
@@ -92,6 +103,19 @@ export const Select = forwardRef(function Select<T extends {}>(
             <ListBox {...menuProps} state={state} />
           </Popover>
         )}
+        <div className="absolute right-5 top-[50%] z-[1] translate-y-[-50%]">
+          {isThereASelectedValue && (
+            <Button
+              Icon={(props) => (
+                <SvgClose className={cn(props.className, 'stroke-gray-500')} />
+              )}
+              mode="ghost"
+              size="small"
+              onPress={clear}
+              aria-label="Clear"
+            />
+          )}
+        </div>
       </div>
       {isError && (
         <p className="mt-2 font-semibold text-red-800" {...errorMessageProps}>

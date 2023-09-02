@@ -3,18 +3,30 @@ import { cn } from '@/lib/cn';
 import { useObjectRef } from '@react-aria/utils';
 import { SVGProps, forwardRef } from 'react';
 import { AriaTextFieldProps, useTextField } from 'react-aria';
+import Button from './Button';
+import SvgClose from '@/svg_components/Close';
 
 interface TextInputProps extends AriaTextFieldProps {
   className?: string;
   Icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
 }
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-  ({ className, Icon, ...rest }, forwardedRef) => {
+  ({ className, Icon, ...props }, forwardedRef) => {
     // Support forwarded refs: https://github.com/adobe/react-spectrum/pull/2293#discussion_r714337674
     const ref = useObjectRef(forwardedRef);
-    let { labelProps, inputProps, errorMessageProps } = useTextField(rest, ref);
-    const { errorMessage, label } = rest;
+    let { labelProps, inputProps, errorMessageProps } = useTextField(
+      props,
+      ref,
+    );
+    const { errorMessage, label } = props;
     const isError = errorMessage !== undefined;
+
+    const clear = () => {
+      // Set the input value to an empty string
+      ref.current.value = '';
+      // If `onChange` is provided, invoke it with an empty string
+      props.onChange && props.onChange('');
+    };
 
     return (
       <>
@@ -49,6 +61,16 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           >
             {label}
           </label>
+          <Button
+            Icon={(props) => (
+              <SvgClose className={cn(props.className, 'stroke-gray-500')} />
+            )}
+            mode="ghost"
+            size="small"
+            onPress={clear}
+            className="absolute right-5 top-[50%] z-[1] block translate-y-[-50%] peer-placeholder-shown:hidden"
+            aria-label="Clear"
+          />
         </div>
         {isError && (
           <p className="mt-2 font-semibold text-red-800" {...errorMessageProps}>

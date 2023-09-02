@@ -3,6 +3,8 @@ import { resizeTextAreaHeight } from '@/lib/resizeTextAreaHeight';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import { FormEvent, SVGProps, forwardRef } from 'react';
 import { AriaTextFieldProps, useTextField } from 'react-aria';
+import Button from './Button';
+import SvgClose from '@/svg_components/Close';
 
 interface TextareaProps extends AriaTextFieldProps {
   className?: string;
@@ -10,15 +12,23 @@ interface TextareaProps extends AriaTextFieldProps {
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, Icon, ...rest }, forwardedRef) => {
+  ({ className, Icon, ...props }, forwardedRef) => {
     // Support forwarded refs: https://github.com/adobe/react-spectrum/pull/2293#discussion_r714337674
     const ref = useObjectRef(forwardedRef);
     let { labelProps, inputProps, errorMessageProps } = useTextField(
-      { inputElementType: 'textarea', ...rest },
+      { inputElementType: 'textarea', ...props },
       ref,
     );
-    const { errorMessage, label } = rest;
+    const { errorMessage, label } = props;
     const isError = errorMessage !== undefined;
+
+    const clear = () => {
+      // Set the input value to an empty string and resize the textarea
+      ref.current.value = '';
+      resizeTextAreaHeight(ref.current);
+      // If `onChange` is provided, invoke it with an empty string
+      props.onChange && props.onChange('');
+    };
 
     return (
       <>
@@ -61,6 +71,16 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           >
             {label}
           </label>
+          <Button
+            Icon={(props) => (
+              <SvgClose className={cn(props.className, 'stroke-gray-500')} />
+            )}
+            mode="ghost"
+            size="small"
+            onPress={clear}
+            className="absolute right-5 top-[50%] z-[1] block translate-y-[-50%] peer-placeholder-shown:hidden"
+            aria-label="Clear"
+          />
         </div>
         {isError && (
           <p className="mt-2 font-semibold text-red-800" {...errorMessageProps}>
