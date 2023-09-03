@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Controller,
   SubmitErrorHandler,
@@ -53,9 +55,6 @@ export function EditProfileForm() {
 
   useEffect(() => {
     if (!userData) return;
-    console.log(
-      formatISO(new Date(userData.birthDate!), { representation: 'date' }),
-    );
     reset(defaultValues);
   }, [userData]);
 

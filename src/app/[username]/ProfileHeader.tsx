@@ -7,6 +7,8 @@ import Tabs from './Tabs';
 import { GetUser } from 'types';
 import { useUserQuery } from '@/hooks/queries/useUserQuery';
 import Link from 'next/link';
+import Button from '@/components/ui/Button';
+import { useRouter } from 'next/navigation';
 
 export function ProfileHeader({
   isOwnProfile,
@@ -19,10 +21,11 @@ export function ProfileHeader({
   // If there is no query of the user data yet, use the
   // `initialProfileData` that was fetched on server.
   const profile = data || initialProfileData;
+  const router = useRouter();
 
   return (
     <>
-      <div className="relative mb-[72px] md:pt-6">
+      <div className="relative mb-[88px] md:pt-6">
         <div
           className="h-60 overflow-hidden drop-shadow-xl md:rounded-3xl"
           style={{
@@ -39,27 +42,33 @@ export function ProfileHeader({
           isOwnProfile={isOwnProfile}
           photoUrl={profile.profilePhoto}
         />
-        {!isOwnProfile && (
-          <div className="absolute -bottom-20 right-2 md:right-0">
+        <div className="absolute -bottom-20 right-2 md:right-0">
+          {isOwnProfile ? (
+            <Button
+              shape="pill"
+              mode="subtle"
+              onPress={() => router.push('/settings/edit-profile')}
+            >
+              Edit Profile
+            </Button>
+          ) : (
             <ProfileActionButtons targetUserId={profile.id} />
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       <div className="px-4">
-        <h1 className="text-lg font-bold">{profile.name}</h1>
-        <p className="mb-2 font-mono text-sm text-slate-500">
-          @{profile.username}
-        </p>
-        <p className="text-slate-800">{profile.bio}</p>
+        <h1 className="text-2xl font-bold">{profile.name}</h1>
+        <p className="mb-2 text-gray-500">@{profile.username}</p>
+        <p className="text-gray-800">{profile.bio}</p>
         <div className="flex flex-row gap-3">
           <Link href={`/${profile.username}/followers`} className="link">
             <span className="font-semibold">{profile.followerCount}</span>{' '}
-            <span className="text-slate-500">Followers</span>
+            <span className="font-medium text-gray-500">Followers</span>
           </Link>
           <Link href={`/${profile.username}/following`} className="link">
             <span className="font-semibold">{profile.followingCount}</span>{' '}
-            <span className="text-slate-500">Following</span>
+            <span className="font-medium text-gray-500">Following</span>
           </Link>
         </div>
         <Tabs isOwnProfile={isOwnProfile} />
