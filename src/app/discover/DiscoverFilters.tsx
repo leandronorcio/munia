@@ -52,7 +52,7 @@ export function DiscoverFilters() {
       <div className="flex-1">
         <Select
           label="Filter by Gender"
-          selectedKey={toUpper(snakeCase(filters.gender)) || 'ALL'}
+          selectedKey={toUpper(snakeCase(filters.gender)) || null}
           onSelectionChange={(key) => {
             updateParams({
               title: 'gender',
@@ -68,7 +68,7 @@ export function DiscoverFilters() {
       <div className="flex-1">
         <Select
           label="Filter by Status"
-          selectedKey={toUpper(snakeCase(filters.relationshipStatus)) || 'ALL'}
+          selectedKey={toUpper(snakeCase(filters.relationshipStatus)) || null}
           onSelectionChange={(key) => {
             updateParams({
               title: 'relationship-status',
