@@ -1,9 +1,11 @@
 import { ProfilePhoto } from '@/components/ui/ProfilePhoto';
 import { ActivityType } from '@prisma/client';
 import { formatDistanceToNowStrict } from 'date-fns';
-import { ComponentProps } from 'react';
+import { ComponentProps, useRef } from 'react';
 import { UserSummary } from 'types';
 import { ActivityIcon } from './ActivityIcon';
+import { mergeProps, useFocusRing, useLink } from 'react-aria';
+import { cn } from '@/lib/cn';
 
 interface ActivityCardProps extends ComponentProps<'div'> {
   children: React.ReactNode;
@@ -21,9 +23,19 @@ export function ActivityCard({
   isRead,
   ...rest
 }: ActivityCardProps) {
+  const ref = useRef(null);
+  let { linkProps } = useLink({ elementType: 'div' }, ref);
+  const { isFocusVisible, focusProps } = useFocusRing();
+
   return (
     <div
-      className="mb-4 flex cursor-pointer gap-3 rounded-3xl bg-gray-100 p-4 last:mb-0 hover:bg-gray-200/70"
+      {...mergeProps(linkProps, focusProps)}
+      ref={ref}
+      className={cn(
+        'mb-4 flex cursor-pointer gap-3 rounded-3xl bg-gray-100 p-4 last:mb-0 hover:bg-gray-200/70 focus:outline-none',
+        isFocusVisible && 'ring ring-violet-500 ring-offset-2',
+      )}
+      aria-label="Open link"
       {...rest}
     >
       <div className="relative flex-initial">
