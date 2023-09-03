@@ -3,11 +3,10 @@
  * Allows an authenticated user to update their information.
  */
 import { NextResponse } from 'next/server';
-import { z } from 'zod';
-import { sub } from 'date-fns';
 import prisma from '@/lib/prisma/prisma';
 import { Prisma } from '@prisma/client';
 import { getServerUser } from '@/lib/getServerUser';
+import { userAboutSchema } from '@/lib/validations/userAbout';
 
 export async function PATCH(
   request: Request,
@@ -19,58 +18,6 @@ export async function PATCH(
 
   const userAbout = await request.json();
 
-  const nonEmptyStringSchema = z.string().trim().min(1);
-  const userAboutSchema = z.object({
-    username: nonEmptyStringSchema
-      .regex(/^[a-zA-Z0-9_]+$/, {
-        message: 'Only alphanumeric characters and underscores are allowed.',
-      })
-      .optional(),
-    name: nonEmptyStringSchema.optional(),
-    email: nonEmptyStringSchema.email().optional(),
-    bio: nonEmptyStringSchema.optional().nullable(),
-    website: nonEmptyStringSchema
-      .regex(
-        new RegExp(
-          /^(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(?:\/[^\s]*)?$/,
-        ),
-        { message: 'Invalid website' },
-      )
-      .optional()
-      .nullable(),
-    address: nonEmptyStringSchema.optional().nullable(),
-    phoneNumber: nonEmptyStringSchema
-      .regex(
-        new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/),
-        'Invalid phone number',
-      )
-      .optional()
-      .nullable(),
-    gender: z
-      .union([z.literal('FEMALE'), z.literal('MALE'), z.literal('NONBINARY')])
-      .optional()
-      .nullable(),
-    relationshipStatus: z
-      .union([
-        z.literal('SINGLE'),
-        z.literal('IN_A_RELATIONSHIP'),
-        z.literal('ENGAGED'),
-        z.literal('MARRIED'),
-      ])
-      .optional()
-      .nullable(),
-    birthDate: z.coerce
-      .date()
-      .min(new Date('1970-01-01'), {
-        message: "Sorry you're too old for this site.",
-      })
-      .max(sub(new Date(), { years: 7 }), {
-        message: 'You must be at least 7 years old',
-      })
-      .optional()
-      .nullable(),
-  });
-
   const validate = userAboutSchema.safeParse(userAbout);
   if (validate.success) {
     try {
@@ -80,6 +27,8 @@ export async function PATCH(
         },
         data: {
           ...validate.data,
+          birthDate:
+            validate.data.birthDate && new Date(validate.data.birthDate),
         },
       });
 
@@ -87,16 +36,24 @@ export async function PATCH(
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === 'P2002') {
-          return NextResponse.json(
-            { error: 'User ID already taken.' },
-            { status: 409 },
-          );
+          if (e.meta) {
+            const field = (e.meta.target as string[])[0];
+            const error = {
+              field,
+              message: `This ${field} is already taken.`,
+            };
+            return NextResponse.json(error, { status: 409 });
+          }
         }
+        return NextResponse.json(
+          { errorMessage: 'Database (prisma) error.' },
+          { status: 502 },
+        );
       }
     }
   } else {
     return NextResponse.json(
-      { error: validate.error.issues[0].message },
+      { errorMessage: validate.error.issues[0].message },
       { status: 400 },
     );
   }
