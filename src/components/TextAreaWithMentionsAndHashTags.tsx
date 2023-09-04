@@ -218,8 +218,7 @@ export function TextAreaWithMentionsAndHashTags({
               <li>Loading...</li>
             ) : isError ? (
               <li>Error Loading users.</li>
-            ) : (
-              data.length > 0 &&
+            ) : data.length > 0 ? (
               data.map((user) => (
                 <TextAreaMentionItem
                   key={user.id}
@@ -228,6 +227,8 @@ export function TextAreaWithMentionsAndHashTags({
                   focused={user.username === focused}
                 />
               ))
+            ) : (
+              <li>No users found.</li>
             )}
           </ul>
         </Popover>
