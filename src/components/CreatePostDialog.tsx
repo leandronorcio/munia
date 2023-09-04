@@ -1,28 +1,22 @@
 'use client';
-import { AriaDialogProps, useDialog } from 'react-aria';
+
 import Button from '@/components/ui/Button';
 import { CreatePostOptions } from './CreatePostOptions';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { CreatePostTabs } from './CreatePostTabs';
 import { AnimatePresence } from 'framer-motion';
 import { motion } from 'framer-motion';
-import { capitalizeFirstLetter } from '@/lib/capitalizeFirstLettet';
 import { CreatePostModalContextData } from '@/contexts/CreatePostModalContext';
 import { VisualMedia } from 'types';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { useCreateUpdatePostMutations } from '@/hooks/mutations/useCreateUpdatePostMutations';
 import { TextAreaWithMentionsAndHashTags } from './TextAreaWithMentionsAndHashTags';
-import { Close } from '@/svg_components';
 import { useDialogs } from '@/hooks/useDialogs';
-import { ResponsiveContainer } from './ui/ResponsiveContainer';
+import { GenericDialog } from './GenericDialog';
+import { capitalize } from 'lodash';
 
-interface CreatePostDialogProps extends AriaDialogProps {}
-
-export function CreatePostDialog(props: CreatePostDialogProps) {
-  const dialogRef = useRef(null);
-  const { dialogProps, titleProps } = useDialog(props, dialogRef);
-
+export function CreatePostDialog() {
   const { toEditValues, shouldOpenFileInputOnMount } = useContext(
     CreatePostModalContextData,
   );
@@ -111,73 +105,51 @@ export function CreatePostDialog(props: CreatePostDialogProps) {
   }, [handleClose]);
 
   return (
-    <div
-      {...dialogProps}
-      ref={dialogRef}
-      className="grid h-full w-full place-items-center overflow-y-auto py-8"
-    >
-      <ResponsiveContainer>
-        <div className="mb-6 rounded-xl bg-white">
-          <div className="relative mb-4 rounded-t-xl bg-gray-100 py-4">
-            <h3 {...titleProps} className="text-center text-lg font-semibold">
-              {capitalizeFirstLetter(mode)} Post
-            </h3>
-            <div className="absolute right-3 top-[50%] translate-y-[-50%]">
-              <Button
-                onPress={handleClose}
-                Icon={Close}
-                mode="ghost"
-                size="small"
-                className="bg-gray-200/70"
-              />
-            </div>
-          </div>
-          <div className="mb-[18px] flex flex-row gap-3 px-4">
-            <div className="h-11 w-11">
-              <ProfilePhotoOwn />
-            </div>
-            <div className="flex flex-1 flex-col justify-center">
-              <TextAreaWithMentionsAndHashTags
-                content={content}
-                setContent={setContent}
-                placeholder="What's on your mind?"
-              />
-            </div>
-            <div>
-              <Button
-                mode="secondary"
-                onPress={handleClickPostButton}
-                size="small"
-                isDisabled={content === '' && visualMedia.length === 0}
-                loading={
-                  createPostMutation.isPending || updatePostMutation.isPending
-                }
-              >
-                Post
-              </Button>
-            </div>
-          </div>
-          <CreatePostOptions
-            handleVisualMediaChange={handleVisualMediaChange}
-            ref={inputFileRef}
-          />
-          <AnimatePresence>
-            {visualMedia.length > 0 && (
-              <motion.div
-                initial={{ height: 0 }}
-                animate={{ height: 'auto' }}
-                exit={{ height: 0 }}
-                className="overflow-hidden"
-              >
-                <CreatePostTabs
-                  visualMedia={visualMedia}
-                  setVisualMedia={setVisualMedia}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+    <GenericDialog title={`${capitalize(mode)} Post`} handleClose={handleClose}>
+      <div className="mb-[18px] flex flex-row gap-3 px-4">
+        <div className="h-11 w-11">
+          <ProfilePhotoOwn />
         </div>
-      </ResponsiveContainer>
-    </div>
+        <div className="flex flex-1 flex-col justify-center">
+          <TextAreaWithMentionsAndHashTags
+            content={content}
+            setContent={setContent}
+            placeholder="What's on your mind?"
+          />
+        </div>
+        <div>
+          <Button
+            mode="secondary"
+            onPress={handleClickPostButton}
+            size="small"
+            isDisabled={content === '' && visualMedia.length === 0}
+            loading={
+              createPostMutation.isPending || updatePostMutation.isPending
+            }
+          >
+            Post
+          </Button>
+        </div>
+      </div>
+      <CreatePostOptions
+        handleVisualMediaChange={handleVisualMediaChange}
+        ref={inputFileRef}
+      />
+      <AnimatePresence>
+        {visualMedia.length > 0 && (
+          <motion.div
+            initial={{ height: 0 }}
+            animate={{ height: 'auto' }}
+            exit={{ height: 0 }}
+            className="overflow-hidden"
+          >
+            <CreatePostTabs
+              visualMedia={visualMedia}
+              setVisualMedia={setVisualMedia}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </GenericDialog>
   );
 }
