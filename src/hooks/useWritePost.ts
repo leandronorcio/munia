@@ -32,46 +32,43 @@ export async function useWritePost({
 
   try {
     const body = postWriteSchema.parse(formDataToObject(formData));
+
     const { content, files } = body;
     const { str, usersMentioned } = await convertMentionUsernamesToIds({
       str: content || '',
     });
-    const savedFiles: { type: VisualMediaType; fileName: string }[] = [];
+    const filesArr = !files ? [] : Array.isArray(files) ? files : [files];
 
-    if (files) {
-      // Wrap process of saving the files in a promise to wait for the files to be saved before continuing
-      await new Promise<void>((resolve) => {
-        // Convert 'files' field to an array if it is not
-        const filesArr = Array.isArray(files) ? files : [files];
-
-        // Loop through each file
-        filesArr.forEach(async (file, i) => {
-          const type = file.type.startsWith('image/') ? 'PHOTO' : 'VIDEO';
-
-          // Respond with an error is the user uploaded an unsupported file
-          const fileExtension = file.type.split('/')[1];
-          if (!isValidFileType(fileExtension)) {
-            return NextResponse.json(
-              { error: 'Invalid file type.' },
-              { status: 415 },
-            );
-          }
-
-          // Upload the file to S3
-          const buffer = Buffer.from(await file.arrayBuffer());
-          const fileName = `${Date.now()}-${i}-${uuid()}.${fileExtension}`;
-          await uploadObject(buffer, fileName, fileExtension);
-
-          savedFiles.push({
-            type,
-            fileName,
-          });
-
-          // Only resolve when the last file is saved.
-          if (i === filesArr.length - 1) resolve();
-        });
-      });
+    // Validate if files are valid
+    for (const file of filesArr) {
+      if (!isValidFileType(file.type)) {
+        return NextResponse.json(
+          { error: 'Invalid file type.' },
+          { status: 415 },
+        );
+      }
     }
+
+    // Make an array of promises that uploads each file and returns the `type` and `fileName`
+    const uploadPromises: Promise<{
+      type: VisualMediaType;
+      fileName: string;
+    }>[] = filesArr.map(async (file) => {
+      const type: VisualMediaType = file.type.startsWith('image/')
+        ? 'PHOTO'
+        : 'VIDEO';
+
+      // Upload the file to S3
+      const fileExtension = file.type.split('/')[1];
+      const buffer = Buffer.from(await file.arrayBuffer());
+      const fileName = `${Date.now()}-${uuid()}.${fileExtension}`;
+      await uploadObject(buffer, fileName, fileExtension);
+
+      return { type, fileName };
+    });
+
+    // Wait for all promises to finish
+    const savedFiles = await Promise.all(uploadPromises);
 
     if (type === 'create') {
       const res = await prisma.post.create({
@@ -172,7 +169,6 @@ export async function useWritePost({
       return NextResponse.json<GetPost>(await toGetPost(res));
     }
   } catch (error) {
-    console.log(error);
     if (error instanceof z.ZodError) {
       return NextResponse.json(null, {
         status: 422,
