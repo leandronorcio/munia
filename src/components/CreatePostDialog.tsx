@@ -10,7 +10,7 @@ import { CreatePostModalContextData } from '@/contexts/CreatePostModalContext';
 import { GetVisualMedia } from 'types';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 import { useCreatePost } from '@/hooks/useCreatePost';
-import { useCreateUpdatePostMutations } from '@/hooks/mutations/useCreateUpdatePostMutations';
+import { useWritePostMutations } from '@/hooks/mutations/useWritePostMutations';
 import { TextAreaWithMentionsAndHashTags } from './TextAreaWithMentionsAndHashTags';
 import { useDialogs } from '@/hooks/useDialogs';
 import { GenericDialog } from './GenericDialog';
@@ -25,11 +25,10 @@ export function CreatePostDialog() {
   const [visualMedia, setVisualMedia] = useState<GetVisualMedia[]>(
     toEditValues?.initialVisualMedia || [],
   );
-  const { createPostMutation, updatePostMutation } =
-    useCreateUpdatePostMutations({
-      content,
-      visualMedia,
-    });
+  const { createPostMutation, updatePostMutation } = useWritePostMutations({
+    content,
+    visualMedia,
+  });
   const { exitCreatePostModal } = useCreatePost();
   const { confirm } = useDialogs();
   const inputFileRef = useRef<HTMLInputElement>(null);

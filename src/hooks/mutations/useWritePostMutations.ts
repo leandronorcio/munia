@@ -12,7 +12,7 @@ import { GetVisualMedia } from 'types';
 import { POSTS_PER_PAGE } from '@/constants';
 import { useErrorNotifier } from '../useErrorNotifier';
 
-export function useCreateUpdatePostMutations({
+export function useWritePostMutations({
   content,
   visualMedia,
 }: {
