@@ -12,10 +12,8 @@ import { toGetPost } from '@/lib/prisma/toGetPost';
 import { getServerUser } from '@/lib/getServerUser';
 import { convertMentionUsernamesToIds } from '@/lib/convertMentionUsernamesToIds';
 import { mentionsActivityLogger } from '@/lib/mentionsActivityLogger';
-import { v4 as uuid } from 'uuid';
-import { uploadObject } from '@/lib/s3/uploadObject';
 import { deleteObject } from '@/lib/s3/deleteObject';
-import { VisualMediaType } from '@prisma/client';
+import { saveFiles } from '@/lib/s3/saveFiles';
 
 export async function useWritePost({
   formData,
@@ -49,26 +47,7 @@ export async function useWritePost({
       }
     }
 
-    // Make an array of promises that uploads each file and returns the `type` and `fileName`
-    const uploadPromises: Promise<{
-      type: VisualMediaType;
-      fileName: string;
-    }>[] = filesArr.map(async (file) => {
-      const type: VisualMediaType = file.type.startsWith('image/')
-        ? 'PHOTO'
-        : 'VIDEO';
-
-      // Upload the file to S3
-      const fileExtension = file.type.split('/')[1];
-      const buffer = Buffer.from(await file.arrayBuffer());
-      const fileName = `${Date.now()}-${uuid()}.${fileExtension}`;
-      await uploadObject(buffer, fileName, fileExtension);
-
-      return { type, fileName };
-    });
-
-    // Wait for all promises to finish
-    const savedFiles = await Promise.all(uploadPromises);
+    const savedFiles = await saveFiles(filesArr);
 
     if (type === 'create') {
       const res = await prisma.post.create({
