@@ -13,7 +13,7 @@ import { getServerUser } from '@/lib/getServerUser';
 import { convertMentionUsernamesToIds } from '@/lib/convertMentionUsernamesToIds';
 import { mentionsActivityLogger } from '@/lib/mentionsActivityLogger';
 import { deleteObject } from '@/lib/s3/deleteObject';
-import { saveFiles } from '@/lib/s3/saveFiles';
+import { savePostFiles } from '@/lib/s3/savePostFiles';
 
 export async function useWritePost({
   formData,
@@ -39,6 +39,7 @@ export async function useWritePost({
 
     // Validate if files are valid
     for (const file of filesArr) {
+      if (typeof file === 'string') continue;
       if (!isValidFileType(file.type)) {
         return NextResponse.json(
           { error: 'Invalid file type.' },
@@ -46,8 +47,7 @@ export async function useWritePost({
         );
       }
     }
-
-    const savedFiles = await saveFiles(filesArr);
+    const savedFiles = await savePostFiles(filesArr);
 
     if (type === 'create') {
       const res = await prisma.post.create({
@@ -80,35 +80,40 @@ export async function useWritePost({
 
       return NextResponse.json<GetPost>(await toGetPost(res));
     } else if (type === 'edit') {
-      // Delete the associated visualMedia files from the S3 bucket
       const post = await prisma.post.findFirst({
-        select: {
-          visualMedia: true,
-        },
-        where: {
-          AND: [{ id: postId }, { userId: userId }],
-        },
-      });
-
-      if (post !== null) {
-        if (post.visualMedia.length > 0) {
-          for (const { fileName } of post.visualMedia) {
-            await deleteObject(fileName);
-          }
-        }
-      }
-
-      // Delete the visualMedia records from the database.
-      await prisma.post.update({
         where: {
           id: postId,
         },
-        data: {
-          visualMedia: {
-            deleteMany: {},
-          },
+        select: {
+          visualMedia: true,
         },
       });
+
+      // If there are previously associated `visuaMedia` files
+      if (post && post.visualMedia.length > 0) {
+        // Delete files that are no longer needed from the S3 bucket
+        const savedFileNames = savedFiles.map(({ fileName }) => fileName);
+        const filesToDelete = post.visualMedia.filter(
+          // If the `fileName` is not included in `savedFileNames`, it must be deleted
+          ({ fileName }) => !savedFileNames.includes(fileName),
+        );
+        for (const { fileName } of filesToDelete) {
+          await deleteObject(fileName);
+        }
+
+        // Delete the related `visuaMedia` record to avoid duplicating the records
+        // as the next step will write the `savedFiles` into the `post`
+        await prisma.post.update({
+          where: {
+            id: postId,
+          },
+          data: {
+            visualMedia: {
+              deleteMany: {},
+            },
+          },
+        });
+      }
 
       const res = await prisma.post.update({
         where: {
@@ -149,6 +154,7 @@ export async function useWritePost({
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
+      console.log(error);
       return NextResponse.json(null, {
         status: 422,
         statusText: error.issues[0].message,
