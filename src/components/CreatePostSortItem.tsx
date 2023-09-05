@@ -2,7 +2,7 @@ import React from 'react';
 import { useSortable, defaultAnimateLayoutChanges } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Delete, FullScreenExpandResize } from '@/svg_components';
-import { VisualMedia } from 'types';
+import { GetVisualMedia } from 'types';
 
 function animateLayoutChanges(args: any) {
   const { isSorting, wasDragging } = args;
@@ -18,7 +18,7 @@ export function CreatePostSortItem({
   type,
   url,
   onRemove,
-}: VisualMedia & { onRemove: (id: string) => void }) {
+}: GetVisualMedia & { onRemove: (id: string) => void }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: url, animateLayoutChanges });
 

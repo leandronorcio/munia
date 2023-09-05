@@ -1,5 +1,5 @@
 'use client';
-import { VisualMedia } from 'types';
+import { GetVisualMedia } from 'types';
 import {
   Dispatch,
   SetStateAction,
@@ -15,7 +15,7 @@ import { CreatePostDialog } from '@/components/CreatePostDialog';
 export interface ToEditValues {
   postId: number;
   initialContent: string;
-  initialVisualMedia: VisualMedia[];
+  initialVisualMedia: GetVisualMedia[];
 }
 
 const CreatePostModalContextData = createContext<{

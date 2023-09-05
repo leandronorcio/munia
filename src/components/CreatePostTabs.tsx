@@ -2,15 +2,15 @@ import { PostVisualMediaContainer } from '@/components/PostVisualMediaContainer'
 import { cn } from '@/lib/cn';
 import { memo, useState } from 'react';
 import { CreatePostSort } from './CreatePostSort';
-import { VisualMedia } from 'types';
+import { GetVisualMedia } from 'types';
 import { TabButton } from './TabButton';
 
 const CreatePostTabs = memo(function CreatePostTabs({
   visualMedia,
   setVisualMedia,
 }: {
-  visualMedia: VisualMedia[];
-  setVisualMedia: React.Dispatch<React.SetStateAction<VisualMedia[]>>;
+  visualMedia: GetVisualMedia[];
+  setVisualMedia: React.Dispatch<React.SetStateAction<GetVisualMedia[]>>;
 }) {
   const [activeCreatePostTab, setActiveCreatePostTab] = useState<
     'preview' | 'sort'

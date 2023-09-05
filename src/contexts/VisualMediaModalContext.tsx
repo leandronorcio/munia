@@ -7,14 +7,14 @@ import {
   useState,
 } from 'react';
 import { useOverlayTriggerState } from 'react-stately';
-import { VisualMedia } from 'types';
+import { GetVisualMedia } from 'types';
 import { AnimatePresence } from 'framer-motion';
 import { Modal } from '@/components/Modal';
 import { VisualMediaDialog } from '@/components/VisualMediaDialog';
 import VisualMediaSlider from '@/components/VisualMediaSlider';
 
 export interface VisualMediaModalType {
-  visualMedia: VisualMedia[];
+  visualMedia: GetVisualMedia[];
   initialSlide: number;
 }
 

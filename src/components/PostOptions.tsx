@@ -1,7 +1,7 @@
 import { Item, Section } from 'react-stately';
 import { DropdownMenuButton } from './ui/DropdownMenuButton';
 import { useDialogs } from '@/hooks/useDialogs';
-import { VisualMedia } from 'types';
+import { GetVisualMedia } from 'types';
 import { Key, useCallback } from 'react';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { useDeletePostMutation } from '@/hooks/mutations/useDeletePostMutation';
@@ -13,7 +13,7 @@ export function PostOptions({
 }: {
   postId: number;
   content: string | null;
-  visualMedia?: VisualMedia[];
+  visualMedia?: GetVisualMedia[];
 }) {
   const { confirm } = useDialogs();
   const { launchEditPost } = useCreatePost();
@@ -39,7 +39,7 @@ export function PostOptions({
     }: {
       postId: number;
       content: string;
-      visualMedia?: VisualMedia[];
+      visualMedia?: GetVisualMedia[];
     }) => {
       launchEditPost({
         postId,

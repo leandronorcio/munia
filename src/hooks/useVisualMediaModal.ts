@@ -1,6 +1,6 @@
 import { VisualMediaModalContextApi } from '@/contexts/VisualMediaModalContext';
 import { useContext } from 'react';
-import { VisualMedia } from 'types';
+import { GetVisualMedia } from 'types';
 
 export function useVisualMediaModal() {
   const { setModal, show } = useContext(VisualMediaModalContextApi);
@@ -8,7 +8,7 @@ export function useVisualMediaModal() {
     visualMedia,
     initialSlide,
   }: {
-    visualMedia: VisualMedia[];
+    visualMedia: GetVisualMedia[];
     initialSlide: number;
   }) => {
     setModal({

@@ -2,12 +2,12 @@ import { PostVisualMedia } from './PostVisualMedia';
 import { cn } from '@/lib/cn';
 import { isOdd } from '@/lib/isOdd';
 import { useVisualMediaModal } from '@/hooks/useVisualMediaModal';
-import { VisualMedia } from 'types';
+import { GetVisualMedia } from 'types';
 
 export function PostVisualMediaContainer({
   visualMedia,
 }: {
-  visualMedia: VisualMedia[];
+  visualMedia: GetVisualMedia[];
 }) {
   const { showVisualMediaModal } = useVisualMediaModal();
   const len = visualMedia.length;

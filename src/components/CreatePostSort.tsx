@@ -16,7 +16,7 @@ import {
 } from '@dnd-kit/sortable';
 import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { CreatePostSortItem } from './CreatePostSortItem';
-import { VisualMedia } from 'types';
+import { GetVisualMedia } from 'types';
 
 const measuringConfig = {
   droppable: {
@@ -28,8 +28,8 @@ export function CreatePostSort({
   visualMedia,
   setVisualMedia,
 }: {
-  visualMedia: VisualMedia[];
-  setVisualMedia: React.Dispatch<React.SetStateAction<VisualMedia[]>>;
+  visualMedia: GetVisualMedia[];
+  setVisualMedia: React.Dispatch<React.SetStateAction<GetVisualMedia[]>>;
 }) {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -38,7 +38,7 @@ export function CreatePostSort({
     }),
   );
 
-  // The `url` of <VisualMedia> will serve as the ID's of the <SortableContext>.
+  // The `url` of <GetVisualMedia> will serve as the ID's of the <SortableContext>.
   const itemIds = useMemo(
     () => visualMedia.map((item) => item.url),
     [visualMedia],
@@ -72,7 +72,7 @@ export function CreatePostSort({
 
     if (active.id !== over.id) {
       setVisualMedia((items) => {
-        // Find the index by matching the id of the Sortable against the `url` of VisualMedia.
+        // Find the index by matching the id of the Sortable against the `url` of GetVisualMedia.
         const oldIndex = items.findIndex((item) => item.url === active.id);
         const newIndex = items.findIndex((item) => item.url === over.id);
 

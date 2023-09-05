@@ -7,7 +7,7 @@ import { CreatePostTabs } from './CreatePostTabs';
 import { AnimatePresence } from 'framer-motion';
 import { motion } from 'framer-motion';
 import { CreatePostModalContextData } from '@/contexts/CreatePostModalContext';
-import { VisualMedia } from 'types';
+import { GetVisualMedia } from 'types';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { useCreateUpdatePostMutations } from '@/hooks/mutations/useCreateUpdatePostMutations';
@@ -22,7 +22,7 @@ export function CreatePostDialog() {
   );
   const mode: 'create' | 'edit' = toEditValues === null ? 'create' : 'edit';
   const [content, setContent] = useState(toEditValues?.initialContent || '');
-  const [visualMedia, setVisualMedia] = useState<VisualMedia[]>(
+  const [visualMedia, setVisualMedia] = useState<GetVisualMedia[]>(
     toEditValues?.initialVisualMedia || [],
   );
   const { createPostMutation, updatePostMutation } =
@@ -42,7 +42,7 @@ export function CreatePostDialog() {
 
     if (files === null) return;
     const filesArr = [...files];
-    const newVisualMediaArr: VisualMedia[] = filesArr.map((file) => ({
+    const newVisualMediaArr: GetVisualMedia[] = filesArr.map((file) => ({
       type: file.type.startsWith('image/') ? 'PHOTO' : 'VIDEO',
       url: URL.createObjectURL(file),
     }));

@@ -1,6 +1,6 @@
-import { VisualMedia } from 'types';
+import { GetVisualMedia } from 'types';
 
-export function sortVisualMedia(visualMedia: VisualMedia[]) {
+export function sortVisualMedia(visualMedia: GetVisualMedia[]) {
   function getOrder(item: string) {
     // Extract the number before "-photo"/"-video"
     // Ex. file path: http://localhost:3000/uploads/clilwgdr00002xylvrkxq87r9-1687845484085-1-photo.jpeg
