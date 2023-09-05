@@ -66,7 +66,7 @@ function createRandomUser() {
   if (maleAvatars.length === 0) maleAvatars = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   if (femaleAvatars.length === 0)
     femaleAvatars = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const profilePhotoPath = `/${gender}-avatars/${randomProfilePhoto}`;
+  const profilePhotoPath = `seed-${gender}-avatars/${randomProfilePhoto}`;
 
   // Create fake posts
   const fakePosts = Array.from({ length: 3 }).map((item, i) => ({
