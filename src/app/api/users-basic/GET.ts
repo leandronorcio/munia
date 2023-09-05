@@ -9,6 +9,7 @@
  */
 import prisma from '@/lib/prisma/prisma';
 import { searchUser } from '@/lib/prisma/searchUser';
+import { fileNameToUrl } from '@/lib/s3/fileNameToUrl';
 import { NextResponse } from 'next/server';
 import { UserSummary } from 'types';
 
@@ -29,5 +30,11 @@ export async function GET(request: Request) {
     take: 10,
   });
 
-  return NextResponse.json(res);
+  const result = res.map((user) => ({
+    ...user,
+    // Convert the `profilePhoto` file name to a full S3 URL
+    profilePhoto: fileNameToUrl(user.profilePhoto),
+  }));
+
+  return NextResponse.json(result);
 }

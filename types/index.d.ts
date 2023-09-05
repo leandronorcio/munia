@@ -8,6 +8,7 @@ import {
   Follow,
   ActivityType,
   Gender,
+  VisualMedia,
 } from '@prisma/client';
 import { type } from 'os';
 
@@ -34,7 +35,7 @@ export interface GetUser extends User {
   isFollowing: boolean | null; // true when the authenticated user is following the user being requested
 }
 
-export interface VisualMedia {
+export interface GetVisualMedia {
   type: VisualMediaType;
   url: string;
 }
@@ -75,7 +76,7 @@ export interface GetPost {
    */
   isLiked: boolean;
   user: UserSummary;
-  visualMedia: VisualMedia[];
+  visualMedia: GetVisualMedia[];
   _count: {
     postLikes: number;
     comments: number;

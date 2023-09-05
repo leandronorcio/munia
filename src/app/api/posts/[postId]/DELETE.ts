@@ -6,7 +6,7 @@
 import { NextResponse } from 'next/server';
 import { verifyAccessToPost } from './verifyAccessToPost';
 import prisma from '@/lib/prisma/prisma';
-import { unlink } from 'fs/promises';
+import { deleteObject } from '@/lib/s3/deleteObject';
 
 export async function DELETE(
   request: Request,
@@ -17,6 +17,7 @@ export async function DELETE(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
   }
 
+  // Delete the `post` and the associated `visualMedia` from the database
   const res = await prisma.post.delete({
     select: {
       id: true,
@@ -27,10 +28,9 @@ export async function DELETE(
     },
   });
 
-  // Delete the associated visualMedia files in the file system.
-  const visualMediaFiles = res.visualMedia;
-  for (const file of visualMediaFiles) {
-    await unlink(`./public/${file.url}`);
+  // Delete the associated `visualMedia` files from the S3 bucket
+  for (const { fileName } of res.visualMedia) {
+    await deleteObject(fileName);
   }
 
   return NextResponse.json({ id: res.id });

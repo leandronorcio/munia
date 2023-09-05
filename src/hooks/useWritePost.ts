@@ -1,11 +1,10 @@
 import 'server-only';
 
 import { selectPost } from '@/lib/prisma/selectPost';
-import { listOfKeyValuesToObject } from '@/lib/listOfKeyValuesToObject';
+import { formDataToObject } from '@/lib/formDataToObject';
 import prisma from '@/lib/prisma/prisma';
-import { unlink, writeFile } from 'fs/promises';
 import { NextResponse } from 'next/server';
-import { VisualMedia, GetPost } from 'types';
+import { GetPost } from 'types';
 import { isValidFileType } from '@/lib/isValidFileType';
 import { postWriteSchema } from '@/lib/validations/post';
 import { z } from 'zod';
@@ -13,6 +12,10 @@ import { toGetPost } from '@/lib/prisma/toGetPost';
 import { getServerUser } from '@/lib/getServerUser';
 import { convertMentionUsernamesToIds } from '@/lib/convertMentionUsernamesToIds';
 import { mentionsActivityLogger } from '@/lib/mentionsActivityLogger';
+import { v4 as uuid } from 'uuid';
+import { uploadObject } from '@/lib/s3/uploadObject';
+import { deleteObject } from '@/lib/s3/deleteObject';
+import { VisualMediaType } from '@prisma/client';
 
 export async function useWritePost({
   formData,
@@ -28,12 +31,12 @@ export async function useWritePost({
   const userId = user.id;
 
   try {
-    const body = postWriteSchema.parse(listOfKeyValuesToObject(formData));
+    const body = postWriteSchema.parse(formDataToObject(formData));
     const { content, files } = body;
     const { str, usersMentioned } = await convertMentionUsernamesToIds({
       str: content || '',
     });
-    const savedFiles: VisualMedia[] = [];
+    const savedFiles: { type: VisualMediaType; fileName: string }[] = [];
 
     if (files) {
       // Wrap process of saving the files in a promise to wait for the files to be saved before continuing
@@ -41,29 +44,28 @@ export async function useWritePost({
         // Convert 'files' field to an array if it is not
         const filesArr = Array.isArray(files) ? files : [files];
 
+        // Loop through each file
         filesArr.forEach(async (file, i) => {
           const type = file.type.startsWith('image/') ? 'PHOTO' : 'VIDEO';
 
           // Respond with an error is the user uploaded an unsupported file
-          const extension = file.type.split('/')[1];
-          if (!isValidFileType(extension)) {
+          const fileExtension = file.type.split('/')[1];
+          if (!isValidFileType(fileExtension)) {
             return NextResponse.json(
               { error: 'Invalid file type.' },
               { status: 415 },
             );
           }
 
-          // This `filePath` is what will be recorded in the data base
-          const filePath = `/uploads/${userId}-${Date.now()}-${i}-${type.toLocaleLowerCase()}.${extension}`;
+          // Upload the file to S3
+          const buffer = Buffer.from(await file.arrayBuffer());
+          const fileName = `${Date.now()}-${i}-${uuid()}.${fileExtension}`;
+          await uploadObject(buffer, fileName, fileExtension);
+
           savedFiles.push({
             type,
-            url: filePath,
+            fileName,
           });
-
-          await writeFile(
-            `./public${filePath}`,
-            Buffer.from(await file.arrayBuffer()),
-          );
 
           // Only resolve when the last file is saved.
           if (i === filesArr.length - 1) resolve();
@@ -77,9 +79,9 @@ export async function useWritePost({
           content: str,
           ...(files !== undefined && {
             visualMedia: {
-              create: savedFiles.map((file) => ({
-                type: file.type,
-                url: file.url,
+              create: savedFiles.map(({ type, fileName }) => ({
+                type,
+                fileName,
                 userId,
               })),
             },
@@ -102,7 +104,7 @@ export async function useWritePost({
 
       return NextResponse.json<GetPost>(await toGetPost(res));
     } else if (type === 'edit') {
-      // Delete the associated visualMedia files from the filesystem before updating.
+      // Delete the associated visualMedia files from the S3 bucket
       const post = await prisma.post.findFirst({
         select: {
           visualMedia: true,
@@ -112,10 +114,10 @@ export async function useWritePost({
         },
       });
 
-      if (post != null) {
+      if (post !== null) {
         if (post.visualMedia.length > 0) {
-          for (const file of post.visualMedia) {
-            await unlink(`./public/${file.url}`);
+          for (const { fileName } of post.visualMedia) {
+            await deleteObject(fileName);
           }
         }
       }
@@ -140,9 +142,9 @@ export async function useWritePost({
           content: str,
           ...(files !== undefined && {
             visualMedia: {
-              create: savedFiles.map((file) => ({
-                type: file.type,
-                url: file.url,
+              create: savedFiles.map(({ type, fileName }) => ({
+                type,
+                fileName,
                 userId,
               })),
             },
@@ -170,6 +172,7 @@ export async function useWritePost({
       return NextResponse.json<GetPost>(await toGetPost(res));
     }
   } catch (error) {
+    console.log(error);
     if (error instanceof z.ZodError) {
       return NextResponse.json(null, {
         status: 422,

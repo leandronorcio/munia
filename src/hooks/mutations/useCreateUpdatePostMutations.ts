@@ -8,7 +8,7 @@ import { GetPost, PostIds } from 'types';
 import { useToast } from '../useToast';
 import { useSession } from 'next-auth/react';
 import { useCreatePost } from '../useCreatePost';
-import { VisualMedia } from 'types';
+import { GetVisualMedia } from 'types';
 import { POSTS_PER_PAGE } from '@/constants';
 import { useErrorNotifier } from '../useErrorNotifier';
 
@@ -17,7 +17,7 @@ export function useCreateUpdatePostMutations({
   visualMedia,
 }: {
   content: string;
-  visualMedia: VisualMedia[];
+  visualMedia: GetVisualMedia[];
 }) {
   const qc = useQueryClient();
   const { data: session } = useSession();
@@ -30,17 +30,11 @@ export function useCreateUpdatePostMutations({
     const formData = new FormData();
     if (content) formData.append('content', content);
 
-    /**
-     * https://developer.mozilla.org/en-US/docs/Web/API/FormData/append
-     * The difference between set() and append() is that if the specified key already exists,
-     * set() will overwrite all existing values with the new one,
-     * whereas append() will append the new value onto the end of the existing set of values.
-     */
     for (const item of visualMedia) {
       const file = await fetch(item.url).then((r) => r.blob());
       formData.append('files', file, file.name);
     }
-
+    console.log(formData);
     return formData;
   };
 

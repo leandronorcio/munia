@@ -5,12 +5,7 @@ export const selectPost = (userId: string | undefined) => ({
   content: true,
   createdAt: true,
   ...includeUserSummary(),
-  visualMedia: {
-    select: {
-      type: true,
-      url: true,
-    },
-  },
+  visualMedia: true,
   /**
    * Use postLikes to store the <PostLike>'s id of the user to the Post.
    * If there is a <PostLike> id, that means the user requesting has
