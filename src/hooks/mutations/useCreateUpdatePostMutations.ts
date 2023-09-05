@@ -30,11 +30,16 @@ export function useCreateUpdatePostMutations({
     const formData = new FormData();
     if (content) formData.append('content', content);
 
-    for (const item of visualMedia) {
-      const file = await fetch(item.url).then((r) => r.blob());
-      formData.append('files', file, file.name);
+    for (const { url } of visualMedia) {
+      if (url.startsWith('blob:')) {
+        // Convert the URL to an actual `Blob`
+        const file = await fetch(url).then((r) => r.blob());
+        formData.append('files', file, file.name);
+      } else {
+        formData.append('files', url);
+      }
     }
-    console.log(formData);
+
     return formData;
   };
 

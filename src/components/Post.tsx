@@ -2,7 +2,6 @@
 import ProfileBlock from './ProfileBlock';
 import { PostVisualMediaContainer } from './PostVisualMediaContainer';
 import { memo } from 'react';
-import { sortVisualMedia } from '@/lib/sortVisualMedia';
 import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/cn';
 import formatDistanceStrict from 'date-fns/formatDistanceStrict';
@@ -95,9 +94,7 @@ export const Post = memo(
         )}
         {visualMedia.length > 0 && (
           <div className="mb-4 mt-5 overflow-hidden rounded-2xl">
-            <PostVisualMediaContainer
-              visualMedia={sortVisualMedia(visualMedia)}
-            />
+            <PostVisualMediaContainer visualMedia={visualMedia} />
           </div>
         )}
         <div
