@@ -2,6 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --background: 251 243 255;
+    --foreground: 16 0 35;
+    --card: 249 242 254;
+    --card-foreground: 60 0 119;
+    --popover: 251 251 254;
+    --popover-foreground: 34 0 74;
+    --primary: 136 0 202;
+    --primary-foreground: 250 240 255;
+    --secondary: 216 209 250;
+    --secondary-foreground: 15 0 83;
+    --muted: 204 208 222;
+    --muted-foreground: 77 81 104;
+    --accent: 125 11 239;
+    --accent-foreground: 249 242 255;
+    --destructive: 255 55 28;
+    --destructive-foreground: 255 245 245;
+    --border: 241 224 253;
+    --input: 241 224 253;
+    --ring: 1rem;
+  }
+  .dark {
+    --background: 16 0 35;
+    --foreground: 251 243 255;
+    --card: 35 27 56;
+    --card-foreground: 231 206 255;
+    --popover: 24 31 41;
+    --popover-foreground: 251 251 254;
+    --primary: 197 72 255;
+    --primary-foreground: 34 0 74;
+    --secondary: 15 0 83;
+    --secondary-foreground: 216 209 250;
+    --muted: 77 81 104;
+    --muted-foreground: 204 208 222;
+    --accent: 94 0 156;
+    --accent-foreground: 249 242 255;
+    --destructive: 143 17 0;
+    --destructive-foreground: 255 245 245;
+    --border: 57 49 75;
+    --input: 57 49 75;
+    --ring: 80 0 100;
+  }
+}
+
 @layer components {
   .link {
     @apply rounded-sm decoration-blue-500 decoration-2 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500;

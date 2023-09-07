@@ -8,6 +8,28 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        background: 'rgb(var(--background) / <alpha-value>)',
+        foreground: 'rgba(var(--foreground) / <alpha-value>)',
+        card: 'rgba(var(--card) / <alpha-value>)',
+        'card-foreground': 'rgba(var(--card-foreground) / <alpha-value>)',
+        popover: 'rgba(var(--popover) / <alpha-value>)',
+        'popover-foreground': 'rgba(var(--popover-foreground) / <alpha-value>)',
+        primary: 'rgba(var(--primary) / <alpha-value>)',
+        'primary-foreground': 'rgba(var(--primary-foreground) / <alpha-value>)',
+        secondary: 'rgba(var(--secondary) / <alpha-value>)',
+        'secondary-foreground':
+          'rgba(var(--secondary-foreground) / <alpha-value>)',
+        muted: 'rgba(var(--muted) / <alpha-value>)',
+        'muted-foreground': 'rgba(var(--muted-foreground) / <alpha-value>)',
+        accent: 'rgba(var(--accent) / <alpha-value>)',
+        'accent-foreground': 'rgba(var(--accent-foreground) / <alpha-value>)',
+        destructive: 'rgba(var(--destructive) / <alpha-value>)',
+        'destructive-foreground':
+          'rgba(var(--destructive-foreground) / <alpha-value>)',
+        border: 'rgba(var(--border) / <alpha-value>)',
+        input: 'rgba(var(--input) / <alpha-value>)',
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
