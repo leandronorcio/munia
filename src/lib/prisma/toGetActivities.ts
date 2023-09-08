@@ -2,6 +2,7 @@ import { FindActivityResults, GetActivities } from 'types';
 import prisma from './prisma';
 import { convertMentionUsernamesToIds } from '../convertMentionUsernamesToIds';
 import { ActivityType } from '@prisma/client';
+import { fileNameToUrl } from '../s3/fileNameToUrl';
 
 async function getContentFromPostOrComment(
   type: ActivityType,
@@ -45,15 +46,33 @@ export async function toGetActivities(
   const notifications: GetActivities = [];
 
   for (const activity of findActivityResults) {
-    const { type, sourceId, targetId } = activity;
+    const { type, sourceId, targetId, sourceUser, targetUser } = activity;
+
+    const sourceUserWithPhotoUrl = {
+      ...sourceUser,
+      profilePhoto: fileNameToUrl(sourceUser.profilePhoto),
+    };
+    const targetUserWithPhotoUrl = {
+      ...sourceUser,
+      profilePhoto: fileNameToUrl(sourceUser.profilePhoto),
+    };
 
     if (type === 'CREATE_FOLLOW') {
-      notifications.push(activity);
+      notifications.push({
+        ...activity,
+        sourceUser: sourceUserWithPhotoUrl,
+        targetUser: targetUserWithPhotoUrl,
+      });
       continue;
     }
 
     const content = await getContentFromPostOrComment(type, sourceId, targetId);
-    notifications.push({ ...activity, content });
+    notifications.push({
+      ...activity,
+      content,
+      sourceUser: sourceUserWithPhotoUrl,
+      targetUser: targetUserWithPhotoUrl,
+    });
   }
 
   return notifications;
