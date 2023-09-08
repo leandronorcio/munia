@@ -70,7 +70,7 @@ export function Activities({ userId }: { userId: string }) {
       })}
 
       <div
-        className="h-6"
+        className="h-2"
         ref={bottomElRef}
         /**
          * The first page will be initially loaded by React Query

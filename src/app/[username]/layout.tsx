@@ -16,9 +16,9 @@ export default async function Layout({
   const isOwnProfile = profile.id === user?.id;
 
   return (
-    <>
+    <div className="pb-0 md:pb-0">
       <ProfileHeader isOwnProfile={isOwnProfile} initialProfileData={profile} />
       <div className="px-4">{children}</div>
-    </>
+    </div>
   );
 }

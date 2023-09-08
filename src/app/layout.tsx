@@ -56,7 +56,7 @@ export default async function RootLayout({
                             <div className="md:flex md:justify-center md:gap-2">
                               <MenuBar />
 
-                              <ResponsiveContainer className="pb-12 md:pb-4">
+                              <ResponsiveContainer className="pb-20 md:pb-4">
                                 {children}
                               </ResponsiveContainer>
                             </div>

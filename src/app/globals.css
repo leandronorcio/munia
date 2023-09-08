@@ -45,15 +45,14 @@
     --muted-foreground: 204 208 222;
     --accent: 94 0 156;
     --accent-foreground: 249 242 255;
-    --success: 65 176 87;
-    --success-foreground: 244 252 246;
+    --success: 8 113 29;
+    --success-foreground: 221 242 225;
     --warning: 244 197 25;
     --warning-foreground: 255 253 238;
     --destructive: 246 100 157;
     --destructive-foreground: 255 246 250;
     --border: 57 49 75;
     --input: 57 49 75;
-    --ring: 80 0 100;
   }
 }
 
