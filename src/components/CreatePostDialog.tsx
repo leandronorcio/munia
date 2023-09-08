@@ -3,7 +3,6 @@
 import Button from '@/components/ui/Button';
 import { CreatePostOptions } from './CreatePostOptions';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { CreatePostTabs } from './CreatePostTabs';
 import { AnimatePresence } from 'framer-motion';
 import { motion } from 'framer-motion';
 import { CreatePostModalContextData } from '@/contexts/CreatePostModalContext';
@@ -15,6 +14,8 @@ import { TextAreaWithMentionsAndHashTags } from './TextAreaWithMentionsAndHashTa
 import { useDialogs } from '@/hooks/useDialogs';
 import { GenericDialog } from './GenericDialog';
 import { capitalize } from 'lodash';
+import { CreatePostSort } from './CreatePostSort';
+import { revokeVisualMediaObjectUrls } from '@/lib/revokeVisualMediaObjectUrls';
 
 export function CreatePostDialog() {
   const { toEditValues, shouldOpenFileInputOnMount } = useContext(
@@ -41,12 +42,13 @@ export function CreatePostDialog() {
 
     if (files === null) return;
     const filesArr = [...files];
-    const newVisualMediaArr: GetVisualMedia[] = filesArr.map((file) => ({
+    const selectedVisualMedia: GetVisualMedia[] = filesArr.map((file) => ({
       type: file.type.startsWith('image/') ? 'PHOTO' : 'VIDEO',
       url: URL.createObjectURL(file),
     }));
-
-    setVisualMedia((prev) => [...prev, ...newVisualMediaArr]);
+    console.log(selectedVisualMedia);
+    setVisualMedia((prev) => [...prev, ...selectedVisualMedia]);
+    // Clear the file input
     e.target.value = '';
   };
 
@@ -56,11 +58,17 @@ export function CreatePostDialog() {
     updatePostMutation.mutate({ postId: toEditValues.postId });
   };
 
+  const exit = () => {
+    // Revoke the object URL's when exiting the create post dialog
+    revokeVisualMediaObjectUrls(visualMedia);
+    exitCreatePostModal();
+  };
+
   const confirmExit = () => {
     confirm({
       title: 'Unsaved Changes',
       message: 'Do you really wish to exit?',
-      onConfirm: () => setTimeout(() => exitCreatePostModal(), 300),
+      onConfirm: () => setTimeout(() => exit(), 300),
     });
   };
 
@@ -79,7 +87,7 @@ export function CreatePostDialog() {
         return;
       }
     }
-    exitCreatePostModal();
+    exit();
   };
 
   useEffect(() => {
@@ -142,7 +150,7 @@ export function CreatePostDialog() {
             exit={{ height: 0 }}
             className="overflow-hidden"
           >
-            <CreatePostTabs
+            <CreatePostSort
               visualMedia={visualMedia}
               setVisualMedia={setVisualMedia}
             />

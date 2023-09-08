@@ -11,6 +11,7 @@ import { useCreatePost } from '../useCreatePost';
 import { GetVisualMedia } from 'types';
 import { POSTS_PER_PAGE } from '@/constants';
 import { useErrorNotifier } from '../useErrorNotifier';
+import { revokeVisualMediaObjectUrls } from '@/lib/revokeVisualMediaObjectUrls';
 
 export function useWritePostMutations({
   content,
@@ -84,6 +85,7 @@ export function useWritePostMutations({
         };
       });
       showToast({ title: 'Successfully Posted', type: 'success' });
+      revokeVisualMediaObjectUrls(visualMedia);
       exitCreatePostModal();
     },
     onError: (err) => {
@@ -128,6 +130,7 @@ export function useWritePostMutations({
         };
       });
       showToast({ title: 'Successfully Edited', type: 'success' });
+      revokeVisualMediaObjectUrls(visualMedia);
       exitCreatePostModal();
     },
     onError: (err) => {

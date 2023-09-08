@@ -52,7 +52,7 @@ export function CreatePostSort({
       modifiers={[restrictToParentElement]}
       measuring={measuringConfig}
     >
-      <div className="grid grid-cols-2 gap-2 px-2 pb-2">
+      <div className="grid grid-cols-2 gap-2 border-t border-t-border p-2">
         <SortableContext items={itemIds} strategy={rectSortingStrategy}>
           {visualMedia.map((item) => (
             <CreatePostSortItem
@@ -82,6 +82,9 @@ export function CreatePostSort({
   }
 
   function handleRemove(id: string) {
+    // Release the object URL when removed
+    if (id.startsWith('blob:')) URL.revokeObjectURL(id);
+
     setVisualMedia((items) => {
       return items.filter((item) => item.url !== id);
     });
