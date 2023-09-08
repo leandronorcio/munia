@@ -16,6 +16,7 @@ import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 import { ReactQueryProvider } from '@/contexts/ReactQueryProvider';
 import { getServerUser } from '@/lib/getServerUser';
 import { DialogsContextProvider } from '@/contexts/DialogsContext';
+import { ThemeContextProvider } from '@/contexts/ThemeContext';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
@@ -34,43 +35,43 @@ export default async function RootLayout({
 }) {
   const [user] = await getServerUser();
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
         />
       </head>
-      <body
-        className={cn('dark bg-background text-foreground', poppins.className)}
-      >
-        <ToastContextProvider>
-          <ReactQueryProvider>
-            <SessionProviderContext>
-              <DialogsContextProvider>
-                <VisualMediaModalContextProvider>
-                  <CreatePostModalContextProvider>
-                    <ShouldAnimateContextProvider>
-                      {user ? (
-                        <>
-                          <div className="md:flex md:justify-center md:gap-2">
-                            <MenuBar />
+      <body className={cn('bg-background text-foreground', poppins.className)}>
+        <ThemeContextProvider>
+          <ToastContextProvider>
+            <ReactQueryProvider>
+              <SessionProviderContext>
+                <DialogsContextProvider>
+                  <VisualMediaModalContextProvider>
+                    <CreatePostModalContextProvider>
+                      <ShouldAnimateContextProvider>
+                        {user ? (
+                          <>
+                            <div className="md:flex md:justify-center md:gap-2">
+                              <MenuBar />
 
-                            <ResponsiveContainer className="pb-12 md:pb-4">
-                              {children}
-                            </ResponsiveContainer>
-                          </div>
-                        </>
-                      ) : (
-                        children
-                      )}
-                    </ShouldAnimateContextProvider>
-                  </CreatePostModalContextProvider>
-                </VisualMediaModalContextProvider>
-              </DialogsContextProvider>
-            </SessionProviderContext>
-          </ReactQueryProvider>
-        </ToastContextProvider>
+                              <ResponsiveContainer className="pb-12 md:pb-4">
+                                {children}
+                              </ResponsiveContainer>
+                            </div>
+                          </>
+                        ) : (
+                          children
+                        )}
+                      </ShouldAnimateContextProvider>
+                    </CreatePostModalContextProvider>
+                  </VisualMediaModalContextProvider>
+                </DialogsContextProvider>
+              </SessionProviderContext>
+            </ReactQueryProvider>
+          </ToastContextProvider>
+        </ThemeContextProvider>
       </body>
     </html>
   );
