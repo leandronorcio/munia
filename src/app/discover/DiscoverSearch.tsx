@@ -26,7 +26,7 @@ export function DiscoverSearch({
   };
 
   return (
-    <div className="sticky top-4 z-[1] mb-4">
+    <div className="sticky top-4 z-[2] mb-4">
       <TextInput onChange={handleChange} label={label} Icon={SvgSearch} />
     </div>
   );

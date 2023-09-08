@@ -28,6 +28,7 @@ export { default as Heart } from "./Heart";
 export { default as Hide } from "./Hide";
 export { default as Image } from "./Image";
 export { default as Loader } from "./Loader";
+export { default as Loading } from "./Loading";
 export { default as LogInSquare } from "./LogInSquare";
 export { default as LogOutCircle } from "./LogOutCircle";
 export { default as Logo } from "./Logo";

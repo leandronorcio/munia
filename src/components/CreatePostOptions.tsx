@@ -19,8 +19,8 @@ export const CreatePostOptions = forwardRef<
         className="flex gap-4"
         onPress={() => localRef.current?.click()}
       >
-        <Image fill="black" width={24} height={24} />
-        <p className="text-base font-semibold text-gray-500 group-hover:text-black">
+        <Image className="h-6 w-6 text-muted-foreground" />
+        <p className="text-base font-semibold text-muted-foreground group-hover:text-muted-foreground/80">
           Image / Video
         </p>
       </ButtonNaked>

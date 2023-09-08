@@ -13,7 +13,7 @@ export function DatePickerDialog({ children, ...props }: DialogProps) {
     <div
       {...dialogProps}
       ref={ref}
-      className="origin-top scale-95 rounded-xl bg-white p-6 transition-transform focus-within:scale-100"
+      className="origin-top scale-95 rounded-xl bg-popover p-6 transition-transform focus-within:scale-100"
     >
       {children}
     </div>

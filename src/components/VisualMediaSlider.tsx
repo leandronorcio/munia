@@ -50,7 +50,7 @@ export default function VisualMediaSlider({
           onPress={onClose}
           Icon={Close}
           mode="ghost"
-          className="bg-gray-200/70"
+          className="bg-muted/60"
         />
       </motion.div>
       {visualMedia.length > 1 && (

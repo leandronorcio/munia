@@ -9,6 +9,7 @@ import { useUserQuery } from '@/hooks/queries/useUserQuery';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import { useRouter } from 'next/navigation';
+import { Ellipse } from '@/svg_components';
 
 export function ProfileHeader({
   isOwnProfile,
@@ -59,16 +60,17 @@ export function ProfileHeader({
 
       <div className="px-4">
         <h1 className="text-2xl font-bold">{profile.name}</h1>
-        <p className="mb-2 text-gray-500">@{profile.username}</p>
-        <p className="text-gray-800">{profile.bio}</p>
-        <div className="flex flex-row gap-3">
+        <p className="-mt-1 mb-2 text-muted-foreground">@{profile.username}</p>
+        <p className="text-foreground/80">{profile.bio}</p>
+        <div className="flex flex-row items-center gap-3">
           <Link href={`/${profile.username}/followers`} className="link">
             <span className="font-semibold">{profile.followerCount}</span>{' '}
-            <span className="font-medium text-gray-500">Followers</span>
+            <span className="font-medium text-muted-foreground">Followers</span>
           </Link>
+          <Ellipse className="h-1 w-1 fill-foreground" />
           <Link href={`/${profile.username}/following`} className="link">
             <span className="font-semibold">{profile.followingCount}</span>{' '}
-            <span className="font-medium text-gray-500">Following</span>
+            <span className="font-medium text-muted-foreground">Following</span>
           </Link>
         </div>
         <Tabs isOwnProfile={isOwnProfile} />

@@ -30,8 +30,8 @@ export function TextAreaMentionItem({
       ref={ref}
       onClick={() => handleSelectUserToMention(username!)}
       className={cn(
-        'flex cursor-pointer items-center gap-3 px-4 py-2 hover:bg-slate-200/70',
-        focused && 'bg-slate-200/70',
+        'flex cursor-pointer items-center gap-3 px-4 py-2 hover:bg-accent',
+        focused && 'bg-accent',
       )}
     >
       <div className="h-8 w-8">
@@ -39,7 +39,7 @@ export function TextAreaMentionItem({
       </div>
       <div>
         <p className="font-semibold">{name}</p>
-        <p className="text-sm text-gray-600">@{username}</p>
+        <p className="text-sm text-muted-foreground">@{username}</p>
       </div>
     </li>
   );

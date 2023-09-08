@@ -31,9 +31,9 @@ export function CreatePostSortItem({
     <div ref={setNodeRef} style={style} className="relative">
       <button
         onClick={() => onRemove(url)}
-        className="absolute right-2 top-2 z-20 rounded-lg bg-red-500 p-2 hover:bg-red-600"
+        className="absolute right-2 top-2 z-20 rounded-lg bg-destructive p-2 hover:bg-destructive/70"
       >
-        <Delete className="stroke-red-50" />
+        <Delete className="stroke-destructive-foreground" />
       </button>
       <div
         {...attributes}

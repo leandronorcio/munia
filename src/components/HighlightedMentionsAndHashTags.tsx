@@ -24,7 +24,7 @@ export function HighlightedMentionsAndHashTags({
   const html = cleanText.replace(
     pattern,
     (match, space: string, char: string, word: string) => {
-      const coloredWord = `<span class="text-blue-600">${char}${word}</span>`;
+      const coloredWord = `<span class="text-blue-600 dark:text-blue-400">${char}${word}</span>`;
 
       if (!shouldAddLinks) return `${space}${coloredWord}`;
       return `${space}<a href="${word}">${coloredWord}</a>`;

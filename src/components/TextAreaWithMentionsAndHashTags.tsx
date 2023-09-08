@@ -213,7 +213,7 @@ export function TextAreaWithMentionsAndHashTags({
           placement="top"
           className="min-w-[200px]"
         >
-          <ul className="max-h-[242px] w-full overflow-auto border border-gray-300 bg-slate-100 outline-none">
+          <ul className="max-h-[242px] w-full overflow-auto border border-border bg-popover outline-none">
             {isPending ? (
               <li>Loading...</li>
             ) : isError ? (
@@ -251,7 +251,7 @@ export function TextAreaWithMentionsAndHashTags({
             placeholder,
           })}
           className={cn(
-            'absolute top-0 block w-full resize-none overflow-hidden break-words bg-transparent text-transparent caret-black outline-none',
+            'absolute top-0 block w-full resize-none overflow-hidden break-words bg-transparent text-transparent caret-foreground outline-none',
             rest.errorMessage &&
               'rounded-sm ring-2 ring-red-900 ring-offset-4 placeholder:text-red-900',
           )}

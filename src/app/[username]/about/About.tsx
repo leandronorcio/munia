@@ -34,7 +34,7 @@ export function About() {
     address,
   } = userData;
   return (
-    <div className="mt-4 flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <AboutItem field="Username" value={username} Icon={AtSign} />
       <AboutItem field="Email" value={email} Icon={Mail} />
       <AboutItem field="Name" value={name} Icon={Profile} />

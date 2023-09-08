@@ -22,17 +22,17 @@ export default function ProfileBlock({
 
       <div className="flex flex-col">
         <div className="flex items-center gap-1 sm:gap-3">
-          <h2 className="cursor-pointer text-lg font-semibold text-gray-700">
+          <h2 className="cursor-pointer text-lg font-semibold text-muted-foreground">
             <Link href={`/${username}`} className="link">
               {name}
             </Link>
           </h2>
           {type === 'comment' && (
-            <h2 className="text-sm text-gray-500">{time} ago</h2>
+            <h2 className="text-sm text-muted-foreground/90">{time} ago</h2>
           )}
         </div>
         {type === 'post' && (
-          <h2 className="text-sm text-gray-500">{time} ago</h2>
+          <h2 className="text-sm text-muted-foreground/90">{time} ago</h2>
         )}
       </div>
     </div>

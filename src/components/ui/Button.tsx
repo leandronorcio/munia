@@ -4,11 +4,11 @@ import { forwardRef } from 'react';
 import { cn } from '@/lib/cn';
 import { SVGProps } from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
-import SvgLoader from '@/svg_components/Loader';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
+import SvgLoading from '@/svg_components/Loading';
 
 const button = cva(
-  'group flex flex-row items-center justify-center font-semibold focus:outline-none active:ring-4 disabled:cursor-not-allowed disabled:opacity-70',
+  'group flex flex-row items-center justify-center font-semibold transition-transform focus:outline-none active:scale-95 active:ring-4 disabled:cursor-not-allowed disabled:opacity-70',
   {
     variants: {
       size: {
@@ -19,13 +19,13 @@ const button = cva(
       },
       mode: {
         primary:
-          'border-2 border-transparent bg-violet-600 text-white hover:bg-violet-700 active:ring-violet-400',
+          'border-2 border-transparent bg-primary text-primary-foreground hover:bg-primary-accent active:ring-primary/30',
         secondary:
-          'border-2 border-violet-600 bg-transparent text-violet-600 hover:border-violet-800 hover:text-violet-800 active:ring-violet-400',
+          'border-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 active:ring-secondary-foreground/20',
         subtle:
-          'border-2 border-violet-200 bg-transparent text-violet-800 hover:border-violet-400 hover:text-violet-900 active:ring-violet-400',
+          'border-2 border-primary-accent bg-transparent text-primary-accent hover:border-primary-accent/70 hover:text-primary-accent/90 active:ring-primary-accent/30',
         ghost:
-          'font-semibold text-gray-600 hover:bg-gray-500/10 hover:text-gray-900 active:ring-gray-300/50',
+          'font-semibold text-muted-foreground hover:bg-muted/30 active:ring-muted-foreground/20',
       },
       expand: {
         full: 'w-full',
@@ -55,10 +55,10 @@ const icon = cva('', {
       small: 'h-5 w-5',
     },
     mode: {
-      primary: 'stroke-white',
-      secondary: 'stroke-violet-600 group-hover:stroke-violet-800',
-      subtle: 'stroke-violet-800 group-hover:stroke-violet-900',
-      ghost: 'stroke-gray-600 group-hover:stroke-gray-900',
+      primary: 'stroke-primary-foreground',
+      secondary: 'stroke-secondary-foreground',
+      subtle: 'stroke-primary-accent',
+      ghost: 'stroke-muted-foreground',
     },
   },
   defaultVariants: {
@@ -102,12 +102,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {!loading ? (
           Icon && <Icon className={cn(icon({ size, mode }))} />
         ) : (
-          <SvgLoader
-            className={cn(
-              ['animate-spin fill-violet-800 text-violet-300'],
-              icon({ size, mode }),
-            )}
-          />
+          <SvgLoading className={cn(['animate-spin '], icon({ size, mode }))} />
         )}
         {children}
       </button>

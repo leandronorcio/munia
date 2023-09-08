@@ -13,7 +13,7 @@ export function TabButton({
   title: string;
 } & AriaButtonProps) {
   return (
-    <div className=" px-3 py-4">
+    <>
       <ButtonNaked
         aria-label={title}
         className="flex cursor-pointer flex-col items-center gap-2"
@@ -21,14 +21,15 @@ export function TabButton({
       >
         <h2
           className={cn(
-            'text-xl font-semibold',
-            isActive ? 'text-black' : 'text-gray-500 hover:text-gray-700',
+            isActive
+              ? 'font-bold text-foreground'
+              : 'font-semibold text-muted-foreground hover:text-muted-foreground/70',
           )}
         >
           {capitalize(title)}
         </h2>
-        {isActive && <Ellipse width={8} height={8} />}
+        {isActive && <div className="h-[2px] w-full bg-foreground"></div>}
       </ButtonNaked>
-    </div>
+    </>
   );
 }

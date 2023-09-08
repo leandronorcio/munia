@@ -68,7 +68,7 @@ export const Post = memo(
     const numberOfLikes = _count.postLikes;
 
     return (
-      <div className="rounded-2xl bg-white px-4 shadow sm:px-8">
+      <div className="rounded-2xl bg-card px-4 shadow sm:px-8">
         <div className="flex items-center justify-between pt-4 sm:pt-5">
           <ProfileBlock
             name={author.name!}
@@ -85,7 +85,7 @@ export const Post = memo(
           )}
         </div>
         {content && (
-          <p className="mb-4 mt-5 text-lg text-gray-700">
+          <p className="mb-4 mt-5 text-lg text-muted-foreground">
             <HighlightedMentionsAndHashTags
               text={content}
               shouldAddLinks={true}
@@ -99,7 +99,7 @@ export const Post = memo(
         )}
         <div
           className={cn([
-            'flex justify-start gap-2 border-y-2 py-2',
+            'flex justify-start gap-2 border-y border-y-border py-2',
             !commentsShown && 'border-b-transparent',
           ])}
         >
@@ -108,15 +108,15 @@ export const Post = memo(
             onChange={handleLikeToggle}
             Icon={SvgHeart}
             quantity={numberOfLikes}
-            noun="Like"
+            // noun="Like"
           />
           <ToggleStepper
             isSelected={commentsShown || false}
             onChange={handleCommentsToggle}
             Icon={SvgComment}
             quantity={_count.comments}
-            noun="Comment"
             color="blue"
+            // noun="Comment"
           />
         </div>
 

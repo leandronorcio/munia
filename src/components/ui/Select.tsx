@@ -42,7 +42,11 @@ export const Select = forwardRef(function Select<T extends {}>(
         {Icon && (
           <div className="absolute left-5 top-[50%] translate-y-[-50%]">
             <Icon
-              className={cn(isError ? 'stroke-red-900' : 'stroke-gray-500')}
+              className={cn(
+                isError
+                  ? 'stroke-destructive-foreground'
+                  : 'stroke-muted-foreground',
+              )}
               width={24}
               height={24}
             />
@@ -52,12 +56,12 @@ export const Select = forwardRef(function Select<T extends {}>(
         <div
           {...labelProps}
           className={cn(
-            'absolute left-5 cursor-pointer text-gray-500 transition-all',
+            'absolute left-5 cursor-pointer text-muted-foreground transition-all',
             isThereASelectedValue
               ? 'top-[9px] translate-y-0 text-sm'
               : 'top-[50%] translate-y-[-50%] text-lg',
             Icon ? 'left-16' : 'left-5',
-            isError ? 'text-red-900' : 'text-gray-500',
+            isError ? 'text-destructive-foreground' : 'text-muted-foreground',
           )}
           onClick={() => state.open()}
         >
@@ -73,9 +77,10 @@ export const Select = forwardRef(function Select<T extends {}>(
           {...buttonProps}
           ref={ref}
           className={cn(
-            ' w-full  rounded-2xl bg-slate-100 pb-2 pl-5 pr-5 pt-8 text-left outline-none ring-black focus:ring-2',
+            ' w-full  rounded-2xl bg-input pb-2 pl-5 pr-5 pt-8 text-left outline-none ring-foreground focus:ring-2',
             Icon ? 'pl-16' : 'pl-5',
-            isError && 'bg-red-200 ring-red-900',
+            isError &&
+              'bg-destructive ring-destructive-foreground focus:ring-4',
           )}
         >
           <span
@@ -89,7 +94,12 @@ export const Select = forwardRef(function Select<T extends {}>(
           </span>
           {!isThereASelectedValue && (
             <div className="absolute right-5 top-[50%] z-[1] translate-y-[-50%] p-3">
-              <SvgArrowChevronDown className="h-5 w-5 stroke-gray-500" />
+              <SvgArrowChevronDown
+                className={cn(
+                  'h-5 w-5 stroke-muted-foreground transition-transform',
+                  state.isOpen && 'rotate-180',
+                )}
+              />
             </div>
           )}
         </button>
@@ -107,7 +117,9 @@ export const Select = forwardRef(function Select<T extends {}>(
           {isThereASelectedValue && (
             <Button
               Icon={(props) => (
-                <SvgClose className={cn(props.className, 'stroke-gray-500')} />
+                <SvgClose
+                  className={cn(props.className, 'stroke-muted-foreground')}
+                />
               )}
               mode="ghost"
               size="small"
@@ -118,7 +130,7 @@ export const Select = forwardRef(function Select<T extends {}>(
         </div>
       </div>
       {isError && (
-        <p className="mt-2 font-semibold text-red-800" {...errorMessageProps}>
+        <p className="mt-2 font-medium text-foreground" {...errorMessageProps}>
           {errorMessage}
         </p>
       )}

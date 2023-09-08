@@ -2,6 +2,7 @@
 import Button from '@/components/ui/Button';
 import { useUpdateProfileAndCoverPhotoClient } from '@/hooks/useUpdateProfileAndCoverPhotoClient';
 import { useVisualMediaModal } from '@/hooks/useVisualMediaModal';
+import { cn } from '@/lib/cn';
 import { Image } from '@/svg_components';
 
 export default function CoverPhoto({
@@ -48,7 +49,11 @@ export default function CoverPhoto({
               accept="image/png, image/jpg, image/jpeg"
             />
             <Button
-              Icon={Image}
+              Icon={(props) => (
+                <Image
+                  className={cn(props.className, 'text-primary-foreground')}
+                />
+              )}
               onPress={openInput}
               size="small"
               loading={isPending}

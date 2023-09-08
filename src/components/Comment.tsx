@@ -133,7 +133,7 @@ export const Comment = memo(
           {numberOfReplies !== 0 && (
             <ButtonNaked
               onPress={handleToggleReplies}
-              className="my-1 cursor-pointer text-sm font-semibold text-gray-500 hover:text-gray-800"
+              className="my-1 cursor-pointer text-sm font-semibold text-muted-foreground hover:text-muted-foreground/70"
             >
               {!repliesShown
                 ? `Show ${numberOfReplies} replies...`

@@ -26,26 +26,26 @@ export function CommentContent({
   return (
     <div ref={ref}>
       <h3 className="text-md font-semibold">
-        <Link href={`/${username}`} className="link">
+        <Link href={`/${username}`} className="link text-foreground">
           {name}
         </Link>
       </h3>
-      <p className="text-gray-499 text-gray-500">@{username}</p>
+      <p className="text-muted-foreground">@{username}</p>
       <div
         className={cn(
-          'my-2 rounded-2xl rounded-ss-none px-4 py-3',
+          'my-2 rounded-[32px] rounded-ss-none px-6 py-3',
           !shouldHighlight
-            ? 'bg-slate-100'
+            ? 'border border-input'
             : 'bg-violet-100 ring-2 ring-violet-400',
         )}
       >
-        <p className="mb-2 text-gray-700">
+        <p className="mb-1 text-foreground">
           <HighlightedMentionsAndHashTags
             text={content}
             shouldAddLinks={true}
           />
         </p>
-        <p className="ml-auto text-sm text-gray-500">
+        <p className="ml-auto text-sm text-muted-foreground">
           {formatDistanceToNowStrict(new Date(createdAt))} ago
         </p>
       </div>

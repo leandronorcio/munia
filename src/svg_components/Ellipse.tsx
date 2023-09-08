@@ -9,7 +9,7 @@ const SvgEllipse = (props: SVGProps<SVGSVGElement>) => (
     viewBox="0 0 9 8"
     {...props}
   >
-    <circle cx={4.5} cy={4} r={4} fill="#14142B" />
+    <circle cx={4.5} cy={4} r={4} fill={props.fill} />
   </svg>
 );
 export default SvgEllipse;

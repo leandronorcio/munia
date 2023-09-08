@@ -125,7 +125,7 @@ export function DialogsContextProvider({
         {state.isOpen && (
           <Modal state={state}>
             <AlertDialog title={dialog.title} onClose={state.close}>
-              <p className="text-center text-lg text-gray-700">
+              <p className="text-center text-lg text-muted-foreground">
                 {dialog.message}
               </p>
               <div className="w-full">

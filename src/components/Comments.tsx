@@ -54,11 +54,11 @@ export function Comments({ postId }: { postId: number }) {
 
   return (
     <div>
-      <div className="flex flex-col bg-white pt-2 ">
+      <div className="flex flex-col pt-2 ">
         {isPending ? (
-          <p className="py-2 text-gray-600">Loading comments.</p>
+          <p className="py-2 text-muted-foreground">Loading comments.</p>
         ) : isError ? (
-          <p className="py-2 text-gray-600">{error.message}</p>
+          <p className="py-2 text-muted-foreground">{error.message}</p>
         ) : (
           <AnimatePresence>
             {comments.length > 0 ? (
@@ -84,7 +84,9 @@ export function Comments({ postId }: { postId: number }) {
                 </motion.div>
               ))
             ) : (
-              <p className="py-2 text-gray-600">Be the first to comment.</p>
+              <p className="py-2 text-muted-foreground">
+                Be the first to comment.
+              </p>
             )}
           </AnimatePresence>
         )}

@@ -5,6 +5,7 @@ import Button from './Button';
 import { Popover } from './Popover';
 import { DropdownMenu } from './DropdownMenu';
 import { Close, MoreVert } from '@/svg_components';
+import { cn } from '@/lib/cn';
 
 interface MenuButtonProps<T extends object>
   extends AriaMenuProps<T>,
@@ -29,7 +30,10 @@ export function DropdownMenuButton<T extends object>(
         {...menuTriggerProps}
         ref={ref}
         aria-label={props.label}
-        Icon={MoreVert}
+        className="fill-red-500"
+        Icon={(props) => (
+          <MoreVert className={cn(props.className, 'fill-muted-foreground')} />
+        )}
         mode="ghost"
       />
       {state.isOpen && (

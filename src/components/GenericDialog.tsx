@@ -23,11 +23,11 @@ export function GenericDialog({
     <div
       {...dialogProps}
       ref={dialogRef}
-      className="grid h-full w-full place-items-center overflow-y-auto py-8"
+      className="grid h-full w-full place-items-center overflow-y-auto"
     >
       <ResponsiveContainer>
-        <div className="mb-6 rounded-xl bg-white">
-          <div className="relative mb-4 rounded-t-xl bg-gray-100 py-4">
+        <div className="mb-6 rounded-xl border border-border bg-popover">
+          <div className="relative mb-4 rounded-t-xl border-b border-b-border bg-card py-4">
             <h3 {...titleProps} className="text-center text-lg font-semibold">
               {title}
             </h3>
@@ -37,7 +37,6 @@ export function GenericDialog({
                 Icon={SvgClose}
                 mode="ghost"
                 size="small"
-                className="bg-gray-200/70"
               />
             </div>
           </div>

@@ -64,11 +64,11 @@ export function CalendarCell({ state, date }: CalendarCellProps) {
         className={`group h-10 w-10 outline-none ${
           isRoundedLeft ? 'rounded-l-full' : ''
         } ${isRoundedRight ? 'rounded-r-full' : ''} ${
-          isSelected ? (isInvalid ? 'bg-red-300' : 'bg-violet-300') : ''
+          isSelected ? (isInvalid ? 'bg-destructive' : 'bg-primary') : ''
         } ${isDisabled ? 'disabled' : ''}`}
       >
         <div
-          className={`flex h-full w-full items-center justify-center rounded-full text-sm font-semibold ${
+          className={`flex h-full w-full items-center justify-center rounded-full text-sm font-semibold  ${
             isDisabled && !isInvalid ? 'text-gray-400' : ''
           } ${
             // Focus ring, visible while the cell has keyboard focus.
@@ -91,7 +91,7 @@ export function CalendarCell({ state, date }: CalendarCellProps) {
               : ''
           } ${
             // Hover state for non-selected cells.
-            !isSelected && !isDisabled ? 'hover:bg-violet-100' : ''
+            !isSelected && !isDisabled ? 'hover:bg-muted' : ''
           } cursor-default`}
         >
           {formattedDate}

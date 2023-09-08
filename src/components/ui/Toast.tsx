@@ -34,8 +34,9 @@ export function Toast<T extends ToastType>({ state, ...props }: ToastProps<T>) {
       {...toastProps}
       ref={ref}
       className={cn(
-        'flex items-center justify-between gap-4 rounded-xl p-6',
+        'flex items-center justify-between gap-4 rounded-xl border p-6',
         colors[type].bg,
+        colors[type].border,
       )}
     >
       <div>
@@ -75,24 +76,28 @@ export function Toast<T extends ToastType>({ state, ...props }: ToastProps<T>) {
 
 const colors = {
   default: {
-    bg: 'bg-violet-200',
-    text: 'text-violet-700',
-    icon: 'stroke-violet-700',
+    bg: 'bg-primary',
+    text: 'text-primary-foreground',
+    border: 'border-border',
+    icon: 'stroke-primary-foreground/70',
   },
   success: {
-    bg: 'bg-green-200',
-    text: 'text-green-700',
-    icon: 'stroke-green-700',
+    bg: 'bg-success',
+    text: 'text-success-foreground',
+    border: 'border-success-foreground',
+    icon: 'stroke-success-foreground/70',
   },
   warning: {
-    bg: 'bg-yellow-200',
-    text: 'text-yellow-700',
-    icon: 'stroke-yellow-700',
+    bg: 'bg-warning',
+    text: 'text-warning-foreground',
+    border: 'border-warning-foreground',
+    icon: 'stroke-warning-foreground/70',
   },
   error: {
-    bg: 'bg-pink-200',
-    text: 'text-red-700',
-    icon: 'stroke-red-700',
+    bg: 'bg-destructive',
+    text: 'text-destructive-foreground',
+    border: 'border-border',
+    icon: 'stroke-destructive-foreground/70',
   },
 };
 

@@ -20,7 +20,7 @@ export function DropdownMenu<T extends object>(props: MenuProps<T>) {
     <ul
       {...menuProps}
       ref={ref}
-      className="shadow-xs min-w-[200px] origin-top-right scale-95 rounded-xl border border-gray-300 bg-slate-100 py-2 transition-transform focus-within:scale-100 focus:scale-100 focus:outline-none"
+      className="shadow-xs min-w-[200px] origin-top-right scale-95 rounded-xl border border-border bg-popover py-2 transition-transform focus-within:scale-100 focus:scale-100 focus:outline-none"
     >
       {[...state.collection].map((item) => (
         <DropdownMenuSection

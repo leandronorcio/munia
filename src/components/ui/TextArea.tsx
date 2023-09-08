@@ -36,7 +36,11 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           {Icon && (
             <div className="absolute left-5 top-[50%] translate-y-[-50%]">
               <Icon
-                className={cn(isError ? 'stroke-red-900' : 'stroke-gray-500')}
+                className={cn(
+                  isError
+                    ? 'stroke-destructive-foreground'
+                    : 'stroke-muted-foreground',
+                )}
                 width={24}
                 height={24}
               />
@@ -53,9 +57,9 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             })}
             ref={ref}
             className={cn(
-              'peer block w-full resize-none overflow-hidden rounded-2xl bg-slate-100 pb-2 pr-5 pt-8 outline-none ring-black focus:ring-2',
+              'peer block w-full resize-none overflow-hidden rounded-2xl bg-input pb-2 pr-5 pt-8 outline-none ring-foreground focus:ring-2',
               Icon ? 'pl-16' : 'pl-5',
-              isError && 'bg-red-200 ring-red-900',
+              isError && 'bg-destructive ring-destructive/30 focus:ring-4',
               className,
             )}
             rows={1}
@@ -65,7 +69,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             className={cn(
               'absolute top-[9px] z-0 translate-y-0 cursor-text text-sm transition-all peer-placeholder-shown:top-[50%] peer-placeholder-shown:translate-y-[-50%] peer-placeholder-shown:text-lg peer-focus:top-[9px] peer-focus:translate-y-0 peer-focus:text-sm',
               Icon ? 'left-16' : 'left-5',
-              isError ? 'text-red-900' : 'text-gray-500',
+              isError ? 'text-destructive-foreground' : 'text-muted-foreground',
             )}
             {...labelProps}
           >
@@ -73,7 +77,9 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           </label>
           <Button
             Icon={(props) => (
-              <SvgClose className={cn(props.className, 'stroke-gray-500')} />
+              <SvgClose
+                className={cn(props.className, 'stroke-muted-foreground')}
+              />
             )}
             mode="ghost"
             size="small"
@@ -83,7 +89,10 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           />
         </div>
         {isError && (
-          <p className="mt-2 font-semibold text-red-800" {...errorMessageProps}>
+          <p
+            className="mt-2 font-medium text-foreground"
+            {...errorMessageProps}
+          >
             {errorMessage}
           </p>
         )}

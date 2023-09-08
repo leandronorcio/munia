@@ -22,7 +22,7 @@ export function CommentCreate({ postId }: { postId: number }) {
   };
 
   return (
-    <div className="mt-2 border-t-2 py-4">
+    <div className="mt-2 border-t-2 border-t-border py-4">
       <div className="flex">
         <div className="mr-3 h-10 w-10">
           <ProfilePhotoOwn />

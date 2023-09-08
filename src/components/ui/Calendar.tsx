@@ -20,15 +20,13 @@ export function Calendar<T extends DateValue>(props: AriaCalendarProps<T>) {
   );
 
   return (
-    <div {...calendarProps} className="inline-block text-gray-800">
+    <div {...calendarProps} className="inline-block text-muted-foreground">
       <div className="flex items-center justify-between pb-4">
         <Button
           {...prevButtonProps}
           mode="ghost"
           size="small"
-          Icon={() => (
-            <ArrowChevronBack className="h-6 w-6 stroke-violet-500" />
-          )}
+          Icon={() => <ArrowChevronBack className="h-6 w-6 stroke-primary" />}
         />
         <h2 className="ml-2 flex-1 text-center text-xl font-semibold">
           {title}
@@ -38,7 +36,7 @@ export function Calendar<T extends DateValue>(props: AriaCalendarProps<T>) {
           mode="ghost"
           size="small"
           Icon={() => (
-            <ArrowChevronForward className="h-6 w-6 stroke-violet-500" />
+            <ArrowChevronForward className="h-6 w-6 stroke-primary" />
           )}
         />
       </div>

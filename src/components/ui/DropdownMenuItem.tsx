@@ -32,8 +32,14 @@ export function DropdownMenuItem<T>({
   // Handle focus events so we can apply highlighted
   // style to the focused menu item
   let isFocused = state.selectionManager.focusedKey === item.key;
-  let focusBg = item.key === 'delete' ? 'bg-red-500' : 'bg-violet-500';
-  let focus = isFocused ? `${focusBg} text-white` : 'text-gray-900';
+  let focusBg = item.key === 'delete' ? 'bg-destructive' : 'bg-accent';
+  let focus = isFocused
+    ? `${focusBg} ${
+        item.key === 'delete'
+          ? 'text-destructive-foreground'
+          : 'text-accent-foreground'
+      }`
+    : 'text-popover-foreground';
 
   return (
     <li

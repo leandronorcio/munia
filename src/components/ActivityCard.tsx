@@ -32,7 +32,7 @@ export function ActivityCard({
       {...mergeProps(linkProps, focusProps)}
       ref={ref}
       className={cn(
-        'mb-4 flex cursor-pointer gap-3 rounded-3xl bg-gray-100 p-4 last:mb-0 hover:bg-gray-200/70 focus:outline-none',
+        'mb-4 flex cursor-pointer gap-3 rounded-3xl bg-card p-4 last:mb-0 hover:bg-card/90 focus:outline-none',
         isFocusVisible && 'ring ring-violet-500 ring-offset-2',
       )}
       aria-label="Open link"
@@ -47,7 +47,7 @@ export function ActivityCard({
 
       <div className="my-auto flex-1">
         <p>{children}</p>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-muted-foreground">
           {formatDistanceToNowStrict(date)} ago
         </p>
       </div>

@@ -64,7 +64,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
       <h1 className="mb-5 text-5xl font-bold">
         {mode === 'login' ? 'Log In' : 'Sign Up'}
       </h1>
-      <p className="mb-4 text-lg text-gray-500">
+      <p className="mb-4 text-lg text-muted-foreground">
         Enter your email to {mode === 'login' ? 'login' : 'create an account'}
       </p>
       <div className="mb-4">
@@ -89,7 +89,9 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
           Sign {mode === 'login' ? 'in' : 'up'} with Email
         </Button>
       </div>
-      <p className="mb-4 text-center text-lg text-gray-500">Or continue with</p>
+      <p className="mb-4 text-center text-lg text-muted-foreground">
+        Or continue with
+      </p>
       <div className="mb-10 flex gap-2">
         <Button
           onPress={() => {
@@ -130,15 +132,17 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
       </div>
       {mode === 'login' ? (
         <>
-          <p className="mb-1 text-lg text-gray-500">No account yet?</p>
-          <p className="cursor-pointer text-lg font-semibold text-violet-800 hover:opacity-80">
+          <p className="mb-1 text-lg text-muted-foreground ">No account yet?</p>
+          <p className="cursor-pointer text-lg font-semibold text-primary-accent hover:opacity-90">
             <Link href="/register">Create an account</Link>
           </p>
         </>
       ) : (
         <>
-          <p className="mb-1 text-lg text-gray-500">Alreay have an account?</p>
-          <p className="cursor-pointer text-lg font-semibold text-violet-800 hover:opacity-80">
+          <p className="mb-1 text-lg text-muted-foreground">
+            Alreay have an account?
+          </p>
+          <p className="cursor-pointer text-lg font-semibold text-primary-accent hover:opacity-90">
             <Link href="/login">Login</Link>
           </p>
         </>

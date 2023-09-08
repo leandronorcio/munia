@@ -14,9 +14,9 @@ const toggle = cva(
   {
     variants: {
       color: {
-        red: 'ring-red-300 hover:bg-red-200 focus:outline-none',
-        blue: 'ring-blue-300 hover:bg-blue-200 focus:outline-none',
-        purple: 'ring-purple-300 hover:bg-purple-200 focus:outline-none',
+        red: 'hover:bg-destructive-foreground/30 focus:outline-none',
+        blue: 'hover:bg-secondary/30 focus:outline-none',
+        purple: 'hover:bg-primary-accent/30 focus:outline-none',
       },
     },
     defaultVariants: {
@@ -28,9 +28,9 @@ const toggle = cva(
 const icon = cva('h-6 w-6', {
   variants: {
     color: {
-      red: 'fill-red-500 stroke-red-500',
-      blue: 'fill-blue-500 stroke-blue-500',
-      purple: 'fill-purple-500 stroke-purple-500',
+      red: 'fill-destructive-foreground',
+      blue: 'fill-secondary',
+      purple: 'fill-primary-accent',
     },
   },
   defaultVariants: {
@@ -63,6 +63,7 @@ export function ToggleStepper({
       {...mergeProps(buttonProps, focusProps)}
       ref={ref}
       className={cn(
+        'transition-transform active:scale-90',
         toggle({ color }),
         isFocusVisible && 'ring-2 ring-violet-500 ring-offset-2',
       )}
@@ -70,9 +71,11 @@ export function ToggleStepper({
       <Icon
         width={24}
         height={24}
-        className={cn(state.isSelected ? icon({ color }) : 'stroke-black')}
+        className={cn(
+          state.isSelected ? icon({ color }) : 'stroke-muted-foreground',
+        )}
       />
-      <p className="text-lg font-semibold text-gray-700">
+      <p className="text-lg font-medium text-muted-foreground">
         {quantity}{' '}
         {noun !== undefined ? (quantity === 1 ? noun : `${noun}s`) : ''}
       </p>

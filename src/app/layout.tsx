@@ -41,7 +41,9 @@ export default async function RootLayout({
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
         />
       </head>
-      <body className={cn('bg-gray-50', poppins.className)}>
+      <body
+        className={cn('dark bg-background text-foreground', poppins.className)}
+      >
         <ToastContextProvider>
           <ReactQueryProvider>
             <SessionProviderContext>

@@ -30,7 +30,7 @@ export function ListBox(props: ListBoxProps) {
     <ul
       {...listBoxProps}
       ref={listBoxRef}
-      className="w-full origin-top scale-95 overflow-auto rounded-xl border border-gray-300 bg-slate-100 py-2 outline-none transition-transform focus-within:scale-100"
+      className="w-full origin-top scale-95 overflow-auto rounded-xl border border-border bg-popover py-2 outline-none transition-transform focus-within:scale-100"
     >
       {[...state.collection].map((item) =>
         item.type === 'section' ? (
@@ -53,10 +53,7 @@ function ListBoxSection({ section, state }: SectionProps) {
     <>
       <li {...itemProps} className="my-2">
         {section.rendered && (
-          <span
-            {...headingProps}
-            className="text-md pl-5 font-semibold  text-gray-500"
-          >
+          <span {...headingProps} className="text-md pl-5 font-semibold">
             {section.rendered}
           </span>
         )}
@@ -87,21 +84,23 @@ function Option({ item, state }: OptionProps) {
       className={cn(
         'flex cursor-pointer items-center gap-[18px] px-6 py-2 outline-none',
         isSelected && 'font-semibold',
-        isFocused && 'bg-violet-500',
+        isFocused && 'bg-accent',
         isDisabled && 'opacity-50',
       )}
     >
       <div
-        className={cn(
-          'grid h-6 w-6 place-items-center rounded-md',
-          isSelected ? 'bg-violet-600' : 'bg-slate-300',
-        )}
+        className={cn('grid h-6 w-6 place-items-center rounded-md bg-input')}
       >
         {isSelected && (
-          <Check stroke="white" strokeWidth={4} width={18} height={18} />
+          <Check className="h-[18px] w-[18px] stroke-foreground" />
         )}
       </div>
-      <p className={cn('text-lg', isFocused ? 'text-white' : 'text-gray-700')}>
+      <p
+        className={cn(
+          'text-lg',
+          isFocused ? 'text-accent-foreground' : 'text-muted-foreground',
+        )}
+      >
         {item.rendered}
       </p>
     </li>
