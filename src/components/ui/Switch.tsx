@@ -8,12 +8,14 @@ import {
 import { useRef } from 'react';
 import { cn } from '@/lib/cn';
 import { motion } from 'framer-motion';
+import { WeatherMoon } from '@/svg_components';
 
 interface SwitchProps extends AriaSwitchProps {
   children?: React.ReactNode;
+  renderIcon?: () => JSX.Element;
 }
 
-export function Switch({ children, ...props }: SwitchProps) {
+export function Switch({ children, renderIcon, ...props }: SwitchProps) {
   let state = useToggleState(props);
   let ref = useRef(null);
   let { inputProps } = useSwitch(props, state, ref);
@@ -42,10 +44,12 @@ export function Switch({ children, ...props }: SwitchProps) {
           layout
           transition={spring}
           className={cn(
-            'h-8 w-8 rounded-[200px]',
+            'grid h-8 w-8 place-items-center rounded-[200px]',
             props.isSelected ? 'bg-primary-foreground' : 'bg-muted-foreground',
           )}
-        ></motion.div>
+        >
+          {renderIcon !== undefined && renderIcon()}
+        </motion.div>
       </div>
       {children}
     </label>
