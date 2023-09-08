@@ -1,7 +1,6 @@
 'use client';
 import { ToastRegion } from '@/components/ui/ToastRegion';
 import { ToastState, useToastState } from '@react-stately/toast';
-import { AnimatePresence, motion } from 'framer-motion';
 import { createContext, useMemo } from 'react';
 
 export interface ToastType {
@@ -36,18 +35,7 @@ export function ToastContextProvider({
 
   return (
     <ToastContext.Provider value={memoizedValue}>
-      <AnimatePresence>
-        {state.visibleToasts.length > 0 && (
-          <motion.div
-            key="toast-region"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <ToastRegion state={state} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {state.visibleToasts.length > 0 && <ToastRegion state={state} />}
       {children}
     </ToastContext.Provider>
   );

@@ -56,7 +56,7 @@ export function Toast<T extends ToastType>({ state, ...props }: ToastProps<T>) {
         {message !== undefined && message !== '' && (
           <p
             {...descriptionProps}
-            className={cn('ml-10 text-sm text-gray-700', colors[type].text)}
+            className={cn('ml-10 text-sm', colors[type].text)}
           >
             {message}
           </p>
