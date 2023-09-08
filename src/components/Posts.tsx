@@ -94,7 +94,6 @@ export function Posts({
       // that will be passed to `queryFn` as `pageParam` property
       return lastPage.slice(-1)[0].id;
     },
-    staleTime: 60000 * 10,
   });
 
   useEffect(() => {
