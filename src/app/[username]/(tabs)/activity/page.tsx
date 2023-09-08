@@ -1,5 +1,5 @@
 import { getServerUser } from '@/lib/getServerUser';
-import { getProfile } from '../getProfile';
+import { getProfile } from '../../getProfile';
 import { Activities } from './Activities';
 
 export default async function Page({

@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { GetActivity } from 'types';
-import { Activity } from '../../../components/Activity';
+import { Activity } from '@/components/Activity';
 import { ACTIVITIES_PER_PAGE } from '@/constants';
 
 export function Activities({ userId }: { userId: string }) {

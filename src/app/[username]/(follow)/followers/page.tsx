@@ -1,5 +1,5 @@
 import { DiscoverProfiles } from '@/app/discover/DiscoverProfiles';
-import { getProfile } from '../getProfile';
+import { getProfile } from '../../getProfile';
 import { DiscoverSearch } from '@/app/discover/DiscoverSearch';
 import { DiscoverFilters } from '@/app/discover/DiscoverFilters';
 
@@ -11,11 +11,11 @@ export default async function Page({
   const profile = await getProfile(params.username);
 
   return (
-    <>
-      <h1 className="sticky mb-6 text-4xl font-bold">Following</h1>
-      <DiscoverSearch label="Search Following" />
+    <div className="pt-4">
+      <h1 className="mb-6 text-4xl font-bold">{profile?.name}'s Followers</h1>
+      <DiscoverSearch label="Search Followers" />
       <DiscoverFilters />
-      <DiscoverProfiles followingOf={profile?.id} />
-    </>
+      <DiscoverProfiles followersOf={profile?.id} />
+    </div>
   );
 }

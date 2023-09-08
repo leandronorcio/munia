@@ -1,5 +1,5 @@
 import { ProfileHeader } from './ProfileHeader';
-import { getProfile } from './getProfile';
+import { getProfile } from '../getProfile';
 import { getServerUser } from '@/lib/getServerUser';
 
 export default async function Layout({

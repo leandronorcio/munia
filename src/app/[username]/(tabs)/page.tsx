@@ -1,5 +1,5 @@
 import { Posts } from '@/components/Posts';
-import { getProfile } from './getProfile';
+import { getProfile } from '../getProfile';
 import { CreatePostModalLauncher } from '@/components/CreatePostModalLauncher';
 import { getServerUser } from '@/lib/getServerUser';
 

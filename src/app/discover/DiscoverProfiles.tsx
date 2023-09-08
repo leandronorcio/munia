@@ -126,7 +126,7 @@ export function DiscoverProfiles({
         )}
       </div>
       <div
-        className="mt-4 h-4"
+        className="h-2"
         ref={bottomElRef}
         /**
          * The first page will be initially loaded by React Query
