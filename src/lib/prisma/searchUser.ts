@@ -33,18 +33,18 @@ export function searchUser(search: string):
     OR: [
       {
         name: {
-          search: search.replaceAll(' ', ' | '),
+          search: search.trim().replace(/ +/g, ' ').replaceAll(' ', '|'),
         },
       },
       {
         name: {
-          startsWith: search,
+          startsWith: search.trim(),
           mode: 'insensitive',
         },
       },
       {
         username: {
-          startsWith: search,
+          startsWith: search.trim(),
           mode: 'insensitive',
         },
       },
