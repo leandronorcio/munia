@@ -55,8 +55,24 @@
     --input: 57 49 75;
   }
 
-  html {
-    scrollbar-gutter: stable;
+  /* width */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: rgb(var(--background));
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--muted));
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--muted-foreground));
   }
 }
 

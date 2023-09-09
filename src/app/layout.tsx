@@ -35,7 +35,7 @@ export default async function RootLayout({
 }) {
   const [user] = await getServerUser();
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark overflow-y-scroll">
       <head>
         <meta
           name="viewport"
