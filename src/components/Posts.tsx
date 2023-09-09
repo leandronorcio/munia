@@ -16,7 +16,10 @@ import { chunk } from 'lodash';
 import { useShouldAnimate } from '@/hooks/useShouldAnimate';
 import { deductLowerMultiple } from '@/lib/deductLowerMultiple';
 import { SomethingWentWrong } from './SometingWentWrong';
+import { ButtonNaked } from './ui/ButtonNaked';
+import SvgForwardArrow from '@/svg_components/ForwardArrow';
 
+const NO_PREV_DATA_LOADED = 'no_previous_data_loaded';
 export function Posts({
   type,
   userId,
@@ -26,6 +29,8 @@ export function Posts({
 }) {
   const qc = useQueryClient();
   const queryKey = ['users', userId, 'posts', { type }];
+  const topElRef = useRef<HTMLDivElement>(null);
+  const isTopOnScreen = useOnScreen(topElRef);
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
   // `shouldAnimate` is `false` when the browser's back button is pressed
@@ -43,6 +48,8 @@ export function Posts({
     if (!shouldRender) setShouldRender(true);
   }, []);
 
+  // This keeps track of the number of pages loaded by the `fetchPreviousPage()`
+  const [numberOfNewPostsLoaded, setNumberOfNewPostsLoaded] = useState(0);
   const {
     data,
     error,
@@ -50,6 +57,7 @@ export function Posts({
     isError,
     fetchNextPage,
     hasNextPage,
+    fetchPreviousPage,
     isFetching,
     isFetchingNextPage,
   } = useInfiniteQuery<
@@ -61,11 +69,13 @@ export function Posts({
   >({
     queryKey,
     defaultPageParam: 0,
-    queryFn: async ({ pageParam }): Promise<PostIds[]> => {
+    queryFn: async ({ pageParam, direction }): Promise<PostIds[]> => {
       const endpoint = type === 'profile' ? 'posts' : 'feed';
-      const params = new URLSearchParams();
+      const isForwards = direction === 'forward';
+      const params = new URLSearchParams('');
       params.set('limit', POSTS_PER_PAGE.toString());
       params.set('cursor', pageParam.toString());
+      params.set('sort-direction', isForwards ? 'desc' : 'asc');
 
       const res = await fetch(
         `/api/users/${userId}/${endpoint}?${params.toString()}`,
@@ -76,6 +86,16 @@ export function Posts({
       }
 
       const posts: GetPost[] = await res.json();
+
+      // Prevent React Query from 'prepending' the data with an empty array
+      if (!posts.length && !isForwards) {
+        throw new Error(NO_PREV_DATA_LOADED);
+      }
+
+      if (!isForwards) {
+        setNumberOfNewPostsLoaded((prev) => prev + posts.length);
+      }
+
       return posts.map((post) => {
         // Set query data for each `post`, these queries will be used by the <Post> component
         qc.setQueryData(['posts', post.id], post);
@@ -102,7 +122,19 @@ export function Posts({
       // that will be passed to `queryFn` as `pageParam` property
       return lastPage.slice(-1)[0].id;
     },
+    getPreviousPageParam: (firstPage) => {
+      if (!firstPage.length) return 0;
+      return firstPage[0].id;
+    },
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
+    retry: false,
+    enabled: !!userId,
   });
+
+  const viewNewlyLoadedPosts = () => {
+    topElRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   useEffect(() => {
     if (!isBottomOnScreen) return;
@@ -111,6 +143,22 @@ export function Posts({
 
     fetchNextPage();
   }, [isBottomOnScreen]);
+
+  useEffect(() => {
+    if (!isTopOnScreen) return;
+    if (!numberOfNewPostsLoaded) return;
+
+    // If top of <Posts> is on screen and the `numberOfNewPostsLoaded` is more than 0, reset the `numberOfNewPostsLoaded`
+    setTimeout(() => setNumberOfNewPostsLoaded(0), 1000);
+  }, [isTopOnScreen, numberOfNewPostsLoaded]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchPreviousPage();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const toggleComments = useCallback(async (postId: number) => {
     qc.setQueryData<InfiniteData<{ id: number; commentsShown: boolean }[]>>(
@@ -141,62 +189,67 @@ export function Posts({
     );
   }, []);
 
-  const variants = {
-    start: {
-      y: '-50',
-      opacity: 0,
-      marginTop: '0px',
-      overflow: 'hidden',
-    },
-    animate: {
-      y: 0,
-      opacity: 1,
-      marginTop: '16px',
-      overflow: 'visible',
-    },
-    exit: {
-      height: 0,
-      opacity: 0,
-      marginTop: '0px',
-      overflow: 'hidden',
-    },
-  };
   return (
     <>
       {shouldRender && (
-        <div className="flex flex-col">
-          {isPending ? (
-            <p>Loading posts...</p>
-          ) : isError ? (
-            <SomethingWentWrong />
-          ) : (
+        <>
+          <div ref={topElRef}></div>
+          <div className="flex flex-col">
             <AnimatePresence>
-              {data.pages.map((page) =>
-                page.map((post, i) => {
-                  return (
-                    <motion.div
-                      variants={variants}
-                      initial={shouldAnimate ? 'start' : false}
-                      animate="animate"
-                      exit="exit"
-                      transition={{
-                        delay: deductLowerMultiple(i, POSTS_PER_PAGE) * 0.115,
-                      }}
-                      key={post.id}
-                    >
-                      <Post
-                        id={post.id}
-                        commentsShown={post.commentsShown}
-                        toggleComments={toggleComments}
-                      />
-                    </motion.div>
-                  );
-                }),
+              {numberOfNewPostsLoaded !== 0 && (
+                <motion.div
+                  initial={{ height: 0 }}
+                  animate={{ height: 'auto' }}
+                  exit={{ height: 0 }}
+                  className="sticky top-5 mx-auto overflow-hidden"
+                >
+                  <ButtonNaked
+                    onPress={viewNewlyLoadedPosts}
+                    className="mt-4 inline-flex cursor-pointer select-none items-center gap-3 rounded-full bg-primary px-4 py-2  text-secondary-foreground hover:bg-primary-accent"
+                  >
+                    <div className="-rotate-90 rounded-full border-2 border-border bg-muted/70 p-[6px]">
+                      <SvgForwardArrow className="h-5 w-5" />
+                    </div>
+                    <p>
+                      <b>{numberOfNewPostsLoaded}</b> new{' '}
+                      {numberOfNewPostsLoaded > 1 ? 'posts' : 'post'} loaded
+                    </p>
+                  </ButtonNaked>
+                </motion.div>
               )}
             </AnimatePresence>
-          )}
-        </div>
+            {isPending ? (
+              <p>Loading posts...</p>
+            ) : (
+              <AnimatePresence>
+                {data?.pages.map((page) =>
+                  page.map((post, i) => {
+                    return (
+                      <motion.div
+                        variants={variants}
+                        initial={shouldAnimate ? 'start' : false}
+                        animate="animate"
+                        exit="exit"
+                        transition={{
+                          delay: deductLowerMultiple(i, POSTS_PER_PAGE) * 0.115,
+                        }}
+                        key={post.id}
+                      >
+                        <Post
+                          id={post.id}
+                          commentsShown={post.commentsShown}
+                          toggleComments={toggleComments}
+                        />
+                      </motion.div>
+                    );
+                  }),
+                )}
+              </AnimatePresence>
+            )}
+          </div>
+        </>
       )}
+
       <div
         className="h-6"
         ref={bottomElRef}
@@ -206,9 +259,33 @@ export function Posts({
          */
         style={{ display: data ? 'block' : 'none' }}
       ></div>
+      {isError && error.message !== NO_PREV_DATA_LOADED && (
+        <SomethingWentWrong />
+      )}
       {!isError && !isFetching && !isFetchingNextPage && !hasNextPage && (
         <AllCaughtUp />
       )}
     </>
   );
 }
+
+const variants = {
+  start: {
+    y: '-50',
+    opacity: 0,
+    marginTop: '0px',
+    overflow: 'hidden',
+  },
+  animate: {
+    y: 0,
+    opacity: 1,
+    marginTop: '16px',
+    overflow: 'visible',
+  },
+  exit: {
+    height: 0,
+    opacity: 0,
+    marginTop: '0px',
+    overflow: 'hidden',
+  },
+};
