@@ -22,6 +22,8 @@ export async function GET(
   const { searchParams } = new URL(request.url);
   const limit = parseInt(searchParams.get('limit') || '5');
   const cursor = parseInt(searchParams.get('cursor') || '0');
+  const sortDirection =
+    (searchParams.get('sort-direction') as 'asc' | 'desc') || 'desc';
 
   // Get the IDs of the user's followed users
   const following = await prisma.follow.findMany({
@@ -39,18 +41,30 @@ export async function GET(
       userId: {
         in: [...followingIds, user.id],
       },
+      /**
+       * This is an alternative approach to Prisma's cursor-based pagination
+       * that does not return the expected results when the cursor no longer
+       * exists.
+       * The issue links:
+       * https://github.com/prisma/prisma/issues/3362
+       * https://github.com/prisma/prisma/issues/8560
+       */
+      ...(cursor && {
+        id: {
+          ...(sortDirection === 'desc' && {
+            lt: cursor,
+          }),
+          ...(sortDirection === 'asc' && {
+            gt: cursor,
+          }),
+        },
+      }),
+    },
+    take: limit,
+    orderBy: {
+      id: sortDirection,
     },
     select: selectPost(user.id),
-    take: limit,
-    skip: cursor ? 1 : undefined,
-    cursor: cursor
-      ? {
-          id: cursor,
-        }
-      : undefined,
-    orderBy: {
-      id: 'desc',
-    },
   });
 
   const posts: GetPost[] = [];
