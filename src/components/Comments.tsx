@@ -10,7 +10,7 @@ import { useUpdateDeleteComments } from '@/hooks/useUpdateDeleteComments';
 import { useLikeUnlikeComments } from '@/hooks/useLikeUnlikeComments';
 import { CommentCreate } from './CommentCreate';
 import { useShouldAnimate } from '@/hooks/useShouldAnimate';
-import { commentFramerVariants } from '@/lib/commentFramerVariants';
+import { commentFramerVariants } from '@/lib/framerVariants';
 
 export function Comments({ postId }: { postId: number }) {
   const qc = useQueryClient();

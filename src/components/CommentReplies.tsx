@@ -6,7 +6,7 @@ import { useUpdateDeleteComments } from '@/hooks/useUpdateDeleteComments';
 import { useLikeUnlikeComments } from '@/hooks/useLikeUnlikeComments';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useShouldAnimate } from '@/hooks/useShouldAnimate';
-import { commentFramerVariants } from '@/lib/commentFramerVariants';
+import { commentFramerVariants } from '@/lib/framerVariants';
 
 export function CommentReplies({ parentId }: { parentId: number }) {
   const { data: session } = useSession();

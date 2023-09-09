@@ -18,6 +18,7 @@ import { deductLowerMultiple } from '@/lib/deductLowerMultiple';
 import { SomethingWentWrong } from './SometingWentWrong';
 import { ButtonNaked } from './ui/ButtonNaked';
 import SvgForwardArrow from '@/svg_components/ForwardArrow';
+import { postFramerVariants } from '@/lib/framerVariants';
 
 const NO_PREV_DATA_LOADED = 'no_previous_data_loaded';
 export function Posts({
@@ -222,7 +223,7 @@ export function Posts({
                   page.map((post, i) => {
                     return (
                       <motion.div
-                        variants={variants}
+                        variants={postFramerVariants}
                         initial={shouldAnimate ? 'start' : false}
                         animate="animate"
                         exit="exit"
@@ -264,24 +265,3 @@ export function Posts({
     </>
   );
 }
-
-const variants = {
-  start: {
-    y: '-50',
-    opacity: 0,
-    marginTop: '0px',
-    overflow: 'hidden',
-  },
-  animate: {
-    y: 0,
-    opacity: 1,
-    marginTop: '16px',
-    overflow: 'visible',
-  },
-  exit: {
-    height: 0,
-    opacity: 0,
-    marginTop: '0px',
-    overflow: 'hidden',
-  },
-};
