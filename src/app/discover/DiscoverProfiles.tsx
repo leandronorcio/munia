@@ -13,6 +13,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { GetUser } from 'types';
 import { AnimatePresence, motion } from 'framer-motion';
+import { SomethingWentWrong } from '@/components/SometingWentWrong';
 
 const PROFILES_PER_PAGE = 4;
 export function DiscoverProfiles({
@@ -30,11 +31,12 @@ export function DiscoverProfiles({
   const {
     data,
     error,
+    isPending,
+    isError,
     fetchNextPage,
     hasNextPage,
     isFetching,
     isFetchingNextPage,
-    status,
   } = useInfiniteQuery<
     GetUser[],
     Error,
@@ -98,12 +100,12 @@ export function DiscoverProfiles({
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2">
-        {status === 'pending' ? (
-          <p>Loading profiles...</p>
-        ) : status === 'error' ? (
-          <p>Error loading profiles.</p>
-        ) : (
+      {isPending ? (
+        <p>Loading profiles...</p>
+      ) : isError ? (
+        <SomethingWentWrong />
+      ) : (
+        <div className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2">
           <AnimatePresence>
             {data?.pages.flat().map((profile) => (
               <motion.div
@@ -126,8 +128,8 @@ export function DiscoverProfiles({
               </motion.div>
             ))}
           </AnimatePresence>
-        )}
-      </div>
+        </div>
+      )}
       <div
         className="h-6"
         ref={bottomElRef}
@@ -137,7 +139,9 @@ export function DiscoverProfiles({
          */
         style={{ display: data ? 'block' : 'none' }}
       ></div>
-      {!isFetching && !hasNextPage && <AllCaughtUp />}
+      {!isError && !isFetching && !isFetchingNextPage && !hasNextPage && (
+        <AllCaughtUp />
+      )}
     </>
   );
 }

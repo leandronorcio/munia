@@ -25,12 +25,11 @@ export function Notifications() {
   const isBottomOnScreen = useOnScreen(bottomElRef);
   const {
     data,
-    isFetching,
+    isPending,
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
     fetchPreviousPage,
-    refetch,
   } = useInfiniteQuery<
     GetActivity[],
     Error,
@@ -122,9 +121,13 @@ export function Notifications() {
         </DropdownMenuButton>
       </div>
       <div>
-        {data?.pages.flat().map((activity) => {
-          return <Activity key={activity.id} {...activity} />;
-        })}
+        {isPending ? (
+          <p>Loading notifications...</p>
+        ) : (
+          data?.pages.flat().map((activity) => {
+            return <Activity key={activity.id} {...activity} />;
+          })
+        )}
       </div>
 
       <div

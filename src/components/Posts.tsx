@@ -15,6 +15,7 @@ import { POSTS_PER_PAGE } from '@/constants';
 import { chunk } from 'lodash';
 import { useShouldAnimate } from '@/hooks/useShouldAnimate';
 import { deductLowerMultiple } from '@/lib/deductLowerMultiple';
+import { SomethingWentWrong } from './SometingWentWrong';
 
 export function Posts({
   type,
@@ -45,11 +46,12 @@ export function Posts({
   const {
     data,
     error,
+    isPending,
+    isError,
     fetchNextPage,
     hasNextPage,
     isFetching,
     isFetchingNextPage,
-    status,
   } = useInfiniteQuery<
     PostIds[],
     Error,
@@ -157,10 +159,10 @@ export function Posts({
     <>
       {shouldRender && (
         <div className="flex flex-col">
-          {status === 'pending' ? (
+          {isPending ? (
             <p>Loading posts...</p>
-          ) : status === 'error' ? (
-            <p>Error loading posts.</p>
+          ) : isError ? (
+            <SomethingWentWrong />
           ) : (
             <AnimatePresence>
               {data.pages.map((page) =>
@@ -198,7 +200,9 @@ export function Posts({
          */
         style={{ display: data ? 'block' : 'none' }}
       ></div>
-      {!isFetching && !isFetchingNextPage && !hasNextPage && <AllCaughtUp />}
+      {!isError && !isFetching && !isFetchingNextPage && !hasNextPage && (
+        <AllCaughtUp />
+      )}
     </>
   );
 }

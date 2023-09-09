@@ -10,6 +10,7 @@ import { useEffect, useRef } from 'react';
 import { GetActivity } from 'types';
 import { Activity } from '@/components/Activity';
 import { ACTIVITIES_PER_PAGE } from '@/constants';
+import { SomethingWentWrong } from '@/components/SometingWentWrong';
 
 export function Activities({ userId }: { userId: string }) {
   const bottomElRef = useRef<HTMLDivElement>(null);
@@ -17,11 +18,12 @@ export function Activities({ userId }: { userId: string }) {
   const {
     data,
     error,
+    isPending,
+    isError,
     fetchNextPage,
     hasNextPage,
     isFetching,
     isFetchingNextPage,
-    status,
   } = useInfiniteQuery<
     GetActivity[],
     Error,
@@ -64,10 +66,16 @@ export function Activities({ userId }: { userId: string }) {
   }, [isBottomOnScreen]);
 
   return (
-    <div>
-      {data?.pages.flat().map((activity) => {
-        return <Activity key={activity.id} {...activity} />;
-      })}
+    <>
+      {isPending ? (
+        <p>Loading activities...</p>
+      ) : isError ? (
+        <SomethingWentWrong />
+      ) : (
+        data.pages.flat().map((activity) => {
+          return <Activity key={activity.id} {...activity} />;
+        })
+      )}
 
       <div
         className="h-2"
@@ -78,7 +86,9 @@ export function Activities({ userId }: { userId: string }) {
          */
         style={{ display: data ? 'block' : 'none' }}
       ></div>
-      {!isFetching && !hasNextPage && <AllCaughtUp />}
-    </div>
+      {!isError && !isFetching && !isFetchingNextPage && !hasNextPage && (
+        <AllCaughtUp />
+      )}
+    </>
   );
 }
