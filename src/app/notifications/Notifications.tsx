@@ -15,10 +15,12 @@ import { useNotificationsReadStatusMutations } from '@/hooks/mutations/useNotifi
 import { ACTIVITIES_PER_PAGE } from '@/constants';
 import { DropdownMenuButton } from '@/components/ui/DropdownMenuButton';
 import { Section, Item } from 'react-stately';
+import { useNotificationsCountQuery } from '@/hooks/queries/useNotificationsCountQuery';
 
 export function Notifications() {
   const { data: session } = useSession();
   const userId = session?.user.id;
+  const { data: notificationCount } = useNotificationsCountQuery();
   const { markAllAsReadMutation } = useNotificationsReadStatusMutations();
 
   const bottomElRef = useRef<HTMLDivElement>(null);
@@ -103,6 +105,7 @@ export function Notifications() {
 
   const markAllAsRead = () => markAllAsReadMutation.mutate();
 
+  console.log(notificationCount);
   return (
     <div>
       <div className="flex justify-between">
@@ -113,7 +116,11 @@ export function Notifications() {
           key="notifications-option"
           label="Notifications option"
           onAction={(key) => key === 'mark-all' && markAllAsRead()}
-          disabledKeys={['mark-all']}
+          disabledKeys={[
+            ...(notificationCount === undefined || notificationCount === 0
+              ? ['mark-all']
+              : []),
+          ]}
         >
           <Section>
             <Item key="mark-all">Mark all as read</Item>
