@@ -25,6 +25,7 @@ export default function CoverPhoto({
     >
       <div
         onClick={() =>
+          photoUrl !== null &&
           showVisualMediaModal({
             visualMedia: [
               {

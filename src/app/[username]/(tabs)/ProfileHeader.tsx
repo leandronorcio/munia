@@ -27,13 +27,7 @@ export function ProfileHeader({
   return (
     <>
       <div className="relative mb-[88px] md:pt-6">
-        <div
-          className="h-60 overflow-hidden drop-shadow-xl md:rounded-3xl"
-          style={{
-            background:
-              'linear-gradient(95.08deg, #AF45DB 2.49%, #EB7B96 97.19%)',
-          }}
-        >
+        <div className="h-60 overflow-hidden bg-muted/30 drop-shadow-xl md:rounded-3xl">
           <CoverPhoto
             isOwnProfile={isOwnProfile}
             photoUrl={profile.coverPhoto}

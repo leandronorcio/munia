@@ -24,6 +24,7 @@ export default function ProfilePhoto({
     >
       <div
         onClick={() =>
+          photoUrl !== null &&
           showVisualMediaModal({
             visualMedia: [
               {
