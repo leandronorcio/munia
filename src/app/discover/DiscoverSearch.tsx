@@ -22,7 +22,7 @@ export function DiscoverSearch({
     }
 
     const url = `${pathname}?${params.toString()}`;
-    router.push(url);
+    router.push(url, { scroll: false });
   };
 
   return (

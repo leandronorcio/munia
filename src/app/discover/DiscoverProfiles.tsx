@@ -5,6 +5,7 @@ import useOnScreen from '@/hooks/useOnScreen';
 import {
   InfiniteData,
   QueryKey,
+  keepPreviousData,
   useInfiniteQuery,
   useQueryClient,
 } from '@tanstack/react-query';
@@ -84,6 +85,8 @@ export function DiscoverProfiles({
       return pages.flat().length;
     },
     staleTime: 60000 * 10,
+    // https://tanstack.com/query/v5/docs/react/guides/paginated-queries
+    placeholderData: keepPreviousData,
   });
 
   useEffect(() => {
@@ -126,7 +129,7 @@ export function DiscoverProfiles({
         )}
       </div>
       <div
-        className="h-2"
+        className="h-6"
         ref={bottomElRef}
         /**
          * The first page will be initially loaded by React Query
