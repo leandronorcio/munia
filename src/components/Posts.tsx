@@ -60,77 +60,73 @@ export function Posts({
     fetchPreviousPage,
     isFetching,
     isFetchingNextPage,
-  } = useInfiniteQuery<
-    PostIds[],
-    Error,
-    InfiniteData<PostIds[]>,
-    QueryKey,
-    number
-  >({
-    queryKey,
-    defaultPageParam: 0,
-    queryFn: async ({ pageParam, direction }): Promise<PostIds[]> => {
-      const endpoint = type === 'profile' ? 'posts' : 'feed';
-      const isForwards = direction === 'forward';
-      const params = new URLSearchParams('');
-      params.set('limit', POSTS_PER_PAGE.toString());
-      params.set('cursor', pageParam.toString());
-      params.set('sort-direction', isForwards ? 'desc' : 'asc');
+  } = useInfiniteQuery<PostIds, Error, InfiniteData<PostIds>, QueryKey, number>(
+    {
+      queryKey,
+      defaultPageParam: 0,
+      queryFn: async ({ pageParam, direction }): Promise<PostIds> => {
+        const endpoint = type === 'profile' ? 'posts' : 'feed';
+        const isForwards = direction === 'forward';
+        const params = new URLSearchParams('');
+        params.set('limit', POSTS_PER_PAGE.toString());
+        params.set('cursor', pageParam.toString());
+        params.set('sort-direction', isForwards ? 'desc' : 'asc');
 
-      const res = await fetch(
-        `/api/users/${userId}/${endpoint}?${params.toString()}`,
-      );
+        const res = await fetch(
+          `/api/users/${userId}/${endpoint}?${params.toString()}`,
+        );
 
-      if (!res.ok) {
-        throw Error('Failed to load posts.');
-      }
+        if (!res.ok) {
+          throw Error('Failed to load posts.');
+        }
 
-      const posts: GetPost[] = await res.json();
+        const posts: GetPost[] = await res.json();
 
-      // Prevent React Query from 'prepending' the data with an empty array
-      if (!posts.length && !isForwards) {
-        throw new Error(NO_PREV_DATA_LOADED);
-      }
+        // Prevent React Query from 'prepending' the data with an empty array
+        if (!posts.length && !isForwards) {
+          throw new Error(NO_PREV_DATA_LOADED);
+        }
 
-      if (!isForwards) {
-        setNumberOfNewPostsLoaded((prev) => prev + posts.length);
-      }
+        if (!isForwards) {
+          setNumberOfNewPostsLoaded((prev) => prev + posts.length);
+        }
 
-      return posts.map((post) => {
-        // Set query data for each `post`, these queries will be used by the <Post> component
-        qc.setQueryData(['posts', post.id], post);
+        return posts.map((post) => {
+          // Set query data for each `post`, these queries will be used by the <Post> component
+          qc.setQueryData(['posts', post.id], post);
 
-        // If the `post` already exists in `data`, make sure to use its current `commentsShown`
-        // value to prevent the post's comment section from closing if it is already shown
-        const currentPostId = data?.pages
-          .flat()
-          .find(({ id }) => id === post.id);
-        return {
-          id: post.id,
-          commentsShown: currentPostId?.commentsShown || false,
-        };
-      });
+          // If the `post` already exists in `data`, make sure to use its current `commentsShown`
+          // value to prevent the post's comment section from closing if it is already shown
+          const currentPostId = data?.pages
+            .flat()
+            .find(({ id }) => id === post.id);
+          return {
+            id: post.id,
+            commentsShown: currentPostId?.commentsShown || false,
+          };
+        });
+      },
+      getNextPageParam: (lastPage, pages) => {
+        // If the `pages` `length` is 0, that means there is not a single post to load
+        if (pages.length === 0) return undefined;
+
+        // If the last page doesn't have posts, that means the end is reached
+        if (lastPage.length === 0) return undefined;
+
+        // Return the id of the last post, this will serve as the cursor
+        // that will be passed to `queryFn` as `pageParam` property
+        return lastPage.slice(-1)[0].id;
+      },
+      getPreviousPageParam: (firstPage) => {
+        if (!firstPage.length) return 0;
+        return firstPage[0].id;
+      },
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      retry: false,
+      enabled: !!userId,
     },
-    getNextPageParam: (lastPage, pages) => {
-      // If the `pages` `length` is 0, that means there is not a single post to load
-      if (pages.length === 0) return undefined;
-
-      // If the last page doesn't have posts, that means the end is reached
-      if (lastPage.length === 0) return undefined;
-
-      // Return the id of the last post, this will serve as the cursor
-      // that will be passed to `queryFn` as `pageParam` property
-      return lastPage.slice(-1)[0].id;
-    },
-    getPreviousPageParam: (firstPage) => {
-      if (!firstPage.length) return 0;
-      return firstPage[0].id;
-    },
-    refetchOnWindowFocus: false,
-    staleTime: Infinity,
-    retry: false,
-    enabled: !!userId,
-  });
+  );
 
   const viewNewlyLoadedPosts = () => {
     topElRef.current?.scrollIntoView({ behavior: 'smooth' });

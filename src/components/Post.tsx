@@ -8,7 +8,7 @@ import formatDistanceStrict from 'date-fns/formatDistanceStrict';
 import SvgComment from '@/svg_components/Comment';
 import { Comments } from './Comments';
 import { AnimatePresence, motion } from 'framer-motion';
-import { GetPost, PostIds } from 'types';
+import { GetPost, PostId } from 'types';
 import { isEqual } from 'lodash';
 import { ToggleStepper } from './ui/ToggleStepper';
 import SvgHeart from '@/svg_components/Heart';
@@ -22,7 +22,7 @@ export const Post = memo(
     id: postId,
     commentsShown,
     toggleComments,
-  }: PostIds & {
+  }: PostId & {
     toggleComments: (postId: number) => void;
   }) {
     const { data: session } = useSession();

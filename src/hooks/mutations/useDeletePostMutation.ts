@@ -37,7 +37,7 @@ export function useDeletePostMutation() {
       const previousPosts = qc.getQueryData(queryKey);
 
       // Optimistically remove the post
-      qc.setQueriesData<InfiniteData<PostIds[]>>({ queryKey }, (oldData) => {
+      qc.setQueriesData<InfiniteData<PostIds>>({ queryKey }, (oldData) => {
         if (!oldData) return;
 
         // Flatten the old pages first

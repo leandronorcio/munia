@@ -59,8 +59,8 @@ export function useWritePostMutations({
       // Create a query for the created post
       qc.setQueryData(['posts', createdPost.id], createdPost);
 
-      // Update the inifinite query of `PostIds[]`
-      qc.setQueriesData<InfiniteData<PostIds[]>>({ queryKey }, (oldData) => {
+      // Update the inifinite query of `PostIds`
+      qc.setQueriesData<InfiniteData<PostIds>>({ queryKey }, (oldData) => {
         if (!oldData) return;
 
         // Flatten the old pages first then prepend the newly created post
@@ -108,8 +108,8 @@ export function useWritePostMutations({
       // Update the query for the updated post
       qc.setQueryData(['posts', updatedPost.id], updatedPost);
 
-      // Update the inifinite query of `PostIds[]` TODO: There might be no need for `setQueriesData`
-      qc.setQueriesData<InfiniteData<PostIds[]>>({ queryKey }, (oldData) => {
+      // Update the inifinite query of `PostIds` TODO: There might be no need for `setQueriesData`
+      qc.setQueriesData<InfiniteData<PostIds>>({ queryKey }, (oldData) => {
         if (!oldData) return;
 
         // Flatten the old pages first

@@ -89,10 +89,12 @@ export interface GetPost {
  * check for queried post data using this `queryKey` format:
  * ['posts', number] where number is the post's id
  */
-export interface PostIds {
+export interface PostId {
   id: number;
   commentsShown: boolean;
 }
+
+type PostIds = PostId[];
 
 // Use this type when finding a Comment in prisma.
 export interface FindCommentResult {
