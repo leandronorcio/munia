@@ -54,6 +54,10 @@
     --border: 57 49 75;
     --input: 57 49 75;
   }
+
+  html {
+    scrollbar-gutter: stable;
+  }
 }
 
 @layer components {
