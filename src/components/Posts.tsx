@@ -55,13 +55,13 @@ export function Posts({
   } = useInfiniteQuery<
     PostIds[],
     Error,
-    InfiniteData<PostIds[], unknown>,
+    InfiniteData<PostIds[]>,
     QueryKey,
     number
   >({
     queryKey,
     defaultPageParam: 0,
-    queryFn: async ({ pageParam }) => {
+    queryFn: async ({ pageParam }): Promise<PostIds[]> => {
       const endpoint = type === 'profile' ? 'posts' : 'feed';
       const params = new URLSearchParams();
       params.set('limit', POSTS_PER_PAGE.toString());
@@ -76,12 +76,18 @@ export function Posts({
       }
 
       const posts: GetPost[] = await res.json();
-      // Set query data for each post, these queries will be used by the <Post> component
       return posts.map((post) => {
+        // Set query data for each `post`, these queries will be used by the <Post> component
         qc.setQueryData(['posts', post.id], post);
+
+        // If the `post` already exists in `data`, make sure to use its current `commentsShown`
+        // value to prevent the post's comment section from closing if it is already shown
+        const currentPostId = data?.pages
+          .flat()
+          .find(({ id }) => id === post.id);
         return {
           id: post.id,
-          commentsShown: false,
+          commentsShown: currentPostId?.commentsShown || false,
         };
       });
     },
