@@ -53,8 +53,8 @@ export async function toGetActivities(
       profilePhoto: fileNameToUrl(sourceUser.profilePhoto),
     };
     const targetUserWithPhotoUrl = {
-      ...sourceUser,
-      profilePhoto: fileNameToUrl(sourceUser.profilePhoto),
+      ...targetUser,
+      profilePhoto: fileNameToUrl(targetUser.profilePhoto),
     };
 
     if (type === 'CREATE_FOLLOW') {
