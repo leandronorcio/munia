@@ -74,7 +74,7 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
           setFocus(field);
         },
         onSuccess: () => {
-          if (redirectTo) router.push(redirectTo);
+          router.push(redirectTo || `/${data.username}`);
         },
       },
     );
