@@ -45,7 +45,26 @@ export async function useUpdateProfileAndCoverPhoto(
       },
     });
 
-    return NextResponse.json({ uploadedTo: fileNameToUrl(fileName) });
+    await prisma.post.create({
+      data: {
+        userId,
+        content:
+          toUpdate === 'profilePhoto' ? '#NewProfilePhoto' : '#NewCoverPhoto',
+        visualMedia: {
+          create: [
+            {
+              userId,
+              fileName,
+              type: 'PHOTO',
+            },
+          ],
+        },
+      },
+    });
+
+    const uploadedTo = fileNameToUrl(fileName);
+
+    return NextResponse.json({ uploadedTo });
   } catch (error) {
     console.log(error);
     return NextResponse.json({ error: 'Server error.' }, { status: 500 });
