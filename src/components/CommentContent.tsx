@@ -34,9 +34,7 @@ export function CommentContent({
       <div
         className={cn(
           'my-2 rounded-[32px] rounded-ss-none px-6 py-3',
-          !shouldHighlight
-            ? 'border border-input'
-            : 'bg-primary-accent/70 text-primary-foreground ring-2 ring-primary-foreground',
+          !shouldHighlight ? 'border border-input' : 'ring-2 ring-primary',
         )}
       >
         <p className="mb-1 text-foreground">

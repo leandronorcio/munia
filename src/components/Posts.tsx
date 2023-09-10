@@ -35,6 +35,7 @@ export function Posts({
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
   // `shouldAnimate` is `false` when the browser's back button is pressed
+  // `true` when the page is pushed
   const { shouldAnimate } = useShouldAnimate();
   // When going back, render the cached posts right away to store the scroll
   /**
@@ -45,12 +46,43 @@ export function Posts({
    * messed up when interfered by the instant rendering of posts.
    */
   const [shouldRender, setShouldRender] = useState(!shouldAnimate);
-  useEffect(() => {
-    if (!shouldRender) setShouldRender(true);
-  }, []);
-
   // This keeps track of the number of pages loaded by the `fetchPreviousPage()`
   const [numberOfNewPostsLoaded, setNumberOfNewPostsLoaded] = useState(0);
+
+  useEffect(() => {
+    if (!shouldRender) setShouldRender(true);
+
+    // Reset the queries when the page has just been pushed, this is to account
+    // for changes in the user's follows, e.g. if they start following people,
+    // their posts must be shown in the user's feed
+    if (shouldAnimate) {
+      // Need to manually reset as the `staleTime` is set to `Infinity`
+      qc.resetQueries({ queryKey, exact: true });
+    }
+
+    const interval = setInterval(() => {
+      fetchPreviousPage();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (!isBottomOnScreen) return;
+    if (!data) return;
+    if (!hasNextPage) return;
+
+    fetchNextPage();
+  }, [isBottomOnScreen]);
+
+  useEffect(() => {
+    // If top of <Posts> is on screen and the `numberOfNewPostsLoaded` is more than 0, reset the `numberOfNewPostsLoaded`
+    if (!isTopOnScreen) return;
+    if (!numberOfNewPostsLoaded) return;
+
+    setTimeout(() => setNumberOfNewPostsLoaded(0), 1000);
+  }, [isTopOnScreen, numberOfNewPostsLoaded]);
+
   const {
     data,
     error,
@@ -133,30 +165,6 @@ export function Posts({
     topElRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  useEffect(() => {
-    if (!isBottomOnScreen) return;
-    if (!data) return;
-    if (!hasNextPage) return;
-
-    fetchNextPage();
-  }, [isBottomOnScreen]);
-
-  useEffect(() => {
-    if (!isTopOnScreen) return;
-    if (!numberOfNewPostsLoaded) return;
-
-    // If top of <Posts> is on screen and the `numberOfNewPostsLoaded` is more than 0, reset the `numberOfNewPostsLoaded`
-    setTimeout(() => setNumberOfNewPostsLoaded(0), 1000);
-  }, [isTopOnScreen, numberOfNewPostsLoaded]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      fetchPreviousPage();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   const toggleComments = useCallback(async (postId: number) => {
     qc.setQueryData<InfiniteData<{ id: number; commentsShown: boolean }[]>>(
       queryKey,
@@ -198,7 +206,7 @@ export function Posts({
                   initial={{ height: 0 }}
                   animate={{ height: 'auto' }}
                   exit={{ height: 0 }}
-                  className="sticky top-5 mx-auto overflow-hidden"
+                  className="sticky top-5 z-10 mx-auto overflow-hidden"
                 >
                   <ButtonNaked
                     onPress={viewNewlyLoadedPosts}
@@ -259,9 +267,7 @@ export function Posts({
       {isError && error.message !== NO_PREV_DATA_LOADED && (
         <SomethingWentWrong />
       )}
-      {!isError && !isFetching && !isFetchingNextPage && !hasNextPage && (
-        <AllCaughtUp />
-      )}
+      {!isFetchingNextPage && !hasNextPage && <AllCaughtUp />}
     </>
   );
 }
