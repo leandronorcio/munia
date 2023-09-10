@@ -15,7 +15,9 @@ export function ThemeContextProvider({
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
-    const isDark = localStorage.getItem('isDarkMode') === 'true';
+    const storageDarkmode = localStorage.getItem('isDarkMode');
+    const isDark = storageDarkmode === 'true' || storageDarkmode === null;
+
     setDarkClass(isDark);
     setIsDarkMode(isDark);
   }, []);
