@@ -151,7 +151,7 @@ export function Posts({
         return lastPage.slice(-1)[0].id;
       },
       getPreviousPageParam: (firstPage) => {
-        if (!firstPage.length) return 0;
+        if (!firstPage?.length) return 0;
         return firstPage[0].id;
       },
       refetchOnWindowFocus: false,
@@ -264,7 +264,9 @@ export function Posts({
          */
         style={{ display: data ? 'block' : 'none' }}
       >
-        {hasNextPage && <GenericLoading>Loading more posts...</GenericLoading>}
+        {isFetchingNextPage && (
+          <GenericLoading>Loading more posts...</GenericLoading>
+        )}
       </div>
       {isError && error.message !== NO_PREV_DATA_LOADED && (
         <SomethingWentWrong />

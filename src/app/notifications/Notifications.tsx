@@ -82,7 +82,7 @@ export function Notifications() {
       return lastPage.slice(-1)[0].id;
     },
     getPreviousPageParam: (firstPage) => {
-      if (!firstPage.length) return 0;
+      if (!firstPage?.length) return 0;
       return firstPage[0].id;
     },
     refetchOnWindowFocus: false,
@@ -149,7 +149,7 @@ export function Notifications() {
          */
         style={{ display: data ? 'block' : 'none' }}
       >
-        {hasNextPage && (
+        {isFetchingNextPage && (
           <GenericLoading>Loading more notifications</GenericLoading>
         )}
       </div>
