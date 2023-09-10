@@ -19,6 +19,7 @@ import { SomethingWentWrong } from './SometingWentWrong';
 import { ButtonNaked } from './ui/ButtonNaked';
 import SvgForwardArrow from '@/svg_components/ForwardArrow';
 import { postFramerVariants } from '@/lib/framerVariants';
+import { GenericLoading } from './GenericLoading';
 
 const NO_PREV_DATA_LOADED = 'no_previous_data_loaded';
 export function Posts({
@@ -224,7 +225,7 @@ export function Posts({
               )}
             </AnimatePresence>
             {isPending ? (
-              <p>Loading posts...</p>
+              <GenericLoading>Loading posts</GenericLoading>
             ) : (
               <AnimatePresence>
                 {data?.pages.map((page) =>
@@ -256,18 +257,21 @@ export function Posts({
       )}
 
       <div
-        className="h-6"
+        className="min-h-[16px]"
         ref={bottomElRef}
         /**
          * The first page will be initially loaded by React Query
          * so the bottom loader has to be hidden first
          */
         style={{ display: data ? 'block' : 'none' }}
-      ></div>
+      >
+        {hasNextPage && <GenericLoading>Loading more posts...</GenericLoading>}
+      </div>
       {isError && error.message !== NO_PREV_DATA_LOADED && (
         <SomethingWentWrong />
       )}
-      {!isFetchingNextPage && !hasNextPage && <AllCaughtUp />}
+
+      {!isPending && !isFetchingNextPage && !hasNextPage && <AllCaughtUp />}
     </>
   );
 }
