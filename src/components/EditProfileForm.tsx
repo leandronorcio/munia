@@ -38,7 +38,7 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
   // `undefined` is not allowed as a `defaultValue` https://www.react-hook-form.com/api/usecontroller/controller/
   const defaultValues = {
     username: userData?.username || '',
-    email: userData?.email || '',
+    // email: userData?.email || '',
     name: userData?.name || '',
     phoneNumber: userData?.phoneNumber || null,
     bio: userData?.bio || null,
@@ -109,7 +109,7 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
           )}
         />
 
-        <Controller
+        {/* <Controller
           control={control}
           name="email"
           render={({
@@ -127,7 +127,7 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
               />
             </div>
           )}
-        />
+        /> */}
 
         <Controller
           control={control}

@@ -20,13 +20,12 @@ export async function useCheckIfRequiredFieldsArePopulated() {
       },
       select: {
         username: true,
-        email: true,
         name: true,
       },
     });
 
     if (!res) return;
-    if (!res.username || !res.email || !res.name) {
+    if (!res.username || !res.name) {
       redirect('/setup');
     }
   }

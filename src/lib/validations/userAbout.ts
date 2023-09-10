@@ -10,7 +10,7 @@ export const userAboutSchema = z.object({
   username: nonEmptyString.regex(/^[a-zA-Z0-9_]+$/, {
     message: 'Only alphanumeric characters and underscores are allowed',
   }),
-  email: nonEmptyString.email(),
+  // email: nonEmptyString.email(),
   name: nonEmptyString,
   phoneNumber: nonEmptyString
     .regex(
