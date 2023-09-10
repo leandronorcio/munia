@@ -4,19 +4,12 @@ import 'swiper/css/zoom';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'react-datepicker/dist/react-datepicker.css';
-import SessionProviderContext from '@/contexts/SessionProviderContext';
 import { Poppins } from 'next/font/google';
-import { ToastContextProvider } from '@/contexts/ToastContext';
-import { VisualMediaModalContextProvider } from '@/contexts/VisualMediaModalContext';
 import { MenuBar } from '../components/MenuBar';
-import { CreatePostModalContextProvider } from '@/contexts/CreatePostModalContext';
 import { cn } from '@/lib/cn';
-import { ShouldAnimateContextProvider } from '@/contexts/ShouldAnimateContext';
 import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
-import { ReactQueryProvider } from '@/contexts/ReactQueryProvider';
 import { getServerUser } from '@/lib/getServerUser';
-import { DialogsContextProvider } from '@/contexts/DialogsContext';
-import { ThemeContextProvider } from '@/contexts/ThemeContext';
+import { Providers } from '@/components/Providers';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
@@ -43,35 +36,21 @@ export default async function RootLayout({
         />
       </head>
       <body className={cn('bg-background text-foreground', poppins.className)}>
-        <ThemeContextProvider>
-          <ToastContextProvider>
-            <ReactQueryProvider>
-              <SessionProviderContext>
-                <DialogsContextProvider>
-                  <VisualMediaModalContextProvider>
-                    <CreatePostModalContextProvider>
-                      <ShouldAnimateContextProvider>
-                        {user ? (
-                          <>
-                            <div className="md:flex md:justify-center md:gap-2">
-                              <MenuBar />
+        <Providers>
+          {user ? (
+            <>
+              <div className="md:flex md:justify-center md:gap-2">
+                <MenuBar />
 
-                              <ResponsiveContainer className="pb-20 md:pb-4">
-                                {children}
-                              </ResponsiveContainer>
-                            </div>
-                          </>
-                        ) : (
-                          children
-                        )}
-                      </ShouldAnimateContextProvider>
-                    </CreatePostModalContextProvider>
-                  </VisualMediaModalContextProvider>
-                </DialogsContextProvider>
-              </SessionProviderContext>
-            </ReactQueryProvider>
-          </ToastContextProvider>
-        </ThemeContextProvider>
+                <ResponsiveContainer className="pb-20 md:pb-4">
+                  {children}
+                </ResponsiveContainer>
+              </div>
+            </>
+          ) : (
+            children
+          )}
+        </Providers>
       </body>
     </html>
   );
