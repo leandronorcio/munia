@@ -31,6 +31,7 @@ import { parseDate } from '@internationalized/date';
 import { useSessionUserData } from '@/hooks/useSessionUserData';
 import { useSessionUserDataMutation } from '@/hooks/mutations/useSessionUserDataMutation';
 import { useRouter } from 'next/navigation';
+import { GenericLoading } from './GenericLoading';
 
 export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
   const [userData] = useSessionUserData();
@@ -81,7 +82,7 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
   const onInvalid: SubmitErrorHandler<UserAboutSchema> = (errors) =>
     console.log(errors);
 
-  if (!userData) return <p>Loading...</p>;
+  if (!userData) return <GenericLoading>Loading form</GenericLoading>;
   return (
     <div>
       <form
