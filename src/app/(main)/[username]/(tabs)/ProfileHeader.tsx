@@ -42,7 +42,7 @@ export function ProfileHeader({
             <Button
               shape="pill"
               mode="subtle"
-              onPress={() => router.push('/settings/edit-profile')}
+              onPress={() => router.push('/edit-profile')}
             >
               Edit Profile
             </Button>
