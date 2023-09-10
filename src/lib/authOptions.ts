@@ -59,22 +59,4 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  events: {
-    createUser: async (message) => {
-      const { user } = message;
-      // Add the user id as the default username.
-      const res = await prisma.user.update({
-        where: {
-          id: user.id,
-        },
-        data: {
-          username: user.id,
-        },
-      });
-
-      if (!res) {
-        throw new Error('Failed to add username to the newly created account.');
-      }
-    },
-  },
 };
