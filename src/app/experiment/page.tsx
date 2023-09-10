@@ -1,5 +1,6 @@
 'use client';
 
+import { LoadingPage } from '@/components/LoadingPage';
 import Button from '@/components/ui/Button';
 import { Switch } from '@/components/ui/Switch';
 import { useToast } from '@/hooks/useToast';
@@ -10,7 +11,7 @@ export default function Page() {
 
   return (
     <div className="mt-10">
-      <Switch onChange={setBool} isSelected={bool}></Switch>
+      <LoadingPage />
     </div>
   );
 }
