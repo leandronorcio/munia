@@ -14,6 +14,7 @@ import { useEffect, useRef } from 'react';
 import { GetUser } from 'types';
 import { AnimatePresence, motion } from 'framer-motion';
 import { SomethingWentWrong } from '@/components/SometingWentWrong';
+import { useShouldAnimate } from '@/hooks/useShouldAnimate';
 
 const PROFILES_PER_PAGE = 4;
 export function DiscoverProfiles({
@@ -27,6 +28,7 @@ export function DiscoverProfiles({
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
   const qc = useQueryClient();
+  const { shouldAnimate } = useShouldAnimate();
 
   const {
     data,
@@ -109,10 +111,12 @@ export function DiscoverProfiles({
           <AnimatePresence>
             {data?.pages.flat().map((profile) => (
               <motion.div
-                initial={{
-                  scale: 0.8,
-                  opacity: 0.2,
-                }}
+                initial={
+                  shouldAnimate && {
+                    scale: 0.8,
+                    opacity: 0.2,
+                  }
+                }
                 animate={{
                   scale: 1,
                   x: 0,
