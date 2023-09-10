@@ -36,7 +36,7 @@ export function CommentContent({
           'my-2 rounded-[32px] rounded-ss-none px-6 py-3',
           !shouldHighlight
             ? 'border border-input'
-            : 'bg-violet-100 ring-2 ring-violet-400',
+            : 'bg-primary-accent/70 text-primary-foreground ring-2 ring-primary-foreground',
         )}
       >
         <p className="mb-1 text-foreground">
