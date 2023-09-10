@@ -30,8 +30,9 @@ import { formatISO } from 'date-fns';
 import { parseDate } from '@internationalized/date';
 import { useSessionUserData } from '@/hooks/useSessionUserData';
 import { useSessionUserDataMutation } from '@/hooks/mutations/useSessionUserDataMutation';
+import { useRouter } from 'next/navigation';
 
-export function EditProfileForm() {
+export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
   const [userData] = useSessionUserData();
   // `undefined` is not allowed as a `defaultValue` https://www.react-hook-form.com/api/usecontroller/controller/
   const defaultValues = {
@@ -52,6 +53,7 @@ export function EditProfileForm() {
       defaultValues,
     });
   const { updateSessionUserDataMutation } = useSessionUserDataMutation();
+  const router = useRouter();
 
   useEffect(() => {
     if (!userData) return;
@@ -69,6 +71,9 @@ export function EditProfileForm() {
           };
           setError(field, { message });
           setFocus(field);
+        },
+        onSuccess: () => {
+          if (redirectTo) router.push(redirectTo);
         },
       },
     );
