@@ -52,7 +52,7 @@ export function ProfileHeader({
         </div>
       </div>
 
-      <div className="px-4">
+      <div className="px-4 pt-2">
         <h1 className="text-2xl font-bold">{profile.name}</h1>
         <p className="-mt-1 mb-2 text-muted-foreground">@{profile.username}</p>
         <p className="text-foreground/80">{profile.bio}</p>

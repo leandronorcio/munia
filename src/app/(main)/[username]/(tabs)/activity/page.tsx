@@ -13,5 +13,9 @@ export default async function Page({
   const isOwn = user?.id === profile?.id;
 
   if (!isOwn) return <p>You have no access to this page.</p>;
-  return <Activities userId={user.id} />;
+  return (
+    <div className="mt-4">
+      <Activities userId={user.id} />
+    </div>
+  );
 }

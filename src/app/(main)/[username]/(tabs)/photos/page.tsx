@@ -1,6 +1,6 @@
 export default function Page() {
   return (
-    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+    <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
       <div className="grid gap-4">
         <div>
           <img

@@ -14,7 +14,11 @@ export default async function Page({
 
   return (
     <div>
-      {shouldShowCreatePost && <CreatePostModalLauncher />}
+      {shouldShowCreatePost && (
+        <div className="mt-4">
+          <CreatePostModalLauncher />
+        </div>
+      )}
       <Posts type="profile" userId={profile?.id!} />
     </div>
   );

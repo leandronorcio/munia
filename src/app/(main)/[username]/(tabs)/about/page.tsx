@@ -5,5 +5,9 @@ export default async function Page({
 }: {
   params: { username: string };
 }) {
-  return <About />;
+  return (
+    <div className="mt-4">
+      <About />
+    </div>
+  );
 }
