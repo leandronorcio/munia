@@ -69,7 +69,7 @@ export function Activities({ userId }: { userId: string }) {
   return (
     <>
       {isPending ? (
-        <GenericLoading>Loading notifications</GenericLoading>
+        <GenericLoading>Loading activities</GenericLoading>
       ) : isError ? (
         <SomethingWentWrong />
       ) : (
