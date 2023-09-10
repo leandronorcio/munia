@@ -1,5 +1,5 @@
 'use client';
-import { DiscoverProfile } from '@/app/discover/DiscoverProfile';
+import { DiscoverProfile } from '@/components/DiscoverProfile';
 import { AllCaughtUp } from '@/components/AllCaughtUp';
 import useOnScreen from '@/hooks/useOnScreen';
 import {

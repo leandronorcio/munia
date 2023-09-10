@@ -1,7 +1,7 @@
-import { DiscoverProfiles } from '@/app/discover/DiscoverProfiles';
 import { getProfile } from '../../getProfile';
-import { DiscoverSearch } from '@/app/discover/DiscoverSearch';
-import { DiscoverFilters } from '@/app/discover/DiscoverFilters';
+import { DiscoverProfiles } from '@/components/DiscoverProfiles';
+import { DiscoverSearch } from '@/components/DiscoverSearch';
+import { DiscoverFilters } from '@/components/DiscoverFilters';
 
 export default async function Page({
   params,

@@ -1,5 +1,5 @@
 import { ProfileActionButtons } from '@/components/ProfileActionButtons';
-import { ProfilePhoto } from '../../components/ui/ProfilePhoto';
+import { ProfilePhoto } from '@/components/ui/ProfilePhoto';
 import { memo } from 'react';
 import { useUserQuery } from '@/hooks/queries/useUserQuery';
 import { useSession } from 'next-auth/react';
