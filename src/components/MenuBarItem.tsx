@@ -25,7 +25,7 @@ export function MenuBarItem({
 
   return (
     <ButtonNaked
-      className="group relative flex h-14 w-[170px] flex-1 cursor-pointer flex-row items-center  justify-start px-4 hover:bg-primary-accent/30 md:mt-2 md:flex-none md:rounded-lg md:last:mt-auto"
+      className="group relative flex h-14 flex-1 cursor-pointer flex-row items-center  justify-center px-4 hover:bg-primary-accent/30 md:mt-2 md:flex-none md:rounded-lg md:last:mt-auto"
       onPress={() => {
         if (route === '/api/auth/signout') {
           confirm({
@@ -61,7 +61,7 @@ export function MenuBarItem({
       <p
         className={cn(
           'hidden text-base transition-colors duration-300 md:block',
-          isActive && 'font-bold text-primary-accent',
+          isActive && 'text-primary-accent',
         )}
       >
         {children}
