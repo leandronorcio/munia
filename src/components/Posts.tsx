@@ -11,7 +11,7 @@ import useOnScreen from '@/hooks/useOnScreen';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Post } from './Post';
 import { AllCaughtUp } from './AllCaughtUp';
-import { POSTS_PER_PAGE } from '@/constants';
+import { NO_PREV_DATA_LOADED, POSTS_PER_PAGE } from '@/constants';
 import { chunk } from 'lodash';
 import { useShouldAnimate } from '@/hooks/useShouldAnimate';
 import { deductLowerMultiple } from '@/lib/deductLowerMultiple';
@@ -21,7 +21,6 @@ import SvgForwardArrow from '@/svg_components/ForwardArrow';
 import { postFramerVariants } from '@/lib/framerVariants';
 import { GenericLoading } from './GenericLoading';
 
-const NO_PREV_DATA_LOADED = 'no_previous_data_loaded';
 export function Posts({
   type,
   userId,
@@ -270,7 +269,6 @@ export function Posts({
       {isError && error.message !== NO_PREV_DATA_LOADED && (
         <SomethingWentWrong />
       )}
-
       {!isPending && !isFetchingNextPage && !hasNextPage && <AllCaughtUp />}
     </>
   );

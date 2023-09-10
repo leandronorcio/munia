@@ -11,6 +11,7 @@ import { GetActivity } from 'types';
 import { Activity } from '@/components/Activity';
 import { ACTIVITIES_PER_PAGE } from '@/constants';
 import { SomethingWentWrong } from '@/components/SometingWentWrong';
+import { GenericLoading } from '@/components/GenericLoading';
 
 export function Activities({ userId }: { userId: string }) {
   const bottomElRef = useRef<HTMLDivElement>(null);
@@ -68,7 +69,7 @@ export function Activities({ userId }: { userId: string }) {
   return (
     <>
       {isPending ? (
-        <p>Loading activities...</p>
+        <GenericLoading>Loading notifications</GenericLoading>
       ) : isError ? (
         <SomethingWentWrong />
       ) : (
@@ -78,15 +79,20 @@ export function Activities({ userId }: { userId: string }) {
       )}
 
       <div
-        className="h-2"
+        className="min-h-[16px]"
         ref={bottomElRef}
         /**
          * The first page will be initially loaded by React Query
          * so the bottom loader has to be hidden first
          */
         style={{ display: data ? 'block' : 'none' }}
-      ></div>
-      {!isError && !isFetching && !isFetchingNextPage && !hasNextPage && (
+      >
+        {hasNextPage && (
+          <GenericLoading>Loading more notifications</GenericLoading>
+        )}
+      </div>
+      {isError && <SomethingWentWrong />}
+      {!isError && !isPending && !isFetchingNextPage && !hasNextPage && (
         <AllCaughtUp />
       )}
     </>

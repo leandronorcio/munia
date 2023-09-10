@@ -12,10 +12,12 @@ import { Activity } from '../../components/Activity';
 import { AllCaughtUp } from '../../components/AllCaughtUp';
 import { useSession } from 'next-auth/react';
 import { useNotificationsReadStatusMutations } from '@/hooks/mutations/useNotificationsReadStatusMutations';
-import { ACTIVITIES_PER_PAGE } from '@/constants';
+import { ACTIVITIES_PER_PAGE, NO_PREV_DATA_LOADED } from '@/constants';
 import { DropdownMenuButton } from '@/components/ui/DropdownMenuButton';
 import { Section, Item } from 'react-stately';
 import { useNotificationsCountQuery } from '@/hooks/queries/useNotificationsCountQuery';
+import { GenericLoading } from '@/components/GenericLoading';
+import { SomethingWentWrong } from '@/components/SometingWentWrong';
 
 export function Notifications() {
   const { data: session } = useSession();
@@ -27,7 +29,9 @@ export function Notifications() {
   const isBottomOnScreen = useOnScreen(bottomElRef);
   const {
     data,
+    error,
     isPending,
+    isError,
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
@@ -59,7 +63,7 @@ export function Notifications() {
 
       // Prevent React Query from 'prepending' the data with an empty array
       if (!activities.length && !isForwards) {
-        throw new Error('No data loaded.');
+        throw new Error(NO_PREV_DATA_LOADED);
       }
 
       // If the direction is backwards, `activities` need to be reversed
@@ -105,7 +109,6 @@ export function Notifications() {
 
   const markAllAsRead = () => markAllAsReadMutation.mutate();
 
-  console.log(notificationCount);
   return (
     <div>
       <div className="flex justify-between">
@@ -129,7 +132,7 @@ export function Notifications() {
       </div>
       <div>
         {isPending ? (
-          <p>Loading notifications...</p>
+          <GenericLoading>Loading notifications</GenericLoading>
         ) : (
           data?.pages.flat().map((activity) => {
             return <Activity key={activity.id} {...activity} />;
@@ -138,15 +141,22 @@ export function Notifications() {
       </div>
 
       <div
-        className="h-6"
+        className="min-h-[16px]"
         ref={bottomElRef}
         /**
          * The first page will be initially loaded by React Query
          * so the bottom loader has to be hidden first
          */
         style={{ display: data ? 'block' : 'none' }}
-      ></div>
-      {!isFetchingNextPage && !hasNextPage && <AllCaughtUp />}
+      >
+        {hasNextPage && (
+          <GenericLoading>Loading more notifications</GenericLoading>
+        )}
+      </div>
+      {isError && error.message !== NO_PREV_DATA_LOADED && (
+        <SomethingWentWrong />
+      )}
+      {!isPending && !isFetchingNextPage && !hasNextPage && <AllCaughtUp />}
     </div>
   );
 }
