@@ -15,6 +15,7 @@ import { GetUser } from 'types';
 import { AnimatePresence, motion } from 'framer-motion';
 import { SomethingWentWrong } from '@/components/SometingWentWrong';
 import { useShouldAnimate } from '@/hooks/useShouldAnimate';
+import { GenericLoading } from '@/components/GenericLoading';
 
 const PROFILES_PER_PAGE = 4;
 export function DiscoverProfiles({
@@ -103,7 +104,7 @@ export function DiscoverProfiles({
   return (
     <>
       {isPending ? (
-        <p>Loading profiles...</p>
+        <GenericLoading>Loading profiles</GenericLoading>
       ) : isError ? (
         <SomethingWentWrong />
       ) : (

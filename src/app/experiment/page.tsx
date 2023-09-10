@@ -1,9 +1,6 @@
 'use client';
 
-import { LoadingPage } from '@/components/LoadingPage';
-import Button from '@/components/ui/Button';
-import { Switch } from '@/components/ui/Switch';
-import { useToast } from '@/hooks/useToast';
+import { GenericLoading } from '@/components/GenericLoading';
 import { useState } from 'react';
 
 export default function Page() {
@@ -11,7 +8,7 @@ export default function Page() {
 
   return (
     <div className="mt-10">
-      <LoadingPage />
+      <GenericLoading />
     </div>
   );
 }
