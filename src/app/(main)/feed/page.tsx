@@ -3,7 +3,7 @@ import { DarkModeSwitch } from '@/components/DarkModeSwitch';
 import { Posts } from '@/components/Posts';
 import { getServerUser } from '@/lib/getServerUser';
 
-export async function Feed() {
+export default async function Page() {
   const [user] = await getServerUser();
   return (
     <div className="px-4 pt-4">

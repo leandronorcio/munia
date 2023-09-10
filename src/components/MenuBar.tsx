@@ -28,7 +28,7 @@ export function MenuBar() {
         {
           title: 'Feed',
           Icon: GridFeedCards,
-          route: '/',
+          route: '/feed',
         },
         {
           title: 'Discover',

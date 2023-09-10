@@ -19,7 +19,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
     facebook: false,
   });
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('from') || '/';
+  const callbackUrl = searchParams.get('from') || '/feed';
   const { showToast } = useToast();
 
   const submitEmail = async () => {
@@ -34,7 +34,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
         const signInResult = await signIn('email', {
           email: email.toLowerCase(),
           redirect: false,
-          callbackUrl: '/',
+          callbackUrl,
         });
 
         setLoading((prev) => ({

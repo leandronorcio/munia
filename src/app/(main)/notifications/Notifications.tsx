@@ -8,8 +8,8 @@ import {
 } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { GetActivity } from 'types';
-import { Activity } from '../../components/Activity';
-import { AllCaughtUp } from '../../components/AllCaughtUp';
+import { Activity } from '@/components/Activity';
+import { AllCaughtUp } from '@/components/AllCaughtUp';
 import { useSession } from 'next-auth/react';
 import { useNotificationsReadStatusMutations } from '@/hooks/mutations/useNotificationsReadStatusMutations';
 import { ACTIVITIES_PER_PAGE, NO_PREV_DATA_LOADED } from '@/constants';

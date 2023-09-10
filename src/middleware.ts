@@ -13,15 +13,13 @@ export default withAuth(
       request.nextUrl.pathname.startsWith('/register');
 
     // If path is the root page, do nothing.
-    // This'll let the root layout to render
-    // either the @onboarding page or the (feed).
     if (path === '/') return null;
 
     // If path is an auth page.
     if (isAuthPage) {
-      // If in auth page but logged in, send to home page.
+      // If in auth page but logged in, send to `/feed` page.
       if (isAuthenticated) {
-        return NextResponse.redirect(new URL('/', request.url));
+        return NextResponse.redirect(new URL('/feed', request.url));
       }
 
       // Do nothing if not logged in.

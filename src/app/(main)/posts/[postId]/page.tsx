@@ -33,7 +33,6 @@ export default function Page({ params }: { params: { postId: string } }) {
       <Post
         id={postId}
         commentsShown={commentsShown}
-        deletePost={deletePost}
         toggleComments={toggleComments}
       />
     </div>

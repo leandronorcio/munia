@@ -1,4 +1,4 @@
-import { Notifications } from '@/app/notifications/Notifications';
+import { Notifications } from './Notifications';
 
 export default async function Page() {
   return (
