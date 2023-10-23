@@ -1,6 +1,3 @@
-'use client';
-
-import { useSessionUserData } from '@/hooks/useSessionUserData';
 import {
   AtSign,
   BuildingBusinessOffice,
@@ -16,11 +13,9 @@ import {
 import { AboutItem } from './AboutItem';
 import { format } from 'date-fns';
 import { capitalize, lowerCase } from 'lodash';
+import { GetUser } from 'types';
 
-export function About() {
-  const [userData] = useSessionUserData();
-
-  if (!userData) return <p>Loading...</p>;
+export function About({ profile }: { profile: GetUser }) {
   const {
     username,
     email,
@@ -32,7 +27,7 @@ export function About() {
     bio,
     website,
     address,
-  } = userData;
+  } = profile;
   return (
     <div className="flex flex-col gap-4">
       <AboutItem field="Username" value={username} Icon={AtSign} />
