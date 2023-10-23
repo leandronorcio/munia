@@ -1,13 +1,18 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { FallbackProfilePhoto } from './FallbackProfilePhoto';
 
 export function ProfilePhoto({
+  name,
   photoUrl,
   username,
+  fallbackAvatarClassName,
 }: {
+  name: string;
+  username: string;
   photoUrl?: string | null;
-  username?: string | null;
+  fallbackAvatarClassName?: string;
 }) {
   const router = useRouter();
   const handleClick = () => {
@@ -16,10 +21,16 @@ export function ProfilePhoto({
   };
 
   return (
-    <img
-      src={photoUrl || '/default-profile-photo.jpg'}
-      className="h-full w-full cursor-pointer rounded-full object-cover"
-      onClick={handleClick}
-    />
+    <>
+      {photoUrl ? (
+        <img
+          src={photoUrl || '/default-profile-photo.jpg'}
+          className="h-full w-full cursor-pointer rounded-full object-cover"
+          onClick={handleClick}
+        />
+      ) : (
+        <FallbackProfilePhoto name={name} className={fallbackAvatarClassName} />
+      )}
+    </>
   );
 }

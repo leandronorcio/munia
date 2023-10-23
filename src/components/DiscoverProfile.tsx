@@ -35,8 +35,10 @@ export const DiscoverProfile = memo(
         >
           <div className="h-24 w-24">
             <ProfilePhoto
-              photoUrl={user.profilePhoto || undefined}
+              name={user.name}
               username={user.username}
+              photoUrl={user.profilePhoto}
+              fallbackAvatarClassName="text-5xl"
             />
           </div>
           {/* Only show the action buttons when the profile is not the user's. */}

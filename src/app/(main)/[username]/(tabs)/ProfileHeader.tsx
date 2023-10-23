@@ -36,6 +36,7 @@ export function ProfileHeader({
         <ProfilePhoto
           isOwnProfile={isOwnProfile}
           photoUrl={profile.profilePhoto}
+          name={initialProfileData.name!}
         />
         <div className="absolute -bottom-20 right-2 md:right-0">
           {isOwnProfile ? (

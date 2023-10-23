@@ -17,7 +17,7 @@ export default function ProfileBlock({
   return (
     <div className="flex gap-3">
       <div className="h-12 w-12 flex-shrink-0">
-        <ProfilePhoto photoUrl={photoUrl} username={username} />
+        <ProfilePhoto photoUrl={photoUrl} username={username} name={name} />
       </div>
 
       <div className="flex flex-col">

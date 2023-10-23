@@ -9,7 +9,7 @@ import {
 } from 'react';
 import { resizeTextAreaHeight } from '@/lib/resizeTextAreaHeight';
 import { useQuery } from '@tanstack/react-query';
-import { UserSummary } from 'types';
+import { UserSummaryAfterSetUp } from 'types';
 import { replaceWordAtCursor } from '@/lib/replaceWordAtCursor';
 import { cn } from '@/lib/cn';
 import { HighlightedMentionsAndHashTags } from './HighlightedMentionsAndHashTags';
@@ -64,7 +64,7 @@ export function TextAreaWithMentionsAndHashTags({
       if (!res.ok) {
         throw new Error('Error fetching users to mention.');
       }
-      return (await res.json()) as UserSummary[];
+      return (await res.json()) as UserSummaryAfterSetUp[];
     },
     staleTime: 60000 * 10,
     enabled: !!searchKeyword,

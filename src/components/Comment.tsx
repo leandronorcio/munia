@@ -6,7 +6,6 @@ import { ToggleStepper } from './ui/ToggleStepper';
 import SvgHeart from '@/svg_components/Heart';
 import SvgArrowReply from '@/svg_components/ArrowReply';
 import { CommentContent } from './CommentContent';
-import { CommentProfilePhoto } from './CommentProfilePhoto';
 import { CommentReplies } from './CommentReplies';
 import { useSearchParams } from 'next/navigation';
 import Button from './ui/Button';
@@ -15,6 +14,7 @@ import { DropdownMenuButton } from './ui/DropdownMenuButton';
 import { Item, Section } from 'react-stately';
 import { ButtonNaked } from './ui/ButtonNaked';
 import { useCreateCommentMutations } from '@/hooks/mutations/useCreateCommentMutations';
+import { ProfilePhoto } from './ui/ProfilePhoto';
 
 export const Comment = memo(
   ({
@@ -83,10 +83,13 @@ export const Comment = memo(
 
     return (
       <div className="flex gap-4">
-        <CommentProfilePhoto
-          username={author.username}
-          photoUrl={author.profilePhoto}
-        />
+        <div className="h-10 w-10 flex-shrink-0">
+          <ProfilePhoto
+            name={author.name}
+            username={author.username}
+            photoUrl={author.profilePhoto}
+          />
+        </div>
 
         <div>
           <CommentContent

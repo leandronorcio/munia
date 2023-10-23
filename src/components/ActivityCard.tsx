@@ -2,14 +2,14 @@ import { ProfilePhoto } from '@/components/ui/ProfilePhoto';
 import { ActivityType } from '@prisma/client';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { ComponentProps, useRef } from 'react';
-import { UserSummary } from 'types';
+import { UserSummaryAfterSetUp } from 'types';
 import { ActivityIcon } from './ActivityIcon';
 import { mergeProps, useFocusRing, useLink } from 'react-aria';
 import { cn } from '@/lib/cn';
 
 interface ActivityCardProps extends ComponentProps<'div'> {
   children: React.ReactNode;
-  user: UserSummary;
+  user: UserSummaryAfterSetUp;
   date: Date;
   type: ActivityType;
   isRead: boolean;
@@ -40,7 +40,11 @@ export function ActivityCard({
     >
       <div className="relative flex-initial">
         <div className="h-16 w-16 sm:h-20 sm:w-20">
-          <ProfilePhoto photoUrl={user.profilePhoto} username={user.username} />
+          <ProfilePhoto
+            name={user.name}
+            username={user.username}
+            photoUrl={user.profilePhoto}
+          />
         </div>
         <ActivityIcon type={type} />
       </div>

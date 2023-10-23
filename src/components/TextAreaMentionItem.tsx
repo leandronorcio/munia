@@ -1,4 +1,4 @@
-import { UserSummary } from 'types';
+import { UserSummaryAfterSetUp } from 'types';
 import { ProfilePhoto } from './ui/ProfilePhoto';
 import { cn } from '@/lib/cn';
 import { useEffect, useRef } from 'react';
@@ -10,7 +10,7 @@ export function TextAreaMentionItem({
   profilePhoto,
   handleSelectUserToMention,
   focused,
-}: UserSummary & {
+}: UserSummaryAfterSetUp & {
   handleSelectUserToMention: (username: string) => void;
   focused?: boolean;
 }) {
@@ -35,7 +35,7 @@ export function TextAreaMentionItem({
       )}
     >
       <div className="h-8 w-8">
-        <ProfilePhoto photoUrl={profilePhoto} />
+        <ProfilePhoto photoUrl={profilePhoto} username={username} name={name} />
       </div>
       <div>
         <p className="font-semibold">{name}</p>

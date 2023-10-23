@@ -5,10 +5,10 @@ import { isEqual } from 'lodash';
 import { ToggleStepper } from './ui/ToggleStepper';
 import SvgHeart from '@/svg_components/Heart';
 import { CommentContent } from './CommentContent';
-import { CommentProfilePhoto } from './CommentProfilePhoto';
 import { useSearchParams } from 'next/navigation';
 import { DropdownMenuButton } from './ui/DropdownMenuButton';
 import { Item, Section } from 'react-stately';
+import { ProfilePhoto } from './ui/ProfilePhoto';
 
 export const CommentReply = memo(
   ({
@@ -41,10 +41,13 @@ export const CommentReply = memo(
 
     return (
       <div className="mt-2 flex gap-4">
-        <CommentProfilePhoto
-          username={author.username}
-          photoUrl={author.profilePhoto}
-        />
+        <div className="h-10 w-10 flex-shrink-0">
+          <ProfilePhoto
+            name={author.name}
+            username={author.username}
+            photoUrl={author.profilePhoto}
+          />
+        </div>
 
         <div>
           <CommentContent

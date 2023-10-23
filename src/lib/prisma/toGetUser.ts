@@ -18,6 +18,9 @@ export const toGetUser = (findUserResult: FindUserResult): GetUser => {
 
   const userResponse: GetUser = {
     ...rest,
+    // `name` and `username` are guaranteed to be filled after the user's registration
+    name: rest.name!,
+    username: rest.username!,
     // Convert the `profilePhoto` and `coverPhoto` file names to a full S3 URL
     profilePhoto: fileNameToUrl(rest.profilePhoto),
     coverPhoto: fileNameToUrl(rest.coverPhoto),

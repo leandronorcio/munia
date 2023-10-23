@@ -1,7 +1,7 @@
 /**
  * GET /api/users-basic
  * - Returns a list of users and their basic information only
- * i.e. <UserSummary> type (id, username, name, profilePhoto).
+ * i.e. <UserSummaryAfterSetUp> type (id, username, name, profilePhoto).
  *
  * Use this endpoint when other complex data are not needed,
  * an example use case is searching for users to mention when
@@ -11,13 +11,12 @@ import prisma from '@/lib/prisma/prisma';
 import { searchUser } from '@/lib/prisma/searchUser';
 import { fileNameToUrl } from '@/lib/s3/fileNameToUrl';
 import { NextResponse } from 'next/server';
-import { UserSummary } from 'types';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const search = searchParams.get('search');
 
-  const res: UserSummary[] | null = await prisma.user.findMany({
+  const res = await prisma.user.findMany({
     where: {
       ...(search && searchUser(search)),
     },
