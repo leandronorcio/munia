@@ -12,8 +12,22 @@ import {
 } from '@prisma/client';
 import { type } from 'os';
 
-// Use this shortened type of `User`, when the other properties aren't necessary.
-type UserSummary = Pick<User, 'id' | 'username' | 'name' | 'profilePhoto'>;
+/**
+ * The `User` type from Prisma indicates that the `username` and `name` fields are nullable,
+ * however, after the initial user setup upon user's registration, these two fields will be
+ * guaranteed to be filled in.
+ */
+interface UserSummaryAfterSetUp {
+  id: string;
+  username: string;
+  name: string;
+  profilePhoto: string | null;
+}
+
+interface UserAfterSetUp extends User {
+  username: string;
+  name: string;
+}
 
 // Use this type when finding a User in prisma.
 export interface FindUserResult extends User {
@@ -29,7 +43,7 @@ export interface FindUserResult extends User {
  * the ./src/lib/prisma/toGetUser.ts function to do this.
  * <GetUser> must be the response type of GET users route handlers.
  */
-export interface GetUser extends User {
+export interface GetUser extends UserAfterSetUp {
   followerCount: number | null;
   followingCount: number | null;
   isFollowing: boolean | null; // true when the authenticated user is following the user being requested
@@ -53,7 +67,7 @@ export interface FindPostResult {
   postLikes: {
     id: number;
   }[];
-  user: UserSummary;
+  user: UserSummaryAfterSetUp;
   visualMedia: VisualMedia[];
   _count: {
     postLikes: number;
@@ -75,7 +89,7 @@ export interface GetPost {
    * the post has liked it or not.
    */
   isLiked: boolean;
-  user: UserSummary;
+  user: UserSummaryAfterSetUp;
   visualMedia: GetVisualMedia[];
   _count: {
     postLikes: number;
@@ -104,12 +118,7 @@ export interface FindCommentResult {
   userId: string;
   postId: number;
   parentId: number | null;
-  user: {
-    id: string;
-    username: string | null;
-    name: string | null;
-    profilePhoto: string | null;
-  };
+  user: UserSummaryAfterSetUp;
   /**
    * Use `commentLikes` to store the <CommentLike>'s id of the user to the Comment.
    * If there is a <CommentLike> id, that means the user requesting has
@@ -135,7 +144,7 @@ export interface GetComment {
   parentId: number | null;
   content: string;
   createdAt: Date;
-  user: UserSummary;
+  user: UserSummaryAfterSetUp;
   isLiked: boolean;
   _count: {
     commentLikes: number;
@@ -156,8 +165,8 @@ interface FindActivityResult {
   targetId: number | null;
   createdAt: Date;
   isNotificationRead: boolean;
-  sourceUser: UserSummary & { gender: Gender | null };
-  targetUser: UserSummary & { gender: Gender | null };
+  sourceUser: UserSummaryAfterSetUp & { gender: Gender | null };
+  targetUser: UserSummaryAfterSetUp & { gender: Gender | null };
 }
 export type FindActivityResults = FindActivityResult[];
 
