@@ -12,7 +12,6 @@ import {
   NotificationBell,
 } from '@/svg_components';
 import { cn } from '@/lib/cn';
-import { motion } from 'framer-motion';
 
 interface ToastProps<T> extends AriaToastProps<T> {
   state: ToastState<T>;

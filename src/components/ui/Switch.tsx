@@ -8,7 +8,6 @@ import {
 import { useRef } from 'react';
 import { cn } from '@/lib/cn';
 import { motion } from 'framer-motion';
-import { WeatherMoon } from '@/svg_components';
 
 interface SwitchProps extends AriaSwitchProps {
   children?: React.ReactNode;
@@ -44,7 +43,7 @@ export function Switch({ children, renderIcon, ...props }: SwitchProps) {
           layout
           transition={spring}
           className={cn(
-            'grid h-8 w-8 place-items-center rounded-[200px]',
+            'grid h-8  w-8 place-items-center rounded-[200px]',
             props.isSelected ? 'bg-primary-foreground' : 'bg-muted-foreground',
           )}
         >
