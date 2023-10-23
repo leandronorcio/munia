@@ -18,6 +18,7 @@ export interface ToEditValues {
   initialVisualMedia: GetVisualMedia[];
 }
 
+// Separate the `data` and `api` part of the context to prevent re-rendering of the `api` consumers when the `data` changes
 const CreatePostModalContextData = createContext<{
   toEditValues: ToEditValues | null;
   shouldOpenFileInputOnMount: boolean;
@@ -46,6 +47,7 @@ function CreatePostModalContextProvider({
   const [shouldOpenFileInputOnMount, setShouldOpenFileInputOnMount] =
     useState(false);
 
+  // Memoize to prevent re-rendering of consumers when the states change
   const memoizedContextApiValue = useMemo(
     () => ({
       setShown: state.setOpen,

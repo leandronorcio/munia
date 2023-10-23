@@ -11,6 +11,7 @@ export function useCreatePost() {
   }: {
     shouldOpenFileInputOnMount?: boolean;
   }) => {
+    setToEditValues(null);
     setShouldOpenFileInputOnMount(shouldOpenFileInputOnMount);
     setShown(true);
   };
@@ -34,8 +35,6 @@ export function useCreatePost() {
 
   const exitCreatePostModal = () => {
     setShown(false);
-    setShouldOpenFileInputOnMount(false);
-    setToEditValues(null);
   };
 
   return { launchCreatePost, launchEditPost, exitCreatePostModal };

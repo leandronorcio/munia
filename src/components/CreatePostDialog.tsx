@@ -59,9 +59,9 @@ export function CreatePostDialog() {
   };
 
   const exit = () => {
+    exitCreatePostModal();
     // Revoke the object URL's when exiting the create post dialog
     revokeVisualMediaObjectUrls(visualMedia);
-    exitCreatePostModal();
   };
 
   const confirmExit = () => {
@@ -101,13 +101,13 @@ export function CreatePostDialog() {
   }, [textareaRef.current]);
 
   useEffect(() => {
-    const escPressed = (e: KeyboardEvent) => {
+    const onEscPressed = (e: KeyboardEvent) => {
       if (e.key === 'Escape') handleClose();
     };
 
-    document.addEventListener('keydown', escPressed, false);
+    document.addEventListener('keydown', onEscPressed, false);
     return () => {
-      document.removeEventListener('keydown', escPressed, false);
+      document.removeEventListener('keydown', onEscPressed, false);
     };
   }, [handleClose]);
 
