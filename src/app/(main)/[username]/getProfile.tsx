@@ -16,6 +16,7 @@ export async function getProfile(username: string) {
 
   // Use the id to fetch from the /api/users/:userId endpoint
   const res = await fetch(`${process.env.URL}/api/users/${check.id}`);
+  if (!res.ok) throw new Error('Error fetching profile information');
   const user: GetUser = await res.json();
 
   return user;
