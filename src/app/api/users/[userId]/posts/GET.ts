@@ -9,6 +9,7 @@ import { selectPost } from '@/lib/prisma/selectPost';
 import { GetPost } from 'types';
 import { toGetPost } from '@/lib/prisma/toGetPost';
 import { getServerUser } from '@/lib/getServerUser';
+import { usePostsSorter } from '@/hooks/usePostsSorter';
 
 export async function GET(
   request: Request,
@@ -19,39 +20,14 @@ export async function GET(
    * user requesting the Posts have like them or not.
    */
   const [user] = await getServerUser();
-
-  const { searchParams } = new URL(request.url);
-  const limit = parseInt(searchParams.get('limit') || '5');
-  const cursor = parseInt(searchParams.get('cursor') || '0');
-  const sortDirection =
-    (searchParams.get('sort-direction') as 'asc' | 'desc') || 'desc';
+  const { filters, limitAndOrderBy } = usePostsSorter(request.url);
 
   const res = await prisma.post.findMany({
     where: {
       userId: params.userId,
-      /**
-       * This is an alternative approach to Prisma's cursor-based pagination
-       * that does not return the expected results when the cursor no longer
-       * exists.
-       * The issue links:
-       * https://github.com/prisma/prisma/issues/3362
-       * https://github.com/prisma/prisma/issues/8560
-       */
-      ...(cursor && {
-        id: {
-          ...(sortDirection === 'desc' && {
-            lt: cursor,
-          }),
-          ...(sortDirection === 'asc' && {
-            gt: cursor,
-          }),
-        },
-      }),
+      ...filters,
     },
-    take: limit,
-    orderBy: {
-      id: sortDirection,
-    },
+    ...limitAndOrderBy,
     select: selectPost(user?.id),
   });
 
