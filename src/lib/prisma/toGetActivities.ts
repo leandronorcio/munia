@@ -48,12 +48,18 @@ export async function toGetActivities(
   for (const activity of findActivityResults) {
     const { type, sourceId, targetId, sourceUser, targetUser } = activity;
 
+    // The `name` and `username` are guaranteed to be filled after the user's registration,
+    // thus we can safely use non-null assertion here.
     const sourceUserWithPhotoUrl = {
       ...sourceUser,
+      name: sourceUser.name!,
+      username: sourceUser.username!,
       profilePhoto: fileNameToUrl(sourceUser.profilePhoto),
     };
     const targetUserWithPhotoUrl = {
       ...targetUser,
+      name: targetUser.name!,
+      username: targetUser.username!,
       profilePhoto: fileNameToUrl(targetUser.profilePhoto),
     };
 

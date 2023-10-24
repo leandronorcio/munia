@@ -12,6 +12,7 @@ import {
 } from '@prisma/client';
 import { type } from 'os';
 
+type UserSummary = Pick<User, 'id' | 'username' | 'name' | 'profilePhoto'>;
 /**
  * The `User` type from Prisma indicates that the `username` and `name` fields are nullable,
  * however, after the initial user setup upon user's registration, these two fields will be
@@ -67,7 +68,7 @@ export interface FindPostResult {
   postLikes: {
     id: number;
   }[];
-  user: UserSummaryAfterSetUp;
+  user: UserSummary;
   visualMedia: VisualMedia[];
   _count: {
     postLikes: number;
@@ -118,7 +119,7 @@ export interface FindCommentResult {
   userId: string;
   postId: number;
   parentId: number | null;
-  user: UserSummaryAfterSetUp;
+  user: UserSummary;
   /**
    * Use `commentLikes` to store the <CommentLike>'s id of the user to the Comment.
    * If there is a <CommentLike> id, that means the user requesting has
@@ -165,12 +166,14 @@ interface FindActivityResult {
   targetId: number | null;
   createdAt: Date;
   isNotificationRead: boolean;
-  sourceUser: UserSummaryAfterSetUp & { gender: Gender | null };
-  targetUser: UserSummaryAfterSetUp & { gender: Gender | null };
+  sourceUser: UserSummary & { gender: Gender | null };
+  targetUser: UserSummary & { gender: Gender | null };
 }
 export type FindActivityResults = FindActivityResult[];
 
 interface GetActivity extends FindActivityResult {
+  sourceUser: UserSummaryAfterSetUp & { gender: Gender | null };
+  targetUser: UserSummaryAfterSetUp & { gender: Gender | null };
   content?: string | null;
 }
 export type GetActivities = GetActivity[];

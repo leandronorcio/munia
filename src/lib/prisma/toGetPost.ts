@@ -32,7 +32,11 @@ export async function toGetPost(
   return {
     ...rest,
     user: {
-      ...rest.user,
+      id: rest.user.id,
+      // The `name` and `username` are guaranteed to be filled after the user's registration,
+      // thus we can safely use non-null assertion here.
+      username: rest.user.username!,
+      name: rest.user.name!,
       // Convert the `profilePhoto` file name to a full S3 URL
       profilePhoto: fileNameToUrl(rest.user.profilePhoto),
     },
