@@ -21,15 +21,26 @@ import SvgForwardArrow from '@/svg_components/ForwardArrow';
 import { postFramerVariants } from '@/lib/framerVariants';
 import { GenericLoading } from './GenericLoading';
 
-export function Posts({
-  type,
-  userId,
-}: {
-  type: 'profile' | 'feed';
-  userId: string;
-}) {
+// If the `type` is 'hashtag', the `hashtag` property is needed
+// If the `type` is 'profile' | 'feed', the `userId` property is needed
+type PostsProps =
+  | {
+      type: 'hashtag';
+      userId?: undefined;
+      hashtag: string;
+    }
+  | {
+      type: 'profile' | 'feed';
+      userId: string;
+      hashtag?: undefined;
+    };
+
+export function Posts({ type, hashtag, userId }: PostsProps) {
   const qc = useQueryClient();
-  const queryKey = ['users', userId, 'posts', { type }];
+  const queryKey =
+    type === 'hashtag'
+      ? ['posts', { hashtag }]
+      : ['users', userId, 'posts', { type }];
   const topElRef = useRef<HTMLDivElement>(null);
   const isTopOnScreen = useOnScreen(topElRef);
   const bottomElRef = useRef<HTMLDivElement>(null);
@@ -60,6 +71,7 @@ export function Posts({
       qc.resetQueries({ queryKey, exact: true });
     }
 
+    // Check for new posts every 5 seconds, this allows for bidirectional infinite queries
     const interval = setInterval(() => {
       fetchPreviousPage();
     }, 5000);
@@ -98,16 +110,17 @@ export function Posts({
       queryKey,
       defaultPageParam: 0,
       queryFn: async ({ pageParam, direction }): Promise<PostIds> => {
-        const endpoint = type === 'profile' ? 'posts' : 'feed';
         const isForwards = direction === 'forward';
         const params = new URLSearchParams('');
         params.set('limit', POSTS_PER_PAGE.toString());
         params.set('cursor', pageParam.toString());
         params.set('sort-direction', isForwards ? 'desc' : 'asc');
 
-        const res = await fetch(
-          `/api/users/${userId}/${endpoint}?${params.toString()}`,
-        );
+        const fetchUrl =
+          type === 'hashtag'
+            ? `/api/posts/hashtag/${hashtag}`
+            : `/api/users/${userId}/${type === 'profile' ? 'posts' : 'feed'}`;
+        const res = await fetch(`${fetchUrl}?${params.toString()}`);
 
         if (!res.ok) {
           throw Error('Failed to load posts.');
@@ -157,7 +170,6 @@ export function Posts({
       refetchOnWindowFocus: false,
       staleTime: Infinity,
       retry: false,
-      enabled: !!userId,
     },
   );
 
