@@ -19,7 +19,7 @@ export default async function Page({
           <CreatePostModalLauncher />
         </div>
       )}
-      <Posts type="profile" userId={profile?.id!} />
+      {profile && <Posts type="profile" userId={profile.id} />}
     </div>
   );
 }

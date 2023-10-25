@@ -14,7 +14,7 @@ export default async function Page() {
         </div>
       </div>
       <CreatePostModalLauncher />
-      <Posts type="feed" userId={user?.id!} />
+      {user && <Posts type="feed" userId={user.id} />}
     </div>
   );
 }
