@@ -25,7 +25,8 @@ export function MenuBarItem({
 
   return (
     <ButtonNaked
-      className="group relative flex h-14 flex-1 cursor-pointer flex-row items-center  justify-center px-4 hover:bg-primary-accent/30 md:mt-2 md:flex-none md:rounded-lg md:last:mt-auto"
+      aria-label={children as string}
+      className="group relative flex h-14 flex-1 cursor-pointer flex-row items-center justify-center px-4 hover:bg-primary-accent/30 md:mt-2 md:flex-none md:rounded-lg md:last:mt-auto"
       onPress={() => {
         if (route === '/api/auth/signout') {
           confirm({
@@ -40,7 +41,7 @@ export function MenuBarItem({
     >
       <div
         className={cn(
-          'absolute left-0 hidden h-10 w-[4px] scale-y-0 rounded-r-lg bg-primary transition-transform group-hover:scale-y-100 md:block',
+          'absolute left-0 hidden h-10 w-[4px] origin-bottom scale-y-0 rounded-r-lg bg-primary transition-transform group-hover:origin-top group-hover:scale-y-100 md:block',
           isActive && 'scale-y-100',
         )}
       ></div>
@@ -61,7 +62,7 @@ export function MenuBarItem({
       <p
         className={cn(
           'hidden text-base transition-colors duration-300 md:block',
-          isActive && 'text-primary-accent',
+          isActive && 'font-bold',
         )}
       >
         {children}
