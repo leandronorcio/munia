@@ -52,7 +52,12 @@ export function MenuBarItem({
         )}
       ></div>
       <div className="relative md:mr-3">
-        <Icon className="h-6 w-6 stroke-muted-foreground" />
+        <Icon
+          className={cn(
+            'h-6 w-6 stroke-muted-foreground',
+            isActive && 'fill-muted-foreground',
+          )}
+        />
         {badge !== undefined && badge !== 0 && (
           <div className="absolute right-[-25%] top-[-50%]">
             <Badge>{badge}</Badge>
