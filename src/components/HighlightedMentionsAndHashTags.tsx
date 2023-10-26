@@ -1,6 +1,7 @@
 import parse, { Element, domToReact } from 'html-react-parser';
 import DOMPurify from 'dompurify';
 import Link from 'next/link';
+
 export function HighlightedMentionsAndHashTags({
   text,
   shouldAddLinks,
@@ -27,14 +28,23 @@ export function HighlightedMentionsAndHashTags({
       const coloredWord = `<span class="text-blue-600 dark:text-blue-400">${char}${word}</span>`;
 
       if (!shouldAddLinks) return `${space}${coloredWord}`;
-      return `${space}<a href="${word}">${coloredWord}</a>`;
+
+      const isHashtag = char === '#';
+      const url = isHashtag ? `/posts/hashtag/${word}` : `/${word}`;
+      return `${space}<a href="${url}">${coloredWord}</a>`;
     },
   );
 
   if (!shouldAddLinks) return parse(html) as JSX.Element;
   return parse(html, {
     replace: (domNode) => {
-      if (domNode instanceof Element && domNode.attribs && domNode.children)
+      // Convert the <a> tags into NextJS <Link>'s
+      if (
+        domNode instanceof Element &&
+        domNode.attribs &&
+        domNode.attribs.href &&
+        domNode.children
+      )
         return (
           <Link href={domNode.attribs.href} className="link">
             {domToReact(domNode.children)}

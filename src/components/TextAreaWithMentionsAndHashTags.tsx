@@ -170,8 +170,10 @@ export function TextAreaWithMentionsAndHashTags({
       const focusedIndex = data.findIndex((user) => user.username === focused);
       const lastIndex = length - 1;
 
+      // If the focused index is the first index, the `prevIndex` must be the `lastIndex`
       const prevIndex =
         focusedIndex === firstIndex ? lastIndex : focusedIndex - 1;
+      // If the focused index is the last index, the `nextIndex` must be 0
       const nextIndex = focusedIndex === lastIndex ? 0 : focusedIndex + 1;
 
       if (
