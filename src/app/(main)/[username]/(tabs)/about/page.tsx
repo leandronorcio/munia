@@ -1,6 +1,17 @@
 import { getProfile } from '../../getProfile';
 import { About } from './About';
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { username: string };
+}) {
+  const profile = await getProfile(params.username);
+  return {
+    title: `About | ${profile?.name}` || 'About',
+  };
+}
+
 export default async function Page({
   params,
 }: {

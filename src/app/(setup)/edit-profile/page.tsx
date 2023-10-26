@@ -1,6 +1,10 @@
 import { EditProfileForm } from '@/components/EditProfileForm';
 import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 
+export const metadata = {
+  title: 'Munia | Edit Profile',
+};
+
 export default function Page() {
   return (
     <ResponsiveContainer className="mx-auto mb-4 px-4 md:px-0">

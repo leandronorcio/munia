@@ -3,6 +3,10 @@ import { DarkModeSwitch } from '@/components/DarkModeSwitch';
 import { Posts } from '@/components/Posts';
 import { getServerUser } from '@/lib/getServerUser';
 
+export const metadata = {
+  title: 'Munia | Feed',
+};
+
 export default async function Page() {
   const [user] = await getServerUser();
   return (

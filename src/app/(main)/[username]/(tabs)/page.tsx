@@ -3,6 +3,17 @@ import { getProfile } from '../getProfile';
 import { CreatePostModalLauncher } from '@/components/CreatePostModalLauncher';
 import { getServerUser } from '@/lib/getServerUser';
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { username: string };
+}) {
+  const profile = await getProfile(params.username);
+  return {
+    title: profile?.name || 'Munia',
+  };
+}
+
 export default async function Page({
   params,
 }: {

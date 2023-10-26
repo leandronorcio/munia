@@ -3,6 +3,17 @@ import { DiscoverProfiles } from '@/components/DiscoverProfiles';
 import { DiscoverSearch } from '@/components/DiscoverSearch';
 import { DiscoverFilters } from '@/components/DiscoverFilters';
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { username: string };
+}) {
+  const profile = await getProfile(params.username);
+  return {
+    title: `Followers | ${profile?.name}` || 'Followers',
+  };
+}
+
 export default async function Page({
   params,
 }: {

@@ -2,6 +2,17 @@ import { getProfile } from '../../getProfile';
 import { Gallery } from './Gallery';
 import { GetVisualMedia } from 'types';
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { username: string };
+}) {
+  const profile = await getProfile(params.username);
+  return {
+    title: `Photos | ${profile?.name}` || 'Photos',
+  };
+}
+
 async function getVisualMedia(username: string) {
   const profile = await getProfile(username);
   const res = await fetch(
