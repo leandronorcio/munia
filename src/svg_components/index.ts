@@ -20,6 +20,7 @@ export { default as Edit } from './Edit';
 export { default as Ellipse } from './Ellipse';
 export { default as EmojiHappySmile } from './EmojiHappySmile';
 export { default as Facebook } from './Facebook';
+export { default as Feather } from './Feather';
 export { default as ForwardArrow } from './ForwardArrow';
 export { default as FullScreenExpandResize } from './FullScreenExpandResize';
 export { default as Github } from './Github';
