@@ -29,7 +29,7 @@ export function ProfileActionButtons({
       >
         {isFollowing ? 'Unfollow' : 'Follow'}
       </Button>
-      <Button Icon={Mail} onPress={() => {}} mode="secondary" size="medium" />
+      {/* <Button Icon={Mail} onPress={() => {}} mode="secondary" size="medium" /> */}
     </div>
   );
 }
