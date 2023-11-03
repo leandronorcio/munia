@@ -28,35 +28,33 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
       email: true,
     }));
 
-    setTimeout(async () => {
-      const validate = emailSchema.safeParse(email);
-      if (validate.success) {
-        const signInResult = await signIn('email', {
-          email: email.toLowerCase(),
-          redirect: false,
-          callbackUrl,
-        });
+    const validate = emailSchema.safeParse(email);
+    if (validate.success) {
+      const signInResult = await signIn('email', {
+        email: email.toLowerCase(),
+        redirect: false,
+        callbackUrl,
+      });
 
-        setLoading((prev) => ({
-          ...prev,
-          email: false,
-        }));
-        if (!signInResult?.ok) {
-          return showToast({ type: 'error', title: 'Something went wrong' });
-        }
-        showToast({
-          type: 'success',
-          title: 'Email Sent',
-          message: 'Please check your email to sign in.',
-        });
-      } else {
-        setInputError(validate.error.issues[0].message);
-        setLoading((prev) => ({
-          ...prev,
-          email: false,
-        }));
+      setLoading((prev) => ({
+        ...prev,
+        email: false,
+      }));
+      if (!signInResult?.ok) {
+        return showToast({ type: 'error', title: 'Something went wrong' });
       }
-    }, 500);
+      showToast({
+        type: 'success',
+        title: 'Email Sent',
+        message: 'Please check your email to sign in.',
+      });
+    } else {
+      setInputError(validate.error.issues[0].message);
+      setLoading((prev) => ({
+        ...prev,
+        email: false,
+      }));
+    }
   };
 
   return (

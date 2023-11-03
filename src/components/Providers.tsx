@@ -7,13 +7,20 @@ import { ThemeContextProvider } from '@/contexts/ThemeContext';
 import { ToastContextProvider } from '@/contexts/ToastContext';
 import { VisualMediaModalContextProvider } from '@/contexts/VisualMediaModalContext';
 import { SessionProvider } from 'next-auth/react';
+import type { Session } from 'next-auth';
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({
+  children,
+  session,
+}: {
+  children: React.ReactNode;
+  session: Session | null;
+}) {
   return (
     <ThemeContextProvider>
       <ToastContextProvider>
         <ReactQueryProvider>
-          <SessionProvider>
+          <SessionProvider session={session}>
             <DialogsContextProvider>
               <VisualMediaModalContextProvider>
                 <CreatePostModalContextProvider>

@@ -1,4 +1,3 @@
-import SvgLogo from '@/svg_components/Logo';
 import { Feather, LogInSquare, TwoPeople } from '@/svg_components';
 import { ButtonLink } from '@/components/ui/ButtonLink';
 import { LogoText } from '@/components/LogoText';

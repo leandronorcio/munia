@@ -7,6 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Poppins } from 'next/font/google';
 import { cn } from '@/lib/cn';
 import { Providers } from '@/components/Providers';
+import { auth } from '@/auth';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
@@ -23,6 +24,7 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
   return (
     <html lang="en" className="dark overflow-y-scroll">
       <head>
@@ -32,7 +34,7 @@ export default async function Layout({
         />
       </head>
       <body className={cn('bg-background text-foreground', poppins.className)}>
-        <Providers>{children}</Providers>
+        <Providers session={session}>{children}</Providers>
       </body>
     </html>
   );
