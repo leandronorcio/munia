@@ -8,5 +8,5 @@ import 'server-only';
  */
 export function fileNameToUrl(fileName: string | null) {
   if (!fileName) return null;
-  return `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.S3_REGION}.amazonaws.com/${fileName}`;
+  return `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
 }
