@@ -1,16 +1,11 @@
 import {
-  PostLike,
-  Post,
-  Comment,
   VisualMediaType,
   User,
-  About,
   Follow,
   ActivityType,
   Gender,
   VisualMedia,
 } from '@prisma/client';
-import { type } from 'os';
 
 type UserSummary = Pick<User, 'id' | 'username' | 'name' | 'profilePhoto'>;
 /**
@@ -18,7 +13,7 @@ type UserSummary = Pick<User, 'id' | 'username' | 'name' | 'profilePhoto'>;
  * however, after the initial user setup upon user's registration, these two fields will be
  * guaranteed to be filled in.
  */
-interface UserSummaryAfterSetUp {
+export interface UserSummaryAfterSetUp {
   id: string;
   username: string;
   name: string;
@@ -109,7 +104,7 @@ export interface PostId {
   commentsShown: boolean;
 }
 
-type PostIds = PostId[];
+export type PostIds = PostId[];
 
 // Use this type when finding a Comment in prisma.
 export interface FindCommentResult {
@@ -171,7 +166,7 @@ interface FindActivityResult {
 }
 export type FindActivityResults = FindActivityResult[];
 
-interface GetActivity extends FindActivityResult {
+export interface GetActivity extends FindActivityResult {
   sourceUser: UserSummaryAfterSetUp & { gender: Gender | null };
   targetUser: UserSummaryAfterSetUp & { gender: Gender | null };
   content?: string | null;

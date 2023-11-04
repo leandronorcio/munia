@@ -1,4 +1,4 @@
-import { GetComment } from 'types';
+import { GetComment } from '@/types/definitions';
 
 export const fetchReplies = async ({ parentId }: { parentId: number }) => {
   const res = await fetch(`/api/comments/${parentId}/replies`);

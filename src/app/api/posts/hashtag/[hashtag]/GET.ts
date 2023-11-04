@@ -5,7 +5,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma/prisma';
 import { selectPost } from '@/lib/prisma/selectPost';
-import { GetPost } from 'types';
+import { GetPost } from '@/types/definitions';
 import { toGetPost } from '@/lib/prisma/toGetPost';
 import { getServerUser } from '@/lib/getServerUser';
 import { usePostsSorter } from '@/hooks/usePostsSorter';

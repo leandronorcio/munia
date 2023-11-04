@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-query';
 import { chunk } from 'lodash';
 import { useSession } from 'next-auth/react';
-import { GetActivity } from 'types';
+import { GetActivity } from '@/types/definitions';
 
 export function useNotificationsReadStatusMutations() {
   const qc = useQueryClient();

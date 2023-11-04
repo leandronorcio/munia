@@ -5,7 +5,7 @@ import { kebabCase, lowerCase, snakeCase, startCase, toUpper } from 'lodash';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { Item } from 'react-stately';
-import { DiscoverFilters } from 'types';
+import { DiscoverFilters } from '@/types/definitions';
 
 export function DiscoverFilters() {
   const router = useRouter();

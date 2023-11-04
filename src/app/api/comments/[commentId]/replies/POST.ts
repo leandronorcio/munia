@@ -12,7 +12,7 @@ import prisma from '@/lib/prisma/prisma';
 import { toGetComment } from '@/lib/prisma/toGetComment';
 import { commentWriteSchema } from '@/lib/validations/comment';
 import { NextResponse } from 'next/server';
-import { GetComment } from 'types';
+import { GetComment } from '@/types/definitions';
 import { z } from 'zod';
 
 export async function POST(

@@ -11,7 +11,7 @@ import { toGetUser } from '@/lib/prisma/toGetUser';
 import { Gender, RelationshipStatus } from '@prisma/client';
 import { snakeCase, toUpper } from 'lodash';
 import { NextResponse } from 'next/server';
-import { FindUserResult, GetUser } from 'types';
+import { FindUserResult, GetUser } from '@/types/definitions';
 
 export async function GET(request: Request) {
   /**

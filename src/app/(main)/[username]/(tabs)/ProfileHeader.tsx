@@ -1,10 +1,10 @@
 'use client';
 
-import { ProfileActionButtons } from '../../../../components/ProfileActionButtons';
+import { ProfileActionButtons } from '@/components/ProfileActionButtons';
 import ProfilePhoto from './ProfilePhoto';
 import CoverPhoto from './CoverPhoto';
 import Tabs from './Tabs';
-import { GetUser } from 'types';
+import { GetUser } from '@/types/definitions';
 import { useUserQuery } from '@/hooks/queries/useUserQuery';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';

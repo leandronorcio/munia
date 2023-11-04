@@ -1,4 +1,4 @@
-import { GetActivity } from 'types';
+import { GetActivity } from '@/types/definitions';
 import { ActivityCard } from './ActivityCard';
 import { SemiBold } from '@/components/ui/SemiBold';
 import { useSession } from 'next-auth/react';

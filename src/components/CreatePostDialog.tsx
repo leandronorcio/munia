@@ -6,7 +6,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { motion } from 'framer-motion';
 import { CreatePostModalContextData } from '@/contexts/CreatePostModalContext';
-import { GetVisualMedia } from 'types';
+import { GetVisualMedia } from '@/types/definitions';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { useWritePostMutations } from '@/hooks/mutations/useWritePostMutations';

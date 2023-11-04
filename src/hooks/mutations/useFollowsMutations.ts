@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { GetUser } from 'types';
+import { GetUser } from '@/types/definitions';
 import { useToast } from '../useToast';
 import { useSession } from 'next-auth/react';
 

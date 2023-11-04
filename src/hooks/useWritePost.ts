@@ -4,7 +4,7 @@ import { selectPost } from '@/lib/prisma/selectPost';
 import { formDataToObject } from '@/lib/formDataToObject';
 import prisma from '@/lib/prisma/prisma';
 import { NextResponse } from 'next/server';
-import { GetPost } from 'types';
+import { GetPost } from '@/types/definitions';
 import { isValidFileType } from '@/lib/isValidFileType';
 import { postWriteSchema } from '@/lib/validations/post';
 import { z } from 'zod';

@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import { GetPost } from 'types';
+import { GetPost } from '@/types/definitions';
 
 export function usePostLikesMutations({ postId }: { postId: number }) {
   const qc = useQueryClient();

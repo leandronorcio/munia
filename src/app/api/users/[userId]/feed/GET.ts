@@ -10,7 +10,7 @@ import prisma from '@/lib/prisma/prisma';
 import { selectPost } from '@/lib/prisma/selectPost';
 import { toGetPost } from '@/lib/prisma/toGetPost';
 import { NextResponse } from 'next/server';
-import { GetPost } from 'types';
+import { GetPost } from '@/types/definitions';
 
 export async function GET(
   request: Request,

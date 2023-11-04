@@ -6,7 +6,7 @@ import { getServerUser } from '@/lib/getServerUser';
 import prisma from '@/lib/prisma/prisma';
 import { toGetActivities } from '@/lib/prisma/toGetActivities';
 import { NextResponse } from 'next/server';
-import { FindActivityResults } from 'types';
+import { FindActivityResults } from '@/types/definitions';
 
 export async function GET(request: Request) {
   const [user] = await getServerUser();

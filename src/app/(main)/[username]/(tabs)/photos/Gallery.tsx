@@ -1,5 +1,5 @@
 'use client';
-import { GetVisualMedia } from 'types';
+import { GetVisualMedia } from '@/types/definitions';
 import { GalleryItem } from './GalleryItem';
 import { useVisualMediaModal } from '@/hooks/useVisualMediaModal';
 

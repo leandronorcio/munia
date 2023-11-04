@@ -8,7 +8,7 @@ import formatDistanceStrict from 'date-fns/formatDistanceStrict';
 import SvgComment from '@/svg_components/Comment';
 import { Comments } from './Comments';
 import { AnimatePresence, motion } from 'framer-motion';
-import { GetPost, PostId } from 'types';
+import { GetPost, PostId } from '@/types/definitions';
 import { isEqual } from 'lodash';
 import { ToggleStepper } from './ui/ToggleStepper';
 import SvgHeart from '@/svg_components/Heart';

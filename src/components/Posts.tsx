@@ -5,7 +5,7 @@ import {
   useInfiniteQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { GetPost, PostIds } from 'types';
+import { GetPost, PostIds } from '@/types/definitions';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import useOnScreen from '@/hooks/useOnScreen';
 import { AnimatePresence, motion } from 'framer-motion';

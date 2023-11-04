@@ -7,7 +7,7 @@ import {
   useInfiniteQuery,
 } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
-import { GetActivity } from 'types';
+import { GetActivity } from '@/types/definitions';
 import { Activity } from '@/components/Activity';
 import { AllCaughtUp } from '@/components/AllCaughtUp';
 import { useSession } from 'next-auth/react';

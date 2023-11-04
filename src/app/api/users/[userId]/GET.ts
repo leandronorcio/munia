@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma/prisma';
-import { FindUserResult, GetUser } from 'types';
+import { FindUserResult, GetUser } from '@/types/definitions';
 import { includeToUser } from '@/lib/prisma/includeToUser';
 import { toGetUser } from '@/lib/prisma/toGetUser';
 import { getServerUser } from '@/lib/getServerUser';

@@ -1,6 +1,6 @@
 import { QueryKey, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import { GetComment } from 'types';
+import { GetComment } from '@/types/definitions';
 
 export function useCommentLikesMutations({ queryKey }: { queryKey: QueryKey }) {
   const qc = useQueryClient();

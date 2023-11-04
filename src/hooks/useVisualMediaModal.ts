@@ -1,6 +1,6 @@
 import { VisualMediaModalContextApi } from '@/contexts/VisualMediaModalContext';
 import { useContext } from 'react';
-import { GetVisualMedia } from 'types';
+import { GetVisualMedia } from '@/types/definitions';
 
 export function useVisualMediaModal() {
   const { setModal, show } = useContext(VisualMediaModalContextApi);

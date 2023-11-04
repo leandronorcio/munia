@@ -1,6 +1,6 @@
 import { CreatePostModalContextApi } from '@/contexts/CreatePostModalContext';
 import { useContext } from 'react';
-import { GetVisualMedia } from 'types';
+import { GetVisualMedia } from '@/types/definitions';
 
 export function useCreatePost() {
   const { setShown, setShouldOpenFileInputOnMount, setToEditValues } =

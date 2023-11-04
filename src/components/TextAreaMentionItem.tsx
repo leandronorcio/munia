@@ -1,4 +1,4 @@
-import { UserSummaryAfterSetUp } from 'types';
+import { UserSummaryAfterSetUp } from '@/types/definitions';
 import { ProfilePhoto } from './ui/ProfilePhoto';
 import { cn } from '@/lib/cn';
 import { useEffect, useRef } from 'react';

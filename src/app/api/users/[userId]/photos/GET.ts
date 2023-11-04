@@ -6,7 +6,7 @@
 import prisma from '@/lib/prisma/prisma';
 import { fileNameToUrl } from '@/lib/s3/fileNameToUrl';
 import { NextResponse } from 'next/server';
-import { GetVisualMedia } from 'types';
+import { GetVisualMedia } from '@/types/definitions';
 
 export async function GET(
   request: Request,

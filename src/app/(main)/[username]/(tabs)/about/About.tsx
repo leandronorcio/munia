@@ -13,7 +13,7 @@ import {
 import { AboutItem } from './AboutItem';
 import { format } from 'date-fns';
 import { capitalize, lowerCase } from 'lodash';
-import { GetUser } from 'types';
+import { GetUser } from '@/types/definitions';
 
 export function About({ profile }: { profile: GetUser }) {
   const {

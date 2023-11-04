@@ -1,4 +1,4 @@
-import { GetComment } from 'types';
+import { GetComment } from '@/types/definitions';
 
 export const fetchComments = async ({ postId }: { postId: number }) => {
   const res = await fetch(`/api/posts/${postId}/comments`);

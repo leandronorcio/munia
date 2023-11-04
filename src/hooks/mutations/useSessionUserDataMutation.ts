@@ -1,7 +1,7 @@
 import { UserAboutSchema } from '@/lib/validations/userAbout';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import { GetUser } from 'types';
+import { GetUser } from '@/types/definitions';
 import { useToast } from '../useToast';
 
 /**

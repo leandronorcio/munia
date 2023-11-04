@@ -1,4 +1,4 @@
-import { GetVisualMedia } from 'types';
+import { GetVisualMedia } from '@/types/definitions';
 
 export function revokeVisualMediaObjectUrls(visualMedia: GetVisualMedia[]) {
   for (const { url } of visualMedia) {

@@ -2,7 +2,7 @@
  * Use this function to convert the result of using the `./selectPost`
  * in a Prisma `post` find query, to the <GetPost> type.
  */
-import { FindPostResult, GetPost, GetVisualMedia } from 'types';
+import { FindPostResult, GetPost, GetVisualMedia } from '@/types/definitions';
 import { convertMentionUsernamesToIds } from '../convertMentionUsernamesToIds';
 import { fileNameToUrl } from '../s3/fileNameToUrl';
 

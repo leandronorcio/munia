@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { GetComment } from 'types';
+import { GetComment } from '@/types/definitions';
 import { useErrorNotifier } from '../useErrorNotifier';
 import { useToast } from '../useToast';
 

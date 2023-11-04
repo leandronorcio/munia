@@ -1,6 +1,6 @@
 import { getProfile } from '../../getProfile';
 import { Gallery } from './Gallery';
-import { GetVisualMedia } from 'types';
+import { GetVisualMedia } from '@/types/definitions';
 
 export async function generateMetadata({
   params,

@@ -11,7 +11,7 @@ import {
 } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
-import { GetUser } from 'types';
+import { GetUser } from '@/types/definitions';
 import { AnimatePresence, motion } from 'framer-motion';
 import { SomethingWentWrong } from '@/components/SometingWentWrong';
 import { useShouldAnimate } from '@/hooks/useShouldAnimate';

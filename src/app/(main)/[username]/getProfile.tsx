@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma/prisma';
-import { GetUser } from 'types';
+import { GetUser } from '@/types/definitions';
 
 export async function getProfile(username: string) {
   // Get the id of the user from the given username.

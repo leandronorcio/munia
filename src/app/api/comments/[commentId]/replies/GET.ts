@@ -8,7 +8,10 @@ import { includeToComment } from '@/lib/prisma/includeToComment';
 import prisma from '@/lib/prisma/prisma';
 import { toGetComment } from '@/lib/prisma/toGetComment';
 import { NextResponse } from 'next/server';
-import { FindCommentResult, GetComment } from 'types';
+import {
+  FindCommentResult,
+  GetComment,
+} from '../../../../../types/definitions';
 
 export async function GET(
   request: Request,

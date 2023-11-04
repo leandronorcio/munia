@@ -1,5 +1,5 @@
 'use client';
-import { GetComment } from 'types';
+import { GetComment } from '@/types/definitions';
 import { memo, useEffect } from 'react';
 import { isEqual } from 'lodash';
 import { ToggleStepper } from './ui/ToggleStepper';

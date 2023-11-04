@@ -1,8 +1,7 @@
 import { PostVisualMediaContainer } from '@/components/PostVisualMediaContainer';
-import { cn } from '@/lib/cn';
 import { memo, useState } from 'react';
 import { CreatePostSort } from './CreatePostSort';
-import { GetVisualMedia } from 'types';
+import { GetVisualMedia } from '@/types/definitions';
 import { TabButton } from './TabButton';
 
 const CreatePostTabs = memo(function CreatePostTabs({

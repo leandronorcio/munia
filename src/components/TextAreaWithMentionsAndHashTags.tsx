@@ -9,7 +9,7 @@ import {
 } from 'react';
 import { resizeTextAreaHeight } from '@/lib/resizeTextAreaHeight';
 import { useQuery } from '@tanstack/react-query';
-import { UserSummaryAfterSetUp } from 'types';
+import { UserSummaryAfterSetUp } from '@/types/definitions';
 import { replaceWordAtCursor } from '@/lib/replaceWordAtCursor';
 import { cn } from '@/lib/cn';
 import { HighlightedMentionsAndHashTags } from './HighlightedMentionsAndHashTags';

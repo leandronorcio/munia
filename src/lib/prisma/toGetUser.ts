@@ -4,7 +4,7 @@
  * type.
  */
 
-import { FindUserResult, GetUser } from 'types';
+import { FindUserResult, GetUser } from '@/types/definitions';
 import { fileNameToUrl } from '../s3/fileNameToUrl';
 
 export const toGetUser = (findUserResult: FindUserResult): GetUser => {

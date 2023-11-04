@@ -1,4 +1,4 @@
-import { FindCommentResult, GetComment } from 'types';
+import { FindCommentResult, GetComment } from '@/types/definitions';
 import { convertMentionUsernamesToIds } from '../convertMentionUsernamesToIds';
 import { fileNameToUrl } from '../s3/fileNameToUrl';
 

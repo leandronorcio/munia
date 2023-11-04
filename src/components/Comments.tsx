@@ -2,7 +2,7 @@
 import { useCallback } from 'react';
 import { Comment } from './Comment';
 import { AnimatePresence, motion } from 'framer-motion';
-import { GetComment } from 'types';
+import { GetComment } from '@/types/definitions';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchComments } from '@/lib/query-functions/fetchComments';
 import { useSession } from 'next-auth/react';

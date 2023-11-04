@@ -1,5 +1,5 @@
 'use client';
-import { GetVisualMedia } from 'types';
+import { GetVisualMedia } from '@/types/definitions';
 import {
   Dispatch,
   SetStateAction,

@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react';
 import { useOverlayTriggerState } from 'react-stately';
-import { GetVisualMedia } from 'types';
+import { GetVisualMedia } from '@/types/definitions';
 import { AnimatePresence } from 'framer-motion';
 import { Modal } from '@/components/Modal';
 import { VisualMediaDialog } from '@/components/VisualMediaDialog';

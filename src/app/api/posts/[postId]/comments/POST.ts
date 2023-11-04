@@ -6,7 +6,7 @@
 
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma/prisma';
-import { FindCommentResult } from 'types';
+import { FindCommentResult } from '@/types/definitions';
 import { commentWriteSchema } from '@/lib/validations/comment';
 import { z } from 'zod';
 import { getServerUser } from '@/lib/getServerUser';

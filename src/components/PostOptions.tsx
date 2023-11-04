@@ -1,7 +1,7 @@
 import { Item, Section } from 'react-stately';
 import { DropdownMenuButton } from './ui/DropdownMenuButton';
 import { useDialogs } from '@/hooks/useDialogs';
-import { GetVisualMedia } from 'types';
+import { GetVisualMedia } from '@/types/definitions';
 import { Key, useCallback } from 'react';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { useDeletePostMutation } from '@/hooks/mutations/useDeletePostMutation';

@@ -8,7 +8,7 @@ import {
 import { chunk } from 'lodash';
 import { POSTS_PER_PAGE } from '@/constants';
 import { useSession } from 'next-auth/react';
-import { PostIds } from 'types';
+import { PostIds } from '@/types/definitions';
 import { useErrorNotifier } from '../useErrorNotifier';
 
 export function useDeletePostMutation() {

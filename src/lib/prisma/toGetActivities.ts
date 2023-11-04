@@ -1,4 +1,4 @@
-import { FindActivityResults, GetActivities } from 'types';
+import { FindActivityResults, GetActivities } from '@/types/definitions';
 import prisma from './prisma';
 import { convertMentionUsernamesToIds } from '../convertMentionUsernamesToIds';
 import { ActivityType } from '@prisma/client';

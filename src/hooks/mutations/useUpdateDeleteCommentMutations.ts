@@ -1,5 +1,5 @@
 import { QueryKey, useMutation, useQueryClient } from '@tanstack/react-query';
-import { GetComment } from 'types';
+import { GetComment } from '@/types/definitions';
 import { useErrorNotifier } from '../useErrorNotifier';
 
 // Use this hook for getting the mutations for updating and deleting comments/replies.

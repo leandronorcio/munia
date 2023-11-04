@@ -2,7 +2,7 @@ import { PostVisualMedia } from './PostVisualMedia';
 import { cn } from '@/lib/cn';
 import { isOdd } from '@/lib/isOdd';
 import { useVisualMediaModal } from '@/hooks/useVisualMediaModal';
-import { GetVisualMedia } from 'types';
+import { GetVisualMedia } from '@/types/definitions';
 
 export function PostVisualMediaContainer({
   visualMedia,
