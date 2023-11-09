@@ -17,12 +17,14 @@ export default function CoverPhoto({
   const { showVisualMediaModal } = useVisualMediaModal();
 
   return (
-    <div
-      className="h-full w-full bg-cover bg-center"
-      style={{
-        backgroundImage: photoUrl ? `url("${photoUrl}")` : 'none',
-      }}
-    >
+    <div className="h-full w-full">
+      {photoUrl && (
+        <img
+          src={photoUrl}
+          alt="Cover photo"
+          className="absolute h-full w-full object-cover"
+        />
+      )}
       <div
         onClick={() =>
           photoUrl !== null &&

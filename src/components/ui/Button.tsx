@@ -76,38 +76,36 @@ export interface ButtonProps
   className?: string;
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    { children, size, mode, shape, expand, Icon, loading, className, ...rest },
-    forwardedRef,
-  ) => {
-    const iconOnly = children === undefined;
-    // Support forwarded refs: https://github.com/adobe/react-spectrum/pull/2293#discussion_r714337674
-    const ref = useObjectRef(forwardedRef);
-    const { buttonProps } = useButton(rest, ref);
-    const { isFocusVisible, focusProps } = useFocusRing();
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  { children, size, mode, shape, expand, Icon, loading, className, ...rest },
+  forwardedRef,
+) {
+  const iconOnly = children === undefined;
+  // Support forwarded refs: https://github.com/adobe/react-spectrum/pull/2293#discussion_r714337674
+  const ref = useObjectRef(forwardedRef);
+  const { buttonProps } = useButton(rest, ref);
+  const { isFocusVisible, focusProps } = useFocusRing();
 
-    return (
-      <button
-        {...mergeProps(buttonProps, focusProps)}
-        ref={ref}
-        className={cn(
-          [button({ size, mode, shape, expand })],
-          iconOnly && 'rounded-full p-3',
-          isFocusVisible && 'ring-2 ring-violet-500 ring-offset-2',
-          className,
-        )}
-        disabled={buttonProps.disabled || loading}
-      >
-        {!loading ? (
-          Icon && <Icon className={cn(icon({ size, mode }))} />
-        ) : (
-          <SvgLoading className={cn(['animate-spin '], icon({ size, mode }))} />
-        )}
-        {children}
-      </button>
-    );
-  },
-);
+  return (
+    <button
+      {...mergeProps(buttonProps, focusProps)}
+      ref={ref}
+      className={cn(
+        [button({ size, mode, shape, expand })],
+        iconOnly && 'rounded-full p-3',
+        isFocusVisible && 'ring-2 ring-violet-500 ring-offset-2',
+        className,
+      )}
+      disabled={buttonProps.disabled || loading}
+    >
+      {!loading ? (
+        Icon && <Icon className={cn(icon({ size, mode }))} />
+      ) : (
+        <SvgLoading className={cn(['animate-spin '], icon({ size, mode }))} />
+      )}
+      {children}
+    </button>
+  );
+});
 
 export default Button;

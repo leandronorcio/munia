@@ -17,7 +17,7 @@ import { useCreateCommentMutations } from '@/hooks/mutations/useCreateCommentMut
 import { ProfilePhoto } from './ui/ProfilePhoto';
 
 export const Comment = memo(
-  ({
+  function Comment({
     id: commentId,
     content,
     createdAt,
@@ -38,7 +38,7 @@ export const Comment = memo(
     toggleReplies: (params: { commentId: number }) => void;
     likeComment: (params: { commentId: number }) => void;
     unLikeComment: (params: { commentId: number }) => void;
-  }) => {
+  }) {
     const numberOfLikes = _count.commentLikes;
     const numberOfReplies = _count.replies;
     const { prompt } = useDialogs();

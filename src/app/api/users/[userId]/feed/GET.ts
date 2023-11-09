@@ -16,11 +16,11 @@ export async function GET(
   request: Request,
   { params }: { params: { userId: string } },
 ) {
+  const { filters, limitAndOrderBy } = usePostsSorter(request.url);
+
   const [user] = await getServerUser();
   if (!user || params.userId !== user.id)
     return NextResponse.json({}, { status: 401 });
-
-  const { filters, limitAndOrderBy } = usePostsSorter(request.url);
 
   // Get the IDs of the user's followed users
   const following = await prisma.follow.findMany({

@@ -18,7 +18,7 @@ export function CreatePostModalLauncher() {
           }}
           className="flex flex-grow flex-col justify-center"
         >
-          <p className="text-muted-foreground/70">What's on your mind?</p>
+          <p className="text-muted-foreground/70">What&apos;s on your mind?</p>
         </ButtonNaked>
       </div>
       <div className="flex flex-row gap-4">

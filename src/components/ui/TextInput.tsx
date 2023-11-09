@@ -10,8 +10,9 @@ interface TextInputProps extends AriaTextFieldProps {
   className?: string;
   Icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
 }
+
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-  ({ className, Icon, ...props }, forwardedRef) => {
+  function TextInput({ className, Icon, ...props }, forwardedRef) {
     // Support forwarded refs: https://github.com/adobe/react-spectrum/pull/2293#discussion_r714337674
     const ref = useObjectRef(forwardedRef);
     let { labelProps, inputProps, errorMessageProps } = useTextField(

@@ -14,19 +14,31 @@ import { convertMentionUsernamesToIds } from '@/lib/convertMentionUsernamesToIds
 import { mentionsActivityLogger } from '@/lib/mentionsActivityLogger';
 import { deleteObject } from '@/lib/s3/deleteObject';
 import { savePostFiles } from '@/lib/s3/savePostFiles';
+import { verifyAccessToPost } from '@/app/api/posts/[postId]/verifyAccessToPost';
 
-export async function useWritePost({
-  formData,
-  type,
-  postId,
-}: {
-  formData: FormData;
-  type: 'create' | 'edit';
-  postId?: number;
-}) {
+// If `type` is `edit`, then the `postId` is required
+type Props =
+  | {
+      formData: FormData;
+      type: 'create';
+      postId?: undefined;
+    }
+  | {
+      formData: FormData;
+      type: 'edit';
+      postId: number;
+    };
+
+export async function useWritePost({ formData, type, postId }: Props) {
   const [user] = await getServerUser();
   if (!user) return NextResponse.json({}, { status: 401 });
   const userId = user.id;
+
+  if (type === 'edit') {
+    if (!verifyAccessToPost(postId)) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    }
+  }
 
   try {
     const body = postWriteSchema.parse(formDataToObject(formData));

@@ -11,7 +11,7 @@ import { Item, Section } from 'react-stately';
 import { ProfilePhoto } from './ui/ProfilePhoto';
 
 export const CommentReply = memo(
-  ({
+  function CommentReply({
     id: commentId,
     content,
     createdAt,
@@ -29,7 +29,7 @@ export const CommentReply = memo(
     handleDelete: (params: { commentId: number }) => void;
     likeComment: (params: { commentId: number }) => void;
     unLikeComment: (params: { commentId: number }) => void;
-  }) => {
+  }) {
     const numberOfLikes = _count.commentLikes;
     const handleLikeClick = () =>
       !isLiked ? likeComment({ commentId }) : unLikeComment({ commentId });

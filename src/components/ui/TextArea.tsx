@@ -12,7 +12,7 @@ interface TextareaProps extends AriaTextFieldProps {
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, Icon, ...props }, forwardedRef) => {
+  function Textarea({ className, Icon, ...props }, forwardedRef) {
     // Support forwarded refs: https://github.com/adobe/react-spectrum/pull/2293#discussion_r714337674
     const ref = useObjectRef(forwardedRef);
     let { labelProps, inputProps, errorMessageProps } = useTextField(

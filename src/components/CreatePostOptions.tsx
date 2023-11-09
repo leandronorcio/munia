@@ -9,7 +9,7 @@ export const CreatePostOptions = forwardRef<
   {
     handleVisualMediaChange: React.ChangeEventHandler<HTMLInputElement>;
   }
->(({ handleVisualMediaChange }, forwardedRef) => {
+>(function CreatePostOptions({ handleVisualMediaChange }, forwardedRef) {
   const localRef = useRef<HTMLInputElement | null>(null);
 
   return (

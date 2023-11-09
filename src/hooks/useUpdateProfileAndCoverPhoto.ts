@@ -5,13 +5,24 @@ import prisma from '@/lib/prisma/prisma';
 import { v4 as uuid } from 'uuid';
 import { uploadObject } from '@/lib/s3/uploadObject';
 import { fileNameToUrl } from '@/lib/s3/fileNameToUrl';
+import { getServerUser } from '@/lib/getServerUser';
 
 const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
-export async function useUpdateProfileAndCoverPhoto(
-  request: Request,
-  userId: string,
-  toUpdate: 'profilePhoto' | 'coverPhoto',
-) {
+export async function useUpdateProfileAndCoverPhoto({
+  request,
+  userIdParam,
+  toUpdate,
+}: {
+  request: Request;
+  userIdParam: string;
+  toUpdate: 'profilePhoto' | 'coverPhoto';
+}) {
+  const [user] = await getServerUser();
+  if (!user || user.id !== userIdParam) {
+    return NextResponse.json({}, { status: 401 });
+  }
+  const userId = user.id;
+
   const formData = await request.formData();
   const file = formData.get('file') as Blob | null;
 
