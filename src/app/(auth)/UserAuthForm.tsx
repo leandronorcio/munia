@@ -2,7 +2,13 @@
 import Button from '@/components/ui/Button';
 import { TextInput } from '@/components/ui/TextInput';
 import { useToast } from '@/hooks/useToast';
-import { AtSign, Facebook, Github, LogInSquare } from '@/svg_components';
+import {
+  AtSign,
+  Facebook,
+  Github,
+  Google,
+  LogInSquare,
+} from '@/svg_components';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -17,7 +23,11 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
     email: false,
     github: false,
     facebook: false,
+    google: false,
   });
+  // Disable buttons when loading
+  const areButtonsDisabled =
+    loading.email || loading.github || loading.facebook || loading.google;
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('from') || '/feed';
   const { showToast } = useToast();
@@ -83,6 +93,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
           expand="full"
           Icon={LogInSquare}
           loading={loading.email}
+          isDisabled={areButtonsDisabled}
         >
           Sign {mode === 'login' ? 'in' : 'up'} with Email
         </Button>
@@ -90,7 +101,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
       <p className="mb-4 text-center text-lg text-muted-foreground">
         Or continue with
       </p>
-      <div className="mb-10 flex gap-2">
+      <div className="flex flex-col gap-3">
         <Button
           onPress={() => {
             setLoading((prev) => ({
@@ -102,31 +113,54 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
             });
           }}
           shape="pill"
-          expand="half"
+          expand="full"
           mode="subtle"
           Icon={Github}
           loading={loading.github}
+          isDisabled={areButtonsDisabled}
         >
           Github
         </Button>
-        <Button
-          onPress={() => {
-            setLoading((prev) => ({
-              ...prev,
-              facebook: true,
-            }));
-            signIn('facebook', {
-              callbackUrl,
-            });
-          }}
-          shape="pill"
-          expand="half"
-          mode="subtle"
-          Icon={Facebook}
-          loading={loading.facebook}
-        >
-          Facebook
-        </Button>
+        <div className="mb-10 flex gap-2">
+          <Button
+            onPress={() => {
+              setLoading((prev) => ({
+                ...prev,
+                google: true,
+              }));
+              signIn('google', {
+                callbackUrl,
+              });
+            }}
+            shape="pill"
+            expand="full"
+            mode="subtle"
+            Icon={Google}
+            loading={loading.google}
+            isDisabled={areButtonsDisabled}
+          >
+            Google
+          </Button>
+          <Button
+            onPress={() => {
+              setLoading((prev) => ({
+                ...prev,
+                facebook: true,
+              }));
+              signIn('facebook', {
+                callbackUrl,
+              });
+            }}
+            shape="pill"
+            expand="full"
+            mode="subtle"
+            Icon={Facebook}
+            loading={loading.facebook}
+            isDisabled={areButtonsDisabled}
+          >
+            Facebook
+          </Button>
+        </div>
       </div>
       {mode === 'login' ? (
         <>

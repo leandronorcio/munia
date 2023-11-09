@@ -10,7 +10,8 @@ A responsive and accessible full stack social media web app.
 - Like and unlike posts, comments and replies
 - Images and videos can be added to posts
 - Drag and drop sorting of images and videos when creating and editing a post
-- Hashtags and mentions can be added to posts
+- Hashtags can be added to posts
+- Users can @ mention other users in their posts, comments and replies
 - Bidirectional infinite scrolling of posts
 - Follow and unfollow other users
 - Search users with filters

@@ -24,6 +24,7 @@ export { default as Feather } from './Feather';
 export { default as ForwardArrow } from './ForwardArrow';
 export { default as FullScreenExpandResize } from './FullScreenExpandResize';
 export { default as Github } from './Github';
+export { default as Google } from './Google';
 export { default as GridFeedCards } from './GridFeedCards';
 export { default as Heart } from './Heart';
 export { default as Hide } from './Hide';
