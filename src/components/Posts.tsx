@@ -21,8 +21,8 @@ import SvgForwardArrow from '@/svg_components/ForwardArrow';
 import { postFramerVariants } from '@/lib/framerVariants';
 import { GenericLoading } from './GenericLoading';
 
-// If the `type` is 'hashtag', the `hashtag` property is needed
-// If the `type` is 'profile' | 'feed', the `userId` property is needed
+// If the `type` is 'profile' or 'feed', the `userId` property is required
+// If the `type` is 'hashtag', the `hashtag` property is required
 type PostsProps =
   | {
       type: 'hashtag';
@@ -48,21 +48,10 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
   // `shouldAnimate` is `false` when the browser's back button is pressed
   // `true` when the page is pushed
   const { shouldAnimate } = useShouldAnimate();
-  // When going back, render the cached posts right away to store the scroll
-  /**
-   *  When pushing a page that renders this component, `shouldRender` must be `false`
-   * to prevent rendering of cached React Query posts (if there's any)
-   * on mount, avoiding interference with NextJS scroll behavior i.e scroll
-   * to top when navigating to a new route. NextJS's scroll behavior is
-   * messed up when interfered by the instant rendering of posts.
-   */
-  const [shouldRender, setShouldRender] = useState(!shouldAnimate);
   // This keeps track of the number of pages loaded by the `fetchPreviousPage()`
   const [numberOfNewPostsLoaded, setNumberOfNewPostsLoaded] = useState(0);
 
   useEffect(() => {
-    if (!shouldRender) setShouldRender(true);
-
     // Reset the queries when the page has just been pushed, this is to account
     // for changes in the user's follows, e.g. if they start following people,
     // their posts must be shown in the user's feed
@@ -208,64 +197,60 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
 
   return (
     <>
-      {shouldRender && (
-        <>
-          <div ref={topElRef}></div>
-          <div className="flex flex-col">
-            <AnimatePresence>
-              {numberOfNewPostsLoaded !== 0 && (
-                <motion.div
-                  initial={{ height: 0 }}
-                  animate={{ height: 'auto' }}
-                  exit={{ height: 0 }}
-                  className="sticky top-5 z-10 mx-auto overflow-hidden"
-                >
-                  <ButtonNaked
-                    onPress={viewNewlyLoadedPosts}
-                    className="mt-4 inline-flex cursor-pointer select-none items-center gap-3 rounded-full bg-primary px-4 py-2  text-secondary-foreground hover:bg-primary-accent"
+      <div ref={topElRef}></div>
+      <div className="flex flex-col">
+        <AnimatePresence>
+          {numberOfNewPostsLoaded !== 0 && (
+            <motion.div
+              initial={{ height: 0 }}
+              animate={{ height: 'auto' }}
+              exit={{ height: 0 }}
+              className="sticky top-5 z-10 mx-auto overflow-hidden"
+            >
+              <ButtonNaked
+                onPress={viewNewlyLoadedPosts}
+                className="mt-4 inline-flex cursor-pointer select-none items-center gap-3 rounded-full bg-primary px-4 py-2  text-secondary-foreground hover:bg-primary-accent"
+              >
+                <div className="-rotate-90 rounded-full border-2 border-border bg-muted/70 p-[6px]">
+                  <SvgForwardArrow className="h-5 w-5" />
+                </div>
+                <p>
+                  <b>{numberOfNewPostsLoaded}</b> new{' '}
+                  {numberOfNewPostsLoaded > 1 ? 'posts' : 'post'} loaded
+                </p>
+              </ButtonNaked>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        {isPending ? (
+          <GenericLoading>Loading posts</GenericLoading>
+        ) : (
+          <AnimatePresence>
+            {data?.pages.map((page) =>
+              page.map((post, i) => {
+                return (
+                  <motion.div
+                    variants={postFramerVariants}
+                    initial={shouldAnimate ? 'start' : false}
+                    animate="animate"
+                    exit="exit"
+                    transition={{
+                      delay: deductLowerMultiple(i, POSTS_PER_PAGE) * 0.115,
+                    }}
+                    key={post.id}
                   >
-                    <div className="-rotate-90 rounded-full border-2 border-border bg-muted/70 p-[6px]">
-                      <SvgForwardArrow className="h-5 w-5" />
-                    </div>
-                    <p>
-                      <b>{numberOfNewPostsLoaded}</b> new{' '}
-                      {numberOfNewPostsLoaded > 1 ? 'posts' : 'post'} loaded
-                    </p>
-                  </ButtonNaked>
-                </motion.div>
-              )}
-            </AnimatePresence>
-            {isPending ? (
-              <GenericLoading>Loading posts</GenericLoading>
-            ) : (
-              <AnimatePresence>
-                {data?.pages.map((page) =>
-                  page.map((post, i) => {
-                    return (
-                      <motion.div
-                        variants={postFramerVariants}
-                        initial={shouldAnimate ? 'start' : false}
-                        animate="animate"
-                        exit="exit"
-                        transition={{
-                          delay: deductLowerMultiple(i, POSTS_PER_PAGE) * 0.115,
-                        }}
-                        key={post.id}
-                      >
-                        <Post
-                          id={post.id}
-                          commentsShown={post.commentsShown}
-                          toggleComments={toggleComments}
-                        />
-                      </motion.div>
-                    );
-                  }),
-                )}
-              </AnimatePresence>
+                    <Post
+                      id={post.id}
+                      commentsShown={post.commentsShown}
+                      toggleComments={toggleComments}
+                    />
+                  </motion.div>
+                );
+              }),
             )}
-          </div>
-        </>
-      )}
+          </AnimatePresence>
+        )}
+      </div>
 
       <div
         className="min-h-[16px]"
