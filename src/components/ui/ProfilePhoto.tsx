@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import { FallbackProfilePhoto } from './FallbackProfilePhoto';
-import Image from 'next/image';
 
 export function ProfilePhoto({
   name,
@@ -24,12 +23,9 @@ export function ProfilePhoto({
   return (
     <>
       {photoUrl ? (
-        <Image
-          src={photoUrl}
-          alt={`${name}'s profile photo.`}
-          width={1000}
-          height={1000}
-          className="cursor-pointer rounded-full"
+        <img
+          src={photoUrl || '/default-profile-photo.jpg'}
+          className="h-full w-full cursor-pointer rounded-full object-cover"
           onClick={handleClick}
         />
       ) : (
