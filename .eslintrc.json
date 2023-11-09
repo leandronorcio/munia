@@ -1,3 +1,7 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "rules": {
+    // Disable warning of not using Next.js's <Image> component
+    "@next/next/no-img-element": "off"
+  }
 }
