@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Munia
 
-## Getting Started
+A responsive and accessible full stack social media web app built with Next.js.
 
-First, run the development server:
+> [!NOTE]  
+> This project is a work in progress, it will be updated to stay up-to-date with the latest framework changes and more features will be added.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## Full technology stack
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`TypeScript`, `React`, `Next.js`, `NextAuth.js`, `TailwindCSS`, `React Query`, `React Aria`, `Zod`, `React Hook Form`, `Prisma`, `AWS S3`, `AWS SES`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## About this project
 
-[http://localhost:3000/api/hello](http://localhost:3000/api/hello) is an endpoint that uses [Route Handlers](https://beta.nextjs.org/docs/routing/route-handlers). This endpoint can be edited in `app/api/hello/route.ts`.
+This project is an open source portfolio project that explores how can a social media app be built with Next.js.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+It utilizes the following Next.js features:
 
-## Learn More
+- routing
+- static and dynamic rendering
+- server and client components
+- nested layouts
+- route handlers
+- middleware
+- partial pre-rendering
+- font optimizations
+- dynamic metadata
 
-To learn more about Next.js, take a look at the following resources:
+Due to the highly dynamic nature of social media apps, most data fetching and mutations are done on the client-side using React Query.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+React Query simplifies the implementation of features that would have been challenging and inefficient with Next.js's server components and server actions. These features include bidirectional infinite scrolling, optimistic updates, client-side data caching, client-side loading states, and more.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Accessibility
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The UI components are built with React Aria's accessibility hooks, assuring accessibility across different platforms.
