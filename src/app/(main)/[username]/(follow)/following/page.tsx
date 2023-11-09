@@ -24,7 +24,7 @@ export default async function Page({
   return (
     <div className="pt-4">
       <h1 className="mb-6 mt-1 text-4xl font-bold">
-        {profile?.name}'s Following
+        {profile?.name}&apos;s Following
       </h1>
       <DiscoverSearch label="Search Following" />
       <DiscoverFilters />
