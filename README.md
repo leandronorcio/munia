@@ -1,13 +1,44 @@
 # Munia
 
-A responsive and accessible full stack social media web app built with Next.js.
+A responsive and accessible full stack social media web app.
+
+## Features ✨
+
+- Email and OAuth 2.0 login (Github, Google and Facebook)
+- Users can update their info, profile photo and cover photo
+- Create, update and delete posts, comments and replies
+- Like and unlike posts, comments and replies
+- Images and videos can be added to posts
+- Drag and drop sorting of images and videos when creating and editing a post
+- Hashtags and mentions can be added to posts
+- Bidirectional infinite scrolling of posts
+- Follow and unfollow other users
+- Search users with filters
+- Display, search and filter a user's followers and following list
+- Activity logging and notifications
+- Gallery of user's uploaded photos and videos
+- Full-page image and videos slider
+- Accessible components
+- Fully responsive design
+- Dark and light themes
 
 > [!NOTE]  
 > This project is a work in progress, it will be updated to stay up-to-date with the latest framework changes and more features will be added.
 
-## Full technology stack
+## Tech Stack 🛠️
 
-`TypeScript`, `React`, `Next.js`, `NextAuth.js`, `TailwindCSS`, `React Query`, `React Aria`, `Zod`, `React Hook Form`, `Prisma`, `AWS S3`, `AWS SES`
+- [TypeScript](https://www.typescriptlang.org/)
+- [React](https://react.dev/)
+- [Next.js](https://nextjs.org/)
+- [NextAuth.js](https://next-auth.js.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [React Query](https://tanstack.com/query/latest/docs/react/overview)
+- [React Aria](https://react-spectrum.adobe.com/react-aria/getting-started.html)
+- [React Hook Form](https://react-hook-form.com/)
+- [Zod](https://zod.dev/)
+- [Prisma](https://www.prisma.io/)
+- [AWS S3](https://aws.amazon.com/s3/)
+- [AWS SES](https://aws.amazon.com/ses/)
 
 ## About this project
 
