@@ -20,10 +20,11 @@ export default function VisualMediaSlider({
 
   useEffect(() => {
     // When disabling a button, the focus should be manually set
-    // to not lose the focus scope trap within the dialog: https://github.com/adobe/react-spectrum/issues/1164#issuecomment-717394520
-    if (isBeginning) focusManager.focusLast();
-    if (isEnd) focusManager.focusPrevious();
-  }, [isBeginning, isEnd]);
+    // to not lose the focus scope trap within the dialog:
+    // https://github.com/adobe/react-spectrum/issues/1164#issuecomment-717394520
+    if (isBeginning) focusManager.focusLast(); // focus the next button
+    if (isEnd) focusManager.focusPrevious(); // focus the previous button
+  }, [isBeginning, isEnd, focusManager]);
 
   return (
     <Swiper
@@ -74,7 +75,11 @@ export default function VisualMediaSlider({
           <SwiperSlide key={i}>
             <div className="swiper-zoom-container">
               {type === 'PHOTO' ? (
-                <img src={visualMedia.url} className="max-h-full" />
+                <img
+                  src={visualMedia.url}
+                  alt="Post photo"
+                  className="max-h-full"
+                />
               ) : (
                 <video className="max-h-[75%]" autoPlay controls>
                   <source src={url} type="video/mp4" />

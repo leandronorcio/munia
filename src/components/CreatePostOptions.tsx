@@ -1,8 +1,8 @@
 'use client';
 
-import { Image } from '@/svg_components';
 import { forwardRef, useRef } from 'react';
 import { ButtonNaked } from './ui/ButtonNaked';
+import SvgImage from '@/svg_components/Image';
 
 export const CreatePostOptions = forwardRef<
   HTMLInputElement,
@@ -19,7 +19,7 @@ export const CreatePostOptions = forwardRef<
         className="flex gap-4"
         onPress={() => localRef.current?.click()}
       >
-        <Image className="h-6 w-6 text-muted-foreground" />
+        <SvgImage className="h-6 w-6 text-muted-foreground" />
         <p className="text-base font-semibold text-muted-foreground group-hover:text-muted-foreground/80">
           Image / Video
         </p>

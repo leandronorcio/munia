@@ -1,6 +1,5 @@
 import { useDialogs } from '@/hooks/useDialogs';
 import { QueryKey } from '@tanstack/react-query';
-import { useCallback } from 'react';
 import { useUpdateDeleteCommentMutations } from './mutations/useUpdateDeleteCommentMutations';
 
 // Use this hook for updating and deleting comments/replies.
@@ -9,21 +8,24 @@ export function useUpdateDeleteComments({ queryKey }: { queryKey: QueryKey }) {
     useUpdateDeleteCommentMutations({ queryKey });
   const { prompt, confirm } = useDialogs();
 
-  const handleEdit = useCallback(
-    ({ commentId, content }: { commentId: number; content: string }) => {
-      prompt({
-        title: 'Edit Comment',
-        initialPromptValue: content,
-        promptType: 'textarea',
-        onSubmit: async (value) => {
-          updateCommentMutation.mutate({ commentId, content: value });
-        },
-      });
-    },
-    [],
-  );
+  const handleEdit = ({
+    commentId,
+    content,
+  }: {
+    commentId: number;
+    content: string;
+  }) => {
+    prompt({
+      title: 'Edit Comment',
+      initialPromptValue: content,
+      promptType: 'textarea',
+      onSubmit: async (value) => {
+        updateCommentMutation.mutate({ commentId, content: value });
+      },
+    });
+  };
 
-  const handleDelete = useCallback(({ commentId }: { commentId: number }) => {
+  const handleDelete = ({ commentId }: { commentId: number }) => {
     confirm({
       title: 'Confirm Delete',
       message: 'Do you really wish to delete this comment?',
@@ -35,7 +37,7 @@ export function useUpdateDeleteComments({ queryKey }: { queryKey: QueryKey }) {
         }, 300);
       },
     });
-  }, []);
+  };
 
   return { handleEdit, handleDelete };
 }

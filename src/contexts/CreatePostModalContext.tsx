@@ -18,7 +18,8 @@ export interface ToEditValues {
   initialVisualMedia: GetVisualMedia[];
 }
 
-// Separate the `data` and `api` part of the context to prevent re-rendering of the `api` consumers when the `data` changes
+// Separate the `data` and `api` part of the context to prevent
+// re-rendering of the `api` consumers when the `data` changes
 const CreatePostModalContextData = createContext<{
   toEditValues: ToEditValues | null;
   shouldOpenFileInputOnMount: boolean;
@@ -54,7 +55,8 @@ function CreatePostModalContextProvider({
       setToEditValues,
       setShouldOpenFileInputOnMount,
     }),
-    [],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [], // Don't add `state.setOpen` here, otherwise our memoization technique won't work
   );
 
   return (

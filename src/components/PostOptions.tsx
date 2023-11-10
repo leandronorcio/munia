@@ -2,7 +2,7 @@ import { Item, Section } from 'react-stately';
 import { DropdownMenuButton } from './ui/DropdownMenuButton';
 import { useDialogs } from '@/hooks/useDialogs';
 import { GetVisualMedia } from '@/types/definitions';
-import { Key, useCallback } from 'react';
+import { Key } from 'react';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { useDeletePostMutation } from '@/hooks/mutations/useDeletePostMutation';
 
@@ -31,24 +31,21 @@ export function PostOptions({
     });
   };
 
-  const editPost = useCallback(
-    ({
+  const editPost = ({
+    postId,
+    content,
+    visualMedia,
+  }: {
+    postId: number;
+    content: string;
+    visualMedia?: GetVisualMedia[];
+  }) => {
+    launchEditPost({
       postId,
-      content,
-      visualMedia,
-    }: {
-      postId: number;
-      content: string;
-      visualMedia?: GetVisualMedia[];
-    }) => {
-      launchEditPost({
-        postId,
-        initialContent: content,
-        initialVisualMedia: visualMedia || [],
-      });
-    },
-    [],
-  );
+      initialContent: content,
+      initialVisualMedia: visualMedia || [],
+    });
+  };
 
   const handleEditClick = () => {
     editPost({ postId, content: content || '', visualMedia });

@@ -21,7 +21,7 @@ export function CommentContent({
   useEffect(() => {
     if (!shouldHighlight) return;
     if (ref.current) ref.current.scrollIntoView({ behavior: 'smooth' });
-  }, [ref.current]);
+  }, [shouldHighlight]);
 
   return (
     <div ref={ref}>

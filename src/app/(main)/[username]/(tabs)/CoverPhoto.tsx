@@ -3,7 +3,7 @@ import Button from '@/components/ui/Button';
 import { useUpdateProfileAndCoverPhotoClient } from '@/hooks/useUpdateProfileAndCoverPhotoClient';
 import { useVisualMediaModal } from '@/hooks/useVisualMediaModal';
 import { cn } from '@/lib/cn';
-import { Image } from '@/svg_components';
+import SvgImage from '@/svg_components/Image';
 
 export default function CoverPhoto({
   isOwnProfile,
@@ -25,7 +25,8 @@ export default function CoverPhoto({
           className="absolute h-full w-full object-cover"
         />
       )}
-      <div
+      <button
+        aria-label="Open cover photo"
         onClick={() =>
           photoUrl !== null &&
           showVisualMediaModal({
@@ -39,7 +40,7 @@ export default function CoverPhoto({
           })
         }
         className="absolute h-full w-full cursor-pointer bg-black/30 opacity-0 active:opacity-100 "
-      ></div>
+      ></button>
       {isOwnProfile && (
         <label>
           <div className="absolute bottom-4 right-4">
@@ -53,7 +54,7 @@ export default function CoverPhoto({
             />
             <Button
               Icon={(props) => (
-                <Image
+                <SvgImage
                   className={cn(props.className, 'text-primary-foreground')}
                 />
               )}

@@ -15,6 +15,9 @@ import { Item, Section } from 'react-stately';
 import { ButtonNaked } from './ui/ButtonNaked';
 import { useCreateCommentMutations } from '@/hooks/mutations/useCreateCommentMutations';
 import { ProfilePhoto } from './ui/ProfilePhoto';
+import { useUpdateDeleteComments } from '@/hooks/useUpdateDeleteComments';
+import { useLikeUnlikeComments } from '@/hooks/useLikeUnlikeComments';
+import { QueryKey } from '@tanstack/react-query';
 
 export const Comment = memo(
   function Comment({
@@ -26,23 +29,19 @@ export const Comment = memo(
     isLiked,
     _count,
     repliesShown,
-    handleEdit,
-    handleDelete,
     toggleReplies,
-    likeComment,
-    unLikeComment,
+    queryKey,
   }: GetComment & {
     isOwnComment: boolean;
-    handleEdit: (params: { commentId: number; content: string }) => void;
-    handleDelete: (params: { commentId: number }) => void;
     toggleReplies: (params: { commentId: number }) => void;
-    likeComment: (params: { commentId: number }) => void;
-    unLikeComment: (params: { commentId: number }) => void;
+    queryKey: QueryKey;
   }) {
     const numberOfLikes = _count.commentLikes;
     const numberOfReplies = _count.replies;
     const { prompt } = useDialogs();
     const { createReplyMutation } = useCreateCommentMutations();
+    const { handleEdit, handleDelete } = useUpdateDeleteComments({ queryKey });
+    const { likeComment, unLikeComment } = useLikeUnlikeComments({ queryKey });
 
     const searchParams = useSearchParams();
     // Highlight comment if the `commentId` is equal to the `comment-id` search param
@@ -56,6 +55,7 @@ export const Comment = memo(
       if (!shouldOpenRepliesOnMount) return;
       if (repliesShown) return;
       toggleReplies({ commentId });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleCreateReply = () => {

@@ -59,6 +59,8 @@ export function DialogsContextProvider({
 
   useEffect(() => {
     if (state.isOpen === false) return;
+
+    // If there is a prompt (input or textarea), focus it on initial render
     if (dialog.promptType === 'input') {
       if (inputRef.current === null) return;
       inputRef.current.focus();
@@ -66,7 +68,7 @@ export function DialogsContextProvider({
       if (textareaRef.current === null) return;
       textareaRef.current.focus();
     }
-  }, [state.isOpen]);
+  }, [state.isOpen, dialog.promptType]);
 
   const hide = () => {
     state.close();
@@ -115,7 +117,8 @@ export function DialogsContextProvider({
       setShown: state.setOpen,
       setDialog,
     }),
-    [],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [], // Don't add `state.setOpen` here, otherwise our memoization technique won't work
   );
 
   return (

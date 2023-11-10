@@ -37,6 +37,7 @@ export function PostVisualMedia({
       {type === 'PHOTO' ? (
         <img
           src={url}
+          alt="Post photo"
           className={cn(
             'h-full w-full object-cover ',
             isPressed && 'brightness-75',

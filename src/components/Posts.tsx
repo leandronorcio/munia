@@ -6,7 +6,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { GetPost, PostIds } from '@/types/definitions';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import useOnScreen from '@/hooks/useOnScreen';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Post } from './Post';
@@ -37,10 +37,14 @@ type PostsProps =
 
 export function Posts({ type, hashtag, userId }: PostsProps) {
   const qc = useQueryClient();
-  const queryKey =
-    type === 'hashtag'
-      ? ['posts', { hashtag }]
-      : ['users', userId, 'posts', { type }];
+  // Need to memoize `queryKey`, so when used in a dependency array, it won't trigger the `useEffect`/`useCallback`
+  const queryKey = useMemo(
+    () =>
+      type === 'hashtag'
+        ? ['posts', { hashtag }]
+        : ['users', userId, 'posts', { type }],
+    [type, userId, hashtag],
+  );
   const topElRef = useRef<HTMLDivElement>(null);
   const isTopOnScreen = useOnScreen(topElRef);
   const bottomElRef = useRef<HTMLDivElement>(null);
@@ -51,39 +55,6 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
   // This keeps track of the number of pages loaded by the `fetchPreviousPage()`
   const [numberOfNewPostsLoaded, setNumberOfNewPostsLoaded] = useState(0);
 
-  useEffect(() => {
-    // Reset the queries when the page has just been pushed, this is to account
-    // for changes in the user's follows, e.g. if they start following people,
-    // their posts must be shown in the user's feed
-    if (shouldAnimate) {
-      // Need to manually reset as the `staleTime` is set to `Infinity`
-      qc.resetQueries({ queryKey, exact: true });
-    }
-
-    // Check for new posts every 5 seconds, this allows for bidirectional infinite queries
-    const interval = setInterval(() => {
-      fetchPreviousPage();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    if (!isBottomOnScreen) return;
-    if (!data) return;
-    if (!hasNextPage) return;
-
-    fetchNextPage();
-  }, [isBottomOnScreen]);
-
-  useEffect(() => {
-    // If top of <Posts> is on screen and the `numberOfNewPostsLoaded` is more than 0, reset the `numberOfNewPostsLoaded`
-    if (!isTopOnScreen) return;
-    if (!numberOfNewPostsLoaded) return;
-
-    setTimeout(() => setNumberOfNewPostsLoaded(0), 1000);
-  }, [isTopOnScreen, numberOfNewPostsLoaded]);
-
   const {
     data,
     error,
@@ -92,7 +63,6 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
     fetchNextPage,
     hasNextPage,
     fetchPreviousPage,
-    isFetching,
     isFetchingNextPage,
   } = useInfiniteQuery<PostIds, Error, InfiniteData<PostIds>, QueryKey, number>(
     {
@@ -162,38 +132,69 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
     },
   );
 
+  useEffect(() => {
+    // Reset the queries when the page has just been pushed, this is to account
+    // for changes in the user's follows, e.g. if they start following people,
+    // their posts must be shown in the user's feed
+    if (shouldAnimate) {
+      // Need to manually reset as the `staleTime` is set to `Infinity`
+      qc.resetQueries({ queryKey, exact: true });
+    }
+  }, [shouldAnimate, qc, queryKey]);
+
+  useEffect(() => {
+    // Check for new posts every 5 seconds, this allows for bidirectional infinite queries
+    const interval = setInterval(fetchPreviousPage, 5000);
+    return () => clearInterval(interval);
+  }, [fetchPreviousPage]);
+
+  useEffect(() => {
+    if (isBottomOnScreen && hasNextPage) fetchNextPage();
+  }, [isBottomOnScreen, hasNextPage, fetchNextPage]);
+
+  useEffect(() => {
+    // If top of <Posts> is on screen and the `numberOfNewPostsLoaded` is more than 0,
+    // reset the `numberOfNewPostsLoaded`
+    if (isTopOnScreen && numberOfNewPostsLoaded) {
+      setTimeout(() => setNumberOfNewPostsLoaded(0), 1000);
+    }
+  }, [isTopOnScreen, numberOfNewPostsLoaded]);
+
   const viewNewlyLoadedPosts = () => {
     topElRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const toggleComments = useCallback(async (postId: number) => {
-    qc.setQueryData<InfiniteData<{ id: number; commentsShown: boolean }[]>>(
-      queryKey,
-      (oldData) => {
-        if (!oldData) return;
+  const toggleComments = useCallback(
+    async (postId: number) => {
+      qc.setQueryData<InfiniteData<{ id: number; commentsShown: boolean }[]>>(
+        queryKey,
+        (oldData) => {
+          if (!oldData) return;
 
-        // Flatten the old pages
-        const newPosts = oldData?.pages.flat();
+          // Flatten the old pages
+          const newPosts = oldData?.pages.flat();
 
-        // Find the index of the post
-        const index = newPosts.findIndex((post) => post.id === postId);
+          // Find the index of the post
+          const index = newPosts.findIndex((post) => post.id === postId);
 
-        // Get the value of the old post
-        const oldPost = newPosts[index];
+          // Get the value of the old post
+          const oldPost = newPosts[index];
 
-        // Toggle the `commentsShown` boolean property of the target post
-        newPosts[index] = {
-          ...oldPost,
-          commentsShown: !oldPost.commentsShown,
-        };
+          // Toggle the `commentsShown` boolean property of the target post
+          newPosts[index] = {
+            ...oldPost,
+            commentsShown: !oldPost.commentsShown,
+          };
 
-        return {
-          pages: chunk(newPosts, POSTS_PER_PAGE),
-          pageParams: oldData.pageParams,
-        };
-      },
-    );
-  }, []);
+          return {
+            pages: chunk(newPosts, POSTS_PER_PAGE),
+            pageParams: oldData.pageParams,
+          };
+        },
+      );
+    },
+    [qc, queryKey],
+  );
 
   return (
     <>

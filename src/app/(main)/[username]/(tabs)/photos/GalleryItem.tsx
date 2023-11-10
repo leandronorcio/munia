@@ -35,6 +35,7 @@ export function GalleryItem({
             'h-full w-full object-cover ',
             isPressed && 'brightness-75',
           )}
+          alt="Gallery photo"
         />
       ) : (
         <>

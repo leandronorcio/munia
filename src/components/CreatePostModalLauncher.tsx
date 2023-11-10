@@ -1,8 +1,8 @@
 'use client';
-import { Image } from '@/svg_components';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 import { ButtonNaked } from './ui/ButtonNaked';
+import SvgImage from '@/svg_components/Image';
 
 export function CreatePostModalLauncher() {
   const { launchCreatePost } = useCreatePost();
@@ -30,7 +30,7 @@ export function CreatePostModalLauncher() {
           }}
           className="group flex cursor-pointer flex-row items-center gap-4"
         >
-          <Image className="h-6 w-6 text-muted-foreground" />
+          <SvgImage className="h-6 w-6 text-muted-foreground" />
           <p className="text-base font-semibold text-muted-foreground group-hover:text-muted-foreground/80">
             Image / Video
           </p>

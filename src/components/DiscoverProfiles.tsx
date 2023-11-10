@@ -95,11 +95,8 @@ export function DiscoverProfiles({
   });
 
   useEffect(() => {
-    if (!isBottomOnScreen) return;
-    if (!hasNextPage) return;
-
-    fetchNextPage();
-  }, [isBottomOnScreen]);
+    if (isBottomOnScreen && hasNextPage) fetchNextPage();
+  }, [isBottomOnScreen, hasNextPage, fetchNextPage]);
 
   return (
     <>

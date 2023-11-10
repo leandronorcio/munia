@@ -18,12 +18,10 @@ export function Activities({ userId }: { userId: string }) {
   const isBottomOnScreen = useOnScreen(bottomElRef);
   const {
     data,
-    error,
     isPending,
     isError,
     fetchNextPage,
     hasNextPage,
-    isFetching,
     isFetchingNextPage,
   } = useInfiniteQuery<
     GetActivity[],
@@ -59,12 +57,8 @@ export function Activities({ userId }: { userId: string }) {
   });
 
   useEffect(() => {
-    if (!isBottomOnScreen) return;
-    if (!data) return;
-    if (!hasNextPage) return;
-
-    fetchNextPage();
-  }, [isBottomOnScreen]);
+    if (isBottomOnScreen && hasNextPage) fetchNextPage();
+  }, [isBottomOnScreen, hasNextPage, fetchNextPage]);
 
   return (
     <>

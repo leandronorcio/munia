@@ -3,6 +3,7 @@ import {
   Dispatch,
   FormEvent,
   SetStateAction,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -52,9 +53,6 @@ export function TextAreaWithMentionsAndHashTags({
 
   const popoverState = useOverlayTriggerState({});
   const { isOpen: mentionsShown, setOpen: setMentionsShown } = popoverState;
-  // If the <Popover> `isNonModal` is `true`, it will not be closed
-  // when the user clicks outside, but we can handle it manually
-  const [popoverRef] = useClickOutside(() => closeMentions());
 
   // This query will refetch every time the `searchKeyword` state changess
   const { data, isPending, isError } = useQuery({
@@ -76,12 +74,16 @@ export function TextAreaWithMentionsAndHashTags({
     setFocused(data[0]?.username || '');
   }, [data]);
 
-  const closeMentions = () => {
+  const closeMentions = useCallback(() => {
     setSearchKeyword('');
     setMentionsShown(false);
     setFocused('');
     posOfActiveAt.current = 0;
-  };
+  }, [setMentionsShown]);
+
+  // Since the <Popover>'s `isNonModal` is `true`, it will not be closed
+  // when the user clicks outside, but we can handle it manually
+  const [popoverRef] = useClickOutside(closeMentions);
 
   const handleSelectUserToMention = (username: string) => {
     setContent(
@@ -149,15 +151,15 @@ export function TextAreaWithMentionsAndHashTags({
         textareaRef.current?.scrollHeight + 'px';
   }, [content]);
 
-  // Focus the `TextArea` on mount if requested
   useEffect(() => {
+    // Focus the `TextArea` on mount if requested
     if (!shouldFocusOnMount) return;
 
     textareaRef.current?.focus();
     // Set the cursor position to the end of the `TextArea`'s value
-    const start = content.length;
+    const start = textareaRef.current?.value.length || 0;
     textareaRef.current?.setSelectionRange(start, start);
-  }, [textareaRef]);
+  }, [shouldFocusOnMount]);
 
   const { keyboardProps } = useKeyboard({
     onKeyDown: (e) => {

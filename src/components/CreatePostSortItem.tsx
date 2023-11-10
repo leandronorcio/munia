@@ -49,7 +49,11 @@ export function CreatePostSortItem({
       </div>
       <div className="h-[240px]">
         {type === 'PHOTO' ? (
-          <img src={url} className="h-full w-full rounded-md object-cover" />
+          <img
+            src={url}
+            alt="Post photo"
+            className="h-full w-full rounded-md object-cover"
+          />
         ) : (
           <video className="z-10 h-full w-full rounded-md object-cover">
             <source src={url} />

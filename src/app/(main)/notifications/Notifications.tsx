@@ -92,20 +92,13 @@ export function Notifications() {
   });
 
   useEffect(() => {
-    if (!isBottomOnScreen) return;
-    if (!data) return;
-    if (!hasNextPage) return;
-
-    fetchNextPage();
-  }, [isBottomOnScreen]);
+    if (isBottomOnScreen && hasNextPage) fetchNextPage();
+  }, [isBottomOnScreen, hasNextPage, fetchNextPage]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      fetchPreviousPage();
-    }, 5000);
-
+    const interval = setInterval(fetchPreviousPage, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchPreviousPage]);
 
   const markAllAsRead = () => markAllAsReadMutation.mutate();
 

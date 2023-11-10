@@ -18,14 +18,12 @@ import {
   BuildingBusinessOffice,
   Bullhorn,
   Heart,
-  Mail,
   Other,
   Phone,
   Profile,
   WorldNet,
 } from '@/svg_components';
 import { UserAboutSchema, userAboutSchema } from '@/lib/validations/userAbout';
-import { useEffect } from 'react';
 import { formatISO } from 'date-fns';
 import { parseDate } from '@internationalized/date';
 import { useSessionUserData } from '@/hooks/useSessionUserData';
@@ -55,11 +53,6 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
     });
   const { updateSessionUserDataMutation } = useSessionUserDataMutation();
   const router = useRouter();
-
-  useEffect(() => {
-    if (!userData) return;
-    reset(defaultValues);
-  }, [userData]);
 
   const onValid: SubmitHandler<UserAboutSchema> = (data) => {
     updateSessionUserDataMutation.mutate(

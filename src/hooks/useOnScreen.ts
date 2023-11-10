@@ -21,7 +21,7 @@ const useOnScreen = (ref: RefObject<HTMLDivElement>, rootMargin = '0px') => {
     return () => {
       observer.unobserve(currentElement);
     };
-  }, []);
+  }, [ref, rootMargin]);
 
   return isVisible;
 };

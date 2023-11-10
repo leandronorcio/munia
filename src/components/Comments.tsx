@@ -1,23 +1,19 @@
 'use client';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { Comment } from './Comment';
 import { AnimatePresence, motion } from 'framer-motion';
 import { GetComment } from '@/types/definitions';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchComments } from '@/lib/query-functions/fetchComments';
 import { useSession } from 'next-auth/react';
-import { useUpdateDeleteComments } from '@/hooks/useUpdateDeleteComments';
-import { useLikeUnlikeComments } from '@/hooks/useLikeUnlikeComments';
 import { CommentCreate } from './CommentCreate';
 import { useShouldAnimate } from '@/hooks/useShouldAnimate';
 import { commentFramerVariants } from '@/lib/framerVariants';
 
 export function Comments({ postId }: { postId: number }) {
   const qc = useQueryClient();
-  const queryKey = ['posts', postId, 'comments'];
+  const queryKey = useMemo(() => ['posts', postId, 'comments'], [postId]);
 
-  const { handleEdit, handleDelete } = useUpdateDeleteComments({ queryKey });
-  const { likeComment, unLikeComment } = useLikeUnlikeComments({ queryKey });
   const { data: session } = useSession();
   const { shouldAnimate } = useShouldAnimate();
 
@@ -31,26 +27,28 @@ export function Comments({ postId }: { postId: number }) {
     queryFn: () => fetchComments({ postId }),
     staleTime: 60000 * 10,
   });
+  const toggleReplies = useCallback(
+    ({ commentId }: { commentId: number }) => {
+      qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
+        if (!oldComments) return;
+        // Make a shallow copy of `oldComments`
+        const newComments = [...oldComments];
 
-  const toggleReplies = useCallback(({ commentId }: { commentId: number }) => {
-    qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
-      if (!oldComments) return;
-      // Make a shallow copy of `oldComments`
-      const newComments = [...oldComments];
+        // Find the index of the comment to update
+        const index = newComments.findIndex(
+          (comment) => comment.id === commentId,
+        );
 
-      // Find the index of the comment to update
-      const index = newComments.findIndex(
-        (comment) => comment.id === commentId,
-      );
-
-      const oldComment = newComments[index];
-      newComments[index] = {
-        ...oldComment,
-        repliesShown: !oldComment?.repliesShown,
-      };
-      return newComments;
-    });
-  }, []);
+        const oldComment = newComments[index];
+        newComments[index] = {
+          ...oldComment,
+          repliesShown: !oldComment?.repliesShown,
+        };
+        return newComments;
+      });
+    },
+    [qc, queryKey],
+  );
 
   return (
     <div>
@@ -73,11 +71,8 @@ export function Comments({ postId }: { postId: number }) {
                   <Comment
                     {...comment}
                     {...{
-                      handleEdit,
-                      handleDelete,
                       toggleReplies,
-                      likeComment,
-                      unLikeComment,
+                      queryKey,
                     }}
                     isOwnComment={session?.user?.id === comment.user.id}
                   />

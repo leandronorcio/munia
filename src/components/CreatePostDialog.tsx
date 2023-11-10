@@ -46,7 +46,6 @@ export function CreatePostDialog() {
       type: file.type.startsWith('image/') ? 'PHOTO' : 'VIDEO',
       url: URL.createObjectURL(file),
     }));
-    console.log(selectedVisualMedia);
     setVisualMedia((prev) => [...prev, ...selectedVisualMedia]);
     // Clear the file input
     e.target.value = '';
@@ -93,12 +92,12 @@ export function CreatePostDialog() {
   useEffect(() => {
     if (inputFileRef.current === null) return;
     if (shouldOpenFileInputOnMount) inputFileRef.current.click();
-  }, [inputFileRef.current]);
+  }, [shouldOpenFileInputOnMount]);
 
   useEffect(() => {
     if (textareaRef.current === null) return;
     textareaRef.current.focus();
-  }, [textareaRef.current]);
+  }, []);
 
   useEffect(() => {
     const onEscPressed = (e: KeyboardEvent) => {
@@ -109,7 +108,8 @@ export function CreatePostDialog() {
     return () => {
       document.removeEventListener('keydown', onEscPressed, false);
     };
-  }, [handleClose]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <GenericDialog title={`${capitalize(mode)} Post`} handleClose={handleClose}>
