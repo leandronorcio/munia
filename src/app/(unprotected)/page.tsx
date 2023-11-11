@@ -1,4 +1,4 @@
-import { Feather, Github, LogInSquare } from '@/svg_components';
+import { Feather } from '@/svg_components';
 import { ButtonLink } from '@/components/ui/ButtonLink';
 import { LogoText } from '@/components/LogoText';
 
@@ -16,14 +16,13 @@ export default function Page() {
             web app built with Next.js.
           </p>
           <div className="mt-6 flex justify-center gap-3">
-            <ButtonLink href="/login" size="medium" Icon={LogInSquare}>
+            <ButtonLink href="/login" size="medium">
               Get Started
             </ButtonLink>
             <ButtonLink
               href="https://github.com/leandronorcio/munia"
               size="medium"
               mode="subtle"
-              Icon={Github}
             >
               Github
             </ButtonLink>
