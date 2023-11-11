@@ -10,6 +10,7 @@ import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import { useRouter } from 'next/navigation';
 import { Ellipse } from '@/svg_components';
+import { ButtonLink } from '@/components/ui/ButtonLink';
 
 export function ProfileHeader({
   isOwnProfile,
@@ -40,13 +41,9 @@ export function ProfileHeader({
         />
         <div className="absolute -bottom-20 right-2 md:right-0">
           {isOwnProfile ? (
-            <Button
-              shape="pill"
-              mode="subtle"
-              onPress={() => router.push('/edit-profile')}
-            >
+            <ButtonLink shape="pill" mode="subtle" href="/edit-profile">
               Edit Profile
-            </Button>
+            </ButtonLink>
           ) : (
             <ProfileActionButtons targetUserId={profile.id} />
           )}

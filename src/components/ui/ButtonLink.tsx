@@ -1,6 +1,5 @@
-'use client';
-import { useRouter } from 'next/navigation';
-import Button, { ButtonProps } from './Button';
+import { ButtonProps, buttonVariants } from './Button';
+import Link from 'next/link';
 
 interface ButtonLinkProps extends ButtonProps {
   href: string;
@@ -8,13 +7,14 @@ interface ButtonLinkProps extends ButtonProps {
 export function ButtonLink({
   href,
   children,
-  ...buttonProps
+  size,
+  mode,
+  shape,
+  expand,
 }: ButtonLinkProps) {
-  const router = useRouter();
-
   return (
-    <Button {...buttonProps} onPress={() => router.push(href)}>
+    <Link href={href} className={buttonVariants({ size, mode, shape, expand })}>
       {children}
-    </Button>
+    </Link>
   );
 }

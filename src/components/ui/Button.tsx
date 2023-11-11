@@ -7,7 +7,7 @@ import { VariantProps, cva } from 'class-variance-authority';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import SvgLoading from '@/svg_components/Loading';
 
-const button = cva(
+export const buttonVariants = cva(
   'group flex flex-row items-center justify-center font-semibold transition-transform focus:outline-none active:scale-95 active:ring-4 disabled:cursor-not-allowed disabled:opacity-70',
   {
     variants: {
@@ -68,7 +68,7 @@ const icon = cva('', {
 });
 
 export interface ButtonProps
-  extends VariantProps<typeof button>,
+  extends VariantProps<typeof buttonVariants>,
     AriaButtonProps {
   children?: React.ReactNode;
   Icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
@@ -91,7 +91,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
       {...mergeProps(buttonProps, focusProps)}
       ref={ref}
       className={cn(
-        [button({ size, mode, shape, expand })],
+        [buttonVariants({ size, mode, shape, expand })],
         iconOnly && 'rounded-full p-3',
         isFocusVisible && 'ring-2 ring-violet-500 ring-offset-2',
         className,
