@@ -10,7 +10,6 @@ import {
 } from 'react';
 import { resizeTextAreaHeight } from '@/lib/resizeTextAreaHeight';
 import { useQuery } from '@tanstack/react-query';
-import { UserSummaryAfterSetUp } from '@/types/definitions';
 import { replaceWordAtCursor } from '@/lib/replaceWordAtCursor';
 import { cn } from '@/lib/cn';
 import { HighlightedMentionsAndHashTags } from './HighlightedMentionsAndHashTags';
@@ -24,6 +23,7 @@ import { useOverlayTriggerState } from 'react-stately';
 import { Popover } from './ui/Popover';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { TextAreaMentionItem } from './TextAreaMentionItem';
+import { getUsers } from '@/lib/client_data_fetching/getUsers';
 
 interface TextAreaWithMentionsAndHashTagsProps extends AriaTextFieldProps {
   content: string;
@@ -57,13 +57,7 @@ export function TextAreaWithMentionsAndHashTags({
   // This query will refetch every time the `searchKeyword` state changess
   const { data, isPending, isError } = useQuery({
     queryKey: ['mentions', 'search', { keyword: searchKeyword }],
-    queryFn: async () => {
-      const res = await fetch(`/api/users-basic?search=${searchKeyword}`);
-      if (!res.ok) {
-        throw new Error('Error fetching users to mention.');
-      }
-      return (await res.json()) as UserSummaryAfterSetUp[];
-    },
+    queryFn: async () => await getUsers({ searchKeyword }),
     staleTime: 60000 * 10,
     enabled: !!searchKeyword,
   });
