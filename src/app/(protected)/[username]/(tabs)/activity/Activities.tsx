@@ -9,9 +9,9 @@ import {
 import { useEffect, useRef } from 'react';
 import { GetActivity } from '@/types/definitions';
 import { Activity } from '@/components/Activity';
-import { ACTIVITIES_PER_PAGE } from '@/constants';
 import { SomethingWentWrong } from '@/components/SometingWentWrong';
 import { GenericLoading } from '@/components/GenericLoading';
+import { getActivities } from '@/lib/client_data_fetching/getActivities';
 
 export function Activities({ userId }: { userId: string }) {
   const bottomElRef = useRef<HTMLDivElement>(null);
@@ -32,16 +32,8 @@ export function Activities({ userId }: { userId: string }) {
   >({
     queryKey: ['users', userId, 'activity'],
     defaultPageParam: 0,
-    queryFn: async ({ pageParam }) => {
-      const res = await fetch(
-        `/api/users/${userId}/activity?limit=${ACTIVITIES_PER_PAGE}&cursor=${pageParam}`,
-      );
-      if (!res.ok) {
-        throw new Error('Failed to load activities.');
-      }
-
-      return (await res.json()) as GetActivity[];
-    },
+    queryFn: async ({ pageParam: cursor }) =>
+      await getActivities({ userId, cursor }),
     getNextPageParam: (lastPage, pages) => {
       // If the `pages` `length` is 0, that means there is not a single activity to load
       if (pages.length === 0) return undefined;

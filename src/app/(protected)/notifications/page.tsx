@@ -1,3 +1,4 @@
+import { getServerUser } from '@/lib/getServerUser';
 import { Notifications } from './Notifications';
 
 export const metadata = {
@@ -5,9 +6,12 @@ export const metadata = {
 };
 
 export default async function Page() {
+  const [user] = await getServerUser();
+
+  if (!user) return null;
   return (
     <div className="px-4 pt-4">
-      <Notifications />
+      <Notifications userId={user.id} />
     </div>
   );
 }

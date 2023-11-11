@@ -10,18 +10,16 @@ import { useEffect, useRef } from 'react';
 import { GetActivity } from '@/types/definitions';
 import { Activity } from '@/components/Activity';
 import { AllCaughtUp } from '@/components/AllCaughtUp';
-import { useSession } from 'next-auth/react';
 import { useNotificationsReadStatusMutations } from '@/hooks/mutations/useNotificationsReadStatusMutations';
-import { ACTIVITIES_PER_PAGE, NO_PREV_DATA_LOADED } from '@/constants';
+import { NO_PREV_DATA_LOADED } from '@/constants';
 import { DropdownMenuButton } from '@/components/ui/DropdownMenuButton';
 import { Section, Item } from 'react-stately';
 import { useNotificationsCountQuery } from '@/hooks/queries/useNotificationsCountQuery';
 import { GenericLoading } from '@/components/GenericLoading';
 import { SomethingWentWrong } from '@/components/SometingWentWrong';
+import { getNotifications } from '@/lib/client_data_fetching/getNotifications';
 
-export function Notifications() {
-  const { data: session } = useSession();
-  const userId = session?.user.id;
+export function Notifications({ userId }: { userId: string }) {
   const { data: notificationCount } = useNotificationsCountQuery();
   const { markAllAsReadMutation } = useNotificationsReadStatusMutations();
 
@@ -45,24 +43,16 @@ export function Notifications() {
   >({
     queryKey: ['users', userId, 'notifications'],
     defaultPageParam: 0,
-    queryFn: async ({ pageParam, direction }) => {
+    queryFn: async ({ pageParam: cursor, direction }) => {
+      const activities = await getNotifications({
+        userId,
+        cursor,
+        direction,
+      });
+
       const isForwards = direction === 'forward';
-      const params = new URLSearchParams('');
-      params.set('limit', ACTIVITIES_PER_PAGE.toString());
-      params.set('cursor', pageParam.toString());
-      params.set('sort-direction', isForwards ? 'desc' : 'asc');
-
-      const res = await fetch(
-        `/api/users/${userId}/notifications?${params.toString()}`,
-      );
-      if (!res.ok) {
-        throw new Error('Failed to load notifications.');
-      }
-
-      const activities = (await res.json()) as GetActivity[];
-
-      // Prevent React Query from 'prepending' the data with an empty array
       if (!activities.length && !isForwards) {
+        // Prevent React Query from 'prepending' the data with an empty array
         throw new Error(NO_PREV_DATA_LOADED);
       }
 
