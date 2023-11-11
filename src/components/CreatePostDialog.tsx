@@ -126,7 +126,6 @@ export function CreatePostDialog() {
         </div>
         <div>
           <Button
-            mode="secondary"
             onPress={handleClickPostButton}
             size="small"
             isDisabled={content === '' && visualMedia.length === 0}
