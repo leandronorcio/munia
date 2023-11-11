@@ -16,8 +16,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { SomethingWentWrong } from '@/components/SometingWentWrong';
 import { useShouldAnimate } from '@/hooks/useShouldAnimate';
 import { GenericLoading } from '@/components/GenericLoading';
+import { getDiscoverProfiles } from '@/lib/client_data_fetching/getDiscoverProfiles';
+import { DISCOVER_PROFILES_PER_PAGE } from '@/constants';
 
-const PROFILES_PER_PAGE = 4;
 export function DiscoverProfiles({
   followersOf,
   followingOf,
@@ -33,7 +34,6 @@ export function DiscoverProfiles({
 
   const {
     data,
-    error,
     isPending,
     isError,
     fetchNextPage,
@@ -58,20 +58,13 @@ export function DiscoverProfiles({
       },
     ],
     defaultPageParam: 0,
-    queryFn: async ({ pageParam }) => {
-      const params = new URLSearchParams(searchParams);
-      params.set('limit', PROFILES_PER_PAGE.toString());
-      params.set('offset', pageParam.toString());
-
-      if (followersOf) params.set('followers-of', followersOf);
-      if (followingOf) params.set('following-of', followingOf);
-
-      const res = await fetch(`/api/users?${params.toString()}`);
-      if (!res.ok) {
-        throw new Error('Error fetching discover profiles.');
-      }
-
-      const users = (await res.json()) as GetUser[];
+    queryFn: async ({ pageParam: offset }) => {
+      const users = await getDiscoverProfiles({
+        offset,
+        followersOf,
+        followingOf,
+        searchParams,
+      });
 
       // Update/create a query cache for each of the fetched user data
       for (const user of users) {
@@ -84,7 +77,7 @@ export function DiscoverProfiles({
       if (pages.length === 0) return undefined;
 
       // If the `lastPage` is less than the limit, that means the end is reached
-      if (lastPage.length < PROFILES_PER_PAGE) return undefined;
+      if (lastPage.length < DISCOVER_PROFILES_PER_PAGE) return undefined;
 
       // This will serve as the offset, passed as `pageParam` to `queryFn`
       return pages.flat().length;
