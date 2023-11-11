@@ -15,7 +15,9 @@ export default function Page() {
       <UserAuthForm mode="register" />
       <p className="text-lg text-muted-foreground">Alreay have an account?</p>
       <p className="cursor-pointer text-lg font-semibold text-primary-accent hover:opacity-90">
-        <Link href="/login">Login</Link>
+        <Link href="/login" prefetch>
+          Login
+        </Link>
       </p>
     </>
   );

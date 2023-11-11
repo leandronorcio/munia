@@ -18,6 +18,7 @@ export function ButtonLink({
   return (
     <Link
       href={href}
+      prefetch
       className={cn(
         buttonVariants({ size, mode, shape, expand }),
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2',
