@@ -1,10 +1,10 @@
-import { Key, useRef } from 'react';
+import { Key, SVGProps, useRef } from 'react';
 import { AriaMenuProps, useMenuTrigger } from 'react-aria';
 import { MenuTriggerProps, useMenuTriggerState } from 'react-stately';
 import Button from './Button';
 import { Popover } from './Popover';
 import { DropdownMenu } from './DropdownMenu';
-import { Close, MoreVert } from '@/svg_components';
+import { MoreVert } from '@/svg_components';
 import { cn } from '@/lib/cn';
 
 interface MenuButtonProps<T extends object>
@@ -12,6 +12,7 @@ interface MenuButtonProps<T extends object>
     MenuTriggerProps {
   onAction: (key: Key) => void;
   label: string;
+  Icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
 }
 
 export function DropdownMenuButton<T extends object>(
@@ -31,9 +32,17 @@ export function DropdownMenuButton<T extends object>(
         ref={ref}
         aria-label={props.label}
         className="fill-red-500"
-        Icon={(props) => (
-          <MoreVert className={cn(props.className, 'fill-muted-foreground')} />
-        )}
+        Icon={(buttonIconProps) =>
+          props.Icon ? (
+            <props.Icon
+              className={cn(buttonIconProps.className, 'fill-muted-foreground')}
+            />
+          ) : (
+            <MoreVert
+              className={cn(buttonIconProps.className, 'fill-muted-foreground')}
+            />
+          )
+        }
         mode="ghost"
       />
       {state.isOpen && (
