@@ -1,6 +1,7 @@
 import { Feather } from '@/svg_components';
 import { ButtonLink } from '@/components/ui/ButtonLink';
 import { LogoText } from '@/components/LogoText';
+import { ButtonAnchor } from '@/components/ui/ButtonAnchor';
 
 export default function Page() {
   return (
@@ -19,13 +20,13 @@ export default function Page() {
             <ButtonLink href="/login" size="medium">
               Get Started
             </ButtonLink>
-            <ButtonLink
+            <ButtonAnchor
               href="https://github.com/leandronorcio/munia"
               size="medium"
               mode="subtle"
             >
               Github
-            </ButtonLink>
+            </ButtonAnchor>
           </div>
         </div>
       </div>
