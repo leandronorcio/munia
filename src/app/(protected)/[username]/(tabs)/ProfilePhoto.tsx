@@ -19,14 +19,17 @@ export default function ProfilePhoto({
   const { showVisualMediaModal } = useVisualMediaModal();
 
   return (
-    <div
-      className="absolute bottom-[-88px] h-44 w-44 rounded-full border-4 border-white bg-cover"
-      style={{
-        backgroundImage: `url("${photoUrl || 'default-profile-photo.jpg'}")`,
-      }}
-    >
+    <div className="absolute bottom-[-88px] h-44 w-44  border-white bg-cover">
+      {photoUrl && (
+        <img
+          src={photoUrl}
+          alt="Profile photo"
+          className="absolute h-full w-full rounded-full border-4 object-cover"
+        />
+      )}
       {photoUrl ? (
-        <div
+        <button
+          aria-label="Open profile photo"
           onClick={() =>
             showVisualMediaModal({
               visualMedia: [
@@ -39,7 +42,7 @@ export default function ProfilePhoto({
             })
           }
           className="absolute h-full w-full cursor-pointer rounded-full bg-black/30 opacity-0 active:opacity-100"
-        ></div>
+        ></button>
       ) : (
         <FallbackProfilePhoto name={name} className="text-6xl" />
       )}

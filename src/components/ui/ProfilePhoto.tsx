@@ -24,7 +24,7 @@ export function ProfilePhoto({
     <>
       {photoUrl ? (
         <img
-          src={photoUrl || '/default-profile-photo.jpg'}
+          src={photoUrl}
           alt={`${name}&apos; profile photo.`}
           className="h-full w-full cursor-pointer rounded-full object-cover"
           onClick={handleClick}
