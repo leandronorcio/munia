@@ -1,6 +1,6 @@
 import { GetComment } from '@/types/definitions';
 
-export const fetchComments = async ({ postId }: { postId: number }) => {
+export async function fetchComments({ postId }: { postId: number }) {
   const res = await fetch(`/api/posts/${postId}/comments`);
 
   if (!res.ok) {
@@ -8,4 +8,4 @@ export const fetchComments = async ({ postId }: { postId: number }) => {
   }
 
   return (await res.json()) as GetComment[];
-};
+}

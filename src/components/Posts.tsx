@@ -20,6 +20,7 @@ import { ButtonNaked } from './ui/ButtonNaked';
 import SvgForwardArrow from '@/svg_components/ForwardArrow';
 import { postFramerVariants } from '@/lib/framerVariants';
 import { GenericLoading } from './GenericLoading';
+import { fetchPosts } from '@/lib/query-functions/fetchPosts';
 
 // If the `type` is 'profile' or 'feed', the `userId` property is required
 // If the `type` is 'hashtag', the `hashtag` property is required
@@ -69,30 +70,29 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
       queryKey,
       defaultPageParam: 0,
       queryFn: async ({ pageParam, direction }): Promise<PostIds> => {
-        const isForwards = direction === 'forward';
-        const params = new URLSearchParams('');
-        params.set('limit', POSTS_PER_PAGE.toString());
-        params.set('cursor', pageParam.toString());
-        params.set('sort-direction', isForwards ? 'desc' : 'asc');
-
-        const fetchUrl =
+        const posts: GetPost[] = await fetchPosts(
           type === 'hashtag'
-            ? `/api/posts/hashtag/${hashtag}`
-            : `/api/users/${userId}/${type === 'profile' ? 'posts' : 'feed'}`;
-        const res = await fetch(`${fetchUrl}?${params.toString()}`);
+            ? {
+                type,
+                hashtag,
+                direction,
+                cursor: pageParam,
+              }
+            : {
+                type,
+                userId,
+                direction,
+                cursor: pageParam,
+              },
+        );
 
-        if (!res.ok) {
-          throw Error('Failed to load posts.');
-        }
-
-        const posts: GetPost[] = await res.json();
-
-        // Prevent React Query from 'prepending' the data with an empty array
-        if (!posts.length && !isForwards) {
+        const isBackwards = direction === 'backward';
+        if (!posts.length && isBackwards) {
+          // Prevent React Query from 'prepending' the data with an empty array
           throw new Error(NO_PREV_DATA_LOADED);
         }
 
-        if (!isForwards) {
+        if (isBackwards) {
           setNumberOfNewPostsLoaded((prev) => prev + posts.length);
         }
 

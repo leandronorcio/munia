@@ -1,6 +1,6 @@
 import { GetComment } from '@/types/definitions';
 
-export const fetchReplies = async ({ parentId }: { parentId: number }) => {
+export async function fetchReplies({ parentId }: { parentId: number }) {
   const res = await fetch(`/api/comments/${parentId}/replies`);
 
   if (!res.ok) {
@@ -8,4 +8,4 @@ export const fetchReplies = async ({ parentId }: { parentId: number }) => {
   }
 
   return (await res.json()) as GetComment[];
-};
+}
