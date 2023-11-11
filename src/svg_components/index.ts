@@ -26,6 +26,7 @@ export { default as FullScreenExpandResize } from './FullScreenExpandResize';
 export { default as Github } from './Github';
 export { default as Google } from './Google';
 export { default as GridFeedCards } from './GridFeedCards';
+export { default as HamburgerMenu } from './HamburgerMenu';
 export { default as Heart } from './Heart';
 export { default as Hide } from './Hide';
 export { default as Image } from './Image';
