@@ -1,14 +1,9 @@
 'use client';
 
 import { TabButton } from '@/components/TabButton';
-import {
-  usePathname,
-  useRouter,
-  useSelectedLayoutSegment,
-} from 'next/navigation';
+import { usePathname, useSelectedLayoutSegment } from 'next/navigation';
 
 export default function Tabs({ isOwnProfile }: { isOwnProfile: boolean }) {
-  const router = useRouter();
   const selectedSegment = useSelectedLayoutSegment();
   const parentLayoutSegment = `/${usePathname().split('/')[1]}`;
 
@@ -32,10 +27,10 @@ export default function Tabs({ isOwnProfile }: { isOwnProfile: boolean }) {
             : `${parentLayoutSegment}/${selectedSegment}`) === segment;
         return (
           <TabButton
+            key={segment}
             title={title}
             isActive={isActive}
-            onPress={() => router.push(segment)}
-            key={segment}
+            href={segment}
           />
         );
       })}

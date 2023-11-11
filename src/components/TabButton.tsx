@@ -1,35 +1,32 @@
 import { cn } from '@/lib/cn';
-import { ButtonNaked } from './ui/ButtonNaked';
 import { capitalize } from 'lodash';
-import { Ellipse } from '@/svg_components';
-import { AriaButtonProps } from 'react-aria';
+import Link from 'next/link';
 
 export function TabButton({
   isActive,
   title,
-  ...rest
+  href,
 }: {
   isActive?: boolean;
   title: string;
-} & AriaButtonProps) {
+  href: string;
+}) {
   return (
-    <>
-      <ButtonNaked
-        aria-label={title}
-        className="flex cursor-pointer flex-col items-center gap-2"
-        {...rest}
+    <Link
+      aria-label={title}
+      className="flex cursor-pointer flex-col items-center gap-2"
+      href={href}
+    >
+      <h2
+        className={cn(
+          isActive
+            ? 'font-bold text-foreground'
+            : 'font-semibold text-muted-foreground hover:text-muted-foreground/70',
+        )}
       >
-        <h2
-          className={cn(
-            isActive
-              ? 'font-bold text-foreground'
-              : 'font-semibold text-muted-foreground hover:text-muted-foreground/70',
-          )}
-        >
-          {capitalize(title)}
-        </h2>
-        {isActive && <div className="h-[2px] w-full bg-foreground"></div>}
-      </ButtonNaked>
-    </>
+        {capitalize(title)}
+      </h2>
+      {isActive && <div className="h-[2px] w-full bg-foreground"></div>}
+    </Link>
   );
 }
