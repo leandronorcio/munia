@@ -1,4 +1,4 @@
-import { fetchReplies } from '@/lib/query-functions/fetchReplies';
+import { getReplies } from '@/lib/client_data_fetching/getReplies';
 import { useQuery } from '@tanstack/react-query';
 import { CommentReply } from './CommentReply';
 import { useSession } from 'next-auth/react';
@@ -17,7 +17,7 @@ export function CommentReplies({ parentId }: { parentId: number }) {
     isError,
   } = useQuery({
     queryKey: queryKey,
-    queryFn: () => fetchReplies({ parentId }),
+    queryFn: () => getReplies({ parentId }),
     staleTime: 60000 * 10,
   });
   const { handleEdit, handleDelete } = useUpdateDeleteComments({ queryKey });

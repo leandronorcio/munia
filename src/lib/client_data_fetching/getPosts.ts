@@ -1,7 +1,7 @@
 import { POSTS_PER_PAGE } from '@/constants';
 import { GetPost } from '@/types/definitions';
 
-type PostsProps =
+type FetchPostsProps =
   | {
       type: 'hashtag';
       userId?: undefined;
@@ -17,13 +17,13 @@ type PostsProps =
       cursor: number;
     };
 
-export async function fetchPosts({
+export async function getPosts({
   type,
   userId,
   hashtag,
   direction,
   cursor,
-}: PostsProps) {
+}: FetchPostsProps) {
   const isForwards = direction === 'forward';
   const params = new URLSearchParams('');
 

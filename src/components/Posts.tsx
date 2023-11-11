@@ -20,7 +20,7 @@ import { ButtonNaked } from './ui/ButtonNaked';
 import SvgForwardArrow from '@/svg_components/ForwardArrow';
 import { postFramerVariants } from '@/lib/framerVariants';
 import { GenericLoading } from './GenericLoading';
-import { fetchPosts } from '@/lib/query-functions/fetchPosts';
+import { getPosts } from '@/lib/client_data_fetching/getPosts';
 
 // If the `type` is 'profile' or 'feed', the `userId` property is required
 // If the `type` is 'hashtag', the `hashtag` property is required
@@ -70,7 +70,7 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
       queryKey,
       defaultPageParam: 0,
       queryFn: async ({ pageParam, direction }): Promise<PostIds> => {
-        const posts: GetPost[] = await fetchPosts(
+        const posts: GetPost[] = await getPosts(
           type === 'hashtag'
             ? {
                 type,

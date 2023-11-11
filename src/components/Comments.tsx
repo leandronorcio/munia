@@ -4,7 +4,7 @@ import { Comment } from './Comment';
 import { AnimatePresence, motion } from 'framer-motion';
 import { GetComment } from '@/types/definitions';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { fetchComments } from '@/lib/query-functions/fetchComments';
+import { getComments } from '@/lib/client_data_fetching/getComments';
 import { useSession } from 'next-auth/react';
 import { CommentCreate } from './CommentCreate';
 import { useShouldAnimate } from '@/hooks/useShouldAnimate';
@@ -24,7 +24,7 @@ export function Comments({ postId }: { postId: number }) {
     error,
   } = useQuery<GetComment[], Error>({
     queryKey: queryKey,
-    queryFn: () => fetchComments({ postId }),
+    queryFn: () => getComments({ postId }),
     staleTime: 60000 * 10,
   });
   const toggleReplies = useCallback(
