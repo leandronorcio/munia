@@ -5,9 +5,5 @@ export const metadata = {
 };
 
 export default function Page() {
-  return (
-    <>
-      <UserAuthForm mode="login" />
-    </>
-  );
+  return <UserAuthForm mode="login" />;
 }

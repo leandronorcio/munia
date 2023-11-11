@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p 3002",
+    "start": "next start",
     "lint": "next lint",
+    "postinstall": "prisma generate",
     "svgr": "npx @svgr/cli --icon --no-prettier --out-dir ./src/svg_components --ignore-existing --typescript -- ./src/vectors && npx prettier ./src/svg_components --write",
     "seed": "npx prisma migrate reset && node ./scripts/createMockUsers.mjs"
   },
