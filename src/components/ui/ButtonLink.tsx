@@ -1,3 +1,4 @@
+import { cn } from '@/lib/cn';
 import { ButtonProps, buttonVariants } from './Button';
 import Link from 'next/link';
 
@@ -13,7 +14,13 @@ export function ButtonLink({
   expand,
 }: ButtonLinkProps) {
   return (
-    <Link href={href} className={buttonVariants({ size, mode, shape, expand })}>
+    <Link
+      href={href}
+      className={cn(
+        buttonVariants({ size, mode, shape, expand }),
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2',
+      )}
+    >
       {children}
     </Link>
   );
