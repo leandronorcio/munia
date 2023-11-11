@@ -10,7 +10,6 @@ import {
   LogInSquare,
 } from '@/svg_components';
 import { signIn } from 'next-auth/react';
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { z } from 'zod';
@@ -69,12 +68,6 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
 
   return (
     <>
-      <h1 className="mb-5 text-5xl font-bold">
-        {mode === 'login' ? 'Log In' : 'Sign Up'}
-      </h1>
-      <p className="mb-4 text-lg text-muted-foreground">
-        Enter your email to {mode === 'login' ? 'login' : 'create an account'}
-      </p>
       <div className="mb-4">
         <TextInput
           value={email}
@@ -95,13 +88,20 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
           loading={loading.email}
           isDisabled={areButtonsDisabled}
         >
-          Sign {mode === 'login' ? 'in' : 'up'} with Email
+          {mode === 'login' ? 'Login' : 'Sign up'} with Email
         </Button>
       </div>
-      <p className="mb-4 text-center text-lg text-muted-foreground">
-        Or continue with
-      </p>
-      <div className="flex flex-col gap-3">
+      <div className="relative mb-4">
+        <div className="absolute inset-0 flex items-center px-1">
+          <span className="w-full border-t border-muted" />
+        </div>
+        <div className="relative flex justify-center">
+          <span className="bg-background px-3 text-muted-foreground">
+            OR CONTINUE WITH
+          </span>
+        </div>
+      </div>
+      <div className="mb-4 flex flex-col gap-3">
         <Button
           onPress={() => {
             setLoading((prev) => ({
@@ -121,7 +121,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
         >
           Github
         </Button>
-        <div className="mb-10 flex gap-2">
+        <div className="flex gap-2">
           <Button
             onPress={() => {
               setLoading((prev) => ({
@@ -162,23 +162,6 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
           </Button>
         </div>
       </div>
-      {mode === 'login' ? (
-        <>
-          <p className="mb-1 text-lg text-muted-foreground ">No account yet?</p>
-          <p className="cursor-pointer text-lg font-semibold text-primary-accent hover:opacity-90">
-            <Link href="/register">Create an account</Link>
-          </p>
-        </>
-      ) : (
-        <>
-          <p className="mb-1 text-lg text-muted-foreground">
-            Alreay have an account?
-          </p>
-          <p className="cursor-pointer text-lg font-semibold text-primary-accent hover:opacity-90">
-            <Link href="/login">Login</Link>
-          </p>
-        </>
-      )}
     </>
   );
 }
