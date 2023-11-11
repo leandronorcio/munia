@@ -1,4 +1,3 @@
-'use client';
 import { Feather, Github, LogInSquare } from '@/svg_components';
 import { ButtonLink } from '@/components/ui/ButtonLink';
 import { LogoText } from '@/components/LogoText';
