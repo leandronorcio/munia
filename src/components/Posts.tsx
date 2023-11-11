@@ -140,7 +140,8 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
       // Need to manually reset as the `staleTime` is set to `Infinity`
       qc.resetQueries({ queryKey, exact: true });
     }
-  }, [shouldAnimate, qc, queryKey]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     // Check for new posts every 5 seconds, this allows for bidirectional infinite queries
