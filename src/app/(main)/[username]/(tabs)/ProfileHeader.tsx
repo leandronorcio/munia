@@ -7,8 +7,6 @@ import Tabs from './Tabs';
 import { GetUser } from '@/types/definitions';
 import { useUserQuery } from '@/hooks/queries/useUserQuery';
 import Link from 'next/link';
-import Button from '@/components/ui/Button';
-import { useRouter } from 'next/navigation';
 import { Ellipse } from '@/svg_components';
 import { ButtonLink } from '@/components/ui/ButtonLink';
 
@@ -23,7 +21,6 @@ export function ProfileHeader({
   // If there is no query of the user data yet, use the
   // `initialProfileData` that was fetched on server.
   const profile = data || initialProfileData;
-  const router = useRouter();
 
   return (
     <>
@@ -55,12 +52,20 @@ export function ProfileHeader({
         <p className="-mt-1 mb-2 text-muted-foreground">@{profile.username}</p>
         <p className="text-foreground/80">{profile.bio}</p>
         <div className="flex flex-row items-center gap-3">
-          <Link href={`/${profile.username}/followers`} className="link">
+          <Link
+            href={`/${profile.username}/followers`}
+            className="link"
+            title={`${initialProfileData.name}&apos; followers`}
+          >
             <span className="font-semibold">{profile.followerCount}</span>{' '}
             <span className="font-medium text-muted-foreground">Followers</span>
           </Link>
           <Ellipse className="h-1 w-1 fill-foreground" />
-          <Link href={`/${profile.username}/following`} className="link">
+          <Link
+            href={`/${profile.username}/following`}
+            className="link"
+            title={`${initialProfileData.name}&apos; followed users`}
+          >
             <span className="font-semibold">{profile.followingCount}</span>{' '}
             <span className="font-medium text-muted-foreground">Following</span>
           </Link>
