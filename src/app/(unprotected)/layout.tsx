@@ -5,9 +5,9 @@ import Link from 'next/link';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="flex min-h-screen w-full justify-center">
+    <div className="flex min-h-screen w-full justify-center">
       <div className="w-full max-w-3xl gap-3 py-4 sm:py-8">
-        <div className="flex items-center justify-between px-4 sm:px-0">
+        <nav className="flex items-center justify-between px-4 sm:px-0">
           <Link href="/" title="Home page">
             <div className="flex cursor-pointer flex-row items-center justify-center gap-2 sm:pr-5">
               <Feather className="stroke-primary" width={32} height={32} />
@@ -24,11 +24,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="sm:hidden">
             <HomeMobileDropdownMenu />
           </div>
-        </div>
+        </nav>
 
         {children}
       </div>
-    </main>
+    </div>
   );
 }
 
