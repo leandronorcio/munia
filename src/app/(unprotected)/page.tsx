@@ -10,7 +10,7 @@ export default function Page() {
             Follow me on X
           </p>
         </a>
-        <h1 className="mt-4 px-5 text-center text-2xl text-primary-foreground sm:text-5xl">
+        <h1 className="mt-4 px-5 text-center text-2xl sm:text-5xl">
           A responsive and accessible full stack social media web app.
         </h1>
         <div className="mt-6 flex justify-center gap-3">
@@ -28,9 +28,7 @@ export default function Page() {
       </div>
 
       <div className="mt-20">
-        <h2 className="text-center text-3xl text-primary-foreground sm:text-5xl">
-          Technology Stack
-        </h2>
+        <h2 className="text-center text-3xl sm:text-5xl">Technology Stack</h2>
         <p className="mt-2 px-4 text-center text-lg text-muted-foreground">
           This social media web app is built using the following modern
           technologies.
