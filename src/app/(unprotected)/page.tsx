@@ -70,7 +70,9 @@ export default function Page() {
             { header: 'AWS S3', details: 'Storage for photos and videos.' },
             { header: 'AWS SES', details: 'For sending vefirication emails.' },
           ].map(({ header, details }) => (
-            <TechStackCard header={header}>{details}</TechStackCard>
+            <TechStackCard header={header} key={header}>
+              {details}
+            </TechStackCard>
           ))}
         </div>
       </div>
