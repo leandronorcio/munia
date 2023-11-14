@@ -12,7 +12,7 @@
     "prisma:deploy": "npx prisma migrate deploy",
     "prisma:seed": "npx prisma migrate reset && node ./scripts/createMockUsers.mjs",
     "prepm2": "npm run build",
-    "pm2": "pm2 start npm --name 'munia' -- run start"
+    "pm2": "pm2 start next --name 'munia' -- start -p 3002"
   },
   "dependencies": {
     "@auth/core": "^0.18.0",
