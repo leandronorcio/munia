@@ -9,7 +9,9 @@
     "lint": "next lint",
     "postinstall": "prisma generate",
     "svgr": "npx @svgr/cli --icon --no-prettier --out-dir ./src/svg_components --ignore-existing --typescript -- ./src/vectors && npx prettier ./src/svg_components --write",
-    "seed": "npx prisma migrate reset && node ./scripts/createMockUsers.mjs"
+    "seed": "npx prisma migrate reset && node ./scripts/createMockUsers.mjs",
+    "prepm2": "npm run build",
+    "pm2": "pm2 start npm --name 'munia' -- run start"
   },
   "dependencies": {
     "@auth/core": "^0.18.0",
