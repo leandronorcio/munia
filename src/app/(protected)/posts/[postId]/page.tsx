@@ -10,7 +10,7 @@ export default function Page({ params }: { params: { postId: string } }) {
   const toggleComments = () => setCommentsShown((prev) => !prev);
 
   return (
-    <div className="mt-4">
+    <div className="m-4">
       <Post
         id={postId}
         commentsShown={commentsShown}
