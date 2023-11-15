@@ -23,7 +23,7 @@ export function GenericDialog({
     <div
       {...dialogProps}
       ref={dialogRef}
-      className="grid h-full w-full place-items-center overflow-y-auto"
+      className="flex h-full w-full flex-col items-center overflow-y-auto p-2 sm:justify-center"
     >
       <ResponsiveContainer>
         <div className="mb-6 rounded-xl border border-border bg-popover">
