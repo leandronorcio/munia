@@ -11,12 +11,12 @@ export function AboutItem({
 }) {
   return (
     <div className="flex items-center">
-      <div className="flex items-center gap-3 rounded-l-3xl bg-input p-4">
-        <Icon className="h-6 w-6 stroke-muted-foreground" />
-        <p className="text-lg font-medium text-muted-foreground">{field}</p>
+      <div className="flex items-center gap-2 rounded-l-3xl bg-input p-2 sm:gap-3 sm:p-4">
+        <Icon className="h-5 w-5 stroke-muted-foreground sm:h-6 sm:w-6" />
+        <p className="font-medium text-muted-foreground sm:text-lg">{field}</p>
       </div>
       <p className="flex flex-1 items-center self-stretch rounded-r-3xl border border-border pl-4">
-        <span className="text-lg font-semibold text-foreground">
+        <span className="font-semibold text-foreground sm:text-lg">
           {value || 'Not set'}
         </span>
       </p>
