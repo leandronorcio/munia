@@ -38,14 +38,12 @@ export function ActivityCard({
       aria-label="Open link"
       {...rest}
     >
-      <div className="relative flex-initial">
-        <div className="h-16 w-16 sm:h-20 sm:w-20">
-          <ProfilePhoto
-            name={user.name}
-            username={user.username}
-            photoUrl={user.profilePhoto}
-          />
-        </div>
+      <div className="relative h-16 w-16 sm:h-20 sm:w-20">
+        <ProfilePhoto
+          name={user.name}
+          username={user.username}
+          photoUrl={user.profilePhoto}
+        />
         <ActivityIcon type={type} />
       </div>
 
