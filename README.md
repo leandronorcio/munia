@@ -24,7 +24,7 @@ A responsive and accessible full stack social media web app.
 - Dark and light themes
 
 > [!NOTE]  
-> This project is a work in progress, it will be updated to stay up-to-date with the latest framework changes and more features will be added.
+> This project is a work in progress, it still contains bugs and will constantly be updated to stay up-to-date with the latest framework changes.
 
 ## Tech Stack 🛠️
 
@@ -64,3 +64,14 @@ React Query simplifies the implementation of features that would have been chall
 ## Accessibility
 
 The UI components are built with React Aria's accessibility hooks, assuring accessibility across different platforms.
+
+## Deployment on EC2
+
+Follow these steps to deploy Munia on an EC2 instance.
+
+1. Set up a PostgreSQL database and copy its connection URL into `.env`.
+2. Set up a client application for each OAuth provider (Github, Google and Facebook) and copy the client id's and client secrets into `.env.local`.
+3. Run `npm install`
+4. Run `npm run prisma:deploy`
+5. Run `npm run prisma:seed`
+6. Run `npm run pm2` (or `npm run build` then `npm run start` if you're not using PM2). You can modify the port specified on the `pm2` script depending on your server configuration.
