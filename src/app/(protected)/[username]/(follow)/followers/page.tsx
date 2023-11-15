@@ -22,7 +22,7 @@ export default async function Page({
   const profile = await getProfile(params.username);
 
   return (
-    <div className="pt-4">
+    <div className="p-4">
       <h1 className="mb-6 text-4xl font-bold">
         {profile?.name}&apos;s Followers
       </h1>
