@@ -30,22 +30,27 @@ import { useSessionUserData } from '@/hooks/useSessionUserData';
 import { useSessionUserDataMutation } from '@/hooks/mutations/useSessionUserDataMutation';
 import { useRouter } from 'next/navigation';
 import { GenericLoading } from './GenericLoading';
+import { useEffect, useMemo } from 'react';
 
 export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
   const [userData] = useSessionUserData();
-  // `undefined` is not allowed as a `defaultValue` https://www.react-hook-form.com/api/usecontroller/controller/
-  const defaultValues = {
-    username: userData?.username || '',
-    // email: userData?.email || '',
-    name: userData?.name || '',
-    phoneNumber: userData?.phoneNumber || null,
-    bio: userData?.bio || null,
-    website: userData?.website || null,
-    address: userData?.address || null,
-    gender: userData?.gender || null,
-    relationshipStatus: userData?.relationshipStatus || null,
-    birthDate: userData?.birthDate?.toString() || null,
-  };
+  const defaultValues = useMemo(
+    () => ({
+      // `undefined` is not allowed as a `defaultValue` https://www.react-hook-form.com/api/usecontroller/controller/
+      username: userData?.username || '',
+      // email: userData?.email || '',
+      name: userData?.name || '',
+      phoneNumber: userData?.phoneNumber || null,
+      bio: userData?.bio || null,
+      website: userData?.website || null,
+      address: userData?.address || null,
+      gender: userData?.gender || null,
+      relationshipStatus: userData?.relationshipStatus || null,
+      birthDate: userData?.birthDate?.toString() || null,
+    }),
+    [userData],
+  );
+
   const { control, handleSubmit, reset, setError, setFocus } =
     useForm<UserAboutSchema>({
       resolver: zodResolver(userAboutSchema),
@@ -74,6 +79,10 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
   };
   const onInvalid: SubmitErrorHandler<UserAboutSchema> = (errors) =>
     console.log(errors);
+
+  useEffect(() => {
+    reset(defaultValues);
+  }, [userData]);
 
   if (!userData) return <GenericLoading>Loading form</GenericLoading>;
   return (
