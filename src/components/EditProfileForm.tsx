@@ -37,7 +37,7 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
   const defaultValues = useMemo(
     () => ({
       // `undefined` is not allowed as a `defaultValue` https://www.react-hook-form.com/api/usecontroller/controller/
-      username: userData?.username || '',
+      username: userData?.username || userData?.id || '',
       // email: userData?.email || '',
       name: userData?.name || '',
       phoneNumber: userData?.phoneNumber || null,
@@ -311,12 +311,22 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
           )}
         />
 
-        <Button
-          type="submit"
-          loading={updateSessionUserDataMutation.isPending === true}
-        >
-          Submit
-        </Button>
+        <div className="flex justify-end gap-4">
+          <Button
+            mode="secondary"
+            type="button"
+            loading={updateSessionUserDataMutation.isPending === true}
+            onPress={() => reset(defaultValues)}
+          >
+            Reset
+          </Button>
+          <Button
+            type="submit"
+            loading={updateSessionUserDataMutation.isPending === true}
+          >
+            Submit
+          </Button>
+        </div>
       </form>
     </div>
   );
