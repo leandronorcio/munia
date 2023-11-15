@@ -1,5 +1,5 @@
 import { cn } from '@/lib/cn';
-import { MouseEventHandler, SVGProps, useRef } from 'react';
+import { SVGProps, useRef } from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
 import {
   AriaToggleButtonProps,
@@ -15,7 +15,7 @@ const toggle = cva(
     variants: {
       color: {
         red: 'hover:bg-destructive-foreground/30 focus:outline-none',
-        blue: 'hover:bg-secondary/30 focus:outline-none',
+        blue: 'hover:bg-blue-200 focus:outline-none dark:hover:bg-blue-900',
         purple: 'hover:bg-primary-accent/30 focus:outline-none',
       },
     },
@@ -29,7 +29,7 @@ const icon = cva('h-6 w-6', {
   variants: {
     color: {
       red: 'fill-destructive-foreground',
-      blue: 'fill-secondary',
+      blue: 'fill-blue-500 dark:fill-blue-600',
       purple: 'fill-primary-accent',
     },
   },
