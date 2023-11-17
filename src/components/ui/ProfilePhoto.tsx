@@ -18,7 +18,7 @@ export function ProfilePhoto({
         <img
           src={photoUrl}
           alt={`${name}&apos; profile photo.`}
-          className="h-full w-full cursor-pointer rounded-full object-cover"
+          className="h-full w-full cursor-pointer rounded-full bg-muted object-cover"
         />
       ) : (
         <FallbackProfilePhoto name={name} className={fallbackAvatarClassName} />

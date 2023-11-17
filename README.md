@@ -53,7 +53,6 @@ It utilizes the following Next.js features:
 - nested layouts
 - route handlers
 - middleware
-- partial pre-rendering
 - font optimizations
 - dynamic metadata
 
@@ -74,4 +73,4 @@ Follow these steps to deploy Munia on an EC2 instance.
 3. Run `npm install`
 4. Run `npm run prisma:deploy`
 5. Run `npm run prisma:seed`
-6. Run `npm run pm2` (or `npm run build` then `npm run start` if you're not using PM2). You can modify the port specified on the `pm2` script depending on your server configuration.
+6. Run `npm run pm2` (or `npm run build` and then `npm run start` if you're not using PM2). You can modify the port specified in the `pm2` script depending on your server configuration.
