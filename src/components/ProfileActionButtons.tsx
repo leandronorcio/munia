@@ -2,7 +2,6 @@
 import Button from '@/components/ui/Button';
 import { useFollowsMutations } from '@/hooks/mutations/useFollowsMutations';
 import { useUserQuery } from '@/hooks/queries/useUserQuery';
-import { Mail } from '@/svg_components';
 
 export function ProfileActionButtons({
   targetUserId,
@@ -23,7 +22,7 @@ export function ProfileActionButtons({
     <div className="flex flex-row items-center gap-2 md:gap-4">
       <Button
         onPress={handleClick}
-        mode={isFollowing ? 'subtle' : 'primary'}
+        mode={isFollowing ? 'secondary' : 'primary'}
         shape="pill"
         loading={isPending}
       >

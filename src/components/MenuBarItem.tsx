@@ -3,7 +3,7 @@ import { useDialogs } from '@/hooks/useDialogs';
 import { cn } from '@/lib/cn';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { SVGProps } from 'react';
+import { SVGProps, useEffect } from 'react';
 import { Badge } from './ui/Badge';
 import { ButtonNaked } from './ui/ButtonNaked';
 
@@ -22,6 +22,12 @@ export function MenuBarItem({
   const router = useRouter();
   const [isActive] = useActiveRouteChecker(route);
   const { confirm } = useDialogs();
+
+  useEffect(() => {
+    if (route === '/api/auth/signout') return;
+
+    router.prefetch(route);
+  }, []);
 
   return (
     <ButtonNaked
@@ -52,12 +58,7 @@ export function MenuBarItem({
         )}
       ></div>
       <div className="relative md:mr-3">
-        <Icon
-          className={cn(
-            'h-6 w-6 stroke-muted-foreground',
-            isActive && 'fill-muted-foreground',
-          )}
-        />
+        <Icon className="h-6 w-6 stroke-muted-foreground" />
         {badge !== undefined && badge !== 0 && (
           <div className="absolute right-[-25%] top-[-50%]">
             <Badge>{badge}</Badge>
