@@ -16,6 +16,7 @@ export { default as CircleActionsSuccess } from './CircleActionsSuccess';
 export { default as Close } from './Close';
 export { default as Comment } from './Comment';
 export { default as Delete } from './Delete';
+export { default as DeviceLaptop } from './DeviceLaptop';
 export { default as Edit } from './Edit';
 export { default as Ellipse } from './Ellipse';
 export { default as EmojiHappySmile } from './EmojiHappySmile';

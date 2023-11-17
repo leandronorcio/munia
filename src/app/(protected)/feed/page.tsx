@@ -1,6 +1,6 @@
 import { CreatePostModalLauncher } from '@/components/CreatePostModalLauncher';
-import { DarkModeSwitch } from '@/components/DarkModeSwitch';
 import { Posts } from '@/components/Posts';
+import { ThemeSwitch } from '@/components/ui/ThemeSwitch';
 import { getServerUser } from '@/lib/getServerUser';
 
 export const metadata = {
@@ -14,7 +14,7 @@ export default async function Page() {
       <div className="mb-4 flex items-center justify-between ">
         <h1 className="text-4xl font-bold">Feed</h1>
         <div>
-          <DarkModeSwitch />
+          <ThemeSwitch />
         </div>
       </div>
       <CreatePostModalLauncher />
