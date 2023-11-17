@@ -7,6 +7,8 @@ import prisma from '@/lib/prisma/prisma';
 import { Prisma } from '@prisma/client';
 import { getServerUser } from '@/lib/getServerUser';
 import { userAboutSchema } from '@/lib/validations/userAbout';
+import { toGetUser } from '@/lib/prisma/toGetUser';
+import { includeToUser } from '@/lib/prisma/includeToUser';
 
 export async function PATCH(
   request: Request,
@@ -30,9 +32,10 @@ export async function PATCH(
           birthDate:
             validate.data.birthDate && new Date(validate.data.birthDate),
         },
+        include: includeToUser(user.id),
       });
 
-      return NextResponse.json({ ...res });
+      return NextResponse.json(toGetUser(res));
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === 'P2002') {
