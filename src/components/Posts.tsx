@@ -202,7 +202,6 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
 
   return (
     <>
-      <button onClick={() => fetchPreviousPage()}>Fetch Previous Page</button>
       <div ref={topElRef}></div>
       <div className="flex flex-col">
         <AnimatePresence>
