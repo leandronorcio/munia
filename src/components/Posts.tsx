@@ -20,7 +20,6 @@ import { ButtonNaked } from './ui/ButtonNaked';
 import SvgForwardArrow from '@/svg_components/ForwardArrow';
 import { postFramerVariants } from '@/lib/framerVariants';
 import { GenericLoading } from './GenericLoading';
-import { getPosts } from '@/lib/client_data_fetching/getPosts';
 
 // If the `type` is 'profile' or 'feed', the `userId` property is required
 // If the `type` is 'hashtag', the `hashtag` property is required
@@ -61,32 +60,33 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
     error,
     isPending,
     isError,
-    fetchNextPage,
+    fetchNextPage, // Fetches (older) posts in 'descending' order, starting from the last page's last item (bottom of page)
     hasNextPage,
-    fetchPreviousPage,
+    fetchPreviousPage, // Fetches (newer) posts in 'ascending' order, starting from the latest page's latest item (top of page)
     isFetchingNextPage,
   } = useInfiniteQuery<PostIds, Error, InfiniteData<PostIds>, QueryKey, number>(
     {
       queryKey,
       defaultPageParam: 0,
-      queryFn: async ({ pageParam, direction }): Promise<PostIds> => {
-        const posts: GetPost[] = await getPosts(
-          type === 'hashtag'
-            ? {
-                type,
-                hashtag,
-                direction,
-                cursor: pageParam,
-              }
-            : {
-                type,
-                userId,
-                direction,
-                cursor: pageParam,
-              },
-        );
+      queryFn: async ({ pageParam: cursor, direction }): Promise<PostIds> => {
+        const isForwards = direction === 'forward';
+        const isBackwards = !isForwards;
+        const params = new URLSearchParams('');
 
-        const isBackwards = direction === 'backward';
+        // If the direction is 'backwards', load all new posts by setting a high `limit`
+        params.set('limit', isForwards ? POSTS_PER_PAGE.toString() : '100');
+        params.set('cursor', cursor.toString());
+        params.set('sort-direction', isForwards ? 'desc' : 'asc');
+
+        const fetchUrl =
+          type === 'hashtag'
+            ? `/api/posts/hashtag/${hashtag}`
+            : `/api/users/${userId}/${type === 'profile' ? 'posts' : 'feed'}`;
+        const res = await fetch(`${fetchUrl}?${params.toString()}`);
+
+        if (!res.ok) throw Error('Failed to load posts.');
+        const posts = (await res.json()) as GetPost[];
+
         if (!posts.length && isBackwards) {
           // Prevent React Query from 'prepending' the data with an empty array
           throw new Error(NO_PREV_DATA_LOADED);
@@ -96,7 +96,7 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
           setNumberOfNewPostsLoaded((prev) => prev + posts.length);
         }
 
-        return posts.map((post) => {
+        const postIds = posts.map((post) => {
           // Set query data for each `post`, these queries will be used by the <Post> component
           qc.setQueryData(['posts', post.id], post);
 
@@ -110,6 +110,10 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
             commentsShown: currentPostId?.commentsShown || false,
           };
         });
+
+        // When the direction is 'backwards', the `postIds` are in ascending order
+        // Reverse it so that the latest post comes first in the array
+        return isForwards ? postIds : postIds.reverse();
       },
       getNextPageParam: (lastPage, pages) => {
         // If the `pages` `length` is 0, that means there is not a single post to load
@@ -123,7 +127,6 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
         return lastPage.slice(-1)[0].id;
       },
       getPreviousPageParam: (firstPage) => {
-        if (!firstPage?.length) return 0;
         return firstPage[0].id;
       },
       refetchOnWindowFocus: false,
@@ -199,6 +202,7 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
 
   return (
     <>
+      <button onClick={() => fetchPreviousPage()}>Fetch Previous Page</button>
       <div ref={topElRef}></div>
       <div className="flex flex-col">
         <AnimatePresence>
@@ -211,12 +215,12 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
             >
               <ButtonNaked
                 onPress={viewNewlyLoadedPosts}
-                className="mt-4 inline-flex cursor-pointer select-none items-center gap-3 rounded-full bg-primary px-4 py-2  text-secondary-foreground hover:bg-primary-accent"
+                className="mt-4 inline-flex cursor-pointer select-none items-center gap-3 rounded-full bg-primary px-4 py-2 hover:bg-primary-accent"
               >
                 <div className="-rotate-90 rounded-full border-2 border-border bg-muted/70 p-[6px]">
                   <SvgForwardArrow className="h-5 w-5" />
                 </div>
-                <p>
+                <p className="text-primary-foreground">
                   <b>{numberOfNewPostsLoaded}</b> new{' '}
                   {numberOfNewPostsLoaded > 1 ? 'posts' : 'post'} loaded
                 </p>

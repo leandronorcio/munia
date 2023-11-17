@@ -1,12 +1,7 @@
 'use client';
 
 import { useTheme } from '@/hooks/useTheme';
-import {
-  DeviceLaptop,
-  EmojiHappySmile,
-  WeatherMoon,
-  WeatherSun,
-} from '@/svg_components';
+import { DeviceLaptop, WeatherMoon, WeatherSun } from '@/svg_components';
 import { motion } from 'framer-motion';
 
 export function ThemeSwitch() {
@@ -14,7 +9,7 @@ export function ThemeSwitch() {
 
   return (
     <button
-      className="relative z-40 h-[48px] w-[48px] overflow-hidden rounded-full border-2 border-secondary hover:border-muted sm:h-[56px] sm:w-[56px]"
+      className="relative h-[48px] w-[48px] overflow-hidden rounded-full border-2 border-secondary hover:border-muted sm:h-[56px] sm:w-[56px]"
       aria-label="Switch theme"
       onClick={switchTheme}
     >
