@@ -21,6 +21,7 @@ module.exports = {
         secondary: 'rgba(var(--secondary) / <alpha-value>)',
         'secondary-foreground':
           'rgba(var(--secondary-foreground) / <alpha-value>)',
+        'secondary-accent': 'rgba(var(--secondary-accent) / <alpha-value>)',
         muted: 'rgba(var(--muted) / <alpha-value>)',
         'muted-foreground': 'rgba(var(--muted-foreground) / <alpha-value>)',
         accent: 'rgba(var(--accent) / <alpha-value>)',

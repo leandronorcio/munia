@@ -14,7 +14,7 @@ export const buttonVariants = cva(
         primary:
           'bg-primary text-primary-foreground hover:bg-primary-accent active:ring-primary/30',
         secondary:
-          'bg-secondary text-secondary-foreground hover:bg-muted/30 active:ring-secondary-foreground/20',
+          'bg-secondary text-secondary-foreground hover:bg-secondary-accent active:ring-secondary-foreground/20',
         subtle:
           'border-2 border-primary-accent bg-transparent text-primary-accent hover:border-primary-accent/70 hover:text-primary-accent/90 active:ring-primary-accent/30',
         ghost:
@@ -38,3 +38,24 @@ export const buttonVariants = cva(
     },
   },
 );
+
+export const buttonIconVariants = cva('', {
+  variants: {
+    size: {
+      huge: 'h-6 w-6',
+      large: 'h-6 w-6',
+      medium: 'h-6 w-6',
+      small: 'h-5 w-5',
+    },
+    mode: {
+      primary: 'stroke-primary-foreground',
+      secondary: 'stroke-secondary-foreground',
+      subtle: 'stroke-primary-accent',
+      ghost: 'stroke-muted-foreground',
+    },
+  },
+  defaultVariants: {
+    size: 'medium',
+    mode: 'primary',
+  },
+});
