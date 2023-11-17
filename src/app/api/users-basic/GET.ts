@@ -7,18 +7,23 @@
  * an example use case is searching for users to mention when
  * typing a comment or reply.
  */
+import { getServerUser } from '@/lib/getServerUser';
 import prisma from '@/lib/prisma/prisma';
 import { searchUser } from '@/lib/prisma/searchUser';
 import { fileNameToUrl } from '@/lib/s3/fileNameToUrl';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
+  const [user] = await getServerUser();
   const { searchParams } = new URL(request.url);
   const search = searchParams.get('search');
 
   const res = await prisma.user.findMany({
     where: {
       ...(search && searchUser(search)),
+      id: {
+        not: user?.id,
+      },
     },
     select: {
       id: true,

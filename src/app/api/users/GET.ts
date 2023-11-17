@@ -53,6 +53,9 @@ export async function GET(request: Request) {
           },
         },
       }),
+      id: {
+        not: user?.id,
+      },
     },
     include: includeToUser(user?.id),
     take: limit,
