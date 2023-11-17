@@ -127,7 +127,8 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
         return lastPage.slice(-1)[0].id;
       },
       getPreviousPageParam: (firstPage) => {
-        return firstPage[0].id;
+        if (firstPage.length > 0) return firstPage[0].id;
+        return 0;
       },
       refetchOnWindowFocus: false,
       staleTime: Infinity,
