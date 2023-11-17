@@ -1,4 +1,4 @@
-import { PROFILE_QUERY_STALE_TIME } from '@/constants';
+// import { PROFILE_QUERY_STALE_TIME } from '@/constants';
 import { getUser } from '@/lib/client_data_fetching/getUser';
 import { useQuery } from '@tanstack/react-query';
 
@@ -10,6 +10,6 @@ export function useUserQuery(userId?: string) {
   return useQuery({
     queryKey: ['users', userId],
     queryFn: () => getUser(userId),
-    staleTime: PROFILE_QUERY_STALE_TIME,
+    // staleTime: PROFILE_QUERY_STALE_TIME,
   });
 }
