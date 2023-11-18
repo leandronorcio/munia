@@ -38,7 +38,7 @@ export const Post = memo(
         }
         return (await res.json()) as GetPost;
       },
-      staleTime: 60000 * 10,
+      // staleTime: 60000 * 10,
     });
 
     const likePost = () => likeMutation.mutate();
