@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Comment } from './Comment';
 import { AnimatePresence, motion } from 'framer-motion';
 import { GetComment } from '@/types/definitions';
@@ -25,10 +25,11 @@ export function Comments({ postId }: { postId: number }) {
   } = useQuery<GetComment[], Error>({
     queryKey: queryKey,
     queryFn: () => getComments({ postId }),
-    staleTime: 60000 * 10,
+    // staleTime: 60000 * 10,
   });
-  const toggleReplies = useCallback(
-    ({ commentId }: { commentId: number }) => {
+
+  const setRepliesVisibility = useCallback(
+    ({ commentId, shown }: { commentId: number; shown: boolean }) => {
       qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
         if (!oldComments) return;
         // Make a shallow copy of `oldComments`
@@ -40,10 +41,12 @@ export function Comments({ postId }: { postId: number }) {
         );
 
         const oldComment = newComments[index];
+
         newComments[index] = {
           ...oldComment,
-          repliesShown: !oldComment?.repliesShown,
+          repliesShown: shown,
         };
+
         return newComments;
       });
     },
@@ -71,7 +74,7 @@ export function Comments({ postId }: { postId: number }) {
                   <Comment
                     {...comment}
                     {...{
-                      toggleReplies,
+                      setRepliesVisibility,
                       queryKey,
                     }}
                     isOwnComment={session?.user?.id === comment.user.id}

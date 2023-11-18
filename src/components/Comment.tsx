@@ -29,11 +29,14 @@ export const Comment = memo(
     isLiked,
     _count,
     repliesShown,
-    toggleReplies,
+    setRepliesVisibility,
     queryKey,
   }: GetComment & {
     isOwnComment: boolean;
-    toggleReplies: (params: { commentId: number }) => void;
+    setRepliesVisibility: (params: {
+      commentId: number;
+      shown: boolean;
+    }) => void;
     queryKey: QueryKey;
   }) {
     const numberOfLikes = _count.commentLikes;
@@ -48,16 +51,8 @@ export const Comment = memo(
     const shouldHighlight =
       searchParams.get('comment-id') === commentId.toString();
 
-    // Show the replies if the comment to be highlighted is a reply to this comment
-    useEffect(() => {
-      const shouldOpenRepliesOnMount =
-        searchParams.get('comment-parent-id') === commentId.toString();
-      if (!shouldOpenRepliesOnMount) return;
-      if (repliesShown) return;
-      toggleReplies({ commentId });
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
+    const toggleReplies = () =>
+      setRepliesVisibility({ commentId, shown: !repliesShown });
     const handleCreateReply = () => {
       prompt({
         title: 'Reply',
@@ -70,7 +65,7 @@ export const Comment = memo(
               content: value,
             },
             {
-              onSuccess: () => !repliesShown && toggleReplies({ commentId }),
+              onSuccess: () => !repliesShown && toggleReplies(),
             },
           );
         },
@@ -79,7 +74,17 @@ export const Comment = memo(
 
     const handleLikeToggle = (isSelected: boolean) =>
       isSelected ? likeComment({ commentId }) : unLikeComment({ commentId });
-    const handleToggleReplies = () => toggleReplies({ commentId });
+
+    // Show the replies if the comment to be highlighted is a reply to this comment
+    useEffect(() => {
+      setTimeout(() => {
+        const shouldOpenRepliesOnMount =
+          searchParams.get('comment-parent-id') === commentId.toString();
+        if (shouldOpenRepliesOnMount)
+          setRepliesVisibility({ commentId, shown: true });
+      }, 1000);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
       <div className="flex gap-4">
@@ -135,7 +140,7 @@ export const Comment = memo(
           {repliesShown && <CommentReplies parentId={commentId} />}
           {numberOfReplies !== 0 && (
             <ButtonNaked
-              onPress={handleToggleReplies}
+              onPress={toggleReplies}
               className="my-1 cursor-pointer text-sm font-semibold text-muted-foreground hover:text-muted-foreground/70"
             >
               {!repliesShown
