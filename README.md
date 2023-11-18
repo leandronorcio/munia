@@ -2,6 +2,10 @@
 
 A responsive and accessible full stack social media web app.
 
+## Preview 🧑🏻‍💻
+
+https://norcio-dot-dev-public-files.s3.us-east-1.amazonaws.com/munia/showcase.mp4
+
 ## Features ✨
 
 - Email and OAuth 2.0 login (Github, Google and Facebook)
