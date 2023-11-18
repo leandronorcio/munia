@@ -1,10 +1,11 @@
-# Munia
+# Munia 
 
 A responsive and accessible full stack social media web app.
 
-## Preview 🧑🏻‍💻
+## Preview 🎬
 
-https://norcio-dot-dev-public-files.s3.us-east-1.amazonaws.com/munia/showcase.mp4
+[![Watch the showcase](https://norcio-dot-dev-public-files.s3.us-east-1.amazonaws.com/munia/showcase-thumbnail.png)](https://norcio-dot-dev-public-files.s3.us-east-1.amazonaws.com/munia/showcase-thumbnail.png)
+
 
 ## Features ✨
 
