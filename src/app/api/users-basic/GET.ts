@@ -24,6 +24,12 @@ export async function GET(request: Request) {
       id: {
         not: user?.id,
       },
+      name: {
+        not: null,
+      },
+      username: {
+        not: null,
+      },
     },
     select: {
       id: true,
