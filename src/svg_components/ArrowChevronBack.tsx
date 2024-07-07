@@ -1,8 +1,10 @@
 'use client';
+
 import * as React from 'react';
 import { SVGProps } from 'react';
-const SvgArrowChevronBack = (props: SVGProps<SVGSVGElement>) => (
-  <svg
+
+function SvgArrowChevronBack(props: SVGProps<SVGSVGElement>) {
+  return <svg
     xmlns="http://www.w3.org/2000/svg"
     width="1em"
     height="1em"
@@ -18,5 +20,5 @@ const SvgArrowChevronBack = (props: SVGProps<SVGSVGElement>) => (
       d="M14.963 5 8 11.963l6.963 6.963"
     />
   </svg>
-);
+}
 export default SvgArrowChevronBack;

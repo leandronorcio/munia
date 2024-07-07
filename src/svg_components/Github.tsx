@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
-const SvgGithub = (props: SVGProps<SVGSVGElement>) => (
-  <svg
+
+function SvgGithub(props: SVGProps<SVGSVGElement>) {
+  return <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="currentColor"
     aria-hidden="true"
@@ -16,5 +17,5 @@ const SvgGithub = (props: SVGProps<SVGSVGElement>) => (
       clipRule="evenodd"
     />
   </svg>
-);
+}
 export default SvgGithub;

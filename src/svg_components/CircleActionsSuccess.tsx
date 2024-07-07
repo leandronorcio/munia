@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
-const SvgCircleActionsSuccess = (props: SVGProps<SVGSVGElement>) => (
-  <svg
+
+function SvgCircleActionsSuccess(props: SVGProps<SVGSVGElement>) {
+  return <svg
     xmlns="http://www.w3.org/2000/svg"
     width="1em"
     height="1em"
@@ -16,5 +17,5 @@ const SvgCircleActionsSuccess = (props: SVGProps<SVGSVGElement>) => (
       d="m9 11.95 2.121 2.121 4.243-4.243M23 12c0 6.075-4.925 11-11 11S1 18.075 1 12 5.925 1 12 1s11 4.925 11 11Z"
     />
   </svg>
-);
+}
 export default SvgCircleActionsSuccess;

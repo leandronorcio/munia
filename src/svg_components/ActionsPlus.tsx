@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
-const SvgActionsPlus = (props: SVGProps<SVGSVGElement>) => (
-  <svg
+
+function SvgActionsPlus(props: SVGProps<SVGSVGElement>) {
+  return <svg
     xmlns="http://www.w3.org/2000/svg"
     width="1em"
     height="1em"
@@ -17,5 +18,5 @@ const SvgActionsPlus = (props: SVGProps<SVGSVGElement>) => (
       d="M8 2v12M2 8h12"
     />
   </svg>
-);
+}
 export default SvgActionsPlus;

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
-const SvgCalendar = (props: SVGProps<SVGSVGElement>) => (
-  <svg
+
+function SvgCalendar(props: SVGProps<SVGSVGElement>) {
+  return <svg
     xmlns="http://www.w3.org/2000/svg"
     width="1em"
     height="1em"
@@ -17,5 +18,5 @@ const SvgCalendar = (props: SVGProps<SVGSVGElement>) => (
       d="M7 1v2m10-2v2M2 8h20M7.5 13h2m5 0h2m-9 4h2m5 0h2M5 22h14a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3H5a3 3 0 0 0-3 3v13a3 3 0 0 0 3 3Z"
     />
   </svg>
-);
+}
 export default SvgCalendar;

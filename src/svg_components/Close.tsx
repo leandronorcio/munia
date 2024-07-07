@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
-const SvgClose = (props: SVGProps<SVGSVGElement>) => (
-  <svg
+
+function SvgClose(props: SVGProps<SVGSVGElement>) {
+  return <svg
     xmlns="http://www.w3.org/2000/svg"
     width="1em"
     height="1em"
@@ -15,5 +16,5 @@ const SvgClose = (props: SVGProps<SVGSVGElement>) => (
       className="close_svg__close-svg"
     />
   </svg>
-);
+}
 export default SvgClose;

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
-const SvgEmojiHappySmile = (props: SVGProps<SVGSVGElement>) => (
-  <svg
+
+function SvgEmojiHappySmile(props: SVGProps<SVGSVGElement>) {
+  return <svg
     xmlns="http://www.w3.org/2000/svg"
     width="1em"
     height="1em"
@@ -24,5 +25,5 @@ const SvgEmojiHappySmile = (props: SVGProps<SVGSVGElement>) => (
       </clipPath>
     </defs>
   </svg>
-);
+}
 export default SvgEmojiHappySmile;

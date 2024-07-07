@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
-const SvgArrowChevronForward = (props: SVGProps<SVGSVGElement>) => (
-  <svg
+
+function SvgArrowChevronForward(props: SVGProps<SVGSVGElement>) {
+  return <svg
     xmlns="http://www.w3.org/2000/svg"
     width="1em"
     height="1em"
@@ -17,5 +18,5 @@ const SvgArrowChevronForward = (props: SVGProps<SVGSVGElement>) => (
       d="m10 5 6.963 6.963L10 18.926"
     />
   </svg>
-);
+}
 export default SvgArrowChevronForward;

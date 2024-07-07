@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { SVGProps } from 'react';
-const SvgArrowChevronDown = (props: SVGProps<SVGSVGElement>) => (
-  <svg
+
+function SvgArrowChevronDown(props: SVGProps<SVGSVGElement>) {
+  return <svg
     xmlns="http://www.w3.org/2000/svg"
     width="1em"
     height="1em"
@@ -17,5 +18,5 @@ const SvgArrowChevronDown = (props: SVGProps<SVGSVGElement>) => (
       d="m18.926 10-6.963 6.963L4.999 10"
     />
   </svg>
-);
+}
 export default SvgArrowChevronDown;
