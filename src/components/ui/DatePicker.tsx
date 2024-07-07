@@ -1,4 +1,4 @@
-import { RefCallback, useRef } from 'react';
+import { RefCallback, useCallback, useRef } from 'react';
 import { useDatePickerState } from 'react-stately';
 import { AriaDatePickerProps, DateValue, useDatePicker } from 'react-aria';
 import SvgCalendar from '@/svg_components/Calendar';
@@ -34,10 +34,16 @@ export function DatePicker({ triggerRef, ...props }: DatePickerProps) {
   } = useDatePicker(props, state, ref);
   const isError = props.errorMessage !== undefined;
 
-  // For clearing value: https://github.com/adobe/react-spectrum/issues/4986#issuecomment-1703337523
-  const clear = () => {
+  const clear = useCallback(() => {
+    // For clearing value: https://github.com/adobe/react-spectrum/issues/4986#issuecomment-1703337523
     state.setDateValue(null!);
-  };
+  }, [state]);
+  const assignRef = useCallback(
+    (node: HTMLButtonElement | null) => {
+      triggerRef(node);
+    },
+    [triggerRef],
+  );
 
   return (
     <>
@@ -60,7 +66,7 @@ export function DatePicker({ triggerRef, ...props }: DatePickerProps) {
 
         <ButtonNaked
           {...buttonProps}
-          ref={(node) => triggerRef(node)}
+          ref={assignRef}
           className="absolute left-5 top-[50%] translate-y-[-50%]"
         >
           <SvgCalendar className="h-6 w-6 stroke-muted-foreground hover:stroke-foreground group-focus-within:stroke-black" />
@@ -78,11 +84,8 @@ export function DatePicker({ triggerRef, ...props }: DatePickerProps) {
           </Popover>
         )}
         <Button
-          Icon={(props) => (
-            <SvgClose
-              className={cn(props.className, 'stroke-muted-foreground')}
-            />
-          )}
+          Icon={SvgClose}
+          iconClassName="stroke-muted-foreground"
           mode="ghost"
           size="small"
           onPress={clear}
@@ -95,7 +98,7 @@ export function DatePicker({ triggerRef, ...props }: DatePickerProps) {
       </div>
       {isError && (
         <p className="mt-2 font-medium text-foreground" {...errorMessageProps}>
-          {props.errorMessage}
+          {props.errorMessage as string}
         </p>
       )}
     </>

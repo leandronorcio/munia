@@ -1,4 +1,5 @@
 import { cn } from '@/lib/cn';
+import React from 'react';
 
 interface ResponsiveContainerProps
   extends React.HTMLAttributes<HTMLDivElement> {

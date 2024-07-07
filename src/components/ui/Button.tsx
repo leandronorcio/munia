@@ -63,10 +63,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           )
         ) : (
           <SvgLoading
-            className={cn(
-              ['animate-spin '],
-              buttonIconVariants({ size, mode }),
-            )}
+            className={cn(['animate-spin'], buttonIconVariants({ size, mode }))}
           />
         )}
         {children}

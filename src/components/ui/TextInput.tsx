@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/cn';
 import { useObjectRef } from '@react-aria/utils';
-import { SVGProps, forwardRef } from 'react';
+import { SVGProps, forwardRef, useCallback } from 'react';
 import { AriaTextFieldProps, useTextField } from 'react-aria';
 import SvgClose from '@/svg_components/Close';
 import Button from './Button';
@@ -23,12 +23,16 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     const { errorMessage, label } = props;
     const isError = errorMessage !== undefined;
 
-    const clear = () => {
+    const clear = useCallback(() => {
       // Set the input value to an empty string
-      ref.current.value = '';
+      if (ref.current) {
+        ref.current.value = '';
+      }
       // If `onChange` is provided, invoke it with an empty string
-      props.onChange && props.onChange('');
-    };
+      if (props.onChange) {
+        props.onChange('');
+      }
+    }, [props, ref]);
 
     return (
       <>
@@ -69,11 +73,8 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             {label}
           </label>
           <Button
-            Icon={(props) => (
-              <SvgClose
-                className={cn(props.className, 'stroke-muted-foreground')}
-              />
-            )}
+            Icon={SvgClose}
+            iconClassName="stroke-muted-foreground"
             mode="ghost"
             size="small"
             onPress={clear}
@@ -86,10 +87,12 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             className="mt-2 font-medium text-foreground"
             {...errorMessageProps}
           >
-            {errorMessage}
+            {errorMessage as string}
           </p>
         )}
       </>
     );
   },
 );
+
+TextInput.displayName = 'TextInput';

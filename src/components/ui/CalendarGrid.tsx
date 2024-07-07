@@ -17,10 +17,10 @@ export function CalendarGrid({ state, ...props }: CalendarGridProps) {
     <table {...gridProps} cellPadding="0" className="flex-1">
       <thead {...headerProps}>
         <tr>
-          {weekDays.map((day, index) => (
+          {weekDays.map((day) => (
             <th
               className="text-center text-sm font-semibold text-muted-foreground"
-              key={index}
+              key={day}
             >
               {day}
             </th>
@@ -30,15 +30,15 @@ export function CalendarGrid({ state, ...props }: CalendarGridProps) {
       <tbody>
         {[...new Array(weeksInMonth).keys()].map((weekIndex) => (
           <tr key={weekIndex}>
-            {state
-              .getDatesInWeek(weekIndex)
-              .map((date, i) =>
-                date ? (
-                  <CalendarCell key={i} state={state} date={date} />
-                ) : (
-                  <td key={i} />
-                ),
-              )}
+            {state.getDatesInWeek(weekIndex).map((date, i) =>
+              date ? (
+                // eslint-disable-next-line react/no-array-index-key
+                <CalendarCell key={i} state={state} date={date} />
+              ) : (
+                // eslint-disable-next-line react/no-array-index-key
+                <td key={i} />
+              ),
+            )}
           </tr>
         ))}
       </tbody>

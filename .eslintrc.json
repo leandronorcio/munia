@@ -32,7 +32,15 @@
     "@next/next/no-img-element": "off",
     "react/require-default-props": "off",
     "no-nested-ternary": "off",
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "required": {
+          "some": ["nesting", "id"]
+        }
+      }
+    ]
   },
   "settings": {
     "import/parsers": {

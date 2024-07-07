@@ -5,7 +5,7 @@ import {
   useSwitch,
   VisuallyHidden,
 } from 'react-aria';
-import { useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { cn } from '@/lib/cn';
 import { motion } from 'framer-motion';
 
@@ -19,6 +19,14 @@ export function Switch({ children, renderIcon, ...props }: SwitchProps) {
   const ref = useRef(null);
   const { inputProps } = useSwitch(props, state, ref);
   const { isFocusVisible, focusProps } = useFocusRing();
+  const sprintTransition = useMemo(
+    () => ({
+      type: 'spring',
+      stiffness: 700,
+      damping: 30,
+    }),
+    [],
+  );
 
   return (
     <label
@@ -41,9 +49,9 @@ export function Switch({ children, renderIcon, ...props }: SwitchProps) {
       >
         <motion.div
           layout
-          transition={spring}
+          transition={sprintTransition}
           className={cn(
-            'grid h-8  w-8 place-items-center rounded-[200px]',
+            'grid h-8 w-8 place-items-center rounded-[200px]',
             props.isSelected ? 'bg-primary-foreground' : 'bg-muted-foreground',
           )}
         >
@@ -54,9 +62,3 @@ export function Switch({ children, renderIcon, ...props }: SwitchProps) {
     </label>
   );
 }
-
-const spring = {
-  type: 'spring',
-  stiffness: 700,
-  damping: 30,
-};

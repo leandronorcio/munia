@@ -1,3 +1,4 @@
+import React from 'react';
 import { cn } from '@/lib/cn';
 import { buttonVariants } from '@/components/ui/variants/buttonVariants';
 import { VariantProps } from 'class-variance-authority';

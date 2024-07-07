@@ -1,8 +1,8 @@
 'use client';
 
+import React, { forwardRef } from 'react';
 import { cn } from '@/lib/cn';
 import { useObjectRef } from '@react-aria/utils';
-import { forwardRef } from 'react';
 import {
   AriaButtonProps,
   mergeProps,
@@ -23,6 +23,7 @@ export const ButtonNaked = forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <button
+        type="button"
         {...mergeProps(buttonProps, focusProps)}
         ref={ref}
         className={cn(
@@ -36,3 +37,5 @@ export const ButtonNaked = forwardRef<HTMLButtonElement, ButtonProps>(
     );
   },
 );
+
+ButtonNaked.displayName = 'ButtonNaked';

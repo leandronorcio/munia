@@ -1,7 +1,7 @@
 import { cn } from '@/lib/cn';
 import { resizeTextAreaHeight } from '@/lib/resizeTextAreaHeight';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
-import { FormEvent, SVGProps, forwardRef } from 'react';
+import { FormEvent, SVGProps, forwardRef, useCallback } from 'react';
 import { AriaTextFieldProps, useTextField } from 'react-aria';
 import SvgClose from '@/svg_components/Close';
 import Button from './Button';
@@ -22,13 +22,17 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const { errorMessage, label } = props;
     const isError = errorMessage !== undefined;
 
-    const clear = () => {
+    const clear = useCallback(() => {
       // Set the input value to an empty string and resize the textarea
-      ref.current.value = '';
-      resizeTextAreaHeight(ref.current);
+      if (ref.current) {
+        ref.current.value = '';
+        resizeTextAreaHeight(ref.current);
+      }
       // If `onChange` is provided, invoke it with an empty string
-      props.onChange && props.onChange('');
-    };
+      if (props.onChange) {
+        props.onChange('');
+      }
+    }, [props, ref]);
 
     return (
       <>
@@ -76,11 +80,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             {label}
           </label>
           <Button
-            Icon={(props) => (
-              <SvgClose
-                className={cn(props.className, 'stroke-muted-foreground')}
-              />
-            )}
+            Icon={SvgClose}
+            iconClassName="stroke-muted-foreground"
             mode="ghost"
             size="small"
             onPress={clear}
@@ -93,10 +94,12 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             className="mt-2 font-medium text-foreground"
             {...errorMessageProps}
           >
-            {errorMessage}
+            {errorMessage as string}
           </p>
         )}
       </>
     );
   },
 );
+
+Textarea.displayName = 'Textarea';

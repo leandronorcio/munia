@@ -1,8 +1,10 @@
 import { cn } from '@/lib/cn';
 import { getAvatarFallback } from '@/lib/getAvatarFallback';
+import React from 'react';
 
 export function FallbackProfilePhoto({
   name,
+  // eslint-disable-next-line react/prop-types
   className,
   ...rest
 }: React.HTMLAttributes<HTMLDivElement> & { name: string }) {

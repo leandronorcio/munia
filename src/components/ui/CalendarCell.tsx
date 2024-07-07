@@ -68,7 +68,7 @@ export function CalendarCell({ state, date }: CalendarCellProps) {
         } ${isDisabled ? 'disabled' : ''}`}
       >
         <div
-          className={`flex h-full w-full items-center justify-center rounded-full text-sm font-semibold  ${
+          className={`flex h-full w-full items-center justify-center rounded-full text-sm font-semibold ${
             isDisabled && !isInvalid ? 'text-gray-400' : ''
           } ${
             // Focus ring, visible while the cell has keyboard focus.

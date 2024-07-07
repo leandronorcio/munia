@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { AriaDialogProps, useDialog } from 'react-aria';
 
 interface DialogProps extends AriaDialogProps {

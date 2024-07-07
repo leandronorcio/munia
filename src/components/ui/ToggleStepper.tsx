@@ -60,6 +60,7 @@ export function ToggleStepper({
 
   return (
     <button
+      type="button"
       {...mergeProps(buttonProps, focusProps)}
       ref={ref}
       className={cn(

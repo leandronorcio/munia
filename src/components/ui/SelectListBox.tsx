@@ -4,7 +4,7 @@ import type { Node } from '@react-types/shared';
 import { useListBox, useListBoxSection, useOption } from 'react-aria';
 import { Check } from '@/svg_components';
 import { cn } from '@/lib/cn';
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 
 interface ListBoxProps extends AriaListBoxOptions<unknown> {
   listBoxRef?: React.RefObject<HTMLUListElement>;
@@ -19,50 +19,6 @@ interface SectionProps {
 interface OptionProps {
   item: Node<unknown>;
   state: ListState<unknown>;
-}
-
-export function ListBox(props: ListBoxProps) {
-  const ref = useRef<HTMLUListElement>(null);
-  const { listBoxRef = ref, state } = props;
-  const { listBoxProps } = useListBox(props, state, listBoxRef);
-
-  return (
-    <ul
-      {...listBoxProps}
-      ref={listBoxRef}
-      className="w-full origin-top scale-95 overflow-auto rounded-xl border border-border bg-popover py-2 outline-none transition-transform focus-within:scale-100"
-    >
-      {[...state.collection].map((item) =>
-        item.type === 'section' ? (
-          <ListBoxSection key={item.key} section={item} state={state} />
-        ) : (
-          <Option key={item.key} item={item} state={state} />
-        ),
-      )}
-    </ul>
-  );
-}
-
-function ListBoxSection({ section, state }: SectionProps) {
-  const { itemProps, headingProps, groupProps } = useListBoxSection({
-    heading: section.rendered,
-    'aria-label': section['aria-label'],
-  });
-
-  return (
-    <li {...itemProps} className="my-2">
-        {section.rendered && (
-          <span {...headingProps} className="text-md pl-5 font-semibold">
-            {section.rendered}
-          </span>
-        )}
-        <ul {...groupProps}>
-          {[...section.childNodes].map((node) => (
-            <Option key={node.key} item={node} state={state} />
-          ))}
-        </ul>
-      </li>
-  );
 }
 
 function Option({ item, state }: OptionProps) {
@@ -102,5 +58,49 @@ function Option({ item, state }: OptionProps) {
         {item.rendered}
       </p>
     </li>
+  );
+}
+
+function ListBoxSection({ section, state }: SectionProps) {
+  const { itemProps, headingProps, groupProps } = useListBoxSection({
+    heading: section.rendered,
+    'aria-label': section['aria-label'],
+  });
+
+  return (
+    <li {...itemProps} className="my-2">
+      {section.rendered && (
+        <span {...headingProps} className="text-md pl-5 font-semibold">
+          {section.rendered}
+        </span>
+      )}
+      <ul {...groupProps}>
+        {[...section.childNodes].map((node) => (
+          <Option key={node.key} item={node} state={state} />
+        ))}
+      </ul>
+    </li>
+  );
+}
+
+export function ListBox(props: ListBoxProps) {
+  const ref = useRef<HTMLUListElement>(null);
+  const { listBoxRef = ref, state } = props;
+  const { listBoxProps } = useListBox(props, state, listBoxRef);
+
+  return (
+    <ul
+      {...listBoxProps}
+      ref={listBoxRef}
+      className="w-full origin-top scale-95 overflow-auto rounded-xl border border-border bg-popover py-2 outline-none transition-transform focus-within:scale-100"
+    >
+      {[...state.collection].map((item) =>
+        item.type === 'section' ? (
+          <ListBoxSection key={item.key} section={item} state={state} />
+        ) : (
+          <Option key={item.key} item={item} state={state} />
+        ),
+      )}
+    </ul>
   );
 }

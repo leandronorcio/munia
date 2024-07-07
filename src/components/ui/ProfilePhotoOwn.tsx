@@ -6,15 +6,14 @@ import { ProfilePhoto } from './ProfilePhoto';
 export function ProfilePhotoOwn() {
   const [user] = useSessionUserData();
 
+  if (!user) {
+    return null;
+  }
   return (
-    <>
-      {user && user.name !== null && (
-        <ProfilePhoto
-          name={user.name}
-          username={user.username}
-          photoUrl={user?.profilePhoto}
-        />
-      )}
-    </>
+    <ProfilePhoto
+      name={user.name}
+      username={user.username}
+      photoUrl={user?.profilePhoto}
+    />
   );
 }

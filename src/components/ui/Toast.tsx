@@ -1,16 +1,10 @@
 import type { AriaToastProps } from '@react-aria/toast';
 import { useToast } from '@react-aria/toast';
 import { QueuedToast, ToastState } from '@react-stately/toast';
-import { SVGProps, useRef } from 'react';
-import { ToastType } from '@/contexts/ToastContext';
-import {
-  CircleActionsAlertInfo,
-  CircleActionsClose,
-  CircleActionsSuccess,
-  Close,
-  NotificationBell,
-} from '@/svg_components';
+import { useRef } from 'react';
+import { Close } from '@/svg_components';
 import { cn } from '@/lib/cn';
+import { ToastType, toastColors, toastIcons } from '@/lib/toast';
 import Button from './Button';
 
 interface ToastProps<T> extends AriaToastProps<T> {
@@ -20,11 +14,8 @@ interface ToastProps<T> extends AriaToastProps<T> {
 
 export function Toast<T extends ToastType>({ state, ...props }: ToastProps<T>) {
   const ref = useRef(null);
-  const { toastProps, titleProps, descriptionProps, closeButtonProps } = useToast(
-    props,
-    state,
-    ref,
-  );
+  const { toastProps, titleProps, descriptionProps, closeButtonProps } =
+    useToast(props, state, ref);
 
   const { title, message, type = 'default' } = props.toast.content;
 
@@ -34,20 +25,20 @@ export function Toast<T extends ToastType>({ state, ...props }: ToastProps<T>) {
       ref={ref}
       className={cn(
         'flex items-center justify-between gap-4 rounded-xl border p-6',
-        colors[type].bg,
-        colors[type].border,
+        toastColors[type].bg,
+        toastColors[type].border,
       )}
     >
       <div>
         <div className="flex items-center gap-4">
-          {icons[type].renderComponent({
+          {toastIcons[type].renderComponent({
             width: 24,
             height: 24,
-            className: colors[type].icon,
+            className: toastColors[type].icon,
           })}
           <h4
             {...titleProps}
-            className={cn('text-lg font-semibold', colors[type].text)}
+            className={cn('text-lg font-semibold', toastColors[type].text)}
           >
             {title}
           </h4>
@@ -55,7 +46,7 @@ export function Toast<T extends ToastType>({ state, ...props }: ToastProps<T>) {
         {message !== undefined && message !== '' && (
           <p
             {...descriptionProps}
-            className={cn('ml-10 text-sm', colors[type].text)}
+            className={cn('ml-10 text-sm', toastColors[type].text)}
           >
             {message}
           </p>
@@ -65,60 +56,9 @@ export function Toast<T extends ToastType>({ state, ...props }: ToastProps<T>) {
         {...closeButtonProps}
         mode="ghost"
         size="small"
-        Icon={(props) => (
-          <Close className={cn(props.className, colors[type].icon)} />
-        )}
+        Icon={Close}
+        iconClassName={toastColors[type].icon}
       />
     </div>
   );
 }
-
-const colors = {
-  default: {
-    bg: 'bg-primary',
-    text: 'text-primary-foreground',
-    border: 'border-border',
-    icon: 'stroke-primary-foreground/70',
-  },
-  success: {
-    bg: 'bg-success',
-    text: 'text-success-foreground',
-    border: 'border-success-foreground',
-    icon: 'stroke-success-foreground/70',
-  },
-  warning: {
-    bg: 'bg-warning',
-    text: 'text-warning-foreground',
-    border: 'border-warning-foreground',
-    icon: 'stroke-warning-foreground/70',
-  },
-  error: {
-    bg: 'bg-destructive',
-    text: 'text-destructive-foreground',
-    border: 'border-border',
-    icon: 'stroke-destructive-foreground/70',
-  },
-};
-
-const icons = {
-  default: {
-    renderComponent: (props?: SVGProps<SVGSVGElement>) => (
-      <NotificationBell {...props} />
-    ),
-  },
-  success: {
-    renderComponent: (props?: SVGProps<SVGSVGElement>) => (
-      <CircleActionsSuccess {...props} />
-    ),
-  },
-  warning: {
-    renderComponent: (props?: SVGProps<SVGSVGElement>) => (
-      <CircleActionsAlertInfo {...props} />
-    ),
-  },
-  error: {
-    renderComponent: (props?: SVGProps<SVGSVGElement>) => (
-      <CircleActionsClose {...props} />
-    ),
-  },
-};

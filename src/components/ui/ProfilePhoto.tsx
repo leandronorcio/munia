@@ -17,7 +17,7 @@ export function ProfilePhoto({
       {photoUrl ? (
         <img
           src={photoUrl}
-          alt={`${name}&apos; profile photo.`}
+          alt={`${name}'s avatar`}
           className="h-full w-full cursor-pointer rounded-full bg-muted object-cover"
         />
       ) : (
