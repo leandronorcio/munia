@@ -8,6 +8,7 @@
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:react-perf/recommended",
+    "plugin:prettier/recommended",
     "prettier"
   ],
   "parser": "@typescript-eslint/parser",
@@ -27,7 +28,11 @@
     "react/jsx-props-no-spreading": "off",
     "react/react-in-jsx-scope": "off",
     "react/destructuring-assignment": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "@next/next/no-img-element": "off",
+    "react/require-default-props": "off",
+    "no-nested-ternary": "off",
+    "prettier/prettier": "error"
   },
   "settings": {
     "import/parsers": {
@@ -39,5 +44,8 @@
         "project": "./tsconfig.json"
       }
     }
+  },
+  "globals": {
+    "JSX": "readonly"
   }
 }
