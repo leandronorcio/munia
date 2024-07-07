@@ -1,15 +1,15 @@
 import { RefCallback, useRef } from 'react';
 import { useDatePickerState } from 'react-stately';
 import { AriaDatePickerProps, DateValue, useDatePicker } from 'react-aria';
+import SvgCalendar from '@/svg_components/Calendar';
+import { cn } from '@/lib/cn';
+import SvgClose from '@/svg_components/Close';
 import { Calendar } from './Calendar';
 import { DateField } from './DateField';
 import { Popover } from './Popover';
-import SvgCalendar from '@/svg_components/Calendar';
 import { ButtonNaked } from './ButtonNaked';
 import { DatePickerDialog } from './DatePickerDialog';
-import { cn } from '@/lib/cn';
 import Button from './Button';
-import SvgClose from '@/svg_components/Close';
 
 interface DatePickerProps extends AriaDatePickerProps<DateValue> {
   /**
@@ -21,9 +21,9 @@ interface DatePickerProps extends AriaDatePickerProps<DateValue> {
 }
 
 export function DatePicker({ triggerRef, ...props }: DatePickerProps) {
-  let state = useDatePickerState(props);
-  let ref = useRef(null);
-  let {
+  const state = useDatePickerState(props);
+  const ref = useRef(null);
+  const {
     groupProps,
     labelProps,
     fieldProps,

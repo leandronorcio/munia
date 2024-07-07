@@ -1,14 +1,15 @@
 'use client';
+
 import { useCallback, useMemo } from 'react';
-import { Comment } from './Comment';
 import { AnimatePresence, motion } from 'framer-motion';
 import { GetComment } from '@/types/definitions';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getComments } from '@/lib/client_data_fetching/getComments';
 import { useSession } from 'next-auth/react';
-import { CommentCreate } from './CommentCreate';
 import { useShouldAnimate } from '@/hooks/useShouldAnimate';
 import { commentFramerVariants } from '@/lib/framerVariants';
+import { CommentCreate } from './CommentCreate';
+import { Comment } from './Comment';
 
 export function Comments({ postId }: { postId: number }) {
   const qc = useQueryClient();
@@ -23,7 +24,7 @@ export function Comments({ postId }: { postId: number }) {
     isError,
     error,
   } = useQuery<GetComment[], Error>({
-    queryKey: queryKey,
+    queryKey,
     queryFn: () => getComments({ postId }),
     // staleTime: 60000 * 10,
   });

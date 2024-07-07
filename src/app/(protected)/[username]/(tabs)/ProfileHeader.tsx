@@ -1,14 +1,14 @@
 'use client';
 
 import { ProfileActionButtons } from '@/components/ProfileActionButtons';
-import ProfilePhoto from './ProfilePhoto';
-import CoverPhoto from './CoverPhoto';
-import Tabs from './Tabs';
 import { GetUser } from '@/types/definitions';
 import { useUserQuery } from '@/hooks/queries/useUserQuery';
 import Link from 'next/link';
 import { Ellipse } from '@/svg_components';
 import { ButtonLink } from '@/components/ui/ButtonLink';
+import Tabs from './Tabs';
+import CoverPhoto from './CoverPhoto';
+import ProfilePhoto from './ProfilePhoto';
 
 export function ProfileHeader({
   isOwnProfile,

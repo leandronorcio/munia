@@ -34,7 +34,7 @@ export function usePostLikesMutations({ postId }: { postId: number }) {
     },
     onMutate: async () => {
       // Cancel any outgoing refetches
-      await qc.cancelQueries({ queryKey: queryKey });
+      await qc.cancelQueries({ queryKey });
 
       // Snapshot the previous value
       const previousPost = qc.getQueryData(queryKey);
@@ -85,7 +85,7 @@ export function usePostLikesMutations({ postId }: { postId: number }) {
     },
     onMutate: async () => {
       // Cancel any outgoing refetches
-      await qc.cancelQueries({ queryKey: queryKey });
+      await qc.cancelQueries({ queryKey });
 
       // Snapshot the previous value
       const previousPost = qc.getQueryData(queryKey);

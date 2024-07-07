@@ -9,8 +9,8 @@ interface ModalProps extends AriaModalOverlayProps {
 }
 
 export function Modal({ state, children, ...rest }: ModalProps) {
-  let ref = useRef(null);
-  let { modalProps, underlayProps } = useModalOverlay(rest, state, ref);
+  const ref = useRef(null);
+  const { modalProps, underlayProps } = useModalOverlay(rest, state, ref);
 
   return (
     <Overlay>

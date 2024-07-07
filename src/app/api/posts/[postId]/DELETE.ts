@@ -4,9 +4,9 @@
  */
 
 import { NextResponse } from 'next/server';
-import { verifyAccessToPost } from './verifyAccessToPost';
 import prisma from '@/lib/prisma/prisma';
 import { deleteObject } from '@/lib/s3/deleteObject';
+import { verifyAccessToPost } from './verifyAccessToPost';
 
 export async function DELETE(
   request: Request,

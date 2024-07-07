@@ -1,7 +1,7 @@
-import { getProfile } from '../../getProfile';
 import { DiscoverProfiles } from '@/components/DiscoverProfiles';
 import { DiscoverSearch } from '@/components/DiscoverSearch';
 import { DiscoverFilters } from '@/components/DiscoverFilters';
+import { getProfile } from '../../getProfile';
 
 export async function generateMetadata({
   params,

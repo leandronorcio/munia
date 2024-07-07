@@ -3,9 +3,9 @@ import { ActivityType } from '@prisma/client';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { ComponentProps, useRef } from 'react';
 import { UserSummaryAfterSetUp } from '@/types/definitions';
-import { ActivityIcon } from './ActivityIcon';
 import { mergeProps, useFocusRing, useLink } from 'react-aria';
 import { cn } from '@/lib/cn';
+import { ActivityIcon } from './ActivityIcon';
 
 interface ActivityCardProps extends ComponentProps<'div'> {
   children: React.ReactNode;
@@ -24,7 +24,7 @@ export function ActivityCard({
   ...rest
 }: ActivityCardProps) {
   const ref = useRef(null);
-  let { linkProps } = useLink({ elementType: 'div' }, ref);
+  const { linkProps } = useLink({ elementType: 'div' }, ref);
   const { isFocusVisible, focusProps } = useFocusRing();
 
   return (
@@ -56,7 +56,7 @@ export function ActivityCard({
 
       {!isRead && (
         <div className="grid place-items-center">
-          <div className="h-3 w-3 rounded-full bg-violet-500"></div>
+          <div className="h-3 w-3 rounded-full bg-violet-500" />
         </div>
       )}
     </div>

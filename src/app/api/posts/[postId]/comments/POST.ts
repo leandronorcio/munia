@@ -35,7 +35,7 @@ export async function POST(
     const res: FindCommentResult = await prisma.comment.create({
       data: {
         content,
-        userId: userId,
+        userId,
         postId,
       },
       include: includeToComment(userId),

@@ -1,26 +1,27 @@
 'use client';
+
 import { GetComment } from '@/types/definitions';
 import { memo, useEffect } from 'react';
 import { isEqual } from 'lodash';
-import { ToggleStepper } from './ui/ToggleStepper';
 import SvgHeart from '@/svg_components/Heart';
 import SvgArrowReply from '@/svg_components/ArrowReply';
-import { CommentContent } from './CommentContent';
-import { CommentReplies } from './CommentReplies';
 import { useSearchParams } from 'next/navigation';
-import Button from './ui/Button';
 import { useDialogs } from '@/hooks/useDialogs';
-import { DropdownMenuButton } from './ui/DropdownMenuButton';
 import { Item, Section } from 'react-stately';
-import { ButtonNaked } from './ui/ButtonNaked';
 import { useCreateCommentMutations } from '@/hooks/mutations/useCreateCommentMutations';
-import { ProfilePhoto } from './ui/ProfilePhoto';
 import { useUpdateDeleteComments } from '@/hooks/useUpdateDeleteComments';
 import { useLikeUnlikeComments } from '@/hooks/useLikeUnlikeComments';
 import { QueryKey } from '@tanstack/react-query';
+import { ProfilePhoto } from './ui/ProfilePhoto';
+import { ButtonNaked } from './ui/ButtonNaked';
+import { DropdownMenuButton } from './ui/DropdownMenuButton';
+import Button from './ui/Button';
+import { CommentReplies } from './CommentReplies';
+import { CommentContent } from './CommentContent';
+import { ToggleStepper } from './ui/ToggleStepper';
 
 export const Comment = memo(
-  function Comment({
+  ({
     id: commentId,
     content,
     createdAt,
@@ -38,7 +39,7 @@ export const Comment = memo(
       shown: boolean;
     }) => void;
     queryKey: QueryKey;
-  }) {
+  }) => {
     const numberOfLikes = _count.commentLikes;
     const numberOfReplies = _count.replies;
     const { prompt } = useDialogs();

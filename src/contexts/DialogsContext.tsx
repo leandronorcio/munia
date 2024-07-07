@@ -10,12 +10,12 @@ import {
   useState,
 } from 'react';
 import { useOverlayTriggerState } from 'react-stately';
-import { Modal } from '../components/Modal';
-import { AlertDialog } from '../components/AlertDialog';
 import Button from '@/components/ui/Button';
 import { TextInput } from '@/components/ui/TextInput';
 import { TextAreaWithMentionsAndHashTags } from '@/components/TextAreaWithMentionsAndHashTags';
 import { AnimatePresence } from 'framer-motion';
+import { AlertDialog } from '../components/AlertDialog';
+import { Modal } from '../components/Modal';
 
 interface BasicDialogType {
   type: 'alert' | 'confirm' | 'prompt';

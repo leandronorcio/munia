@@ -1,4 +1,5 @@
 'use client';
+
 import { CreatePostModalContextProvider } from '@/contexts/CreatePostModalContext';
 import { DialogsContextProvider } from '@/contexts/DialogsContext';
 import { ReactQueryProvider } from '@/contexts/ReactQueryProvider';

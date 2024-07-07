@@ -7,7 +7,7 @@ import { cn } from '@/lib/cn';
 import Link from 'next/link';
 
 export const DiscoverProfile = memo(
-  function DiscoverProfile({ userId }: { userId: string }) {
+  ({ userId }: { userId: string }) => {
     /**
      * Since the query function of <DiscoverProfiles> already created a query
      * cache for the user data, we can just access it here using the `useUserQuery()`

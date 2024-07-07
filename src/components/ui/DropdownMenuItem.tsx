@@ -18,8 +18,8 @@ export function DropdownMenuItem<T>({
   onClose,
 }: MenuItemProps<T>) {
   // Get props for the menu item element
-  let ref = useRef(null);
-  let { menuItemProps, isDisabled } = useMenuItem(
+  const ref = useRef(null);
+  const { menuItemProps, isDisabled } = useMenuItem(
     {
       key: item.key,
       onAction,
@@ -31,9 +31,9 @@ export function DropdownMenuItem<T>({
 
   // Handle focus events so we can apply highlighted
   // style to the focused menu item
-  let isFocused = state.selectionManager.focusedKey === item.key;
-  let focusBg = item.key === 'delete' ? 'bg-destructive' : 'bg-accent';
-  let focus = isFocused
+  const isFocused = state.selectionManager.focusedKey === item.key;
+  const focusBg = item.key === 'delete' ? 'bg-destructive' : 'bg-accent';
+  const focus = isFocused
     ? `${focusBg} ${
         item.key === 'delete'
           ? 'text-destructive-foreground'

@@ -1,12 +1,12 @@
 import { getReplies } from '@/lib/client_data_fetching/getReplies';
 import { useQuery } from '@tanstack/react-query';
-import { CommentReply } from './CommentReply';
 import { useSession } from 'next-auth/react';
 import { useUpdateDeleteComments } from '@/hooks/useUpdateDeleteComments';
 import { useLikeUnlikeComments } from '@/hooks/useLikeUnlikeComments';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useShouldAnimate } from '@/hooks/useShouldAnimate';
 import { commentFramerVariants } from '@/lib/framerVariants';
+import { CommentReply } from './CommentReply';
 
 export function CommentReplies({ parentId }: { parentId: number }) {
   const { data: session } = useSession();
@@ -16,7 +16,7 @@ export function CommentReplies({ parentId }: { parentId: number }) {
     isPending,
     isError,
   } = useQuery({
-    queryKey: queryKey,
+    queryKey,
     queryFn: () => getReplies({ parentId }),
     staleTime: 60000 * 10,
   });

@@ -1,4 +1,5 @@
 'use client';
+
 import { DiscoverProfile } from '@/components/DiscoverProfile';
 import { AllCaughtUp } from '@/components/AllCaughtUp';
 import useOnScreen from '@/hooks/useOnScreen';
@@ -133,7 +134,7 @@ export function DiscoverProfiles({
          * so the bottom loader has to be hidden first
          */
         style={{ display: data ? 'block' : 'none' }}
-      ></div>
+       />
       {!isError && !isFetching && !isFetchingNextPage && !hasNextPage && (
         <AllCaughtUp />
       )}

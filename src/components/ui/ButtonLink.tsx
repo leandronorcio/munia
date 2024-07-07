@@ -1,7 +1,7 @@
 import { cn } from '@/lib/cn';
-import { ButtonProps } from './Button';
 import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/variants/buttonVariants';
+import { ButtonProps } from './Button';
 
 interface ButtonLinkProps extends ButtonProps {
   href: string;

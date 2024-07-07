@@ -1,17 +1,18 @@
 'use client';
+
 import { GetComment } from '@/types/definitions';
 import { memo } from 'react';
 import { isEqual } from 'lodash';
-import { ToggleStepper } from './ui/ToggleStepper';
 import SvgHeart from '@/svg_components/Heart';
-import { CommentContent } from './CommentContent';
 import { useSearchParams } from 'next/navigation';
-import { DropdownMenuButton } from './ui/DropdownMenuButton';
 import { Item, Section } from 'react-stately';
+import { ToggleStepper } from './ui/ToggleStepper';
+import { CommentContent } from './CommentContent';
+import { DropdownMenuButton } from './ui/DropdownMenuButton';
 import { ProfilePhoto } from './ui/ProfilePhoto';
 
 export const CommentReply = memo(
-  function CommentReply({
+  ({
     id: commentId,
     content,
     createdAt,
@@ -29,7 +30,7 @@ export const CommentReply = memo(
     handleDelete: (params: { commentId: number }) => void;
     likeComment: (params: { commentId: number }) => void;
     unLikeComment: (params: { commentId: number }) => void;
-  }) {
+  }) => {
     const numberOfLikes = _count.commentLikes;
     const handleLikeClick = () =>
       !isLiked ? likeComment({ commentId }) : unLikeComment({ commentId });

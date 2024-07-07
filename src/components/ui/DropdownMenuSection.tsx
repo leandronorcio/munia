@@ -1,8 +1,8 @@
 import { TreeState } from 'react-stately';
-import { DropdownMenuItem } from './DropdownMenuItem';
 import type { Node } from '@react-types/shared';
 import { AriaMenuSectionProps, useMenuSection, useSeparator } from 'react-aria';
 import { Key } from 'react';
+import { DropdownMenuItem } from './DropdownMenuItem';
 
 interface MenuSectionProps<T> extends AriaMenuSectionProps {
   section: Node<T>;
@@ -17,12 +17,12 @@ export function DropdownMenuSection<T>({
   onAction,
   onClose,
 }: MenuSectionProps<T>) {
-  let { itemProps, groupProps } = useMenuSection({
+  const { itemProps, groupProps } = useMenuSection({
     heading: section.rendered,
     'aria-label': section['aria-label'],
   });
 
-  let { separatorProps } = useSeparator({
+  const { separatorProps } = useSeparator({
     elementType: 'li',
   });
 

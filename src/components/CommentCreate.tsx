@@ -1,10 +1,11 @@
 'use client';
-import Button from './ui/Button';
-import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
+
 import SvgSend from '@/svg_components/Send';
 import { useState } from 'react';
-import { TextAreaWithMentionsAndHashTags } from './TextAreaWithMentionsAndHashTags';
 import { useCreateCommentMutations } from '@/hooks/mutations/useCreateCommentMutations';
+import Button from './ui/Button';
+import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
+import { TextAreaWithMentionsAndHashTags } from './TextAreaWithMentionsAndHashTags';
 
 export function CommentCreate({ postId }: { postId: number }) {
   const [content, setContent] = useState('');
@@ -12,7 +13,7 @@ export function CommentCreate({ postId }: { postId: number }) {
 
   const handleCreate = () => {
     createCommentMutation.mutate(
-      { postId, content: content },
+      { postId, content },
       {
         onSuccess: () => {
           setContent('');

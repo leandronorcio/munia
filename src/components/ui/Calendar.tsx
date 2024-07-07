@@ -1,20 +1,20 @@
 import { useCalendarState } from 'react-stately';
 import { AriaCalendarProps, useCalendar, useLocale } from 'react-aria';
 import { createCalendar } from '@internationalized/date';
-import { CalendarGrid } from './CalendarGrid';
 import { ArrowChevronBack, ArrowChevronForward } from '@/svg_components';
-import Button from './Button';
 import { DateValue } from '@react-types/calendar';
+import { CalendarGrid } from './CalendarGrid';
+import Button from './Button';
 
 export function Calendar<T extends DateValue>(props: AriaCalendarProps<T>) {
-  let { locale } = useLocale();
-  let state = useCalendarState({
+  const { locale } = useLocale();
+  const state = useCalendarState({
     ...props,
     locale,
     createCalendar,
   });
 
-  let { calendarProps, prevButtonProps, nextButtonProps, title } = useCalendar(
+  const { calendarProps, prevButtonProps, nextButtonProps, title } = useCalendar(
     props,
     state,
   );

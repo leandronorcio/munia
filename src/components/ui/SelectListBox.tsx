@@ -50,8 +50,7 @@ function ListBoxSection({ section, state }: SectionProps) {
   });
 
   return (
-    <>
-      <li {...itemProps} className="my-2">
+    <li {...itemProps} className="my-2">
         {section.rendered && (
           <span {...headingProps} className="text-md pl-5 font-semibold">
             {section.rendered}
@@ -63,7 +62,6 @@ function ListBoxSection({ section, state }: SectionProps) {
           ))}
         </ul>
       </li>
-    </>
   );
 }
 

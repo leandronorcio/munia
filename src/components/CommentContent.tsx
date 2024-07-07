@@ -1,8 +1,8 @@
 import { formatDistanceToNowStrict } from 'date-fns';
-import { HighlightedMentionsAndHashTags } from './HighlightedMentionsAndHashTags';
 import { cn } from '@/lib/cn';
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { HighlightedMentionsAndHashTags } from './HighlightedMentionsAndHashTags';
 
 export function CommentContent({
   name,
@@ -40,7 +40,7 @@ export function CommentContent({
         <p className="mb-1 text-foreground">
           <HighlightedMentionsAndHashTags
             text={content}
-            shouldAddLinks={true}
+            shouldAddLinks
           />
         </p>
         <p className="ml-auto text-sm text-muted-foreground">

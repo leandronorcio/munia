@@ -1,4 +1,5 @@
 'use client';
+
 import Button from '@/components/ui/Button';
 import { useUpdateProfileAndCoverPhotoClient } from '@/hooks/useUpdateProfileAndCoverPhotoClient';
 import { useVisualMediaModal } from '@/hooks/useVisualMediaModal';
@@ -40,7 +41,7 @@ export default function CoverPhoto({
           })
         }
         className="absolute h-full w-full cursor-pointer bg-black/30 opacity-0 active:opacity-100 "
-      ></button>
+       />
       {isOwnProfile && (
         <label>
           <div className="absolute bottom-4 right-4">

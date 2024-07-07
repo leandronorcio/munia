@@ -2,7 +2,6 @@ import type { AriaToastProps } from '@react-aria/toast';
 import { useToast } from '@react-aria/toast';
 import { QueuedToast, ToastState } from '@react-stately/toast';
 import { SVGProps, useRef } from 'react';
-import Button from './Button';
 import { ToastType } from '@/contexts/ToastContext';
 import {
   CircleActionsAlertInfo,
@@ -12,6 +11,7 @@ import {
   NotificationBell,
 } from '@/svg_components';
 import { cn } from '@/lib/cn';
+import Button from './Button';
 
 interface ToastProps<T> extends AriaToastProps<T> {
   state: ToastState<T>;
@@ -19,8 +19,8 @@ interface ToastProps<T> extends AriaToastProps<T> {
 }
 
 export function Toast<T extends ToastType>({ state, ...props }: ToastProps<T>) {
-  let ref = useRef(null);
-  let { toastProps, titleProps, descriptionProps, closeButtonProps } = useToast(
+  const ref = useRef(null);
+  const { toastProps, titleProps, descriptionProps, closeButtonProps } = useToast(
     props,
     state,
     ref,

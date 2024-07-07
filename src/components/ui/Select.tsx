@@ -1,23 +1,23 @@
 import type { AriaSelectProps } from '@react-types/select';
 import { useSelectState } from 'react-stately';
 import { useSelect, HiddenSelect, useButton } from 'react-aria';
-import { ListBox } from './SelectListBox';
-import { Popover } from './Popover';
 import { ForwardedRef, SVGProps, forwardRef } from 'react';
 import { cn } from '@/lib/cn';
 import { useObjectRef } from '@react-aria/utils';
-import Button from './Button';
 import SvgClose from '@/svg_components/Close';
 import SvgArrowChevronDown from '@/svg_components/ArrowChevronDown';
+import Button from './Button';
+import { Popover } from './Popover';
+import { ListBox } from './SelectListBox';
 
 interface SelectProps<T> extends AriaSelectProps<T> {
   Icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
 }
 
-export const Select = forwardRef(function Select<T extends {}>(
+export const Select = forwardRef((
   { Icon, ...props }: SelectProps<T>,
   forwardedRef: ForwardedRef<HTMLButtonElement>,
-) {
+) => {
   // Create state based on the incoming props
   const state = useSelectState(props);
 

@@ -24,7 +24,7 @@ export function useUpdateDeleteCommentMutations({
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ content: content }),
+        body: JSON.stringify({ content }),
       });
 
       if (!res.ok) throw new Error(res.statusText);
@@ -32,7 +32,7 @@ export function useUpdateDeleteCommentMutations({
     },
     onMutate: async ({ commentId, content }) => {
       // Cancel outgoing queries
-      await qc.cancelQueries({ queryKey: queryKey });
+      await qc.cancelQueries({ queryKey });
 
       // Snapshot the previous comments
       const prevComments = qc.getQueryData(queryKey);
@@ -78,7 +78,7 @@ export function useUpdateDeleteCommentMutations({
       return (await res.json()) as { id: number };
     },
     onMutate: async ({ commentId }) => {
-      await qc.cancelQueries({ queryKey: queryKey });
+      await qc.cancelQueries({ queryKey });
 
       // Snapshot the previous value
       const prevComments = qc.getQueryData(queryKey);

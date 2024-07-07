@@ -1,15 +1,15 @@
 'use client';
 
 import { forwardRef, useRef } from 'react';
-import { ButtonNaked } from './ui/ButtonNaked';
 import SvgImage from '@/svg_components/Image';
+import { ButtonNaked } from './ui/ButtonNaked';
 
 export const CreatePostOptions = forwardRef<
   HTMLInputElement,
   {
     handleVisualMediaChange: React.ChangeEventHandler<HTMLInputElement>;
   }
->(function CreatePostOptions({ handleVisualMediaChange }, forwardedRef) {
+>(({ handleVisualMediaChange }, forwardedRef) => {
   const localRef = useRef<HTMLInputElement | null>(null);
 
   return (

@@ -1,8 +1,9 @@
 'use client';
+
 import { useCreatePost } from '@/hooks/useCreatePost';
+import SvgImage from '@/svg_components/Image';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 import { ButtonNaked } from './ui/ButtonNaked';
-import SvgImage from '@/svg_components/Image';
 
 export function CreatePostModalLauncher() {
   const { launchCreatePost } = useCreatePost();

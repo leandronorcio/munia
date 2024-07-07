@@ -1,9 +1,9 @@
 'use client';
+
 import { Select } from '@/components/ui/Select';
 import { Gender, RelationshipStatus } from '@prisma/client';
 import { kebabCase, lowerCase, snakeCase, startCase, toUpper } from 'lodash';
-import { usePathname, useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
+import { usePathname, useSearchParams , useRouter } from 'next/navigation';
 import { Item } from 'react-stately';
 import { DiscoverFilters } from '@/types/definitions';
 
@@ -60,9 +60,7 @@ export function DiscoverFilters() {
             });
           }}
         >
-          {genderFilters.map((gender) => {
-            return <Item key={gender}>{startCase(lowerCase(gender))}</Item>;
-          })}
+          {genderFilters.map((gender) => <Item key={gender}>{startCase(lowerCase(gender))}</Item>)}
         </Select>
       </div>
       <div className="flex-1">
@@ -76,13 +74,11 @@ export function DiscoverFilters() {
             });
           }}
         >
-          {relationshipStatusFilters.map((relationship) => {
-            return (
+          {relationshipStatusFilters.map((relationship) => (
               <Item key={relationship}>
                 {startCase(lowerCase(relationship))}
               </Item>
-            );
-          })}
+            ))}
         </Select>
       </div>
     </div>

@@ -2,9 +2,9 @@ import type { AriaToastRegionProps } from '@react-aria/toast';
 import type { ToastState } from '@react-stately/toast';
 import { useToastRegion } from '@react-aria/toast';
 import { useRef } from 'react';
-import { Toast } from './Toast';
 import { ToastType } from '@/contexts/ToastContext';
 import { AnimatePresence, motion } from 'framer-motion';
+import { Toast } from './Toast';
 
 interface ToastRegionProps<T> extends AriaToastRegionProps {
   state: ToastState<T>;
@@ -14,8 +14,8 @@ export function ToastRegion<T extends ToastType>({
   state,
   ...props
 }: ToastRegionProps<T>) {
-  let ref = useRef(null);
-  let { regionProps } = useToastRegion(props, state, ref);
+  const ref = useRef(null);
+  const { regionProps } = useToastRegion(props, state, ref);
 
   return (
     <div

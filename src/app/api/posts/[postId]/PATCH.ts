@@ -14,6 +14,6 @@ export async function PATCH(
   return useWritePost({
     formData,
     type: 'edit',
-    postId: postId,
+    postId,
   });
 }

@@ -1,7 +1,8 @@
 'use client';
+
 import { GetVisualMedia } from '@/types/definitions';
-import { GalleryItem } from './GalleryItem';
 import { useVisualMediaModal } from '@/hooks/useVisualMediaModal';
+import { GalleryItem } from './GalleryItem';
 
 export function Gallery({ visualMedia }: { visualMedia: GetVisualMedia[] }) {
   const { showVisualMediaModal } = useVisualMediaModal();

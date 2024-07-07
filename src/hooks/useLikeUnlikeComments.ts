@@ -1,5 +1,5 @@
-import { useCommentLikesMutations } from './mutations/useCommentLikesMutations';
 import { QueryKey } from '@tanstack/react-query';
+import { useCommentLikesMutations } from './mutations/useCommentLikesMutations';
 
 export function useLikeUnlikeComments({ queryKey }: { queryKey: QueryKey }) {
   const { likeCommentMutation, unLikeCommentMutation } =

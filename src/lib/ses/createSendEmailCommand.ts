@@ -5,8 +5,7 @@ export const createSendEmailCommand = (
   fromAddress: string,
   subject: string,
   body: string,
-) => {
-  return new SendEmailCommand({
+) => new SendEmailCommand({
     Destination: {
       /* required */
       CcAddresses: [
@@ -40,4 +39,3 @@ export const createSendEmailCommand = (
       /* more items */
     ],
   });
-};

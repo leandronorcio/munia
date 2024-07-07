@@ -31,7 +31,7 @@ export function useDeletePostMutation() {
     },
     onMutate: async ({ postId }) => {
       // Cancel any outgoing refetches
-      await qc.cancelQueries({ queryKey: queryKey });
+      await qc.cancelQueries({ queryKey });
 
       // Snapshot the previous posts
       const previousPosts = qc.getQueryData(queryKey);

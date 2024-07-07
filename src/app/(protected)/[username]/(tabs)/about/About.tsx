@@ -10,10 +10,10 @@ import {
   Profile,
   WorldNet,
 } from '@/svg_components';
-import { AboutItem } from './AboutItem';
 import { format } from 'date-fns';
 import { capitalize, lowerCase } from 'lodash';
 import { GetUser } from '@/types/definitions';
+import { AboutItem } from './AboutItem';
 
 export function About({ profile }: { profile: GetUser }) {
   const {

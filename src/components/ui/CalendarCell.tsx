@@ -14,8 +14,8 @@ interface CalendarCellProps extends AriaCalendarCellProps {
 }
 
 export function CalendarCell({ state, date }: CalendarCellProps) {
-  let ref = useRef(null);
-  let {
+  const ref = useRef(null);
+  const {
     cellProps,
     buttonProps,
     isSelected,
@@ -27,11 +27,11 @@ export function CalendarCell({ state, date }: CalendarCellProps) {
 
   // The start and end date of the selected range will have
   // an emphasized appearance.
-  let isSelectionStart =
+  const isSelectionStart =
     'highlightedRange' in state // This is a type guard to check whether state is of type `RangeCalendarState`
       ? isSameDay(date, state.highlightedRange.start)
       : isSelected;
-  let isSelectionEnd =
+  const isSelectionEnd =
     'highlightedRange' in state
       ? isSameDay(date, state.highlightedRange.end)
       : isSelected;
@@ -40,17 +40,17 @@ export function CalendarCell({ state, date }: CalendarCellProps) {
   // the first day of each week, and the start date of the selection.
   // We add rounded corners on the right for the last day of the month,
   // the last day of each week, and the end date of the selection.
-  let { locale } = useLocale();
-  let dayOfWeek = getDayOfWeek(date, locale);
-  let isRoundedLeft =
+  const { locale } = useLocale();
+  const dayOfWeek = getDayOfWeek(date, locale);
+  const isRoundedLeft =
     isSelected && (isSelectionStart || dayOfWeek === 0 || date.day === 1);
-  let isRoundedRight =
+  const isRoundedRight =
     isSelected &&
     (isSelectionEnd ||
       dayOfWeek === 6 ||
       date.day === date.calendar.getDaysInMonth(date));
 
-  let { focusProps, isFocusVisible } = useFocusRing();
+  const { focusProps, isFocusVisible } = useFocusRing();
 
   return (
     <td

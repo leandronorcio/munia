@@ -91,7 +91,7 @@ export async function useWritePost({ formData, type, postId }: Props) {
       });
 
       return NextResponse.json<GetPost>(await toGetPost(res));
-    } else if (type === 'edit') {
+    } if (type === 'edit') {
       const post = await prisma.post.findFirst({
         where: {
           id: postId,

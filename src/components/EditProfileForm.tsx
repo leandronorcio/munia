@@ -7,12 +7,7 @@ import {
   useForm,
 } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { TextInput } from './ui/TextInput';
-import Button from './ui/Button';
-import { Select } from './ui/Select';
 import { Item } from 'react-stately';
-import { Textarea } from './ui/Textarea';
-import { DatePicker } from './ui/DatePicker';
 import {
   AtSign,
   BuildingBusinessOffice,
@@ -29,8 +24,13 @@ import { parseDate } from '@internationalized/date';
 import { useSessionUserData } from '@/hooks/useSessionUserData';
 import { useSessionUserDataMutation } from '@/hooks/mutations/useSessionUserDataMutation';
 import { useRouter } from 'next/navigation';
-import { GenericLoading } from './GenericLoading';
 import { useEffect, useMemo } from 'react';
+import { GenericLoading } from './GenericLoading';
+import { DatePicker } from './ui/DatePicker';
+import { Textarea } from './ui/Textarea';
+import { Select } from './ui/Select';
+import Button from './ui/Button';
+import { TextInput } from './ui/TextInput';
 
 export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
   const [userData] = useSessionUserData();
@@ -302,7 +302,7 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
                 }
                 onChange={(value) => {
                   console.log(value);
-                  !!value ? onChange(value.toString()) : onChange(null);
+                  value ? onChange(value.toString()) : onChange(null);
                 }}
                 errorMessage={error?.message}
                 triggerRef={ref}

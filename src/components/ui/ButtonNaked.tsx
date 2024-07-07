@@ -16,7 +16,7 @@ interface ButtonProps extends AriaButtonProps {
 }
 
 export const ButtonNaked = forwardRef<HTMLButtonElement, ButtonProps>(
-  function ButtonNaked({ className, children, ...rest }, forwardedRef) {
+  ({ className, children, ...rest }, forwardedRef) => {
     const ref = useObjectRef(forwardedRef);
     const { buttonProps } = useButton({ ...rest }, ref);
     const { isFocusVisible, focusProps } = useFocusRing();

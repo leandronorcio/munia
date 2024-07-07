@@ -43,10 +43,10 @@ export async function DELETE(
     });
 
     return NextResponse.json({ unfollowed: true });
-  } else {
+  } 
     return NextResponse.json(
       { error: 'You are not following this user.' },
       { status: 409 },
     );
-  }
+  
 }

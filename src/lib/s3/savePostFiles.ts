@@ -39,5 +39,5 @@ export async function savePostFiles(files: (Blob | string)[]) {
   });
 
   // Wait for all promises to finish
-  return await Promise.all(uploadPromises);
+  return Promise.all(uploadPromises);
 }

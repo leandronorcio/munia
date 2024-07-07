@@ -3,8 +3,8 @@ import { resizeTextAreaHeight } from '@/lib/resizeTextAreaHeight';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import { FormEvent, SVGProps, forwardRef } from 'react';
 import { AriaTextFieldProps, useTextField } from 'react-aria';
-import Button from './Button';
 import SvgClose from '@/svg_components/Close';
+import Button from './Button';
 
 interface TextareaProps extends AriaTextFieldProps {
   className?: string;
@@ -12,10 +12,10 @@ interface TextareaProps extends AriaTextFieldProps {
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  function Textarea({ className, Icon, ...props }, forwardedRef) {
+  ({ className, Icon, ...props }, forwardedRef) => {
     // Support forwarded refs: https://github.com/adobe/react-spectrum/pull/2293#discussion_r714337674
     const ref = useObjectRef(forwardedRef);
-    let { labelProps, inputProps, errorMessageProps } = useTextField(
+    const { labelProps, inputProps, errorMessageProps } = useTextField(
       { inputElementType: 'textarea', ...props },
       ref,
     );

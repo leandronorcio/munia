@@ -69,7 +69,7 @@ export function useSessionUserDataMutation() {
 
       const { uploadedTo } = (await res.json()) as { uploadedTo: string };
       return {
-        type: toUpdate + 'Photo',
+        type: `${toUpdate  }Photo`,
         uploadedTo,
       };
     },

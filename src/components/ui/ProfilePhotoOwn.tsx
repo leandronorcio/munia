@@ -1,6 +1,7 @@
 'use client';
-import { ProfilePhoto } from './ProfilePhoto';
+
 import { useSessionUserData } from '@/hooks/useSessionUserData';
+import { ProfilePhoto } from './ProfilePhoto';
 
 export function ProfilePhotoOwn() {
   const [user] = useSessionUserData();

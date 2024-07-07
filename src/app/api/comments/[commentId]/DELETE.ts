@@ -5,8 +5,8 @@
 
 import prisma from '@/lib/prisma/prisma';
 import { NextResponse } from 'next/server';
-import { verifyAccessToComment } from './verifyAccessToComment';
 import { getServerUser } from '@/lib/getServerUser';
+import { verifyAccessToComment } from './verifyAccessToComment';
 
 export async function DELETE(
   request: Request,

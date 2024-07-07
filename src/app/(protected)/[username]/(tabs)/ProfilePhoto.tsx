@@ -1,4 +1,5 @@
 'use client';
+
 import Button from '@/components/ui/Button';
 import { FallbackProfilePhoto } from '@/components/ui/FallbackProfilePhoto';
 import { useUpdateProfileAndCoverPhotoClient } from '@/hooks/useUpdateProfileAndCoverPhotoClient';
@@ -42,7 +43,7 @@ export default function ProfilePhoto({
             })
           }
           className="absolute h-full w-full cursor-pointer rounded-full bg-black/30 opacity-0 active:opacity-100"
-        ></button>
+         />
       ) : (
         <FallbackProfilePhoto name={name} className="text-6xl" />
       )}

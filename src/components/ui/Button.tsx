@@ -1,8 +1,8 @@
 'use client';
+
 import { AriaButtonProps, useButton, useFocusRing } from 'react-aria';
-import { forwardRef } from 'react';
+import { forwardRef , SVGProps } from 'react';
 import { cn } from '@/lib/cn';
-import { SVGProps } from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import SvgLoading from '@/svg_components/Loading';
@@ -20,10 +20,10 @@ export interface ButtonProps
   className?: string;
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+const Button = forwardRef<HTMLButtonElement, ButtonProps>((
   { children, size, mode, shape, expand, Icon, loading, className, ...rest },
   forwardedRef,
-) {
+) => {
   const iconOnly = children === undefined;
   // Support forwarded refs: https://github.com/adobe/react-spectrum/pull/2293#discussion_r714337674
   const ref = useObjectRef(forwardedRef);

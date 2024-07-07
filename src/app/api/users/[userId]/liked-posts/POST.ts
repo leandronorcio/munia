@@ -26,7 +26,7 @@ export async function POST(
   // Check first if the post is already liked
   const isLiked = await prisma.postLike.count({
     where: {
-      userId: userId,
+      userId,
       postId,
     },
   });
@@ -39,7 +39,7 @@ export async function POST(
   // Like the post
   const res = await prisma.postLike.create({
     data: {
-      userId: userId,
+      userId,
       postId,
     },
   });

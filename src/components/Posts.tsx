@@ -1,4 +1,5 @@
 'use client';
+
 import {
   InfiniteData,
   QueryKey,
@@ -9,16 +10,16 @@ import { GetPost, PostIds } from '@/types/definitions';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import useOnScreen from '@/hooks/useOnScreen';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Post } from './Post';
-import { AllCaughtUp } from './AllCaughtUp';
 import { NO_PREV_DATA_LOADED, POSTS_PER_PAGE } from '@/constants';
 import { chunk } from 'lodash';
 import { useShouldAnimate } from '@/hooks/useShouldAnimate';
 import { deductLowerMultiple } from '@/lib/deductLowerMultiple';
-import { SomethingWentWrong } from './SometingWentWrong';
-import { ButtonNaked } from './ui/ButtonNaked';
 import SvgForwardArrow from '@/svg_components/ForwardArrow';
 import { postFramerVariants } from '@/lib/framerVariants';
+import { SomethingWentWrong } from './SometingWentWrong';
+import { ButtonNaked } from './ui/ButtonNaked';
+import { AllCaughtUp } from './AllCaughtUp';
+import { Post } from './Post';
 import { GenericLoading } from './GenericLoading';
 
 // If the `type` is 'profile' or 'feed', the `userId` property is required
@@ -203,7 +204,7 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
 
   return (
     <>
-      <div ref={topElRef}></div>
+      <div ref={topElRef} />
       <div className="flex flex-col">
         <AnimatePresence>
           {numberOfNewPostsLoaded !== 0 && (
@@ -233,8 +234,7 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
         ) : (
           <AnimatePresence>
             {data?.pages.map((page) =>
-              page.map((post, i) => {
-                return (
+              page.map((post, i) => (
                   <motion.div
                     variants={postFramerVariants}
                     initial={shouldAnimate ? 'start' : false}
@@ -251,8 +251,7 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
                       toggleComments={toggleComments}
                     />
                   </motion.div>
-                );
-              }),
+                )),
             )}
           </AnimatePresence>
         )}

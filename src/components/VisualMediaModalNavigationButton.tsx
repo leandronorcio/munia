@@ -1,4 +1,5 @@
 'use client';
+
 import { useSwiper } from 'swiper/react';
 import { ArrowChevronBack, ArrowChevronForward } from '@/svg_components';
 import { cn } from '@/lib/cn';

@@ -1,11 +1,11 @@
 import { Key, SVGProps, useRef } from 'react';
 import { AriaMenuProps, useMenuTrigger } from 'react-aria';
 import { MenuTriggerProps, useMenuTriggerState } from 'react-stately';
+import { MoreVert } from '@/svg_components';
+import { cn } from '@/lib/cn';
 import Button from './Button';
 import { Popover } from './Popover';
 import { DropdownMenu } from './DropdownMenu';
-import { MoreVert } from '@/svg_components';
-import { cn } from '@/lib/cn';
 
 interface MenuButtonProps<T extends object>
   extends AriaMenuProps<T>,
@@ -19,11 +19,11 @@ export function DropdownMenuButton<T extends object>(
   props: MenuButtonProps<T>,
 ) {
   // Create state based on the incoming props
-  let state = useMenuTriggerState(props);
+  const state = useMenuTriggerState(props);
 
   // Get props for the menu trigger and menu elements
-  let ref = useRef(null);
-  let { menuTriggerProps, menuProps } = useMenuTrigger<T>({}, state, ref);
+  const ref = useRef(null);
+  const { menuTriggerProps, menuProps } = useMenuTrigger<T>({}, state, ref);
 
   return (
     <div style={{ position: 'relative', display: 'inline-block' }}>

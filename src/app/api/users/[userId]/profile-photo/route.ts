@@ -4,7 +4,7 @@ export async function POST(
   request: Request,
   { params }: { params: { userId: string } },
 ) {
-  return await useUpdateProfileAndCoverPhoto({
+  return useUpdateProfileAndCoverPhoto({
     request,
     toUpdate: 'profilePhoto',
     userIdParam: params.userId,

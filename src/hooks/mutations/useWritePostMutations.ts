@@ -4,14 +4,13 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { chunk } from 'lodash';
-import { GetPost, PostIds } from '../../types/definitions';
-import { useToast } from '../useToast';
 import { useSession } from 'next-auth/react';
-import { useCreatePost } from '../useCreatePost';
-import { GetVisualMedia } from '@/types/definitions';
+import { GetVisualMedia , GetPost, PostIds } from '@/types/definitions';
 import { POSTS_PER_PAGE } from '@/constants';
-import { useErrorNotifier } from '../useErrorNotifier';
 import { revokeVisualMediaObjectUrls } from '@/lib/revokeVisualMediaObjectUrls';
+import { useToast } from '../useToast';
+import { useCreatePost } from '../useCreatePost';
+import { useErrorNotifier } from '../useErrorNotifier';
 
 export function useWritePostMutations({
   content,

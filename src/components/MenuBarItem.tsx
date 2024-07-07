@@ -50,13 +50,13 @@ export function MenuBarItem({
           'absolute left-0 hidden h-10 w-[4px] origin-bottom scale-y-0 rounded-r-lg bg-primary transition-transform group-hover:origin-top group-hover:scale-y-100 md:block',
           isActive && 'scale-y-100',
         )}
-      ></div>
+       />
       <div
         className={cn(
           'absolute bottom-0 h-[4px] w-[70%] scale-x-0 rounded-t-lg bg-primary transition-transform group-hover:scale-x-100 md:hidden',
           isActive && 'scale-x-100',
         )}
-      ></div>
+       />
       <div className="relative md:mr-3">
         <Icon className="h-6 w-6 stroke-muted-foreground" />
         {badge !== undefined && badge !== 0 && (

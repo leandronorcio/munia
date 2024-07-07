@@ -26,7 +26,7 @@ export function TabButton({
       >
         {capitalize(title)}
       </h2>
-      {isActive && <div className="h-[2px] w-full bg-foreground"></div>}
+      {isActive && <div className="h-[2px] w-full bg-foreground" />}
     </Link>
   );
 }

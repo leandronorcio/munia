@@ -10,7 +10,7 @@ export const includeToComment = (userId?: string) => ({
       id: true,
     },
     where: {
-      userId: userId,
+      userId,
     },
   },
   _count: {

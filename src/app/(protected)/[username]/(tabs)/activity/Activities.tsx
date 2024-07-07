@@ -1,4 +1,5 @@
 'use client';
+
 import { AllCaughtUp } from '@/components/AllCaughtUp';
 import useOnScreen from '@/hooks/useOnScreen';
 import {
@@ -32,8 +33,7 @@ export function Activities({ userId }: { userId: string }) {
   >({
     queryKey: ['users', userId, 'activity'],
     defaultPageParam: 0,
-    queryFn: async ({ pageParam: cursor }) =>
-      await getActivities({ userId, cursor }),
+    queryFn: async ({ pageParam: cursor }) => getActivities({ userId, cursor }),
     getNextPageParam: (lastPage, pages) => {
       // If the `pages` `length` is 0, that means there is not a single activity to load
       if (pages.length === 0) return undefined;
@@ -59,9 +59,9 @@ export function Activities({ userId }: { userId: string }) {
       ) : isError ? (
         <SomethingWentWrong />
       ) : (
-        data.pages.flat().map((activity) => {
-          return <Activity key={activity.id} {...activity} />;
-        })
+        data.pages
+          .flat()
+          .map((activity) => <Activity key={activity.id} {...activity} />)
       )}
 
       <div

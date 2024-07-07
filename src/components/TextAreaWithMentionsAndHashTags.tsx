@@ -12,7 +12,6 @@ import { resizeTextAreaHeight } from '@/lib/resizeTextAreaHeight';
 import { useQuery } from '@tanstack/react-query';
 import { replaceWordAtCursor } from '@/lib/replaceWordAtCursor';
 import { cn } from '@/lib/cn';
-import { HighlightedMentionsAndHashTags } from './HighlightedMentionsAndHashTags';
 import {
   AriaTextFieldProps,
   mergeProps,
@@ -20,10 +19,11 @@ import {
   useTextField,
 } from 'react-aria';
 import { useOverlayTriggerState } from 'react-stately';
-import { Popover } from './ui/Popover';
 import { useClickOutside } from '@/hooks/useClickOutside';
-import { TextAreaMentionItem } from './TextAreaMentionItem';
 import { getUsers } from '@/lib/client_data_fetching/getUsers';
+import { Popover } from './ui/Popover';
+import { TextAreaMentionItem } from './TextAreaMentionItem';
+import { HighlightedMentionsAndHashTags } from './HighlightedMentionsAndHashTags';
 
 interface TextAreaWithMentionsAndHashTagsProps extends AriaTextFieldProps {
   content: string;
@@ -45,7 +45,7 @@ export function TextAreaWithMentionsAndHashTags({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  let { inputProps, labelProps, errorMessageProps } = useTextField(
+  const { inputProps, labelProps, errorMessageProps } = useTextField(
     { ...rest, inputElementType: 'textarea', label: placeholder },
     textareaRef,
   );
@@ -57,7 +57,7 @@ export function TextAreaWithMentionsAndHashTags({
   // This query will refetch every time the `searchKeyword` state changess
   const { data, isPending, isError } = useQuery({
     queryKey: ['mentions', 'search', { keyword: searchKeyword }],
-    queryFn: async () => await getUsers({ searchKeyword }),
+    queryFn: async () => getUsers({ searchKeyword }),
     staleTime: 60000 * 10,
     enabled: !!searchKeyword,
   });
@@ -132,9 +132,7 @@ export function TextAreaWithMentionsAndHashTags({
         // Save the position of the active '@'
         posOfActiveAt.current = textBeforeCursor.length - currentWord.length;
       }
-    } else {
-      if (mentionsShown) closeMentions();
-    }
+    } else if (mentionsShown) closeMentions();
   };
 
   // Since the `TextArea` is in `absolute` position, the container won't auto-resize
@@ -142,7 +140,7 @@ export function TextAreaWithMentionsAndHashTags({
   useEffect(() => {
     if (containerRef.current)
       containerRef.current.style.height =
-        textareaRef.current?.scrollHeight + 'px';
+        `${textareaRef.current?.scrollHeight  }px`;
   }, [content]);
 
   useEffect(() => {
@@ -161,7 +159,7 @@ export function TextAreaWithMentionsAndHashTags({
       if (!mentionsShown || !data) return e.continuePropagation();
 
       // Allow navigating thru the mentions using the keyboard's arrow keys etc.
-      const length = data.length;
+      const {length} = data;
       const firstIndex = 0;
       const focusedIndex = data.findIndex((user) => user.username === focused);
       const lastIndex = length - 1;
@@ -207,7 +205,7 @@ export function TextAreaWithMentionsAndHashTags({
           triggerRef={textareaRef}
           popoverRef={popoverRef}
           state={popoverState}
-          isNonModal={true}
+          isNonModal
           placement="top"
           className="min-w-[200px]"
         >

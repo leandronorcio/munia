@@ -1,7 +1,7 @@
 import { Feather } from '@/svg_components';
 import { LogoText } from '@/components/LogoText';
-import { HomeMobileDropdownMenu } from './HomeMobileDropdownMenu';
 import Link from 'next/link';
+import { HomeMobileDropdownMenu } from './HomeMobileDropdownMenu';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

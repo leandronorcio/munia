@@ -1,5 +1,5 @@
-import { ProfilePhoto } from './ui/ProfilePhoto';
 import Link from 'next/link';
+import { ProfilePhoto } from './ui/ProfilePhoto';
 
 export default function ProfileBlock({
   type = 'post',

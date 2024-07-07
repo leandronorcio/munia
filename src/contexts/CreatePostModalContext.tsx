@@ -1,4 +1,5 @@
 'use client';
+
 import { GetVisualMedia } from '@/types/definitions';
 import {
   Dispatch,

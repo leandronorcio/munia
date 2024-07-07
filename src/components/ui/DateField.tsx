@@ -10,15 +10,15 @@ import {
 import { createCalendar } from '@internationalized/date';
 
 export function DateField(props: AriaDateFieldProps<DateValue>) {
-  let { locale } = useLocale();
-  let state = useDateFieldState({
+  const { locale } = useLocale();
+  const state = useDateFieldState({
     ...props,
     locale,
     createCalendar,
   });
 
-  let ref = useRef(null);
-  let { fieldProps } = useDateField(props, state, ref);
+  const ref = useRef(null);
+  const { fieldProps } = useDateField(props, state, ref);
 
   return (
     <div {...fieldProps} ref={ref} className="flex">
@@ -36,8 +36,8 @@ function DateSegment({
   segment: DateSegment;
   state: DateFieldState;
 }) {
-  let ref = useRef(null);
-  let { segmentProps } = useDateSegment(segment, state, ref);
+  const ref = useRef(null);
+  const { segmentProps } = useDateSegment(segment, state, ref);
 
   return (
     <div
@@ -47,7 +47,7 @@ function DateSegment({
         ...segmentProps.style,
         minWidth:
           segment.maxValue != null
-            ? String(segment.maxValue).length + 'ch'
+            ? `${String(segment.maxValue).length  }ch`
             : undefined,
       }}
       className={`group box-content rounded-sm px-0.5 text-right tabular-nums outline-none focus:bg-primary focus:text-primary-foreground ${

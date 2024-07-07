@@ -117,9 +117,7 @@ export function Notifications({ userId }: { userId: string }) {
         {isPending ? (
           <GenericLoading>Loading notifications</GenericLoading>
         ) : (
-          data?.pages.flat().map((activity) => {
-            return <Activity key={activity.id} {...activity} />;
-          })
+          data?.pages.flat().map((activity) => <Activity key={activity.id} {...activity} />)
         )}
       </div>
 

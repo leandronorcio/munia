@@ -1,7 +1,7 @@
 import { Posts } from '@/components/Posts';
-import { getProfile } from '../getProfile';
 import { CreatePostModalLauncher } from '@/components/CreatePostModalLauncher';
 import { getServerUser } from '@/lib/getServerUser';
+import { getProfile } from '../getProfile';
 
 export async function generateMetadata({
   params,

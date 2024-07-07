@@ -1,30 +1,32 @@
 'use client';
-import ProfileBlock from './ProfileBlock';
-import { PostVisualMediaContainer } from './PostVisualMediaContainer';
+
 import { memo } from 'react';
 import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/cn';
 import formatDistanceStrict from 'date-fns/formatDistanceStrict';
 import SvgComment from '@/svg_components/Comment';
-import { Comments } from './Comments';
 import { AnimatePresence, motion } from 'framer-motion';
 import { GetPost, PostId } from '@/types/definitions';
 import { isEqual } from 'lodash';
-import { ToggleStepper } from './ui/ToggleStepper';
 import SvgHeart from '@/svg_components/Heart';
 import { useQuery } from '@tanstack/react-query';
 import { usePostLikesMutations } from '@/hooks/mutations/usePostLikesMutations';
+import { ToggleStepper } from './ui/ToggleStepper';
+import { Comments } from './Comments';
+import { PostVisualMediaContainer } from './PostVisualMediaContainer';
+import ProfileBlock from './ProfileBlock';
 import { HighlightedMentionsAndHashTags } from './HighlightedMentionsAndHashTags';
 import { PostOptions } from './PostOptions';
 
+const varx = ' ghaha';
 export const Post = memo(
-  function Post({
+  ({
     id: postId,
     commentsShown,
     toggleComments,
   }: PostId & {
     toggleComments: (postId: number) => void;
-  }) {
+  }) => {
     const { data: session } = useSession();
     const userId = session?.user?.id;
     const { likeMutation, unLikeMutation } = usePostLikesMutations({ postId });
@@ -88,7 +90,7 @@ export const Post = memo(
           <p className="mb-4 mt-5 text-lg text-muted-foreground">
             <HighlightedMentionsAndHashTags
               text={content}
-              shouldAddLinks={true}
+              shouldAddLinks
             />
           </p>
         )}

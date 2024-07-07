@@ -1,9 +1,9 @@
 import { useRef } from 'react';
 import type { AriaDialogProps } from 'react-aria';
 import { useDialog } from 'react-aria';
-import Button from './ui/Button';
 import { Close } from '@/svg_components';
 import { motion } from 'framer-motion';
+import Button from './ui/Button';
 
 interface DialogProps extends AriaDialogProps {
   children: React.ReactNode;
@@ -17,8 +17,8 @@ export function AlertDialog({
   title,
   ...props
 }: DialogProps) {
-  let ref = useRef(null);
-  let { dialogProps, titleProps } = useDialog(props, ref);
+  const ref = useRef(null);
+  const { dialogProps, titleProps } = useDialog(props, ref);
 
   return (
     <motion.div

@@ -15,10 +15,10 @@ interface SwitchProps extends AriaSwitchProps {
 }
 
 export function Switch({ children, renderIcon, ...props }: SwitchProps) {
-  let state = useToggleState(props);
-  let ref = useRef(null);
-  let { inputProps } = useSwitch(props, state, ref);
-  let { isFocusVisible, focusProps } = useFocusRing();
+  const state = useToggleState(props);
+  const ref = useRef(null);
+  const { inputProps } = useSwitch(props, state, ref);
+  const { isFocusVisible, focusProps } = useFocusRing();
 
   return (
     <label

@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import { AriaDialogProps, useDialog } from 'react-aria';
+import SvgClose from '@/svg_components/Close';
 import { ResponsiveContainer } from './ui/ResponsiveContainer';
 import Button from './ui/Button';
-import SvgClose from '@/svg_components/Close';
 
 interface GenericDialogProps extends AriaDialogProps {
   title: string;

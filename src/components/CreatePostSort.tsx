@@ -15,8 +15,8 @@ import {
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
 import { restrictToParentElement } from '@dnd-kit/modifiers';
-import { CreatePostSortItem } from './CreatePostSortItem';
 import { GetVisualMedia } from '@/types/definitions';
+import { CreatePostSortItem } from './CreatePostSortItem';
 
 const measuringConfig = {
   droppable: {
@@ -85,8 +85,6 @@ export function CreatePostSort({
     // Release the object URL when removed
     if (id.startsWith('blob:')) URL.revokeObjectURL(id);
 
-    setVisualMedia((items) => {
-      return items.filter((item) => item.url !== id);
-    });
+    setVisualMedia((items) => items.filter((item) => item.url !== id));
   }
 }

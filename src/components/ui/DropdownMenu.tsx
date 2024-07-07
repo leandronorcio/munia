@@ -10,11 +10,11 @@ interface MenuProps<T extends object> extends AriaMenuProps<T> {
 
 export function DropdownMenu<T extends object>(props: MenuProps<T>) {
   // Create state based on the incoming props
-  let state = useTreeState(props);
+  const state = useTreeState(props);
 
   // Get props for the menu element
-  let ref = useRef(null);
-  let { menuProps } = useMenu(props, state, ref);
+  const ref = useRef(null);
+  const { menuProps } = useMenu(props, state, ref);
 
   return (
     <ul

@@ -1,4 +1,5 @@
 'use client';
+
 import Button from '@/components/ui/Button';
 import { useFollowsMutations } from '@/hooks/mutations/useFollowsMutations';
 import { useUserQuery } from '@/hooks/queries/useUserQuery';

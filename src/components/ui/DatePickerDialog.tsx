@@ -6,8 +6,8 @@ interface DialogProps extends AriaDialogProps {
 }
 
 export function DatePickerDialog({ children, ...props }: DialogProps) {
-  let ref = useRef(null);
-  let { dialogProps } = useDialog(props, ref);
+  const ref = useRef(null);
+  const { dialogProps } = useDialog(props, ref);
 
   return (
     <div

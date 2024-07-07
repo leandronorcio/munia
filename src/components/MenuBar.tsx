@@ -1,4 +1,5 @@
 'use client';
+
 import {
   Feather,
   GridFeedCards,
@@ -7,11 +8,11 @@ import {
   Profile,
   Search,
 } from '@/svg_components';
-import { MenuBarItem } from './MenuBarItem';
 import { useSessionUserData } from '@/hooks/useSessionUserData';
-import { LogoText } from './LogoText';
 import { useNotificationsCountQuery } from '@/hooks/queries/useNotificationsCountQuery';
 import Link from 'next/link';
+import { LogoText } from './LogoText';
+import { MenuBarItem } from './MenuBarItem';
 
 export function MenuBar() {
   const [user] = useSessionUserData();

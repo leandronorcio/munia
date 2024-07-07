@@ -24,7 +24,7 @@ export async function toGetPost(
 
   const visualMedia: GetVisualMedia[] = rest.visualMedia.map(
     ({ type, fileName }) => ({
-      type: type,
+      type,
       url: fileNameToUrl(fileName) as string,
     }),
   );

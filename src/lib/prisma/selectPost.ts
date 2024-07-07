@@ -16,7 +16,7 @@ export const selectPost = (userId: string | undefined) => ({
       id: true,
     },
     where: {
-      userId: userId,
+      userId,
     },
   },
   _count: {

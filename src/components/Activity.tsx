@@ -1,9 +1,9 @@
 import { GetActivity } from '@/types/definitions';
-import { ActivityCard } from './ActivityCard';
 import { SemiBold } from '@/components/ui/SemiBold';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useNotificationsReadStatusMutations } from '@/hooks/mutations/useNotificationsReadStatusMutations';
+import { ActivityCard } from './ActivityCard';
 
 /** Use this component to render individual activities or notifications. */
 export function Activity({

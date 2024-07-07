@@ -12,10 +12,10 @@ interface PopoverProps extends Omit<AriaPopoverProps, 'popoverRef'> {
 }
 
 export function Popover(props: PopoverProps) {
-  let ref = React.useRef<HTMLDivElement>(null);
-  let { popoverRef = ref, state, children, className, isNonModal } = props;
+  const ref = React.useRef<HTMLDivElement>(null);
+  const { popoverRef = ref, state, children, className, isNonModal } = props;
 
-  let { popoverProps, underlayProps } = usePopover(
+  const { popoverProps, underlayProps } = usePopover(
     {
       ...props,
       popoverRef,

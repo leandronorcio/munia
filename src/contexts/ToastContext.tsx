@@ -1,4 +1,5 @@
 'use client';
+
 import { ToastRegion } from '@/components/ui/ToastRegion';
 import { ToastState, useToastState } from '@react-stately/toast';
 import { createContext, useMemo } from 'react';
@@ -20,7 +21,7 @@ export function ToastContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  let state = useToastState<ToastType>({
+  const state = useToastState<ToastType>({
     maxVisibleToasts: 5,
   });
 

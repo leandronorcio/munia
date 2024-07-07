@@ -1,21 +1,20 @@
 'use client';
 
 import Button from '@/components/ui/Button';
-import { CreatePostOptions } from './CreatePostOptions';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
-import { motion } from 'framer-motion';
+import { AnimatePresence , motion } from 'framer-motion';
 import { CreatePostModalContextData } from '@/contexts/CreatePostModalContext';
 import { GetVisualMedia } from '@/types/definitions';
-import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { useWritePostMutations } from '@/hooks/mutations/useWritePostMutations';
-import { TextAreaWithMentionsAndHashTags } from './TextAreaWithMentionsAndHashTags';
 import { useDialogs } from '@/hooks/useDialogs';
-import { GenericDialog } from './GenericDialog';
 import { capitalize } from 'lodash';
-import { CreatePostSort } from './CreatePostSort';
 import { revokeVisualMediaObjectUrls } from '@/lib/revokeVisualMediaObjectUrls';
+import { TextAreaWithMentionsAndHashTags } from './TextAreaWithMentionsAndHashTags';
+import { GenericDialog } from './GenericDialog';
+import { CreatePostSort } from './CreatePostSort';
+import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
+import { CreatePostOptions } from './CreatePostOptions';
 
 export function CreatePostDialog() {
   const { toEditValues, shouldOpenFileInputOnMount } = useContext(

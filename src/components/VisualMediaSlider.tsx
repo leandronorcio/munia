@@ -1,13 +1,13 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Zoom, Navigation, Pagination, Keyboard } from 'swiper';
 import { useEffect, useState } from 'react';
-import { VisualMediaModalNavigationButton } from './VisualMediaModalNavigationButton';
 import { cn } from '@/lib/cn';
 import { motion } from 'framer-motion';
 import { VisualMediaModalType } from '@/contexts/VisualMediaModalContext';
-import Button from './ui/Button';
 import { Close } from '@/svg_components';
 import { useFocusManager } from 'react-aria';
+import Button from './ui/Button';
+import { VisualMediaModalNavigationButton } from './VisualMediaModalNavigationButton';
 
 export default function VisualMediaSlider({
   visualMedia,
@@ -33,7 +33,7 @@ export default function VisualMediaSlider({
         setIsEnd(isEnd);
       }}
       className={cn('h-full w-full transition-opacity duration-500')}
-      zoom={true}
+      zoom
       pagination={{
         clickable: true,
       }}
