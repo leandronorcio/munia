@@ -1,4 +1,27 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "workbench.colorCustomizations": {
+    "[*]": {
+      "titleBar.activeForeground": "#FCF8FD",
+      "editor.lineHighlightBackground": "#110f17",
+      "editor.lineHighlightBorder": "#9fced11f",
+      "activityBar.background": "#110f17",
+      "titleBar.activeBackground": "#110f17",
+      "statusBar.background": "#110f17",
+      "statusBar.debuggingBackground": "#110f17",
+      "titleBar.inactiveBackground": "#110f17",
+      "titleBar.border": "#110f17",
+      "tab.activeBorder": "#110f17",
+      "editor.wordHighlightBackground": "#ffd70040",
+      "editor.wordHighlightStrongBackground": "#ffd70040",
+      "editor.selectionHighlightBackground": "#ffd70040"
+    },
+    "activityBar.background": "#471C4D",
+    "titleBar.activeBackground": "#63276B",
+    "titleBar.activeForeground": "#FCF8FD"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  }
 }

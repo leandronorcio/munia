@@ -1,7 +1,39 @@
 {
-  "extends": "next/core-web-vitals",
+  "extends": [
+    "airbnb",
+    "airbnb-typescript",
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react-perf/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "react",
+    "react-hooks",
+    "react-perf",
+    "import"
+  ],
+  "root": true,
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
   "rules": {
-    // Disable warning of not using Next.js's <Image> component
-    "@next/next/no-img-element": "off"
+    "import/no-unresolved": "error"
+  },
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.json"
+      }
+    }
   }
 }
