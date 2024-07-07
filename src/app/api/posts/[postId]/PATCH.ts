@@ -2,16 +2,16 @@
  * PATCH /api/posts/:postId
  * - Allows an authenticated user to edit a post.
  */
-import { useWritePost } from '@/hooks/useWritePost';
+import { serverWritePost } from '@/hooks/serverWritePost';
 
 export async function PATCH(
   request: Request,
   { params }: { params: { postId: string } },
 ) {
-  const postId = parseInt(params.postId);
+  const postId = parseInt(params.postId, 10);
 
   const formData = await request.formData();
-  return useWritePost({
+  return serverWritePost({
     formData,
     type: 'edit',
     postId,

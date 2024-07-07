@@ -3,8 +3,8 @@
 import Button from '@/components/ui/Button';
 import { useUpdateProfileAndCoverPhotoClient } from '@/hooks/useUpdateProfileAndCoverPhotoClient';
 import { useVisualMediaModal } from '@/hooks/useVisualMediaModal';
-import { cn } from '@/lib/cn';
 import SvgImage from '@/svg_components/Image';
+import { useCallback } from 'react';
 
 export default function CoverPhoto({
   isOwnProfile,
@@ -16,32 +16,35 @@ export default function CoverPhoto({
   const { inputFileRef, openInput, handleChange, isPending } =
     useUpdateProfileAndCoverPhotoClient('cover');
   const { showVisualMediaModal } = useVisualMediaModal();
+  const openCoverPhoto = useCallback(() => {
+    if (photoUrl) {
+      showVisualMediaModal({
+        visualMedia: [
+          {
+            type: 'PHOTO',
+            url: photoUrl,
+          },
+        ],
+        initialSlide: 0,
+      });
+    }
+  }, [photoUrl, showVisualMediaModal]);
 
   return (
     <div className="h-full w-full">
       {photoUrl && (
         <img
           src={photoUrl}
-          alt="Cover photo"
+          alt=""
           className="absolute h-full w-full object-cover"
         />
       )}
       <button
+        type="button"
         aria-label="Open cover photo"
-        onClick={() =>
-          photoUrl !== null &&
-          showVisualMediaModal({
-            visualMedia: [
-              {
-                type: 'PHOTO',
-                url: photoUrl as string,
-              },
-            ],
-            initialSlide: 0,
-          })
-        }
-        className="absolute h-full w-full cursor-pointer bg-black/30 opacity-0 active:opacity-100 "
-       />
+        onClick={openCoverPhoto}
+        className="absolute h-full w-full cursor-pointer bg-black/30 opacity-0 active:opacity-100"
+      />
       {isOwnProfile && (
         <label>
           <div className="absolute bottom-4 right-4">
@@ -54,11 +57,8 @@ export default function CoverPhoto({
               accept="image/png, image/jpg, image/jpeg"
             />
             <Button
-              Icon={(props) => (
-                <SvgImage
-                  className={cn(props.className, 'text-primary-foreground')}
-                />
-              )}
+              Icon={SvgImage}
+              iconClassName="text-primary-foreground"
               onPress={openInput}
               size="small"
               loading={isPending}

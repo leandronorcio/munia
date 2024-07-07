@@ -1,7 +1,7 @@
 'use client';
 
 import { GetComment } from '@/types/definitions';
-import { memo } from 'react';
+import { Key, memo, useCallback } from 'react';
 import { isEqual } from 'lodash';
 import SvgHeart from '@/svg_components/Heart';
 import { useSearchParams } from 'next/navigation';
@@ -32,8 +32,21 @@ export const CommentReply = memo(
     unLikeComment: (params: { commentId: number }) => void;
   }) => {
     const numberOfLikes = _count.commentLikes;
-    const handleLikeClick = () =>
-      !isLiked ? likeComment({ commentId }) : unLikeComment({ commentId });
+    const handleLikeClick = useCallback(
+      () =>
+        !isLiked ? likeComment({ commentId }) : unLikeComment({ commentId }),
+      [isLiked, likeComment, unLikeComment, commentId],
+    );
+    const onDropdownAction = useCallback(
+      (key: Key) => {
+        if (key === 'edit') {
+          handleEdit({ commentId, content });
+        } else {
+          handleDelete({ commentId });
+        }
+      },
+      [handleEdit, handleDelete, commentId, content],
+    );
 
     const searchParams = useSearchParams();
     // Highlight comment if the `commentId` is equal to the `comment-id` search param
@@ -70,11 +83,7 @@ export const CommentReply = memo(
               <DropdownMenuButton
                 key={`replies-${commentId}-options`}
                 label="Reply options"
-                onAction={(key) => {
-                  key === 'edit'
-                    ? handleEdit({ commentId, content })
-                    : handleDelete({ commentId });
-                }}
+                onAction={onDropdownAction}
               >
                 <Section>
                   <Item key="edit">Edit reply</Item>
@@ -89,3 +98,5 @@ export const CommentReply = memo(
   },
   (oldProps, newProps) => isEqual(oldProps, newProps),
 );
+
+CommentReply.displayName = 'CommentReply';

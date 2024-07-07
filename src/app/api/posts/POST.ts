@@ -2,9 +2,9 @@
  * POST /api/posts
  * - Allows an authenticated user to create a post.
  */
-import { useWritePost } from '@/hooks/useWritePost';
+import { serverWritePost } from '@/hooks/serverWritePost';
 
 export async function POST(request: Request) {
   const formData = await request.formData();
-  return useWritePost({ formData, type: 'create' });
+  return serverWritePost({ formData, type: 'create' });
 }

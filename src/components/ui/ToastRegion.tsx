@@ -3,7 +3,7 @@ import type { ToastState } from '@react-stately/toast';
 import { useToastRegion } from '@react-aria/toast';
 import { useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ToastType, toastAnimation } from '@/lib/toast';
+import { ToastType, toastVariants } from '@/lib/toast';
 import { Toast } from './Toast';
 
 interface ToastRegionProps<T> extends AriaToastRegionProps {
@@ -25,7 +25,13 @@ export function ToastRegion<T extends ToastType>({
     >
       <AnimatePresence>
         {state.visibleToasts.map((toast) => (
-          <motion.div key={`${toast.key}-motion-container`} {...toastAnimation}>
+          <motion.div
+            key={`${toast.key}-motion-container`}
+            variants={toastVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
             <Toast key={toast.key} toast={toast} state={state} />
           </motion.div>
         ))}

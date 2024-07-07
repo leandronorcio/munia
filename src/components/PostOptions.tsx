@@ -1,8 +1,8 @@
 import { Item, Section } from 'react-stately';
 import { useDialogs } from '@/hooks/useDialogs';
 import { GetVisualMedia } from '@/types/definitions';
-import { Key } from 'react';
-import { useCreatePost } from '@/hooks/useCreatePost';
+import { Key, useCallback } from 'react';
+import { useCreatePostModal } from '@/hooks/useCreatePostModal';
 import { useDeletePostMutation } from '@/hooks/mutations/useDeletePostMutation';
 import { DropdownMenuButton } from './ui/DropdownMenuButton';
 
@@ -16,10 +16,10 @@ export function PostOptions({
   visualMedia?: GetVisualMedia[];
 }) {
   const { confirm } = useDialogs();
-  const { launchEditPost } = useCreatePost();
+  const { launchEditPost } = useCreatePostModal();
   const { deleteMutation } = useDeletePostMutation();
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = useCallback(() => {
     confirm({
       title: 'Delete Post',
       message: 'Do you really wish to delete this post?',
@@ -29,32 +29,26 @@ export function PostOptions({
         setTimeout(() => deleteMutation.mutate({ postId }), 300);
       },
     });
-  };
+  }, [confirm, deleteMutation, postId]);
 
-  const editPost = ({
-    postId,
-    content,
-    visualMedia,
-  }: {
-    postId: number;
-    content: string;
-    visualMedia?: GetVisualMedia[];
-  }) => {
+  const handleEditClick = useCallback(() => {
     launchEditPost({
       postId,
-      initialContent: content,
-      initialVisualMedia: visualMedia || [],
+      initialContent: content ?? '',
+      initialVisualMedia: visualMedia ?? [],
     });
-  };
+  }, [launchEditPost, postId, content, visualMedia]);
 
-  const handleEditClick = () => {
-    editPost({ postId, content: content || '', visualMedia });
-  };
-
-  const handleOptionClick = (key: Key) => {
-    if (key === 'edit') return handleEditClick();
-    handleDeleteClick();
-  };
+  const handleOptionClick = useCallback(
+    (key: Key) => {
+      if (key === 'edit') {
+        handleEditClick();
+      } else {
+        handleDeleteClick();
+      }
+    },
+    [handleEditClick, handleDeleteClick],
+  );
 
   return (
     <DropdownMenuButton

@@ -1,14 +1,9 @@
 'use client';
 
 import { ToastRegion } from '@/components/ui/ToastRegion';
+import { ToastType } from '@/lib/toast';
 import { ToastState, useToastState } from '@react-stately/toast';
-import { createContext, useMemo } from 'react';
-
-export interface ToastType {
-  title: string;
-  message?: string;
-  type?: 'default' | 'success' | 'warning' | 'error';
-}
+import React, { createContext, useMemo } from 'react';
 
 export const ToastContext = createContext<{
   addToast: ToastState<ToastType>['add'] | null;

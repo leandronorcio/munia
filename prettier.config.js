@@ -4,4 +4,6 @@ module.exports = {
   tailwindAttributes: ['class', 'className', 'iconClassName'],
   singleQuote: true,
   trailingComma: 'all',
+  printWidth: 120,
+  bracketSameLine: true,
 };

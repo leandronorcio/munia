@@ -1,7 +1,7 @@
 import { ProfilePhoto } from '@/components/ui/ProfilePhoto';
 import { ActivityType } from '@prisma/client';
 import { formatDistanceToNowStrict } from 'date-fns';
-import { ComponentProps, useRef } from 'react';
+import React, { ComponentProps, useRef } from 'react';
 import { UserSummaryAfterSetUp } from '@/types/definitions';
 import { mergeProps, useFocusRing, useLink } from 'react-aria';
 import { cn } from '@/lib/cn';

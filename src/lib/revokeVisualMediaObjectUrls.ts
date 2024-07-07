@@ -1,7 +1,7 @@
 import { GetVisualMedia } from '@/types/definitions';
 
 export function revokeVisualMediaObjectUrls(visualMedia: GetVisualMedia[]) {
-  for (const { url } of visualMedia) {
+  visualMedia.forEach(({ url }) => {
     if (url.startsWith('blob:')) URL.revokeObjectURL(url);
-  }
+  });
 }

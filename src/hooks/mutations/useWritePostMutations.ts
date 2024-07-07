@@ -5,24 +5,24 @@ import {
 } from '@tanstack/react-query';
 import { chunk } from 'lodash';
 import { useSession } from 'next-auth/react';
-import { GetVisualMedia , GetPost, PostIds } from '@/types/definitions';
+import { GetVisualMedia, GetPost, PostIds } from '@/types/definitions';
 import { POSTS_PER_PAGE } from '@/constants';
 import { revokeVisualMediaObjectUrls } from '@/lib/revokeVisualMediaObjectUrls';
 import { useToast } from '../useToast';
-import { useCreatePost } from '../useCreatePost';
 import { useErrorNotifier } from '../useErrorNotifier';
 
 export function useWritePostMutations({
   content,
   visualMedia,
+  exitCreatePostModal,
 }: {
   content: string;
   visualMedia: GetVisualMedia[];
+  exitCreatePostModal: () => void;
 }) {
   const qc = useQueryClient();
   const { data: session } = useSession();
   const queryKey = ['users', session?.user?.id, 'posts'];
-  const { exitCreatePostModal } = useCreatePost();
   const { showToast } = useToast();
   const { notifyError } = useErrorNotifier();
 
@@ -30,15 +30,17 @@ export function useWritePostMutations({
     const formData = new FormData();
     if (content) formData.append('content', content);
 
-    for (const { url } of visualMedia) {
+    const visualMediaFilesPromises = visualMedia.map(async ({ url }) => {
       if (url.startsWith('blob:')) {
-        // Convert the URL to an actual `Blob`
+        // If the url is a blob, fetch the blob and append it to the formData
         const file = await fetch(url).then((r) => r.blob());
         formData.append('files', file, file.name);
       } else {
+        // If the url is a link, just append it to the formData
         formData.append('files', url);
       }
-    }
+    });
+    await Promise.all(visualMediaFilesPromises);
 
     return formData;
   };
@@ -60,12 +62,12 @@ export function useWritePostMutations({
 
       // Update the inifinite query of `PostIds`
       qc.setQueriesData<InfiniteData<PostIds>>({ queryKey }, (oldData) => {
-        if (!oldData) return;
+        if (!oldData) return oldData;
 
         // Flatten the old pages first then prepend the newly created post
         const newPosts = [
           { id: createdPost.id, commentsShown: false },
-          ...oldData?.pages.flat(),
+          ...(oldData?.pages ?? []).flat(),
         ];
 
         // Chunk the `newPosts` depending on the number of posts per page
@@ -109,7 +111,7 @@ export function useWritePostMutations({
 
       // Update the inifinite query of `PostIds` TODO: There might be no need for `setQueriesData`
       qc.setQueriesData<InfiniteData<PostIds>>({ queryKey }, (oldData) => {
-        if (!oldData) return;
+        if (!oldData) return oldData;
 
         // Flatten the old pages first
         const oldPosts = oldData?.pages.flat();

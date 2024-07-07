@@ -1,7 +1,8 @@
 import { ArrowChevronBack } from '@/svg_components';
 import Link from 'next/link';
+import { ReactNode } from 'react';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="relative grid h-screen place-items-center">
       <div className="absolute left-3 top-4 sm:left-6 sm:top-6">

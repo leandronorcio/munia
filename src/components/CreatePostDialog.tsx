@@ -1,76 +1,87 @@
-'use client';
-
 import Button from '@/components/ui/Button';
-import { useContext, useEffect, useRef, useState } from 'react';
-import { AnimatePresence , motion } from 'framer-motion';
-import { CreatePostModalContextData } from '@/contexts/CreatePostModalContext';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { GetVisualMedia } from '@/types/definitions';
-import { useCreatePost } from '@/hooks/useCreatePost';
 import { useWritePostMutations } from '@/hooks/mutations/useWritePostMutations';
 import { useDialogs } from '@/hooks/useDialogs';
 import { capitalize } from 'lodash';
 import { revokeVisualMediaObjectUrls } from '@/lib/revokeVisualMediaObjectUrls';
+import { ToEditValues } from '@/lib/createPost';
 import { TextAreaWithMentionsAndHashTags } from './TextAreaWithMentionsAndHashTags';
 import { GenericDialog } from './GenericDialog';
 import { CreatePostSort } from './CreatePostSort';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 import { CreatePostOptions } from './CreatePostOptions';
 
-export function CreatePostDialog() {
-  const { toEditValues, shouldOpenFileInputOnMount } = useContext(
-    CreatePostModalContextData,
-  );
+export function CreatePostDialog({
+  toEditValues,
+  shouldOpenFileInputOnMount,
+  setShown,
+}: {
+  toEditValues: ToEditValues | null;
+  shouldOpenFileInputOnMount: boolean;
+  setShown: (isOpen: boolean) => void;
+}) {
   const mode: 'create' | 'edit' = toEditValues === null ? 'create' : 'edit';
   const [content, setContent] = useState(toEditValues?.initialContent || '');
   const [visualMedia, setVisualMedia] = useState<GetVisualMedia[]>(
-    toEditValues?.initialVisualMedia || [],
+    toEditValues?.initialVisualMedia ?? [],
   );
+  const exitCreatePostModal = useCallback(() => setShown(false), [setShown]);
   const { createPostMutation, updatePostMutation } = useWritePostMutations({
     content,
     visualMedia,
+    exitCreatePostModal,
   });
-  const { exitCreatePostModal } = useCreatePost();
   const { confirm } = useDialogs();
   const inputFileRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleVisualMediaChange: React.ChangeEventHandler<
-    HTMLInputElement
-  > = async (e) => {
-    const { name, files } = e.target;
+  const handleVisualMediaChange: React.ChangeEventHandler<HTMLInputElement> =
+    useCallback(async (e) => {
+      const { files } = e.target;
 
-    if (files === null) return;
-    const filesArr = [...files];
-    const selectedVisualMedia: GetVisualMedia[] = filesArr.map((file) => ({
-      type: file.type.startsWith('image/') ? 'PHOTO' : 'VIDEO',
-      url: URL.createObjectURL(file),
-    }));
-    setVisualMedia((prev) => [...prev, ...selectedVisualMedia]);
-    // Clear the file input
-    e.target.value = '';
-  };
+      if (files === null) return;
+      const filesArr = [...files];
+      const selectedVisualMedia: GetVisualMedia[] = filesArr.map((file) => ({
+        type: file.type.startsWith('image/') ? 'PHOTO' : 'VIDEO',
+        url: URL.createObjectURL(file),
+      }));
+      setVisualMedia((prev) => [...prev, ...selectedVisualMedia]);
+      // Clear the file input
+      e.target.value = '';
+    }, []);
 
-  const handleClickPostButton = () => {
-    if (mode === 'create') return createPostMutation.mutate();
-    if (!toEditValues) return;
-    updatePostMutation.mutate({ postId: toEditValues.postId });
-  };
+  const handleClickPostButton = useCallback(() => {
+    if (mode === 'create') {
+      createPostMutation.mutate();
+    } else {
+      if (!toEditValues) return;
+      updatePostMutation.mutate({ postId: toEditValues.postId });
+    }
+  }, [createPostMutation, mode, toEditValues, updatePostMutation]);
 
-  const exit = () => {
+  const exit = useCallback(() => {
     exitCreatePostModal();
     // Revoke the object URL's when exiting the create post dialog
     revokeVisualMediaObjectUrls(visualMedia);
-  };
+  }, [exitCreatePostModal, visualMedia]);
 
-  const confirmExit = () => {
+  const confirmExit = useCallback(() => {
     confirm({
       title: 'Unsaved Changes',
       message: 'Do you really wish to exit?',
       onConfirm: () => setTimeout(() => exit(), 300),
     });
-  };
+  }, [confirm, exit]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     if (mode === 'create') {
       if (content !== '' || visualMedia.length > 0) {
         confirmExit();
@@ -86,7 +97,16 @@ export function CreatePostDialog() {
       }
     }
     exit();
-  };
+  }, [confirmExit, content, visualMedia, mode, toEditValues, exit]);
+
+  const sortVariants = useMemo(
+    () => ({
+      initial: { height: 0 },
+      animate: { height: 'auto' },
+      exit: { height: 0 },
+    }),
+    [],
+  );
 
   useEffect(() => {
     if (inputFileRef.current === null) return;
@@ -143,9 +163,10 @@ export function CreatePostDialog() {
       <AnimatePresence>
         {visualMedia.length > 0 && (
           <motion.div
-            initial={{ height: 0 }}
-            animate={{ height: 'auto' }}
-            exit={{ height: 0 }}
+            variants={sortVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
             className="overflow-hidden"
           >
             <CreatePostSort

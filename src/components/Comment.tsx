@@ -1,7 +1,7 @@
 'use client';
 
 import { GetComment } from '@/types/definitions';
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useCallback, Key } from 'react';
 import { isEqual } from 'lodash';
 import SvgHeart from '@/svg_components/Heart';
 import SvgArrowReply from '@/svg_components/ArrowReply';
@@ -52,9 +52,11 @@ export const Comment = memo(
     const shouldHighlight =
       searchParams.get('comment-id') === commentId.toString();
 
-    const toggleReplies = () =>
-      setRepliesVisibility({ commentId, shown: !repliesShown });
-    const handleCreateReply = () => {
+    const toggleReplies = useCallback(
+      () => setRepliesVisibility({ commentId, shown: !repliesShown }),
+      [commentId, repliesShown, setRepliesVisibility],
+    );
+    const handleCreateReply = useCallback(() => {
       prompt({
         title: 'Reply',
         message: `You are replying to ${author.name}'s comment.`,
@@ -71,10 +73,29 @@ export const Comment = memo(
           );
         },
       });
-    };
-
-    const handleLikeToggle = (isSelected: boolean) =>
-      isSelected ? likeComment({ commentId }) : unLikeComment({ commentId });
+    }, [
+      author.name,
+      commentId,
+      createReplyMutation,
+      prompt,
+      repliesShown,
+      toggleReplies,
+    ]);
+    const handleLikeToggle = useCallback(
+      (isSelected: boolean) =>
+        isSelected ? likeComment({ commentId }) : unLikeComment({ commentId }),
+      [commentId, likeComment, unLikeComment],
+    );
+    const onDropdownAction = useCallback(
+      (key: Key) => {
+        if (key === 'edit') {
+          handleEdit({ commentId, content });
+        } else {
+          handleDelete({ commentId });
+        }
+      },
+      [commentId, content, handleDelete, handleEdit],
+    );
 
     // Show the replies if the comment to be highlighted is a reply to this comment
     useEffect(() => {
@@ -124,11 +145,7 @@ export const Comment = memo(
               <DropdownMenuButton
                 key={`comments-${commentId}-options`}
                 label="Comment options"
-                onAction={(key) => {
-                  key === 'edit'
-                    ? handleEdit({ commentId, content })
-                    : handleDelete({ commentId });
-                }}
+                onAction={onDropdownAction}
               >
                 <Section>
                   <Item key="edit">Edit comment</Item>
@@ -155,3 +172,5 @@ export const Comment = memo(
   },
   (oldProps, newProps) => isEqual(oldProps, newProps),
 );
+
+Comment.displayName = 'Comment';

@@ -38,10 +38,7 @@ export function CommentContent({
         )}
       >
         <p className="mb-1 text-foreground">
-          <HighlightedMentionsAndHashTags
-            text={content}
-            shouldAddLinks
-          />
+          <HighlightedMentionsAndHashTags text={content} shouldAddLinks />
         </p>
         <p className="ml-auto text-sm text-muted-foreground">
           {formatDistanceToNowStrict(new Date(createdAt))} ago

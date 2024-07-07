@@ -40,7 +40,7 @@ export function Activity({
   const targetPossessiveNoun = isNotification ? 'your' : `${targetUser.name}'s`;
 
   const isRead = isActivity || isNotificationRead;
-  const navigate = (href: string) => {
+  const navigate = (href: string) => () => {
     router.push(href);
 
     // Set the notification as read
@@ -55,9 +55,9 @@ export function Activity({
         user={userToDisplay}
         date={new Date(createdAt)}
         isRead={isRead}
-        onClick={() =>
-          navigate(`/${isActivity ? targetUser.username : sourceUser.username}`)
-        }
+        onClick={navigate(
+          `/${isActivity ? targetUser.username : sourceUser.username}`,
+        )}
       >
         <SemiBold>{sourceProperNoun}</SemiBold> started following{' '}
         <SemiBold>{targetProperNoun}</SemiBold>!
@@ -72,7 +72,7 @@ export function Activity({
         user={userToDisplay}
         date={new Date(createdAt)}
         isRead={isRead}
-        onClick={() => navigate(`/posts/${targetId}`)}
+        onClick={navigate(`/posts/${targetId}`)}
       >
         <SemiBold>{sourceProperNoun}</SemiBold> liked{' '}
         <SemiBold>{targetPossessiveNoun}</SemiBold> post: &quot;{content}&quot;
@@ -86,7 +86,7 @@ export function Activity({
         user={userToDisplay}
         date={new Date(createdAt)}
         isRead={isRead}
-        onClick={() => navigate(`/posts/${sourceId}`)}
+        onClick={navigate(`/posts/${sourceId}`)}
       >
         <SemiBold>{sourceProperNoun}</SemiBold> mentioned{' '}
         <SemiBold>{targetProperNoun}</SemiBold> in {sourcePossessiveNoun} post:
@@ -102,7 +102,7 @@ export function Activity({
         user={userToDisplay}
         date={new Date(createdAt)}
         isRead={isRead}
-        onClick={() => navigate(`/comments/${sourceId}`)}
+        onClick={navigate(`/comments/${sourceId}`)}
       >
         <SemiBold>{sourceProperNoun}</SemiBold> commented on{' '}
         <SemiBold>{targetPossessiveNoun}</SemiBold> post: &quot;{content}&quot;
@@ -116,7 +116,7 @@ export function Activity({
         user={userToDisplay}
         date={new Date(createdAt)}
         isRead={isRead}
-        onClick={() => navigate(`/comments/${targetId}`)}
+        onClick={navigate(`/comments/${targetId}`)}
       >
         <SemiBold>{sourceProperNoun}</SemiBold> liked{' '}
         <SemiBold>{targetPossessiveNoun}</SemiBold> comment: &quot;{content}
@@ -131,7 +131,7 @@ export function Activity({
         user={userToDisplay}
         date={new Date(createdAt)}
         isRead={isRead}
-        onClick={() => navigate(`/comments/${sourceId}`)}
+        onClick={navigate(`/comments/${sourceId}`)}
       >
         <SemiBold>{sourceProperNoun}</SemiBold> mentioned{' '}
         <SemiBold>{targetProperNoun}</SemiBold> in {sourcePossessiveNoun}{' '}
@@ -147,7 +147,7 @@ export function Activity({
         user={userToDisplay}
         date={new Date(createdAt)}
         isRead={isRead}
-        onClick={() => navigate(`/comments/${sourceId}`)}
+        onClick={navigate(`/comments/${sourceId}`)}
       >
         <SemiBold>{sourceProperNoun}</SemiBold> replied to{' '}
         <SemiBold>{targetPossessiveNoun}</SemiBold> comment: &quot;{content}
@@ -162,7 +162,7 @@ export function Activity({
         user={userToDisplay}
         date={new Date(createdAt)}
         isRead={isRead}
-        onClick={() => navigate(`/comments/${targetId}`)}
+        onClick={navigate(`/comments/${targetId}`)}
       >
         <SemiBold>{sourceProperNoun}</SemiBold> liked{' '}
         <SemiBold>{targetPossessiveNoun}</SemiBold> reply: &quot;{content}&quot;
@@ -176,7 +176,7 @@ export function Activity({
         user={userToDisplay}
         date={new Date(createdAt)}
         isRead={isRead}
-        onClick={() => navigate(`/comments/${sourceId}`)}
+        onClick={navigate(`/comments/${sourceId}`)}
       >
         <SemiBold>{sourceProperNoun}</SemiBold> mentioned{' '}
         <SemiBold>{targetProperNoun}</SemiBold> in {sourcePossessiveNoun} reply:{' '}
@@ -185,5 +185,5 @@ export function Activity({
     );
   }
 
-  return <></>;
+  return null;
 }

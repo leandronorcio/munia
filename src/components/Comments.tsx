@@ -32,7 +32,7 @@ export function Comments({ postId }: { postId: number }) {
   const setRepliesVisibility = useCallback(
     ({ commentId, shown }: { commentId: number; shown: boolean }) => {
       qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
-        if (!oldComments) return;
+        if (!oldComments) return oldComments;
         // Make a shallow copy of `oldComments`
         const newComments = [...oldComments];
 
@@ -56,7 +56,7 @@ export function Comments({ postId }: { postId: number }) {
 
   return (
     <div>
-      <div className="flex flex-col pt-2 ">
+      <div className="flex flex-col pt-2">
         {isPending ? (
           <p className="py-2 text-muted-foreground">Loading comments.</p>
         ) : isError ? (

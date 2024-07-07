@@ -1,11 +1,40 @@
 import type { AriaToastProps } from '@react-aria/toast';
 import { useToast } from '@react-aria/toast';
 import { QueuedToast, ToastState } from '@react-stately/toast';
-import { useRef } from 'react';
-import { Close } from '@/svg_components';
+import { useRef, SVGProps } from 'react';
+import {
+  Close,
+  CircleActionsAlertInfo,
+  CircleActionsClose,
+  CircleActionsSuccess,
+  NotificationBell,
+} from '@/svg_components';
 import { cn } from '@/lib/cn';
-import { ToastType, toastColors, toastIcons } from '@/lib/toast';
+import { ToastType, toastColors } from '@/lib/toast';
 import Button from './Button';
+
+export const toastIcons = {
+  default: {
+    renderComponent: (props?: SVGProps<SVGSVGElement>) => (
+      <NotificationBell {...props} />
+    ),
+  },
+  success: {
+    renderComponent: (props?: SVGProps<SVGSVGElement>) => (
+      <CircleActionsSuccess {...props} />
+    ),
+  },
+  warning: {
+    renderComponent: (props?: SVGProps<SVGSVGElement>) => (
+      <CircleActionsAlertInfo {...props} />
+    ),
+  },
+  error: {
+    renderComponent: (props?: SVGProps<SVGSVGElement>) => (
+      <CircleActionsClose {...props} />
+    ),
+  },
+};
 
 interface ToastProps<T> extends AriaToastProps<T> {
   state: ToastState<T>;

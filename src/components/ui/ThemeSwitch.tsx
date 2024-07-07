@@ -38,17 +38,17 @@ export function ThemeSwitch() {
       aria-label="Switch theme"
       onClick={switchTheme}
     >
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0">
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <motion.div animate={systemThemeAnimation}>
           <DeviceLaptop className="stroke-foreground" height={24} width={24} />
         </motion.div>
       </div>
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0">
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <motion.div animate={lightThemeAnimation}>
           <WeatherSun className="stroke-foreground" height={24} width={24} />
         </motion.div>
       </div>
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0">
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <motion.div animate={darkThemeAnimation}>
           <WeatherMoon className="stroke-foreground" height={24} width={24} />
         </motion.div>

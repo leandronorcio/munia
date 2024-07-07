@@ -1,12 +1,23 @@
 'use client';
 
-import { useCreatePost } from '@/hooks/useCreatePost';
+import { useCreatePostModal } from '@/hooks/useCreatePostModal';
 import SvgImage from '@/svg_components/Image';
+import { useCallback } from 'react';
 import { ProfilePhotoOwn } from './ui/ProfilePhotoOwn';
 import { ButtonNaked } from './ui/ButtonNaked';
 
 export function CreatePostModalLauncher() {
-  const { launchCreatePost } = useCreatePost();
+  const { launchCreatePost } = useCreatePostModal();
+  const launcCreatePostFinderClosed = useCallback(
+    () => launchCreatePost({}),
+    [launchCreatePost],
+  );
+  const launchCreatePostFinderOpened = useCallback(() => {
+    launchCreatePost({
+      shouldOpenFileInputOnMount: true,
+    });
+  }, [launchCreatePost]);
+
   return (
     <div className="rounded-xl bg-card px-4 py-4 shadow sm:px-8 sm:py-5">
       <div className="mb-[18px] flex flex-row">
@@ -14,9 +25,7 @@ export function CreatePostModalLauncher() {
           <ProfilePhotoOwn />
         </div>
         <ButtonNaked
-          onPress={() => {
-            launchCreatePost({ shouldOpenFileInputOnMount: false });
-          }}
+          onPress={launcCreatePostFinderClosed}
           className="flex flex-grow flex-col justify-center"
         >
           <p className="text-muted-foreground/70">What&apos;s on your mind?</p>
@@ -24,11 +33,7 @@ export function CreatePostModalLauncher() {
       </div>
       <div className="flex flex-row gap-4">
         <ButtonNaked
-          onPress={() => {
-            launchCreatePost({
-              shouldOpenFileInputOnMount: true,
-            });
-          }}
+          onPress={launchCreatePostFinderOpened}
           className="group flex cursor-pointer flex-row items-center gap-4"
         >
           <SvgImage className="h-6 w-6 text-muted-foreground" />

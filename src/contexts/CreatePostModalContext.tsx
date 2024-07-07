@@ -1,10 +1,10 @@
 'use client';
 
-import { GetVisualMedia } from '@/types/definitions';
-import {
+import React, {
   Dispatch,
   SetStateAction,
   createContext,
+  useContext,
   useMemo,
   useState,
 } from 'react';
@@ -12,12 +12,7 @@ import { useOverlayTriggerState } from 'react-stately';
 import { AnimatePresence } from 'framer-motion';
 import { Modal } from '@/components/Modal';
 import { CreatePostDialog } from '@/components/CreatePostDialog';
-
-export interface ToEditValues {
-  postId: number;
-  initialContent: string;
-  initialVisualMedia: GetVisualMedia[];
-}
+import { ToEditValues } from '@/lib/createPost';
 
 // Separate the `data` and `api` part of the context to prevent
 // re-rendering of the `api` consumers when the `data` changes
@@ -39,7 +34,7 @@ const CreatePostModalContextApi = createContext<{
   setShouldOpenFileInputOnMount: () => {},
 });
 
-function CreatePostModalContextProvider({
+export function CreatePostModalContextProvider({
   children,
 }: {
   children: React.ReactNode;
@@ -50,7 +45,11 @@ function CreatePostModalContextProvider({
     useState(false);
 
   // Memoize to prevent re-rendering of consumers when the states change
-  const memoizedContextApiValue = useMemo(
+  const dataValue = useMemo(
+    () => ({ toEditValues, shouldOpenFileInputOnMount }),
+    [shouldOpenFileInputOnMount, toEditValues],
+  );
+  const apiValue = useMemo(
     () => ({
       setShown: state.setOpen,
       setToEditValues,
@@ -61,16 +60,18 @@ function CreatePostModalContextProvider({
   );
 
   return (
-    <CreatePostModalContextData.Provider
-      value={{ shouldOpenFileInputOnMount, toEditValues }}
-    >
-      <CreatePostModalContextApi.Provider value={memoizedContextApiValue}>
+    <CreatePostModalContextData.Provider value={dataValue}>
+      <CreatePostModalContextApi.Provider value={apiValue}>
         {children}
         <AnimatePresence>
           {state.isOpen && (
             // Set `isKeyboardDismissDisabled`, clicking the `Escape` key must be handled by <CreatePostDialog> instead.
             <Modal state={state} isKeyboardDismissDisabled>
-              <CreatePostDialog />
+              <CreatePostDialog
+                toEditValues={toEditValues}
+                shouldOpenFileInputOnMount={shouldOpenFileInputOnMount}
+                setShown={state.setOpen}
+              />
             </Modal>
           )}
         </AnimatePresence>
@@ -79,8 +80,7 @@ function CreatePostModalContextProvider({
   );
 }
 
-export {
-  CreatePostModalContextData,
-  CreatePostModalContextApi,
-  CreatePostModalContextProvider,
-};
+export const useCreatePostModalContextData = () =>
+  useContext(CreatePostModalContextData);
+export const useCreatePostModalContextApi = () =>
+  useContext(CreatePostModalContextApi);

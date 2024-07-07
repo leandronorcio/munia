@@ -33,6 +33,9 @@
     "react/require-default-props": "off",
     "no-nested-ternary": "off",
     "prettier/prettier": "error",
+    "no-else-return": "warn",
+    "no-restricted-syntax": "off",
+    "no-continue": "off",
     "jsx-a11y/label-has-associated-control": [
       "error",
       {
