@@ -4,10 +4,7 @@
  */
 import { serverWritePost } from '@/hooks/serverWritePost';
 
-export async function PATCH(
-  request: Request,
-  { params }: { params: { postId: string } },
-) {
+export async function PATCH(request: Request, { params }: { params: { postId: string } }) {
   const postId = parseInt(params.postId, 10);
 
   const formData = await request.formData();

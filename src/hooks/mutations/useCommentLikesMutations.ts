@@ -7,13 +7,7 @@ export function useCommentLikesMutations({ queryKey }: { queryKey: QueryKey }) {
   const { data: session } = useSession();
   const userId = session?.user.id;
 
-  const likeUnlikeOptimisticSetter = ({
-    commentId,
-    isLiked,
-  }: {
-    commentId: number;
-    isLiked: boolean;
-  }) => {
+  const likeUnlikeOptimisticSetter = ({ commentId, isLiked }: { commentId: number; isLiked: boolean }) => {
     qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
       if (!oldComments) return;
 
@@ -21,9 +15,7 @@ export function useCommentLikesMutations({ queryKey }: { queryKey: QueryKey }) {
       const newComments = [...oldComments];
 
       // Find the index of the comment to update
-      const index = newComments.findIndex(
-        (comment) => comment.id === commentId,
-      );
+      const index = newComments.findIndex((comment) => comment.id === commentId);
       const oldComment = newComments[index];
 
       // Update the comment's `isLiked` property
@@ -82,12 +74,9 @@ export function useCommentLikesMutations({ queryKey }: { queryKey: QueryKey }) {
 
   const unLikeCommentMutation = useMutation({
     mutationFn: async ({ commentId }: { commentId: number }) => {
-      const res = await fetch(
-        `/api/users/${userId}/liked-comments/${commentId}`,
-        {
-          method: 'DELETE',
-        },
-      );
+      const res = await fetch(`/api/users/${userId}/liked-comments/${commentId}`, {
+        method: 'DELETE',
+      });
 
       if (!res.ok) {
         /**

@@ -39,33 +39,18 @@ export default function VisualMediaSlider({
       }}
       keyboard={{ enabled: true }}
       modules={[Zoom, Navigation, Pagination, Keyboard]}
-      initialSlide={initialSlide}
-    >
+      initialSlide={initialSlide}>
       <motion.div
         initial={{ top: '-56px' }}
         animate={{ top: '16px' }}
         exit={{ top: '-56px' }}
-        className="fixed right-4 z-20"
-      >
-        <Button
-          onPress={onClose}
-          Icon={Close}
-          mode="ghost"
-          className="bg-secondary"
-        />
+        className="fixed right-4 z-20">
+        <Button onPress={onClose} Icon={Close} mode="ghost" className="bg-secondary" />
       </motion.div>
       {visualMedia.length > 1 && (
         <>
-          <VisualMediaModalNavigationButton
-            type="prev"
-            isBeginning={isBeginning}
-            isEnd={isEnd}
-          />
-          <VisualMediaModalNavigationButton
-            type="next"
-            isBeginning={isBeginning}
-            isEnd={isEnd}
-          />
+          <VisualMediaModalNavigationButton type="prev" isBeginning={isBeginning} isEnd={isEnd} />
+          <VisualMediaModalNavigationButton type="next" isBeginning={isBeginning} isEnd={isEnd} />
         </>
       )}
 
@@ -75,11 +60,7 @@ export default function VisualMediaSlider({
           <SwiperSlide key={i}>
             <div className="swiper-zoom-container">
               {type === 'PHOTO' ? (
-                <img
-                  src={visualMedia.url}
-                  alt="Post photo"
-                  className="max-h-full"
-                />
+                <img src={visualMedia.url} alt="Post photo" className="max-h-full" />
               ) : (
                 <video className="max-h-[75%]" autoPlay controls>
                   <source src={url} type="video/mp4" />

@@ -6,9 +6,7 @@ import { FindPostResult, GetPost, GetVisualMedia } from '@/types/definitions';
 import { convertMentionUsernamesToIds } from '../convertMentionUsernamesToIds';
 import { fileNameToUrl } from '../s3/fileNameToUrl';
 
-export async function toGetPost(
-  findPostResult: FindPostResult,
-): Promise<GetPost> {
+export async function toGetPost(findPostResult: FindPostResult): Promise<GetPost> {
   /**
    * Exclude the `postLikes` property as this is not needed in <GetPost>,
    * it is only used to determine whether the user requesting the post
@@ -22,12 +20,10 @@ export async function toGetPost(
     reverse: true,
   });
 
-  const visualMedia: GetVisualMedia[] = rest.visualMedia.map(
-    ({ type, fileName }) => ({
-      type,
-      url: fileNameToUrl(fileName) as string,
-    }),
-  );
+  const visualMedia: GetVisualMedia[] = rest.visualMedia.map(({ type, fileName }) => ({
+    type,
+    url: fileNameToUrl(fileName) as string,
+  }));
 
   return {
     ...rest,

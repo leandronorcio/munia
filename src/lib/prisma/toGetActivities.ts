@@ -40,9 +40,7 @@ async function getContentFromPostOrComment(
   return `This was deleted by the owner.`;
 }
 
-export async function toGetActivities(
-  findActivityResults: FindActivityResults,
-): Promise<GetActivities> {
+export async function toGetActivities(findActivityResults: FindActivityResults): Promise<GetActivities> {
   const notifications: GetActivities = [];
 
   for (const activity of findActivityResults) {

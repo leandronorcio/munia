@@ -58,14 +58,7 @@ export const Post = memo(
     if (isError) return <p>Error loading post.</p>;
     if (!data) return <p>This post no longer exists.</p>;
 
-    const {
-      content,
-      createdAt,
-      user: author,
-      visualMedia,
-      isLiked,
-      _count,
-    } = data;
+    const { content, createdAt, user: author, visualMedia, isLiked, _count } = data;
     const isOwnPost = userId === author.id;
     const numberOfLikes = _count.postLikes;
 
@@ -78,20 +71,11 @@ export const Post = memo(
             time={formatDistanceStrict(new Date(createdAt), new Date())}
             photoUrl={author.profilePhoto!}
           />
-          {isOwnPost && (
-            <PostOptions
-              postId={postId}
-              content={content}
-              visualMedia={visualMedia}
-            />
-          )}
+          {isOwnPost && <PostOptions postId={postId} content={content} visualMedia={visualMedia} />}
         </div>
         {content && (
           <p className="mb-4 mt-5 text-lg text-muted-foreground">
-            <HighlightedMentionsAndHashTags
-              text={content}
-              shouldAddLinks
-            />
+            <HighlightedMentionsAndHashTags text={content} shouldAddLinks />
           </p>
         )}
         {visualMedia.length > 0 && (
@@ -103,8 +87,7 @@ export const Post = memo(
           className={cn([
             'flex justify-start gap-2 border-y border-y-border py-2',
             !commentsShown && 'border-b-transparent',
-          ])}
-        >
+          ])}>
           <ToggleStepper
             isSelected={isLiked}
             onChange={handleLikeToggle}
@@ -128,8 +111,7 @@ export const Post = memo(
               key={`${postId}-comments`}
               initial={false}
               animate={{ height: 'auto', overflow: 'visible' }}
-              exit={{ height: 0, overflow: 'hidden' }}
-            >
+              exit={{ height: 0, overflow: 'hidden' }}>
               <Comments postId={postId} />
             </motion.div>
           )}

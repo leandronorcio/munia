@@ -17,15 +17,7 @@ export function useDialogs() {
     show();
   };
 
-  const confirm = ({
-    title,
-    message,
-    onConfirm,
-  }: {
-    title: string;
-    message: string;
-    onConfirm: Function;
-  }) => {
+  const confirm = ({ title, message, onConfirm }: { title: string; message: string; onConfirm: Function }) => {
     setDialog({
       type: 'confirm',
       title,

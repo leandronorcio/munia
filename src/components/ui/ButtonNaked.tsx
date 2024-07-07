@@ -3,12 +3,7 @@
 import React, { forwardRef } from 'react';
 import { cn } from '@/lib/cn';
 import { useObjectRef } from '@react-aria/utils';
-import {
-  AriaButtonProps,
-  mergeProps,
-  useButton,
-  useFocusRing,
-} from 'react-aria';
+import { AriaButtonProps, mergeProps, useButton, useFocusRing } from 'react-aria';
 
 interface ButtonProps extends AriaButtonProps {
   children: React.ReactNode;
@@ -30,8 +25,7 @@ export const ButtonNaked = forwardRef<HTMLButtonElement, ButtonProps>(
           'rounded-sm focus:outline-none',
           className,
           isFocusVisible && 'ring ring-violet-500 ring-offset-2',
-        )}
-      >
+        )}>
         {children}
       </button>
     );

@@ -3,14 +3,7 @@ import { SVGProps } from 'react';
 
 function SvgLogo(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="1em"
-      height="1em"
-      fill="none"
-      viewBox="0 0 88 87"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 88 87" {...props}>
       <g filter="url(#logo_svg__a)">
         <path
           stroke="url(#logo_svg__b)"
@@ -19,14 +12,7 @@ function SvgLogo(props: SVGProps<SVGSVGElement>) {
         />
       </g>
       <defs>
-        <linearGradient
-          id="logo_svg__b"
-          x1={5.005}
-          x2={84.478}
-          y1={27.267}
-          y2={34.851}
-          gradientUnits="userSpaceOnUse"
-        >
+        <linearGradient id="logo_svg__b" x1={5.005} x2={84.478} y1={27.267} y2={34.851} gradientUnits="userSpaceOnUse">
           <stop stopColor="#AE5388" />
           <stop offset={1} stopColor="#3D1052" />
         </linearGradient>
@@ -37,27 +23,15 @@ function SvgLogo(props: SVGProps<SVGSVGElement>) {
           x={-3}
           y={0.477}
           colorInterpolationFilters="sRGB"
-          filterUnits="userSpaceOnUse"
-        >
+          filterUnits="userSpaceOnUse">
           <feFlood floodOpacity={0} result="BackgroundImageFix" />
-          <feColorMatrix
-            in="SourceAlpha"
-            result="hardAlpha"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-          />
+          <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
           <feOffset dy={4} />
           <feGaussianBlur stdDeviation={2} />
           <feComposite in2="hardAlpha" operator="out" />
           <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
-          <feBlend
-            in2="BackgroundImageFix"
-            result="effect1_dropShadow_6871_34055"
-          />
-          <feBlend
-            in="SourceGraphic"
-            in2="effect1_dropShadow_6871_34055"
-            result="shape"
-          />
+          <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_6871_34055" />
+          <feBlend in="SourceGraphic" in2="effect1_dropShadow_6871_34055" result="shape" />
         </filter>
       </defs>
     </svg>

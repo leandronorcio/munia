@@ -19,19 +19,12 @@ export const metadata = {
   description: 'A social media web app, built with Next.js 13.',
 };
 
-export default async function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function Layout({ children }: { children: React.ReactNode }) {
   const session = await auth();
   return (
     <html lang="en" className="dark overflow-y-scroll">
       <head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
       </head>
       <body className={cn('bg-background text-foreground', poppins.className)}>
         <Providers session={session}>{children}</Providers>

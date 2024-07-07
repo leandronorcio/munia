@@ -13,26 +13,13 @@ export default function Tabs({ isOwnProfile }: { isOwnProfile: boolean }) {
         { title: 'Posts', segment: parentLayoutSegment },
         { title: 'Photos', segment: `${parentLayoutSegment}/photos` },
         { title: 'About', segment: `${parentLayoutSegment}/about` },
-        ...[
-          isOwnProfile
-            ? { title: 'Activity', segment: `${parentLayoutSegment}/activity` }
-            : undefined,
-        ],
+        ...[isOwnProfile ? { title: 'Activity', segment: `${parentLayoutSegment}/activity` } : undefined],
       ].map((item) => {
         if (!item) return;
         const { title, segment } = item;
         const isActive =
-          (selectedSegment === null
-            ? parentLayoutSegment
-            : `${parentLayoutSegment}/${selectedSegment}`) === segment;
-        return (
-          <TabButton
-            key={segment}
-            title={title}
-            isActive={isActive}
-            href={segment}
-          />
-        );
+          (selectedSegment === null ? parentLayoutSegment : `${parentLayoutSegment}/${selectedSegment}`) === segment;
+        return <TabButton key={segment} title={title} isActive={isActive} href={segment} />;
       })}
     </div>
   );

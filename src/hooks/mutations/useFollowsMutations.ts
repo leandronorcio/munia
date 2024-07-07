@@ -3,11 +3,7 @@ import { GetUser } from '@/types/definitions';
 import { useSession } from 'next-auth/react';
 import { useToast } from '../useToast';
 
-export function useFollowsMutations({
-  targetUserId,
-}: {
-  targetUserId: string;
-}) {
+export function useFollowsMutations({ targetUserId }: { targetUserId: string }) {
   const qc = useQueryClient();
   const { data: session } = useSession();
   const queryKey = ['users', targetUserId];
@@ -76,13 +72,7 @@ export function useFollowsMutations({
   return { followMutation, unFollowMutation };
 }
 
-const follow = async ({
-  userId,
-  targetUserId,
-}: {
-  userId: string;
-  targetUserId: string;
-}) => {
+const follow = async ({ userId, targetUserId }: { userId: string; targetUserId: string }) => {
   const res = await fetch(`/api/users/${userId}/following`, {
     method: 'POST',
     headers: {
@@ -99,13 +89,7 @@ const follow = async ({
   return true;
 };
 
-const unFollow = async ({
-  userId,
-  targetUserId,
-}: {
-  userId: string;
-  targetUserId: string;
-}) => {
+const unFollow = async ({ userId, targetUserId }: { userId: string; targetUserId: string }) => {
   const res = await fetch(`/api/users/${userId}/following/${targetUserId}`, {
     method: 'DELETE',
   });

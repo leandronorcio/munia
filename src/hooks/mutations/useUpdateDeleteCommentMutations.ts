@@ -3,22 +3,12 @@ import { GetComment } from '@/types/definitions';
 import { useErrorNotifier } from '../useErrorNotifier';
 
 // Use this hook for getting the mutations for updating and deleting comments/replies.
-export function useUpdateDeleteCommentMutations({
-  queryKey,
-}: {
-  queryKey: QueryKey;
-}) {
+export function useUpdateDeleteCommentMutations({ queryKey }: { queryKey: QueryKey }) {
   const qc = useQueryClient();
   const { notifyError } = useErrorNotifier();
 
   const updateCommentMutation = useMutation({
-    mutationFn: async ({
-      commentId,
-      content,
-    }: {
-      commentId: number;
-      content: string;
-    }) => {
+    mutationFn: async ({ commentId, content }: { commentId: number; content: string }) => {
       const res = await fetch(`/api/comments/${commentId}`, {
         method: 'PUT',
         headers: {
@@ -45,9 +35,7 @@ export function useUpdateDeleteCommentMutations({
         const newComments = [...oldComments];
 
         // Find the index of the updated comment
-        const index = newComments.findIndex(
-          (comment) => comment.id === commentId,
-        );
+        const index = newComments.findIndex((comment) => comment.id === commentId);
 
         // Update the comment
         newComments[index] = {

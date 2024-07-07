@@ -19,8 +19,7 @@ export function Modal({ state, children, ...rest }: ModalProps) {
           initial={{ backdropFilter: 'blur(0)', opacity: 0 }}
           animate={{ backdropFilter: 'blur(4px)', opacity: 1 }}
           exit={{ backdropFilter: 'blur(0)', opacity: 0 }}
-          className="h-full w-full"
-        >
+          className="h-full w-full">
           <div {...modalProps} ref={ref} className="h-full w-full">
             {children}
           </div>

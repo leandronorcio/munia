@@ -10,12 +10,7 @@ interface GenericDialogProps extends AriaDialogProps {
   children: React.ReactNode;
 }
 
-export function GenericDialog({
-  title,
-  handleClose,
-  children,
-  ...props
-}: GenericDialogProps) {
+export function GenericDialog({ title, handleClose, children, ...props }: GenericDialogProps) {
   const dialogRef = useRef(null);
   const { dialogProps, titleProps } = useDialog(props, dialogRef);
 
@@ -23,8 +18,7 @@ export function GenericDialog({
     <div
       {...dialogProps}
       ref={dialogRef}
-      className="flex h-full w-full flex-col items-center overflow-y-auto p-2 sm:justify-center"
-    >
+      className="flex h-full w-full flex-col items-center overflow-y-auto p-2 sm:justify-center">
       <ResponsiveContainer>
         <div className="mb-6 rounded-xl border border-border bg-popover">
           <div className="relative mb-4 rounded-t-xl border-b border-b-border bg-card py-4">
@@ -32,12 +26,7 @@ export function GenericDialog({
               {title}
             </h3>
             <div className="absolute right-3 top-[50%] translate-y-[-50%]">
-              <Button
-                onPress={handleClose}
-                Icon={SvgClose}
-                mode="ghost"
-                size="small"
-              />
+              <Button onPress={handleClose} Icon={SvgClose} mode="ghost" size="small" />
             </div>
           </div>
           {children}

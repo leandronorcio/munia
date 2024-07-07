@@ -29,11 +29,7 @@ export function TextAreaMentionItem({
     <li
       ref={ref}
       onClick={() => handleSelectUserToMention(username!)}
-      className={cn(
-        'flex cursor-pointer items-center gap-3 px-4 py-2 hover:bg-accent',
-        focused && 'bg-accent',
-      )}
-    >
+      className={cn('flex cursor-pointer items-center gap-3 px-4 py-2 hover:bg-accent', focused && 'bg-accent')}>
       <div className="h-8 w-8">
         <ProfilePhoto photoUrl={profilePhoto} username={username} name={name} />
       </div>

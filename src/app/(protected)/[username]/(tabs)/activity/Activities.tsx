@@ -2,11 +2,7 @@
 
 import { AllCaughtUp } from '@/components/AllCaughtUp';
 import useOnScreen from '@/hooks/useOnScreen';
-import {
-  InfiniteData,
-  QueryKey,
-  useInfiniteQuery,
-} from '@tanstack/react-query';
+import { InfiniteData, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { GetActivity } from '@/types/definitions';
 import { Activity } from '@/components/Activity';
@@ -17,14 +13,7 @@ import { getActivities } from '@/lib/client_data_fetching/getActivities';
 export function Activities({ userId }: { userId: string }) {
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
-  const {
-    data,
-    isPending,
-    isError,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery<
+  const { data, isPending, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery<
     GetActivity[],
     Error,
     InfiniteData<GetActivity[], unknown>,
@@ -59,9 +48,7 @@ export function Activities({ userId }: { userId: string }) {
       ) : isError ? (
         <SomethingWentWrong />
       ) : (
-        data.pages
-          .flat()
-          .map((activity) => <Activity key={activity.id} {...activity} />)
+        data.pages.flat().map((activity) => <Activity key={activity.id} {...activity} />)
       )}
 
       <div
@@ -71,16 +58,11 @@ export function Activities({ userId }: { userId: string }) {
          * The first page will be initially loaded by React Query
          * so the bottom loader has to be hidden first
          */
-        style={{ display: data ? 'block' : 'none' }}
-      >
-        {hasNextPage && (
-          <GenericLoading>Loading more notifications</GenericLoading>
-        )}
+        style={{ display: data ? 'block' : 'none' }}>
+        {hasNextPage && <GenericLoading>Loading more notifications</GenericLoading>}
       </div>
       {isError && <SomethingWentWrong />}
-      {!isError && !isPending && !isFetchingNextPage && !hasNextPage && (
-        <AllCaughtUp />
-      )}
+      {!isError && !isPending && !isFetchingNextPage && !hasNextPage && <AllCaughtUp />}
     </>
   );
 }

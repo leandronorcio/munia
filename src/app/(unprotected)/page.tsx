@@ -6,9 +6,7 @@ export default function Page() {
     <main>
       <div className="mt-28 flex flex-col items-center sm:mt-36">
         <a href="https://twitter.com/norciodotdev">
-          <p className="inline-block rounded-lg bg-card px-3 py-2 text-card-foreground">
-            Follow me on X
-          </p>
+          <p className="inline-block rounded-lg bg-card px-3 py-2 text-card-foreground">Follow me on X</p>
         </a>
         <h1 className="mt-4 px-5 text-center text-2xl sm:text-5xl">
           A responsive and accessible full stack social media web app.
@@ -17,11 +15,7 @@ export default function Page() {
           <ButtonLink href="/login" size="medium">
             Get Started
           </ButtonLink>
-          <ButtonAnchor
-            href="https://github.com/leandronorcio/munia"
-            size="medium"
-            mode="secondary"
-          >
+          <ButtonAnchor href="https://github.com/leandronorcio/munia" size="medium" mode="secondary">
             Github
           </ButtonAnchor>
         </div>
@@ -30,15 +24,13 @@ export default function Page() {
       <div className="mt-20">
         <h2 className="text-center text-3xl sm:text-5xl">Technology Stack</h2>
         <p className="mt-2 px-4 text-center text-lg text-muted-foreground">
-          This social media web app is built using the following modern
-          technologies.
+          This social media web app is built using the following modern technologies.
         </p>
-        <div className="mt-6 grid grid-cols-2 gap-3 px-4  md:grid-cols-3">
+        <div className="mt-6 grid grid-cols-2 gap-3 px-4 md:grid-cols-3">
           {[
             {
               header: 'TypeScript',
-              details:
-                'Strongly-typed code and components for maintainability.',
+              details: 'Strongly-typed code and components for maintainability.',
             },
             {
               header: 'Next.js 14',
@@ -80,13 +72,7 @@ export default function Page() {
   );
 }
 
-function TechStackCard({
-  header,
-  children,
-}: {
-  header: string;
-  children: React.ReactNode;
-}) {
+function TechStackCard({ header, children }: { header: string; children: React.ReactNode }) {
   return (
     <div className="rounded-xl border-2 border-border bg-card p-5">
       <h4 className="text-lg font-semibold text-card-foreground">{header}</h4>

@@ -8,9 +8,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <div className="absolute left-3 top-4 sm:left-6 sm:top-6">
         <Link href="/" className="group flex items-center gap-2 sm:gap-4">
           <ArrowChevronBack className="stroke-foreground group-hover:stroke-muted-foreground" />
-          <span className="group-hover:text-muted-foreground">
-            Back to Home
-          </span>
+          <span className="group-hover:text-muted-foreground">Back to Home</span>
         </Link>
       </div>
       <div className="w-[320px] md:w-[428px]">{children}</div>

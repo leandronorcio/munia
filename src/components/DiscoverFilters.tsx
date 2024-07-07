@@ -3,7 +3,7 @@
 import { Select } from '@/components/ui/Select';
 import { Gender, RelationshipStatus } from '@prisma/client';
 import { kebabCase, lowerCase, snakeCase, startCase, toUpper } from 'lodash';
-import { usePathname, useSearchParams , useRouter } from 'next/navigation';
+import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import { Item } from 'react-stately';
 import { DiscoverFilters } from '@/types/definitions';
 
@@ -16,11 +16,7 @@ export function DiscoverFilters() {
     gender: searchParams.get('gender') || undefined,
     relationshipStatus: searchParams.get('relationship-status') || undefined,
   };
-  const genderFilters: DiscoverFilters['gender'][] = [
-    'MALE',
-    'FEMALE',
-    'NONBINARY',
-  ];
+  const genderFilters: DiscoverFilters['gender'][] = ['MALE', 'FEMALE', 'NONBINARY'];
   const relationshipStatusFilters: DiscoverFilters['relationshipStatus'][] = [
     'SINGLE',
     'IN_A_RELATIONSHIP',
@@ -28,13 +24,7 @@ export function DiscoverFilters() {
     'MARRIED',
   ];
 
-  const updateParams = ({
-    title,
-    value,
-  }: {
-    title: string;
-    value: DiscoverFilters[keyof DiscoverFilters];
-  }) => {
+  const updateParams = ({ title, value }: { title: string; value: DiscoverFilters[keyof DiscoverFilters] }) => {
     const newSearchParams = new URLSearchParams(searchParams);
 
     if (value === undefined) {
@@ -58,9 +48,10 @@ export function DiscoverFilters() {
               title: 'gender',
               value: (key as Gender) || undefined,
             });
-          }}
-        >
-          {genderFilters.map((gender) => <Item key={gender}>{startCase(lowerCase(gender))}</Item>)}
+          }}>
+          {genderFilters.map((gender) => (
+            <Item key={gender}>{startCase(lowerCase(gender))}</Item>
+          ))}
         </Select>
       </div>
       <div className="flex-1">
@@ -72,13 +63,10 @@ export function DiscoverFilters() {
               title: 'relationship-status',
               value: (key as RelationshipStatus) || undefined,
             });
-          }}
-        >
+          }}>
           {relationshipStatusFilters.map((relationship) => (
-              <Item key={relationship}>
-                {startCase(lowerCase(relationship))}
-              </Item>
-            ))}
+            <Item key={relationship}>{startCase(lowerCase(relationship))}</Item>
+          ))}
         </Select>
       </div>
     </div>

@@ -16,9 +16,7 @@ export async function getNotifications({
   params.set('cursor', cursor.toString());
   params.set('sort-direction', isForwards ? 'desc' : 'asc');
 
-  const res = await fetch(
-    `/api/users/${userId}/notifications?${params.toString()}`,
-  );
+  const res = await fetch(`/api/users/${userId}/notifications?${params.toString()}`);
 
   if (!res.ok) throw new Error('Failed to load notifications.');
   return (await res.json()) as GetActivity[];

@@ -1,11 +1,5 @@
 import Button from '@/components/ui/Button';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { GetVisualMedia } from '@/types/definitions';
 import { useWritePostMutations } from '@/hooks/mutations/useWritePostMutations';
@@ -30,9 +24,7 @@ export function CreatePostDialog({
 }) {
   const mode: 'create' | 'edit' = toEditValues === null ? 'create' : 'edit';
   const [content, setContent] = useState(toEditValues?.initialContent || '');
-  const [visualMedia, setVisualMedia] = useState<GetVisualMedia[]>(
-    toEditValues?.initialVisualMedia ?? [],
-  );
+  const [visualMedia, setVisualMedia] = useState<GetVisualMedia[]>(toEditValues?.initialVisualMedia ?? []);
   const exitCreatePostModal = useCallback(() => setShown(false), [setShown]);
   const { createPostMutation, updatePostMutation } = useWritePostMutations({
     content,
@@ -43,20 +35,19 @@ export function CreatePostDialog({
   const inputFileRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleVisualMediaChange: React.ChangeEventHandler<HTMLInputElement> =
-    useCallback(async (e) => {
-      const { files } = e.target;
+  const handleVisualMediaChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(async (e) => {
+    const { files } = e.target;
 
-      if (files === null) return;
-      const filesArr = [...files];
-      const selectedVisualMedia: GetVisualMedia[] = filesArr.map((file) => ({
-        type: file.type.startsWith('image/') ? 'PHOTO' : 'VIDEO',
-        url: URL.createObjectURL(file),
-      }));
-      setVisualMedia((prev) => [...prev, ...selectedVisualMedia]);
-      // Clear the file input
-      e.target.value = '';
-    }, []);
+    if (files === null) return;
+    const filesArr = [...files];
+    const selectedVisualMedia: GetVisualMedia[] = filesArr.map((file) => ({
+      type: file.type.startsWith('image/') ? 'PHOTO' : 'VIDEO',
+      url: URL.createObjectURL(file),
+    }));
+    setVisualMedia((prev) => [...prev, ...selectedVisualMedia]);
+    // Clear the file input
+    e.target.value = '';
+  }, []);
 
   const handleClickPostButton = useCallback(() => {
     if (mode === 'create') {
@@ -88,10 +79,7 @@ export function CreatePostDialog({
         return;
       }
     } else if (mode === 'edit') {
-      if (
-        content !== toEditValues?.initialContent ||
-        visualMedia !== toEditValues.initialVisualMedia
-      ) {
+      if (content !== toEditValues?.initialContent || visualMedia !== toEditValues.initialVisualMedia) {
         confirmExit();
         return;
       }
@@ -148,18 +136,12 @@ export function CreatePostDialog({
             onPress={handleClickPostButton}
             size="small"
             isDisabled={content === '' && visualMedia.length === 0}
-            loading={
-              createPostMutation.isPending || updatePostMutation.isPending
-            }
-          >
+            loading={createPostMutation.isPending || updatePostMutation.isPending}>
             Post
           </Button>
         </div>
       </div>
-      <CreatePostOptions
-        handleVisualMediaChange={handleVisualMediaChange}
-        ref={inputFileRef}
-      />
+      <CreatePostOptions handleVisualMediaChange={handleVisualMediaChange} ref={inputFileRef} />
       <AnimatePresence>
         {visualMedia.length > 0 && (
           <motion.div
@@ -167,12 +149,8 @@ export function CreatePostDialog({
             initial="initial"
             animate="animate"
             exit="exit"
-            className="overflow-hidden"
-          >
-            <CreatePostSort
-              visualMedia={visualMedia}
-              setVisualMedia={setVisualMedia}
-            />
+            className="overflow-hidden">
+            <CreatePostSort visualMedia={visualMedia} setVisualMedia={setVisualMedia} />
           </motion.div>
         )}
       </AnimatePresence>

@@ -3,13 +3,7 @@
 import { DiscoverProfile } from '@/components/DiscoverProfile';
 import { AllCaughtUp } from '@/components/AllCaughtUp';
 import useOnScreen from '@/hooks/useOnScreen';
-import {
-  InfiniteData,
-  QueryKey,
-  keepPreviousData,
-  useInfiniteQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { InfiniteData, QueryKey, keepPreviousData, useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { GetUser } from '@/types/definitions';
@@ -20,28 +14,14 @@ import { GenericLoading } from '@/components/GenericLoading';
 import { getDiscoverProfiles } from '@/lib/client_data_fetching/getDiscoverProfiles';
 import { DISCOVER_PROFILES_PER_PAGE } from '@/constants';
 
-export function DiscoverProfiles({
-  followersOf,
-  followingOf,
-}: {
-  followersOf?: string;
-  followingOf?: string;
-}) {
+export function DiscoverProfiles({ followersOf, followingOf }: { followersOf?: string; followingOf?: string }) {
   const searchParams = useSearchParams();
   const bottomElRef = useRef<HTMLDivElement>(null);
   const isBottomOnScreen = useOnScreen(bottomElRef);
   const qc = useQueryClient();
   const { shouldAnimate } = useShouldAnimate();
 
-  const {
-    data,
-    isPending,
-    isError,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isFetchingNextPage,
-  } = useInfiniteQuery<
+  const { data, isPending, isError, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useInfiniteQuery<
     GetUser[],
     Error,
     InfiniteData<GetUser[], unknown>,
@@ -118,8 +98,7 @@ export function DiscoverProfiles({
                   scale: 0.8,
                   opacity: 0,
                 }}
-                key={profile.id}
-              >
+                key={profile.id}>
                 <DiscoverProfile userId={profile.id} />
               </motion.div>
             ))}
@@ -134,10 +113,8 @@ export function DiscoverProfiles({
          * so the bottom loader has to be hidden first
          */
         style={{ display: data ? 'block' : 'none' }}
-       />
-      {!isError && !isFetching && !isFetchingNextPage && !hasNextPage && (
-        <AllCaughtUp />
-      )}
+      />
+      {!isError && !isFetching && !isFetchingNextPage && !hasNextPage && <AllCaughtUp />}
     </>
   );
 }

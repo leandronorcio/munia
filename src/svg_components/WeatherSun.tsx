@@ -3,14 +3,7 @@ import { SVGProps } from 'react';
 
 function SvgWeatherSun(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="1em"
-      height="1em"
-      fill="none"
-      viewBox="0 0 12 12"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 12 12" {...props}>
       <path
         stroke={props.stroke}
         strokeLinecap="round"

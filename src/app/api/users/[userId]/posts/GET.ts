@@ -11,10 +11,7 @@ import { toGetPost } from '@/lib/prisma/toGetPost';
 import { getServerUser } from '@/lib/getServerUser';
 import { usePostsSorter } from '@/hooks/usePostsSorter';
 
-export async function GET(
-  request: Request,
-  { params }: { params: { userId: string } },
-) {
+export async function GET(request: Request, { params }: { params: { userId: string } }) {
   /**
    * The [user] will only be used to check whether the
    * user requesting the Posts have like them or not.

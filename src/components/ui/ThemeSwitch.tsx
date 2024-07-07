@@ -36,8 +36,7 @@ export function ThemeSwitch() {
       type="button"
       className="relative h-[48px] w-[48px] overflow-hidden rounded-full border-2 border-secondary hover:border-muted sm:h-[56px] sm:w-[56px]"
       aria-label="Switch theme"
-      onClick={switchTheme}
-    >
+      onClick={switchTheme}>
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <motion.div animate={systemThemeAnimation}>
           <DeviceLaptop className="stroke-foreground" height={24} width={24} />

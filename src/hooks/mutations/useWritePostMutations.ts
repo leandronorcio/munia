@@ -1,8 +1,4 @@
-import {
-  InfiniteData,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { InfiniteData, useMutation, useQueryClient } from '@tanstack/react-query';
 import { chunk } from 'lodash';
 import { useSession } from 'next-auth/react';
 import { GetVisualMedia, GetPost, PostIds } from '@/types/definitions';
@@ -65,10 +61,7 @@ export function useWritePostMutations({
         if (!oldData) return oldData;
 
         // Flatten the old pages first then prepend the newly created post
-        const newPosts = [
-          { id: createdPost.id, commentsShown: false },
-          ...(oldData?.pages ?? []).flat(),
-        ];
+        const newPosts = [{ id: createdPost.id, commentsShown: false }, ...(oldData?.pages ?? []).flat()];
 
         // Chunk the `newPosts` depending on the number of posts per page
         const newPages = chunk(newPosts, POSTS_PER_PAGE);

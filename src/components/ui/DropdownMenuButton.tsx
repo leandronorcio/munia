@@ -6,17 +6,13 @@ import Button from './Button';
 import { Popover } from './Popover';
 import { DropdownMenu } from './DropdownMenu';
 
-interface MenuButtonProps<T extends object>
-  extends AriaMenuProps<T>,
-    MenuTriggerProps {
+interface MenuButtonProps<T extends object> extends AriaMenuProps<T>, MenuTriggerProps {
   onAction: (key: Key) => void;
   label: string;
   Icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
 }
 
-export function DropdownMenuButton<T extends object>(
-  props: MenuButtonProps<T>,
-) {
+export function DropdownMenuButton<T extends object>(props: MenuButtonProps<T>) {
   // Create state based on the incoming props
   const state = useMenuTriggerState(props);
 

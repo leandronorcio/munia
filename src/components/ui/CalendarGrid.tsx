@@ -18,10 +18,7 @@ export function CalendarGrid({ state, ...props }: CalendarGridProps) {
       <thead {...headerProps}>
         <tr>
           {weekDays.map((day) => (
-            <th
-              className="text-center text-sm font-semibold text-muted-foreground"
-              key={day}
-            >
+            <th className="text-center text-sm font-semibold text-muted-foreground" key={day}>
               {day}
             </th>
           ))}

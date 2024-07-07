@@ -19,14 +19,11 @@ export function VisualMediaModalNavigationButton({
 
   return (
     <motion.div
-      className={cn(
-        'custom-swiper-button-prev fixed top-[50%] z-20 translate-y-[-50%]',
-      )}
+      className={cn('custom-swiper-button-prev fixed top-[50%] z-20 translate-y-[-50%]')}
       initial={{ [type === 'prev' ? 'left' : 'right']: '-48px' }}
       animate={{ [type === 'prev' ? 'left' : 'right']: '16px' }}
       exit={{ [type === 'prev' ? 'left' : 'right']: '-48px' }}
-      whileHover={{ [type === 'prev' ? 'left' : 'right']: '12px' }}
-    >
+      whileHover={{ [type === 'prev' ? 'left' : 'right']: '12px' }}>
       <Button
         Icon={type === 'prev' ? ArrowChevronBack : ArrowChevronForward}
         onPress={() => {
@@ -38,9 +35,7 @@ export function VisualMediaModalNavigationButton({
             swiper.slideNext();
           }
         }}
-        isDisabled={
-          (type === 'prev' && isBeginning) || (type === 'next' && isEnd)
-        }
+        isDisabled={(type === 'prev' && isBeginning) || (type === 'next' && isEnd)}
       />
     </motion.div>
   );

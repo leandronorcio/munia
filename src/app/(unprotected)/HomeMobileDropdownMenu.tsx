@@ -12,8 +12,7 @@ export function HomeMobileDropdownMenu() {
       key="home-dropdown-menu"
       label="Home dropdown menu"
       onAction={(key) => router.push(key as string)}
-      Icon={HamburgerMenu}
-    >
+      Icon={HamburgerMenu}>
       <Section>
         <Item key="/terms">Terms</Item>
         <Item key="/privacy-policy">Privacy Policy</Item>

@@ -9,10 +9,7 @@ import { getServerUser } from '@/lib/getServerUser';
 import { includeToComment } from '@/lib/prisma/includeToComment';
 import { toGetComment } from '@/lib/prisma/toGetComment';
 
-export async function GET(
-  request: Request,
-  { params }: { params: { postId: string } },
-) {
+export async function GET(request: Request, { params }: { params: { postId: string } }) {
   /**
    * The `userId` will only be used to check whether the user
    * requesting the comments has liked them or not.

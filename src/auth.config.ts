@@ -13,8 +13,7 @@ export default {
     authorized({ auth, request: { nextUrl } }) {
       const { pathname, search } = nextUrl;
       const isLoggedIn = !!auth?.user;
-      const isOnAuthPage =
-        pathname.startsWith('/login') || pathname.startsWith('/register');
+      const isOnAuthPage = pathname.startsWith('/login') || pathname.startsWith('/register');
 
       const unProtectedPages = ['/terms', '/privacy-policy']; // Add more here if needed
       const isOnUnprotectedPage =

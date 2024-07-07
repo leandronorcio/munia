@@ -15,10 +15,7 @@ import { NextResponse } from 'next/server';
 import { GetComment } from '@/types/definitions';
 import { z } from 'zod';
 
-export async function POST(
-  request: Request,
-  { params }: { params: { commentId: string } },
-) {
+export async function POST(request: Request, { params }: { params: { commentId: string } }) {
   const [user] = await getServerUser();
   if (!user) return NextResponse.json({}, { status: 401 });
   const userId = user.id;
@@ -42,11 +39,7 @@ export async function POST(
       },
     });
 
-    if (!comment)
-      return NextResponse.json(
-        { error: 'The comment to reply to does not exist.' },
-        { status: 404 },
-      );
+    if (!comment) return NextResponse.json({ error: 'The comment to reply to does not exist.' }, { status: 404 });
 
     const res = await prisma.comment.create({
       data: {

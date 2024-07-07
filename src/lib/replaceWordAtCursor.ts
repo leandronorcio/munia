@@ -1,8 +1,4 @@
-export function replaceWordAtCursor(
-  inputString: string,
-  cursorPosition: number,
-  replacementWord: string,
-) {
+export function replaceWordAtCursor(inputString: string, cursorPosition: number, replacementWord: string) {
   const words = inputString.split(/\s/); // Split the input string into words
   let currentCursor = 0;
 

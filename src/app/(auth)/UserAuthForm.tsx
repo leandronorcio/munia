@@ -3,13 +3,7 @@
 import Button from '@/components/ui/Button';
 import { TextInput } from '@/components/ui/TextInput';
 import { useToast } from '@/hooks/useToast';
-import {
-  AtSign,
-  Facebook,
-  Github,
-  Google,
-  LogInSquare,
-} from '@/svg_components';
+import { AtSign, Facebook, Github, Google, LogInSquare } from '@/svg_components';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
@@ -26,8 +20,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
     google: false,
   });
   // Disable buttons when loading
-  const areButtonsDisabled =
-    loading.email || loading.github || loading.facebook || loading.google;
+  const areButtonsDisabled = loading.email || loading.github || loading.facebook || loading.google;
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('from') || '/feed';
   const { showToast } = useToast();
@@ -87,8 +80,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
           expand="full"
           Icon={LogInSquare}
           loading={loading.email}
-          isDisabled={areButtonsDisabled}
-        >
+          isDisabled={areButtonsDisabled}>
           {mode === 'login' ? 'Login' : 'Sign up'} with Email
         </Button>
       </div>
@@ -97,9 +89,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
           <span className="w-full border-t border-muted" />
         </div>
         <div className="relative flex justify-center">
-          <span className="bg-background px-3 text-muted-foreground">
-            OR CONTINUE WITH
-          </span>
+          <span className="bg-background px-3 text-muted-foreground">OR CONTINUE WITH</span>
         </div>
       </div>
       <div className="mb-4 flex flex-col gap-3">
@@ -118,8 +108,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
           mode="subtle"
           Icon={Github}
           loading={loading.github}
-          isDisabled={areButtonsDisabled}
-        >
+          isDisabled={areButtonsDisabled}>
           Github
         </Button>
         <div className="flex gap-2">
@@ -138,8 +127,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
             mode="subtle"
             Icon={Google}
             loading={loading.google}
-            isDisabled={areButtonsDisabled}
-          >
+            isDisabled={areButtonsDisabled}>
             Google
           </Button>
           <Button
@@ -157,8 +145,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
             mode="subtle"
             Icon={Facebook}
             loading={loading.facebook}
-            isDisabled={areButtonsDisabled}
-          >
+            isDisabled={areButtonsDisabled}>
             Facebook
           </Button>
         </div>

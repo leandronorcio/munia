@@ -64,12 +64,9 @@ export function usePostLikesMutations({ postId }: { postId: number }) {
   const unLikeMutation = useMutation({
     mutationFn: async () => {
       // Remove the post from the liked posts of the user doing the action
-      const res = await fetch(
-        `/api/users/${session?.user?.id}/liked-posts/${postId}`,
-        {
-          method: 'DELETE',
-        },
-      );
+      const res = await fetch(`/api/users/${session?.user?.id}/liked-posts/${postId}`, {
+        method: 'DELETE',
+      });
 
       if (!res.ok) {
         /**

@@ -4,11 +4,7 @@ import { TextInput } from '@/components/ui/TextInput';
 import SvgSearch from '@/svg_components/Search';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-export function DiscoverSearch({
-  label = 'Search People',
-}: {
-  label?: string;
-}) {
+export function DiscoverSearch({ label = 'Search People' }: { label?: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();

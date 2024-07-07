@@ -1,11 +1,7 @@
 import { SendEmailCommand } from '@aws-sdk/client-ses';
 
-export const createSendEmailCommand = (
-  toAddress: string,
-  fromAddress: string,
-  subject: string,
-  body: string,
-) => new SendEmailCommand({
+export const createSendEmailCommand = (toAddress: string, fromAddress: string, subject: string, body: string) =>
+  new SendEmailCommand({
     Destination: {
       /* required */
       CcAddresses: [

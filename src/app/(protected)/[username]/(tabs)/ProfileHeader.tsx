@@ -26,16 +26,9 @@ export function ProfileHeader({
     <>
       <div className="relative mb-[88px] md:pt-6">
         <div className="h-60 overflow-hidden bg-muted/30 drop-shadow-xl md:rounded-3xl">
-          <CoverPhoto
-            isOwnProfile={isOwnProfile}
-            photoUrl={profile.coverPhoto}
-          />
+          <CoverPhoto isOwnProfile={isOwnProfile} photoUrl={profile.coverPhoto} />
         </div>
-        <ProfilePhoto
-          isOwnProfile={isOwnProfile}
-          photoUrl={profile.profilePhoto}
-          name={initialProfileData.name!}
-        />
+        <ProfilePhoto isOwnProfile={isOwnProfile} photoUrl={profile.profilePhoto} name={initialProfileData.name!} />
         <div className="absolute -bottom-20 right-2 md:right-0">
           {isOwnProfile ? (
             <ButtonLink shape="pill" mode="subtle" href="/edit-profile">
@@ -55,8 +48,7 @@ export function ProfileHeader({
           <Link
             href={`/${profile.username}/followers`}
             className="link"
-            title={`${initialProfileData.name}&apos; followers`}
-          >
+            title={`${initialProfileData.name}&apos; followers`}>
             <span className="font-semibold">{profile.followerCount}</span>{' '}
             <span className="font-medium text-muted-foreground">Followers</span>
           </Link>
@@ -64,8 +56,7 @@ export function ProfileHeader({
           <Link
             href={`/${profile.username}/following`}
             className="link"
-            title={`${initialProfileData.name}&apos; followed users`}
-          >
+            title={`${initialProfileData.name}&apos; followed users`}>
             <span className="font-semibold">{profile.followingCount}</span>{' '}
             <span className="font-medium text-muted-foreground">Following</span>
           </Link>

@@ -1,23 +1,9 @@
 'use client';
 
-import {
-  Controller,
-  SubmitErrorHandler,
-  SubmitHandler,
-  useForm,
-} from 'react-hook-form';
+import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Item } from 'react-stately';
-import {
-  AtSign,
-  BuildingBusinessOffice,
-  Bullhorn,
-  Heart,
-  Other,
-  Phone,
-  Profile,
-  WorldNet,
-} from '@/svg_components';
+import { AtSign, BuildingBusinessOffice, Bullhorn, Heart, Other, Phone, Profile, WorldNet } from '@/svg_components';
 import { UserAboutSchema, userAboutSchema } from '@/lib/validations/userAbout';
 import { formatISO } from 'date-fns';
 import { parseDate } from '@internationalized/date';
@@ -51,11 +37,10 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
     [userData],
   );
 
-  const { control, handleSubmit, reset, setError, setFocus } =
-    useForm<UserAboutSchema>({
-      resolver: zodResolver(userAboutSchema),
-      defaultValues,
-    });
+  const { control, handleSubmit, reset, setError, setFocus } = useForm<UserAboutSchema>({
+    resolver: zodResolver(userAboutSchema),
+    defaultValues,
+  });
   const { updateSessionUserDataMutation } = useSessionUserDataMutation();
   const router = useRouter();
 
@@ -77,8 +62,7 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
       },
     );
   };
-  const onInvalid: SubmitErrorHandler<UserAboutSchema> = (errors) =>
-    console.log(errors);
+  const onInvalid: SubmitErrorHandler<UserAboutSchema> = (errors) => console.log(errors);
 
   useEffect(() => {
     reset(defaultValues);
@@ -87,17 +71,11 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
   if (!userData) return <GenericLoading>Loading form</GenericLoading>;
   return (
     <div>
-      <form
-        onSubmit={handleSubmit(onValid, onInvalid)}
-        className="flex flex-col gap-4"
-      >
+      <form onSubmit={handleSubmit(onValid, onInvalid)} className="flex flex-col gap-4">
         <Controller
           control={control}
           name="username"
-          render={({
-            field: { onChange, ref, name, value },
-            fieldState: { error },
-          }) => (
+          render={({ field: { onChange, ref, name, value }, fieldState: { error } }) => (
             <div>
               <TextInput
                 label="Username *"
@@ -134,10 +112,7 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
         <Controller
           control={control}
           name="name"
-          render={({
-            field: { onChange, ref, name, value },
-            fieldState: { error },
-          }) => (
+          render={({ field: { onChange, ref, name, value }, fieldState: { error } }) => (
             <div>
               <TextInput
                 label="Name *"
@@ -154,10 +129,7 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
         <Controller
           control={control}
           name="phoneNumber"
-          render={({
-            field: { onChange, ref, name, value },
-            fieldState: { error },
-          }) => (
+          render={({ field: { onChange, ref, name, value }, fieldState: { error } }) => (
             <div>
               <TextInput
                 label="Phone Number"
@@ -174,10 +146,7 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
         <Controller
           control={control}
           name="bio"
-          render={({
-            field: { onChange, ref, name, value },
-            fieldState: { error },
-          }) => (
+          render={({ field: { onChange, ref, name, value }, fieldState: { error } }) => (
             <div>
               <Textarea
                 label="Bio"
@@ -193,10 +162,7 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
         <Controller
           control={control}
           name="website"
-          render={({
-            field: { onChange, ref, name, value },
-            fieldState: { error },
-          }) => (
+          render={({ field: { onChange, ref, name, value }, fieldState: { error } }) => (
             <div>
               <TextInput
                 label="Website"
@@ -213,10 +179,7 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
         <Controller
           control={control}
           name="address"
-          render={({
-            field: { onChange, ref, name, value },
-            fieldState: { error },
-          }) => (
+          render={({ field: { onChange, ref, name, value }, fieldState: { error } }) => (
             <div>
               <TextInput
                 label="Address"
@@ -233,10 +196,7 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
         <Controller
           control={control}
           name="gender"
-          render={({
-            field: { onChange, ref, name, value },
-            fieldState: { error },
-          }) => (
+          render={({ field: { onChange, ref, name, value }, fieldState: { error } }) => (
             <div>
               <Select
                 label="Gender"
@@ -245,8 +205,7 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
                 onSelectionChange={(key) => onChange(key || null)}
                 errorMessage={error?.message}
                 ref={ref}
-                Icon={Other}
-              >
+                Icon={Other}>
                 <Item key="MALE">Male</Item>
                 <Item key="FEMALE">Female</Item>
                 <Item key="NONBINARY">Nonbinary</Item>
@@ -258,10 +217,7 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
         <Controller
           control={control}
           name="relationshipStatus"
-          render={({
-            field: { onChange, ref, name, value },
-            fieldState: { error },
-          }) => (
+          render={({ field: { onChange, ref, name, value }, fieldState: { error } }) => (
             <div>
               <Select
                 label="Relationship Status"
@@ -270,8 +226,7 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
                 onSelectionChange={(key) => onChange(key || null)}
                 errorMessage={error?.message}
                 Icon={Heart}
-                ref={ref}
-              >
+                ref={ref}>
                 <Item key="SINGLE">Single</Item>
                 <Item key="IN_A_RELATIONSHIP">In a relationship</Item>
                 <Item key="ENGAGED">Enganged</Item>
@@ -285,10 +240,7 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
         <Controller
           control={control}
           name="birthDate"
-          render={({
-            field: { onChange, ref, name, value },
-            fieldState: { error },
-          }) => (
+          render={({ field: { onChange, ref, name, value }, fieldState: { error } }) => (
             <div>
               <DatePicker
                 label="Birth Date"
@@ -316,14 +268,10 @@ export function EditProfileForm({ redirectTo }: { redirectTo?: string }) {
             mode="secondary"
             type="button"
             loading={updateSessionUserDataMutation.isPending === true}
-            onPress={() => reset(defaultValues)}
-          >
+            onPress={() => reset(defaultValues)}>
             Reset
           </Button>
-          <Button
-            type="submit"
-            loading={updateSessionUserDataMutation.isPending === true}
-          >
+          <Button type="submit" loading={updateSessionUserDataMutation.isPending === true}>
             Submit
           </Button>
         </div>

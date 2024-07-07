@@ -9,13 +9,7 @@ export function useCreateCommentMutations() {
   const { notifyError } = useErrorNotifier();
 
   const createCommentMutation = useMutation({
-    mutationFn: async ({
-      postId,
-      content,
-    }: {
-      postId: number;
-      content: string;
-    }) => {
+    mutationFn: async ({ postId, content }: { postId: number; content: string }) => {
       const res = await fetch(`/api/posts/${postId}/comments`, {
         method: 'POST',
         headers: {
@@ -30,13 +24,10 @@ export function useCreateCommentMutations() {
       return (await res.json()) as GetComment;
     },
     onSuccess: (createdComment) => {
-      qc.setQueryData<GetComment[]>(
-        ['posts', createdComment.postId, 'comments'],
-        (oldComments) => {
-          if (!oldComments) return;
-          return [...oldComments, createdComment];
-        },
-      );
+      qc.setQueryData<GetComment[]>(['posts', createdComment.postId, 'comments'], (oldComments) => {
+        if (!oldComments) return;
+        return [...oldComments, createdComment];
+      });
       showToast({
         title: 'Success',
         message: 'Your comment has been created.',
@@ -49,13 +40,7 @@ export function useCreateCommentMutations() {
   });
 
   const createReplyMutation = useMutation({
-    mutationFn: async ({
-      parentId,
-      content,
-    }: {
-      parentId: number;
-      content: string;
-    }) => {
+    mutationFn: async ({ parentId, content }: { parentId: number; content: string }) => {
       const res = await fetch(`/api/comments/${parentId}/replies`, {
         method: 'POST',
         headers: {
@@ -70,13 +55,10 @@ export function useCreateCommentMutations() {
       return (await res.json()) as GetComment;
     },
     onSuccess: (createdReply) => {
-      qc.setQueryData<GetComment[]>(
-        ['comments', createdReply.parentId, 'replies'],
-        (oldReplies) => {
-          if (!oldReplies) return;
-          return [...oldReplies, createdReply];
-        },
-      );
+      qc.setQueryData<GetComment[]>(['comments', createdReply.parentId, 'replies'], (oldReplies) => {
+        if (!oldReplies) return;
+        return [...oldReplies, createdReply];
+      });
       showToast({
         title: 'Success',
         message: 'Your reply has been created.',

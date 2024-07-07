@@ -46,22 +46,11 @@ export function useSessionUserDataMutation() {
   });
 
   const updateSessionUserPhotosMutation = useMutation({
-    mutationFn: async ({
-      toUpdate,
-      formData,
-    }: {
-      toUpdate: 'profile' | 'cover';
-      formData: FormData;
-    }) => {
-      const res = await fetch(
-        `/api/users/${userId}/${
-          toUpdate === 'profile' ? 'profile-photo' : 'cover-photo'
-        }`,
-        {
-          method: 'POST',
-          body: formData,
-        },
-      );
+    mutationFn: async ({ toUpdate, formData }: { toUpdate: 'profile' | 'cover'; formData: FormData }) => {
+      const res = await fetch(`/api/users/${userId}/${toUpdate === 'profile' ? 'profile-photo' : 'cover-photo'}`, {
+        method: 'POST',
+        body: formData,
+      });
 
       if (!res.ok) {
         throw new Error(`Error updating ${toUpdate} photo.`);
@@ -69,7 +58,7 @@ export function useSessionUserDataMutation() {
 
       const { uploadedTo } = (await res.json()) as { uploadedTo: string };
       return {
-        type: `${toUpdate  }Photo`,
+        type: `${toUpdate}Photo`,
         uploadedTo,
       };
     },

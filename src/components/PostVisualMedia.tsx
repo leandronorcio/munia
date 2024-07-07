@@ -32,17 +32,9 @@ export function PostVisualMedia({
       )}
       style={{
         height,
-      }}
-    >
+      }}>
       {type === 'PHOTO' ? (
-        <img
-          src={url}
-          alt="Post photo"
-          className={cn(
-            'h-full w-full object-cover ',
-            isPressed && 'brightness-75',
-          )}
-        />
+        <img src={url} alt="Post photo" className={cn('h-full w-full object-cover', isPressed && 'brightness-75')} />
       ) : (
         <>
           <Play

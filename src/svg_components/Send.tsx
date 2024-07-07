@@ -3,14 +3,7 @@ import { SVGProps } from 'react';
 
 function SvgSend(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="1em"
-      height="1em"
-      fill="none"
-      viewBox="0 0 25 25"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 25 25" {...props}>
       <path
         stroke={props.stroke}
         strokeWidth={2}

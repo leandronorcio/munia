@@ -15,10 +15,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, Icon, ...props }, forwardedRef) => {
     // Support forwarded refs: https://github.com/adobe/react-spectrum/pull/2293#discussion_r714337674
     const ref = useObjectRef(forwardedRef);
-    const { labelProps, inputProps, errorMessageProps } = useTextField(
-      { inputElementType: 'textarea', ...props },
-      ref,
-    );
+    const { labelProps, inputProps, errorMessageProps } = useTextField({ inputElementType: 'textarea', ...props }, ref);
     const { errorMessage, label } = props;
     const isError = errorMessage !== undefined;
 
@@ -40,11 +37,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           {Icon && (
             <div className="absolute left-5 top-[50%] translate-y-[-50%]">
               <Icon
-                className={cn(
-                  isError
-                    ? 'stroke-destructive-foreground'
-                    : 'stroke-muted-foreground',
-                )}
+                className={cn(isError ? 'stroke-destructive-foreground' : 'stroke-muted-foreground')}
                 width={24}
                 height={24}
               />
@@ -75,8 +68,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
               Icon ? 'left-16' : 'left-5',
               isError ? 'text-destructive-foreground' : 'text-muted-foreground',
             )}
-            {...labelProps}
-          >
+            {...labelProps}>
             {label}
           </label>
           <Button
@@ -90,10 +82,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           />
         </div>
         {isError && (
-          <p
-            className="mt-2 font-medium text-foreground"
-            {...errorMessageProps}
-          >
+          <p className="mt-2 font-medium text-foreground" {...errorMessageProps}>
             {errorMessage as string}
           </p>
         )}

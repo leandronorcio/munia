@@ -11,14 +11,12 @@ export const buttonVariants = cva(
         small: 'gap-3 rounded-lg px-4 py-[9px] text-[13px]',
       },
       mode: {
-        primary:
-          'bg-primary text-primary-foreground hover:bg-primary-accent active:ring-primary/30',
+        primary: 'bg-primary text-primary-foreground hover:bg-primary-accent active:ring-primary/30',
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary-accent active:ring-secondary-foreground/20',
         subtle:
           'border-2 border-primary-accent bg-transparent text-primary-accent hover:border-primary-accent/70 hover:text-primary-accent/90 active:ring-primary-accent/30',
-        ghost:
-          'font-semibold text-muted-foreground hover:bg-muted/30 active:ring-muted-foreground/20',
+        ghost: 'font-semibold text-muted-foreground hover:bg-muted/30 active:ring-muted-foreground/20',
       },
       expand: {
         full: 'w-full',

@@ -24,15 +24,12 @@ export const DiscoverProfile = memo(
         <div
           className={cn(
             'flex flex-col items-center gap-4 rounded-t-3xl bg-gradient-to-r py-8',
-            user.gender === 'MALE' &&
-              'from-blue-200/50 to-blue-300/50 dark:from-blue-600/50 dark:to-blue-800/50',
-            user.gender === 'FEMALE' &&
-              'from-pink-200/50 to-pink-300/50 dark:from-pink-600/50 dark:to-pink-800/50',
+            user.gender === 'MALE' && 'from-blue-200/50 to-blue-300/50 dark:from-blue-600/50 dark:to-blue-800/50',
+            user.gender === 'FEMALE' && 'from-pink-200/50 to-pink-300/50 dark:from-pink-600/50 dark:to-pink-800/50',
             user.gender === 'NONBINARY' &&
               'dark:from-yellow-699/50 from-yellow-200/50 via-purple-200/50 to-black dark:via-purple-800/50 dark:to-black',
             !user.gender && 'bg-muted/70',
-          )}
-        >
+          )}>
           <div className="h-24 w-24">
             <ProfilePhoto
               name={user.name}
@@ -42,9 +39,7 @@ export const DiscoverProfile = memo(
             />
           </div>
           {/* Only show the action buttons when the profile is not the user's. */}
-          {session?.user.id !== user.id && (
-            <ProfileActionButtons targetUserId={user.id} />
-          )}
+          {session?.user.id !== user.id && <ProfileActionButtons targetUserId={user.id} />}
         </div>
         <div className="flex flex-col items-center rounded-b-3xl bg-card py-8">
           <h2 className="mb-3 cursor-pointer px-2 text-center text-2xl font-semibold text-foreground">
@@ -52,17 +47,13 @@ export const DiscoverProfile = memo(
               {user.name}
             </Link>
           </h2>
-          <p className="mb-4 px-2 text-center text-muted-foreground">
-            {user.bio || 'No bio yet'}
-          </p>
+          <p className="mb-4 px-2 text-center text-muted-foreground">{user.bio || 'No bio yet'}</p>
           <div className="flex gap-6">
             <p className="flex justify-center gap-1 text-lg font-semibold">
-              <span>{user.followerCount}</span>{' '}
-              <span className="text-muted-foreground">Followers</span>
+              <span>{user.followerCount}</span> <span className="text-muted-foreground">Followers</span>
             </p>
             <p className="flex justify-center gap-1 text-lg font-semibold">
-              <span>{user.followingCount}</span>{' '}
-              <span className="text-muted-foreground">Following</span>
+              <span>{user.followingCount}</span> <span className="text-muted-foreground">Following</span>
             </p>
           </div>
         </div>

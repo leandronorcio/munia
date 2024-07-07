@@ -6,15 +6,8 @@ import { useVisualMediaModal } from '@/hooks/useVisualMediaModal';
 import SvgImage from '@/svg_components/Image';
 import { useCallback } from 'react';
 
-export default function CoverPhoto({
-  isOwnProfile,
-  photoUrl,
-}: {
-  isOwnProfile: boolean;
-  photoUrl: string | null;
-}) {
-  const { inputFileRef, openInput, handleChange, isPending } =
-    useUpdateProfileAndCoverPhotoClient('cover');
+export default function CoverPhoto({ isOwnProfile, photoUrl }: { isOwnProfile: boolean; photoUrl: string | null }) {
+  const { inputFileRef, openInput, handleChange, isPending } = useUpdateProfileAndCoverPhotoClient('cover');
   const { showVisualMediaModal } = useVisualMediaModal();
   const openCoverPhoto = useCallback(() => {
     if (photoUrl) {
@@ -32,13 +25,7 @@ export default function CoverPhoto({
 
   return (
     <div className="h-full w-full">
-      {photoUrl && (
-        <img
-          src={photoUrl}
-          alt=""
-          className="absolute h-full w-full object-cover"
-        />
-      )}
+      {photoUrl && <img src={photoUrl} alt="" className="absolute h-full w-full object-cover" />}
       <button
         type="button"
         aria-label="Open cover photo"

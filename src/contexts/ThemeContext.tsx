@@ -9,11 +9,7 @@ export const ThemeContext = createContext<{
 }>({ theme: 'system', handleThemeChange: () => {} });
 
 const LS_THEME_KEY = 'theme';
-export function ThemeContextProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function ThemeContextProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Themes>('system');
 
   const setToDarkTheme = () => {
@@ -28,8 +24,7 @@ export function ThemeContextProvider({
     if (theme === 'dark') setToDarkTheme();
     if (theme === 'light') setToLightTheme();
     if (theme === 'system') {
-      window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches
+      window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         ? setToDarkTheme()
         : setToLightTheme();
     }
@@ -37,14 +32,9 @@ export function ThemeContextProvider({
 
   useEffect(() => {
     // Defaults to 'system' if there's no saved theme
-    const savedTheme = (localStorage.getItem(LS_THEME_KEY) ||
-      'system') as Themes;
+    const savedTheme = (localStorage.getItem(LS_THEME_KEY) || 'system') as Themes;
     handleThemeChange(savedTheme);
   }, []);
 
-  return (
-    <ThemeContext.Provider value={{ theme, handleThemeChange }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={{ theme, handleThemeChange }}>{children}</ThemeContext.Provider>;
 }

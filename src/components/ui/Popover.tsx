@@ -26,11 +26,7 @@ export function Popover(props: PopoverProps) {
   return (
     <Overlay>
       {!isNonModal && <div {...underlayProps} className="fixed inset-0" />}
-      <div
-        {...popoverProps}
-        ref={popoverRef}
-        className={cn('z-10 mt-2', className)}
-      >
+      <div {...popoverProps} ref={popoverRef} className={cn('z-10 mt-2', className)}>
         {!isNonModal && <DismissButton onDismiss={state.close} />}
         {children}
         <DismissButton onDismiss={state.close} />

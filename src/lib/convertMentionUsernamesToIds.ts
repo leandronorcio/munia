@@ -25,9 +25,7 @@ export async function convertMentionUsernamesToIds({
   }[];
 }> {
   const pattern = /(^|\s)(@)(\w+|\w+)/g;
-  const matches = str
-    .match(pattern)
-    ?.map((match) => match.slice(match.charAt(1) === '@' ? 2 : 1));
+  const matches = str.match(pattern)?.map((match) => match.slice(match.charAt(1) === '@' ? 2 : 1));
 
   // If there are no `@` mentions return the original string
   if (!matches) return { str };
@@ -56,12 +54,8 @@ export async function convertMentionUsernamesToIds({
 
   // Replace the matches with the id/username of the users
   const res = str.replace(pattern, (match, space, char, word) => {
-    const user = usersMentioned.find(
-      (user) => (!reverse ? user.username : user.id) === word,
-    );
-    return `${space}${char}${
-      user ? (!reverse ? user.id : user.username) : word
-    }`;
+    const user = usersMentioned.find((user) => (!reverse ? user.username : user.id) === word);
+    return `${space}${char}${user ? (!reverse ? user.id : user.username) : word}`;
   });
 
   return {

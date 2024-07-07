@@ -11,11 +11,7 @@ export const ToastContext = createContext<{
   addToast: null,
 });
 
-export function ToastContextProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function ToastContextProvider({ children }: { children: React.ReactNode }) {
   const state = useToastState<ToastType>({
     maxVisibleToasts: 5,
   });

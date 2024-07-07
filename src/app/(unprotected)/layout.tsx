@@ -32,13 +32,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-function HomeNavLink({
-  children,
-  href,
-}: {
-  children: React.ReactNode;
-  href: string;
-}) {
+function HomeNavLink({ children, href }: { children: React.ReactNode; href: string }) {
   return (
     <h3 className="cursor-pointer px-4 py-3 text-lg font-semibold text-muted-foreground hover:text-primary">
       <Link href={href}>{children}</Link>

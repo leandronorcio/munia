@@ -8,8 +8,7 @@ export function usePostsSorter(url: string) {
   const { searchParams } = new URL(url);
   const limit = parseInt(searchParams.get('limit') || '5');
   const cursor = parseInt(searchParams.get('cursor') || '0');
-  const sortDirection =
-    (searchParams.get('sort-direction') as 'asc' | 'desc') || 'desc';
+  const sortDirection = (searchParams.get('sort-direction') as 'asc' | 'desc') || 'desc';
 
   /**
    * This is an alternative approach to Prisma's cursor-based pagination

@@ -1,14 +1,6 @@
 'use client';
 
-import {
-  Dispatch,
-  SetStateAction,
-  createContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { Dispatch, SetStateAction, createContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useOverlayTriggerState } from 'react-stately';
 import Button from '@/components/ui/Button';
 import { TextInput } from '@/components/ui/TextInput';
@@ -36,11 +28,7 @@ export const DialogsContext = createContext<{
   setDialog: () => {},
 });
 
-export function DialogsContextProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function DialogsContextProvider({ children }: { children: React.ReactNode }) {
   const state = useOverlayTriggerState({});
   const [dialog, setDialog] = useState<BasicDialogType>({
     type: 'alert',
@@ -128,9 +116,7 @@ export function DialogsContextProvider({
         {state.isOpen && (
           <Modal state={state}>
             <AlertDialog title={dialog.title} onClose={state.close}>
-              <p className="text-center text-lg text-muted-foreground">
-                {dialog.message}
-              </p>
+              <p className="text-center text-lg text-muted-foreground">{dialog.message}</p>
               <div className="w-full">
                 {dialog.type === 'prompt' && (
                   <>

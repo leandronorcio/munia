@@ -1,11 +1,4 @@
-import {
-  VisualMediaType,
-  User,
-  Follow,
-  ActivityType,
-  Gender,
-  VisualMedia,
-} from '@prisma/client';
+import { VisualMediaType, User, Follow, ActivityType, Gender, VisualMedia } from '@prisma/client';
 
 type UserSummary = Pick<User, 'id' | 'username' | 'name' | 'profilePhoto'>;
 /**

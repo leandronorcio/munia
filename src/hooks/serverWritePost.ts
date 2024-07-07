@@ -51,10 +51,7 @@ export async function serverWritePost({ formData, type, postId }: Props) {
     for (const file of filesArr) {
       if (typeof file === 'string') continue;
       if (!isValidFileType(file.type)) {
-        return NextResponse.json(
-          { error: 'Invalid file type.' },
-          { status: 415 },
-        );
+        return NextResponse.json({ error: 'Invalid file type.' }, { status: 415 });
       }
     }
     const savedFiles = await savePostFiles(filesArr);
@@ -172,9 +169,6 @@ export async function serverWritePost({ formData, type, postId }: Props) {
       });
     }
 
-    return NextResponse.json(
-      { error: 'Error creating post.' },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Error creating post.' }, { status: 500 });
   }
 }

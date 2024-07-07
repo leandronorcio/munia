@@ -11,11 +11,7 @@ export default function Page({ params }: { params: { postId: string } }) {
 
   return (
     <div className="m-4">
-      <Post
-        id={postId}
-        commentsShown={commentsShown}
-        toggleComments={toggleComments}
-      />
+      <Post id={postId} commentsShown={commentsShown} toggleComments={toggleComments} />
     </div>
   );
 }

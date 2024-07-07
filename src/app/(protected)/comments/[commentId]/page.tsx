@@ -5,11 +5,7 @@ import { redirect } from 'next/navigation';
  * Use this page to redirect the user to the respective /posts/:postId
  * route of the comment from the given `commentId`.
  */
-export default async function Page({
-  params,
-}: {
-  params: { commentId: string };
-}) {
+export default async function Page({ params }: { params: { commentId: string } }) {
   const comment = await prisma.comment.findUnique({
     where: {
       id: parseInt(params.commentId),

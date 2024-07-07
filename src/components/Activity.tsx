@@ -55,12 +55,8 @@ export function Activity({
         user={userToDisplay}
         date={new Date(createdAt)}
         isRead={isRead}
-        onClick={navigate(
-          `/${isActivity ? targetUser.username : sourceUser.username}`,
-        )}
-      >
-        <SemiBold>{sourceProperNoun}</SemiBold> started following{' '}
-        <SemiBold>{targetProperNoun}</SemiBold>!
+        onClick={navigate(`/${isActivity ? targetUser.username : sourceUser.username}`)}>
+        <SemiBold>{sourceProperNoun}</SemiBold> started following <SemiBold>{targetProperNoun}</SemiBold>!
       </ActivityCard>
     );
   }
@@ -72,10 +68,9 @@ export function Activity({
         user={userToDisplay}
         date={new Date(createdAt)}
         isRead={isRead}
-        onClick={navigate(`/posts/${targetId}`)}
-      >
-        <SemiBold>{sourceProperNoun}</SemiBold> liked{' '}
-        <SemiBold>{targetPossessiveNoun}</SemiBold> post: &quot;{content}&quot;
+        onClick={navigate(`/posts/${targetId}`)}>
+        <SemiBold>{sourceProperNoun}</SemiBold> liked <SemiBold>{targetPossessiveNoun}</SemiBold> post: &quot;{content}
+        &quot;
       </ActivityCard>
     );
   }
@@ -86,11 +81,9 @@ export function Activity({
         user={userToDisplay}
         date={new Date(createdAt)}
         isRead={isRead}
-        onClick={navigate(`/posts/${sourceId}`)}
-      >
-        <SemiBold>{sourceProperNoun}</SemiBold> mentioned{' '}
-        <SemiBold>{targetProperNoun}</SemiBold> in {sourcePossessiveNoun} post:
-        &quot;{content}&quot;
+        onClick={navigate(`/posts/${sourceId}`)}>
+        <SemiBold>{sourceProperNoun}</SemiBold> mentioned <SemiBold>{targetProperNoun}</SemiBold> in{' '}
+        {sourcePossessiveNoun} post: &quot;{content}&quot;
       </ActivityCard>
     );
   }
@@ -102,10 +95,9 @@ export function Activity({
         user={userToDisplay}
         date={new Date(createdAt)}
         isRead={isRead}
-        onClick={navigate(`/comments/${sourceId}`)}
-      >
-        <SemiBold>{sourceProperNoun}</SemiBold> commented on{' '}
-        <SemiBold>{targetPossessiveNoun}</SemiBold> post: &quot;{content}&quot;
+        onClick={navigate(`/comments/${sourceId}`)}>
+        <SemiBold>{sourceProperNoun}</SemiBold> commented on <SemiBold>{targetPossessiveNoun}</SemiBold> post: &quot;
+        {content}&quot;
       </ActivityCard>
     );
   }
@@ -116,10 +108,9 @@ export function Activity({
         user={userToDisplay}
         date={new Date(createdAt)}
         isRead={isRead}
-        onClick={navigate(`/comments/${targetId}`)}
-      >
-        <SemiBold>{sourceProperNoun}</SemiBold> liked{' '}
-        <SemiBold>{targetPossessiveNoun}</SemiBold> comment: &quot;{content}
+        onClick={navigate(`/comments/${targetId}`)}>
+        <SemiBold>{sourceProperNoun}</SemiBold> liked <SemiBold>{targetPossessiveNoun}</SemiBold> comment: &quot;
+        {content}
         &quot;
       </ActivityCard>
     );
@@ -131,11 +122,9 @@ export function Activity({
         user={userToDisplay}
         date={new Date(createdAt)}
         isRead={isRead}
-        onClick={navigate(`/comments/${sourceId}`)}
-      >
-        <SemiBold>{sourceProperNoun}</SemiBold> mentioned{' '}
-        <SemiBold>{targetProperNoun}</SemiBold> in {sourcePossessiveNoun}{' '}
-        comment: &quot;{content}&quot;
+        onClick={navigate(`/comments/${sourceId}`)}>
+        <SemiBold>{sourceProperNoun}</SemiBold> mentioned <SemiBold>{targetProperNoun}</SemiBold> in{' '}
+        {sourcePossessiveNoun} comment: &quot;{content}&quot;
       </ActivityCard>
     );
   }
@@ -147,10 +136,9 @@ export function Activity({
         user={userToDisplay}
         date={new Date(createdAt)}
         isRead={isRead}
-        onClick={navigate(`/comments/${sourceId}`)}
-      >
-        <SemiBold>{sourceProperNoun}</SemiBold> replied to{' '}
-        <SemiBold>{targetPossessiveNoun}</SemiBold> comment: &quot;{content}
+        onClick={navigate(`/comments/${sourceId}`)}>
+        <SemiBold>{sourceProperNoun}</SemiBold> replied to <SemiBold>{targetPossessiveNoun}</SemiBold> comment: &quot;
+        {content}
         &quot;
       </ActivityCard>
     );
@@ -162,10 +150,9 @@ export function Activity({
         user={userToDisplay}
         date={new Date(createdAt)}
         isRead={isRead}
-        onClick={navigate(`/comments/${targetId}`)}
-      >
-        <SemiBold>{sourceProperNoun}</SemiBold> liked{' '}
-        <SemiBold>{targetPossessiveNoun}</SemiBold> reply: &quot;{content}&quot;
+        onClick={navigate(`/comments/${targetId}`)}>
+        <SemiBold>{sourceProperNoun}</SemiBold> liked <SemiBold>{targetPossessiveNoun}</SemiBold> reply: &quot;{content}
+        &quot;
       </ActivityCard>
     );
   }
@@ -176,11 +163,9 @@ export function Activity({
         user={userToDisplay}
         date={new Date(createdAt)}
         isRead={isRead}
-        onClick={navigate(`/comments/${sourceId}`)}
-      >
-        <SemiBold>{sourceProperNoun}</SemiBold> mentioned{' '}
-        <SemiBold>{targetProperNoun}</SemiBold> in {sourcePossessiveNoun} reply:{' '}
-        &quot;{content}&quot;
+        onClick={navigate(`/comments/${sourceId}`)}>
+        <SemiBold>{sourceProperNoun}</SemiBold> mentioned <SemiBold>{targetProperNoun}</SemiBold> in{' '}
+        {sourcePossessiveNoun} reply: &quot;{content}&quot;
       </ActivityCard>
     );
   }

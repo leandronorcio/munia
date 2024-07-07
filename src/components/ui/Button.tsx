@@ -6,10 +6,7 @@ import { cn } from '@/lib/cn';
 import { VariantProps } from 'class-variance-authority';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import SvgLoading from '@/svg_components/Loading';
-import {
-  buttonIconVariants,
-  buttonVariants,
-} from '@/components/ui/variants/buttonVariants';
+import { buttonIconVariants, buttonVariants } from '@/components/ui/variants/buttonVariants';
 
 export type ButtonProps = VariantProps<typeof buttonVariants> &
   AriaButtonProps & {
@@ -21,21 +18,7 @@ export type ButtonProps = VariantProps<typeof buttonVariants> &
   };
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      children,
-      size,
-      mode,
-      shape,
-      expand,
-      Icon,
-      loading,
-      className,
-      iconClassName,
-      ...rest
-    },
-    forwardedRef,
-  ) => {
+  ({ children, size, mode, shape, expand, Icon, loading, className, iconClassName, ...rest }, forwardedRef) => {
     const iconOnly = children === undefined;
     // Support forwarded refs: https://github.com/adobe/react-spectrum/pull/2293#discussion_r714337674
     const ref = useObjectRef(forwardedRef);
@@ -53,18 +36,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           isFocusVisible && 'ring-2 ring-violet-500 ring-offset-2',
           className,
         )}
-        disabled={buttonProps.disabled || loading}
-      >
+        disabled={buttonProps.disabled || loading}>
         {!loading ? (
-          Icon && (
-            <Icon
-              className={cn(buttonIconVariants({ size, mode }), iconClassName)}
-            />
-          )
+          Icon && <Icon className={cn(buttonIconVariants({ size, mode }), iconClassName)} />
         ) : (
-          <SvgLoading
-            className={cn(['animate-spin'], buttonIconVariants({ size, mode }))}
-          />
+          <SvgLoading className={cn(['animate-spin'], buttonIconVariants({ size, mode }))} />
         )}
         {children}
       </button>

@@ -16,9 +16,7 @@ export function AboutItem({
         <p className="font-medium text-muted-foreground sm:text-lg">{field}</p>
       </div>
       <p className="flex flex-1 items-center self-stretch rounded-r-3xl border border-border pl-4">
-        <span className="font-semibold text-foreground sm:text-lg">
-          {value || 'Not set'}
-        </span>
+        <span className="font-semibold text-foreground sm:text-lg">{value || 'Not set'}</span>
       </p>
     </div>
   );

@@ -14,8 +14,7 @@ export function Calendar<T extends DateValue>(props: AriaCalendarProps<T>) {
     createCalendar,
   });
 
-  const { calendarProps, prevButtonProps, nextButtonProps, title } =
-    useCalendar(props, state);
+  const { calendarProps, prevButtonProps, nextButtonProps, title } = useCalendar(props, state);
 
   return (
     <div {...calendarProps} className="inline-block text-muted-foreground">
@@ -27,9 +26,7 @@ export function Calendar<T extends DateValue>(props: AriaCalendarProps<T>) {
           Icon={ArrowChevronBack}
           iconClassName="h-6 w-6 stroke-primary"
         />
-        <h2 className="ml-2 flex-1 text-center text-xl font-semibold">
-          {title}
-        </h2>
+        <h2 className="ml-2 flex-1 text-center text-xl font-semibold">{title}</h2>
         <Button
           {...nextButtonProps}
           mode="ghost"

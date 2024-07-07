@@ -13,11 +13,7 @@ export const ShouldAnimateContext = createContext<{
   setShouldAnimate: React.Dispatch<React.SetStateAction<boolean>>;
 }>({ shouldAnimate: true, setShouldAnimate: () => {} });
 
-export function ShouldAnimateContextProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function ShouldAnimateContextProvider({ children }: { children: React.ReactNode }) {
   const [shouldAnimate, setShouldAnimate] = useState(true);
 
   useEffect(() => {

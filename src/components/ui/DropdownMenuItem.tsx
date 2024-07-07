@@ -11,12 +11,7 @@ interface MenuItemProps<T> {
   onClose: () => void;
 }
 
-export function DropdownMenuItem<T>({
-  item,
-  state,
-  onAction,
-  onClose,
-}: MenuItemProps<T>) {
+export function DropdownMenuItem<T>({ item, state, onAction, onClose }: MenuItemProps<T>) {
   // Get props for the menu item element
   const ref = useRef(null);
   const { menuItemProps, isDisabled } = useMenuItem(
@@ -34,11 +29,7 @@ export function DropdownMenuItem<T>({
   const isFocused = state.selectionManager.focusedKey === item.key;
   const focusBg = item.key === 'delete' ? 'bg-destructive' : 'bg-accent';
   const focus = isFocused
-    ? `${focusBg} ${
-        item.key === 'delete'
-          ? 'text-destructive-foreground'
-          : 'text-accent-foreground'
-      }`
+    ? `${focusBg} ${item.key === 'delete' ? 'text-destructive-foreground' : 'text-accent-foreground'}`
     : 'text-popover-foreground';
 
   return (
@@ -49,8 +40,7 @@ export function DropdownMenuItem<T>({
         `relative cursor-default select-none px-6 py-2 focus:outline-none`,
         focus,
         isDisabled && 'opacity-50',
-      )}
-    >
+      )}>
       {item.rendered}
     </li>
   );

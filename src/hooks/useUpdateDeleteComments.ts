@@ -4,17 +4,10 @@ import { useUpdateDeleteCommentMutations } from './mutations/useUpdateDeleteComm
 
 // Use this hook for updating and deleting comments/replies.
 export function useUpdateDeleteComments({ queryKey }: { queryKey: QueryKey }) {
-  const { updateCommentMutation, deleteCommentMutation } =
-    useUpdateDeleteCommentMutations({ queryKey });
+  const { updateCommentMutation, deleteCommentMutation } = useUpdateDeleteCommentMutations({ queryKey });
   const { prompt, confirm } = useDialogs();
 
-  const handleEdit = ({
-    commentId,
-    content,
-  }: {
-    commentId: number;
-    content: string;
-  }) => {
+  const handleEdit = ({ commentId, content }: { commentId: number; content: string }) => {
     prompt({
       title: 'Edit Comment',
       initialPromptValue: content,

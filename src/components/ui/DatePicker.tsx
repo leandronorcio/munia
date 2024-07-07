@@ -23,15 +23,8 @@ interface DatePickerProps extends AriaDatePickerProps<DateValue> {
 export function DatePicker({ triggerRef, ...props }: DatePickerProps) {
   const state = useDatePickerState(props);
   const ref = useRef(null);
-  const {
-    groupProps,
-    labelProps,
-    fieldProps,
-    buttonProps,
-    dialogProps,
-    calendarProps,
-    errorMessageProps,
-  } = useDatePicker(props, state, ref);
+  const { groupProps, labelProps, fieldProps, buttonProps, dialogProps, calendarProps, errorMessageProps } =
+    useDatePicker(props, state, ref);
   const isError = props.errorMessage !== undefined;
 
   const clear = useCallback(() => {
@@ -50,25 +43,18 @@ export function DatePicker({ triggerRef, ...props }: DatePickerProps) {
       <div
         className={cn(
           'relative flex-col rounded-2xl bg-input pb-2 pr-5 pt-8 text-left outline-none ring-foreground focus-within:ring-2',
-          isError &&
-            'bg-destructive ring-destructive-foreground focus-within:ring-4',
-        )}
-      >
+          isError && 'bg-destructive ring-destructive-foreground focus-within:ring-4',
+        )}>
         <span
           {...labelProps}
           className={cn(
             'absolute left-16 top-[9px] text-sm',
             isError ? 'text-destructive-foreground' : 'text-muted-foreground',
-          )}
-        >
+          )}>
           {props.label}
         </span>
 
-        <ButtonNaked
-          {...buttonProps}
-          ref={assignRef}
-          className="absolute left-5 top-[50%] translate-y-[-50%]"
-        >
+        <ButtonNaked {...buttonProps} ref={assignRef} className="absolute left-5 top-[50%] translate-y-[-50%]">
           <SvgCalendar className="h-6 w-6 stroke-muted-foreground hover:stroke-foreground group-focus-within:stroke-black" />
         </ButtonNaked>
         <div {...groupProps} ref={ref} className="group ml-16 flex">
@@ -89,10 +75,7 @@ export function DatePicker({ triggerRef, ...props }: DatePickerProps) {
           mode="ghost"
           size="small"
           onPress={clear}
-          className={cn(
-            'absolute right-5 top-[50%] z-[1] hidden translate-y-[-50%]',
-            state.value !== null && 'block',
-          )}
+          className={cn('absolute right-5 top-[50%] z-[1] hidden translate-y-[-50%]', state.value !== null && 'block')}
           aria-label="Clear"
         />
       </div>

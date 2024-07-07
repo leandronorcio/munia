@@ -4,18 +4,12 @@ import { useVisualMediaModal } from '@/hooks/useVisualMediaModal';
 import { GetVisualMedia } from '@/types/definitions';
 import { PostVisualMedia } from './PostVisualMedia';
 
-export function PostVisualMediaContainer({
-  visualMedia,
-}: {
-  visualMedia: GetVisualMedia[];
-}) {
+export function PostVisualMediaContainer({ visualMedia }: { visualMedia: GetVisualMedia[] }) {
   const { showVisualMediaModal } = useVisualMediaModal();
   const len = visualMedia.length;
 
   return (
-    <div
-      className={cn('relative grid', len > 2 ? 'grid-cols-2' : 'grid-cols-1')}
-    >
+    <div className={cn('relative grid', len > 2 ? 'grid-cols-2' : 'grid-cols-1')}>
       {visualMedia.length > 0 &&
         visualMedia.map((item, i) => {
           // Only display four images.
@@ -28,9 +22,7 @@ export function PostVisualMediaContainer({
               height={len > 1 ? '300px' : '480px'}
               // If odd and len is < 4, the first image must take the full width.
               colSpan={isOdd(len) && len < 4 && i === 0 ? 2 : 1}
-              onClick={() =>
-                showVisualMediaModal({ visualMedia, initialSlide: i })
-              }
+              onClick={() => showVisualMediaModal({ visualMedia, initialSlide: i })}
             />
           );
         })}

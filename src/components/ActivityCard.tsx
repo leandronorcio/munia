@@ -15,14 +15,7 @@ interface ActivityCardProps extends ComponentProps<'div'> {
   isRead: boolean;
 }
 
-export function ActivityCard({
-  children,
-  user,
-  date,
-  type,
-  isRead,
-  ...rest
-}: ActivityCardProps) {
+export function ActivityCard({ children, user, date, type, isRead, ...rest }: ActivityCardProps) {
   const ref = useRef(null);
   const { linkProps } = useLink({ elementType: 'div' }, ref);
   const { isFocusVisible, focusProps } = useFocusRing();
@@ -36,22 +29,15 @@ export function ActivityCard({
         isFocusVisible && 'ring ring-violet-500 ring-offset-2',
       )}
       aria-label="Open link"
-      {...rest}
-    >
+      {...rest}>
       <div className="relative h-16 w-16 sm:h-20 sm:w-20">
-        <ProfilePhoto
-          name={user.name}
-          username={user.username}
-          photoUrl={user.profilePhoto}
-        />
+        <ProfilePhoto name={user.name} username={user.username} photoUrl={user.profilePhoto} />
         <ActivityIcon type={type} />
       </div>
 
       <div className="my-auto flex-1">
         <p>{children}</p>
-        <p className="text-sm text-muted-foreground">
-          {formatDistanceToNowStrict(date)} ago
-        </p>
+        <p className="text-sm text-muted-foreground">{formatDistanceToNowStrict(date)} ago</p>
       </div>
 
       {!isRead && (

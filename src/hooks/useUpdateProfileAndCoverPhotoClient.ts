@@ -6,9 +6,7 @@ import { useDialogs } from './useDialogs';
 import { useToast } from './useToast';
 import { useSessionUserDataMutation } from './mutations/useSessionUserDataMutation';
 
-export function useUpdateProfileAndCoverPhotoClient(
-  toUpdate: 'profile' | 'cover',
-) {
+export function useUpdateProfileAndCoverPhotoClient(toUpdate: 'profile' | 'cover') {
   const { data: session } = useSession();
   const userId = session?.user.id;
   const { updateSessionUserPhotosMutation } = useSessionUserDataMutation();

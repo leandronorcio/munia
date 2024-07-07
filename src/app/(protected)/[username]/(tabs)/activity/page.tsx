@@ -2,22 +2,14 @@ import { getServerUser } from '@/lib/getServerUser';
 import { getProfile } from '../../getProfile';
 import { Activities } from './Activities';
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { username: string };
-}) {
+export async function generateMetadata({ params }: { params: { username: string } }) {
   const profile = await getProfile(params.username);
   return {
     title: `Activity | ${profile?.name}` || 'Activity',
   };
 }
 
-export default async function Page({
-  params,
-}: {
-  params: { username: string };
-}) {
+export default async function Page({ params }: { params: { username: string } }) {
   const [user] = await getServerUser();
   if (!user) return <p>This is a protected page.</p>;
   const profile = await getProfile(params.username);

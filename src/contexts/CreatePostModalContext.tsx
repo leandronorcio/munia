@@ -1,13 +1,6 @@
 'use client';
 
-import React, {
-  Dispatch,
-  SetStateAction,
-  createContext,
-  useContext,
-  useMemo,
-  useState,
-} from 'react';
+import React, { Dispatch, SetStateAction, createContext, useContext, useMemo, useState } from 'react';
 import { useOverlayTriggerState } from 'react-stately';
 import { AnimatePresence } from 'framer-motion';
 import { Modal } from '@/components/Modal';
@@ -34,15 +27,10 @@ const CreatePostModalContextApi = createContext<{
   setShouldOpenFileInputOnMount: () => {},
 });
 
-export function CreatePostModalContextProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function CreatePostModalContextProvider({ children }: { children: React.ReactNode }) {
   const state = useOverlayTriggerState({});
   const [toEditValues, setToEditValues] = useState<ToEditValues | null>(null);
-  const [shouldOpenFileInputOnMount, setShouldOpenFileInputOnMount] =
-    useState(false);
+  const [shouldOpenFileInputOnMount, setShouldOpenFileInputOnMount] = useState(false);
 
   // Memoize to prevent re-rendering of consumers when the states change
   const dataValue = useMemo(
@@ -80,7 +68,5 @@ export function CreatePostModalContextProvider({
   );
 }
 
-export const useCreatePostModalContextData = () =>
-  useContext(CreatePostModalContextData);
-export const useCreatePostModalContextApi = () =>
-  useContext(CreatePostModalContextApi);
+export const useCreatePostModalContextData = () => useContext(CreatePostModalContextData);
+export const useCreatePostModalContextApi = () => useContext(CreatePostModalContextApi);

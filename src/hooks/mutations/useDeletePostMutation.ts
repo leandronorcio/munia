@@ -1,10 +1,6 @@
 'use client';
 
-import {
-  InfiniteData,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { InfiniteData, useMutation, useQueryClient } from '@tanstack/react-query';
 import { chunk } from 'lodash';
 import { POSTS_PER_PAGE } from '@/constants';
 import { useSession } from 'next-auth/react';

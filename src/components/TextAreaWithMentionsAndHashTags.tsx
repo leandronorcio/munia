@@ -12,12 +12,7 @@ import { resizeTextAreaHeight } from '@/lib/resizeTextAreaHeight';
 import { useQuery } from '@tanstack/react-query';
 import { replaceWordAtCursor } from '@/lib/replaceWordAtCursor';
 import { cn } from '@/lib/cn';
-import {
-  AriaTextFieldProps,
-  mergeProps,
-  useKeyboard,
-  useTextField,
-} from 'react-aria';
+import { AriaTextFieldProps, mergeProps, useKeyboard, useTextField } from 'react-aria';
 import { useOverlayTriggerState } from 'react-stately';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { getUsers } from '@/lib/client_data_fetching/getUsers';
@@ -100,9 +95,7 @@ export function TextAreaWithMentionsAndHashTags({
     closeMentions();
   };
 
-  const handleTextareaChange: ChangeEventHandler<HTMLTextAreaElement> = (
-    event,
-  ) => {
+  const handleTextareaChange: ChangeEventHandler<HTMLTextAreaElement> = (event) => {
     const { target } = event;
     setContent(target.value);
   };
@@ -138,9 +131,7 @@ export function TextAreaWithMentionsAndHashTags({
   // Since the `TextArea` is in `absolute` position, the container won't auto-resize
   // according to the height of the `TextArea`, we can set it manually instead
   useEffect(() => {
-    if (containerRef.current)
-      containerRef.current.style.height =
-        `${textareaRef.current?.scrollHeight  }px`;
+    if (containerRef.current) containerRef.current.style.height = `${textareaRef.current?.scrollHeight}px`;
   }, [content]);
 
   useEffect(() => {
@@ -159,28 +150,17 @@ export function TextAreaWithMentionsAndHashTags({
       if (!mentionsShown || !data) return e.continuePropagation();
 
       // Allow navigating thru the mentions using the keyboard's arrow keys etc.
-      const {length} = data;
+      const { length } = data;
       const firstIndex = 0;
       const focusedIndex = data.findIndex((user) => user.username === focused);
       const lastIndex = length - 1;
 
       // If the focused index is the first index, the `prevIndex` must be the `lastIndex`
-      const prevIndex =
-        focusedIndex === firstIndex ? lastIndex : focusedIndex - 1;
+      const prevIndex = focusedIndex === firstIndex ? lastIndex : focusedIndex - 1;
       // If the focused index is the last index, the `nextIndex` must be 0
       const nextIndex = focusedIndex === lastIndex ? 0 : focusedIndex + 1;
 
-      if (
-        [
-          'Escape',
-          'ArrowUp',
-          'ArrowDown',
-          'Home',
-          'End',
-          'Enter',
-          'Tab',
-        ].includes(e.key)
-      ) {
+      if (['Escape', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'Enter', 'Tab'].includes(e.key)) {
         e.preventDefault();
       }
       if (e.key === 'Escape') return closeMentions();
@@ -207,8 +187,7 @@ export function TextAreaWithMentionsAndHashTags({
           state={popoverState}
           isNonModal
           placement="top"
-          className="min-w-[200px]"
-        >
+          className="min-w-[200px]">
           <ul className="max-h-[242px] w-full overflow-auto border border-border bg-popover outline-none">
             {isPending ? (
               <li>Loading...</li>
@@ -248,8 +227,7 @@ export function TextAreaWithMentionsAndHashTags({
           })}
           className={cn(
             'absolute top-0 block w-full resize-none overflow-hidden break-words bg-transparent text-transparent caret-foreground outline-none',
-            rest.errorMessage &&
-              'rounded-sm ring-2 ring-red-900 ring-offset-4 placeholder:text-red-900',
+            rest.errorMessage && 'rounded-sm ring-2 ring-red-900 ring-offset-4 placeholder:text-red-900',
           )}
         />
         <p className="whitespace-pre-wrap break-words bg-transparent">

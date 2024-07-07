@@ -15,10 +15,7 @@ import { toGetComment } from '@/lib/prisma/toGetComment';
 import { convertMentionUsernamesToIds } from '@/lib/convertMentionUsernamesToIds';
 import { mentionsActivityLogger } from '@/lib/mentionsActivityLogger';
 
-export async function POST(
-  request: Request,
-  { params }: { params: { postId: string } },
-) {
+export async function POST(request: Request, { params }: { params: { postId: string } }) {
   const [user] = await getServerUser();
   if (!user) return NextResponse.json({}, { status: 401 });
   const userId = user.id;

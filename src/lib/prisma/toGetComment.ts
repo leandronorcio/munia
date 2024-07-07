@@ -2,9 +2,7 @@ import { FindCommentResult, GetComment } from '@/types/definitions';
 import { convertMentionUsernamesToIds } from '../convertMentionUsernamesToIds';
 import { fileNameToUrl } from '../s3/fileNameToUrl';
 
-export async function toGetComment(
-  findCommentResult: FindCommentResult,
-): Promise<GetComment> {
+export async function toGetComment(findCommentResult: FindCommentResult): Promise<GetComment> {
   const { commentLikes, content, ...rest } = findCommentResult;
   const isLiked = commentLikes.length > 0;
 

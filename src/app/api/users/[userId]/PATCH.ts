@@ -10,13 +10,9 @@ import { userAboutSchema } from '@/lib/validations/userAbout';
 import { toGetUser } from '@/lib/prisma/toGetUser';
 import { includeToUser } from '@/lib/prisma/includeToUser';
 
-export async function PATCH(
-  request: Request,
-  { params }: { params: { userId: string } },
-) {
+export async function PATCH(request: Request, { params }: { params: { userId: string } }) {
   const [user] = await getServerUser();
-  if (!user || user.id !== params.userId)
-    return NextResponse.json({}, { status: 401 });
+  if (!user || user.id !== params.userId) return NextResponse.json({}, { status: 401 });
 
   const userAbout = await request.json();
 
@@ -29,8 +25,7 @@ export async function PATCH(
         },
         data: {
           ...validate.data,
-          birthDate:
-            validate.data.birthDate && new Date(validate.data.birthDate),
+          birthDate: validate.data.birthDate && new Date(validate.data.birthDate),
         },
         include: includeToUser(user.id),
       });
@@ -48,16 +43,10 @@ export async function PATCH(
             return NextResponse.json(error, { status: 409 });
           }
         }
-        return NextResponse.json(
-          { errorMessage: 'Database (prisma) error.' },
-          { status: 502 },
-        );
+        return NextResponse.json({ errorMessage: 'Database (prisma) error.' }, { status: 502 });
       }
     }
   } else {
-    return NextResponse.json(
-      { errorMessage: validate.error.issues[0].message },
-      { status: 400 },
-    );
+    return NextResponse.json({ errorMessage: validate.error.issues[0].message }, { status: 400 });
   }
 }

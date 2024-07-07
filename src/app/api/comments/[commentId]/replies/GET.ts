@@ -8,15 +8,9 @@ import { includeToComment } from '@/lib/prisma/includeToComment';
 import prisma from '@/lib/prisma/prisma';
 import { toGetComment } from '@/lib/prisma/toGetComment';
 import { NextResponse } from 'next/server';
-import {
-  FindCommentResult,
-  GetComment,
-} from '../../../../../types/definitions';
+import { FindCommentResult, GetComment } from '../../../../../types/definitions';
 
-export async function GET(
-  request: Request,
-  { params }: { params: { commentId: string } },
-) {
+export async function GET(request: Request, { params }: { params: { commentId: string } }) {
   /**
    * The `userId` will only be used to check whether the user
    * requesting the comments has liked them or not.

@@ -15,10 +15,7 @@ import { mentionsActivityLogger } from '@/lib/mentionsActivityLogger';
 import { z } from 'zod';
 import { verifyAccessToComment } from './verifyAccessToComment';
 
-export async function PUT(
-  request: Request,
-  { params }: { params: { commentId: string } },
-) {
+export async function PUT(request: Request, { params }: { params: { commentId: string } }) {
   const [user] = await getServerUser();
   if (!user) return NextResponse.json({}, { status: 401 });
   const userId = user?.id;

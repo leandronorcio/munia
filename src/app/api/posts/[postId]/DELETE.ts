@@ -8,10 +8,7 @@ import prisma from '@/lib/prisma/prisma';
 import { deleteObject } from '@/lib/s3/deleteObject';
 import { verifyAccessToPost } from './verifyAccessToPost';
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: { postId: string } },
-) {
+export async function DELETE(request: Request, { params }: { params: { postId: string } }) {
   const postId = parseInt(params.postId);
   if (!verifyAccessToPost(postId)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });

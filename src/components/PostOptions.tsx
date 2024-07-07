@@ -51,11 +51,7 @@ export function PostOptions({
   );
 
   return (
-    <DropdownMenuButton
-      key={`posts-${postId}-options`}
-      label="Post options"
-      onAction={handleOptionClick}
-    >
+    <DropdownMenuButton key={`posts-${postId}-options`} label="Post options" onAction={handleOptionClick}>
       <Section>
         <Item key="edit">Edit Post</Item>
         <Item key="delete">Delete Post</Item>

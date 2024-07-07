@@ -26,9 +26,7 @@ export async function GET(request: Request) {
 
   const search = searchParams.get('search');
   const gender = toUpper(snakeCase(searchParams.get('gender') || undefined));
-  const relationshipStatus = toUpper(
-    snakeCase(searchParams.get('relationship-status') || undefined),
-  );
+  const relationshipStatus = toUpper(snakeCase(searchParams.get('relationship-status') || undefined));
   const followersOf = searchParams.get('followers-of');
   const followingOf = searchParams.get('following-of');
 

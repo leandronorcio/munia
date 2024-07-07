@@ -1,10 +1,7 @@
 import { z } from 'zod';
 import { sub } from 'date-fns';
 
-const nonEmptyString = z
-  .string()
-  .trim()
-  .min(3, { message: 'Value must be at least three characters' });
+const nonEmptyString = z.string().trim().min(3, { message: 'Value must be at least three characters' });
 
 export const userAboutSchema = z.object({
   username: nonEmptyString.regex(/^[a-zA-Z0-9_]+$/, {
@@ -13,31 +10,18 @@ export const userAboutSchema = z.object({
   // email: nonEmptyString.email(),
   name: nonEmptyString,
   phoneNumber: nonEmptyString
-    .regex(
-      new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/),
-      { message: 'Invalid phone number' },
-    )
+    .regex(new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/), { message: 'Invalid phone number' })
     .nullable(),
   bio: nonEmptyString.nullable(),
   website: nonEmptyString
-    .regex(
-      new RegExp(
-        /^(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(?:\/[^\s]*)?$/,
-      ),
-      { message: 'Invalid website' },
-    )
+    .regex(new RegExp(/^(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(?:\/[^\s]*)?$/), {
+      message: 'Invalid website',
+    })
     .nullable(),
   address: nonEmptyString.nullable(),
-  gender: z
-    .union([z.literal('FEMALE'), z.literal('MALE'), z.literal('NONBINARY')])
-    .nullable(),
+  gender: z.union([z.literal('FEMALE'), z.literal('MALE'), z.literal('NONBINARY')]).nullable(),
   relationshipStatus: z
-    .union([
-      z.literal('SINGLE'),
-      z.literal('IN_A_RELATIONSHIP'),
-      z.literal('ENGAGED'),
-      z.literal('MARRIED'),
-    ])
+    .union([z.literal('SINGLE'), z.literal('IN_A_RELATIONSHIP'), z.literal('ENGAGED'), z.literal('MARRIED')])
     .nullable(),
   birthDate: z.nullable(
     z.string().superRefine((value, ctx) => {

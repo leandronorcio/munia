@@ -37,9 +37,7 @@ export function Comments({ postId }: { postId: number }) {
         const newComments = [...oldComments];
 
         // Find the index of the comment to update
-        const index = newComments.findIndex(
-          (comment) => comment.id === commentId,
-        );
+        const index = newComments.findIndex((comment) => comment.id === commentId);
 
         const oldComment = newComments[index];
 
@@ -70,8 +68,7 @@ export function Comments({ postId }: { postId: number }) {
                   initial={shouldAnimate ? 'start' : false}
                   animate="animate"
                   exit="exit"
-                  key={`posts-${postId}-comments-${comment.id}`}
-                >
+                  key={`posts-${postId}-comments-${comment.id}`}>
                   <Comment
                     {...comment}
                     {...{
@@ -83,9 +80,7 @@ export function Comments({ postId }: { postId: number }) {
                 </motion.div>
               ))
             ) : (
-              <p className="py-2 text-muted-foreground">
-                Be the first to comment.
-              </p>
+              <p className="py-2 text-muted-foreground">Be the first to comment.</p>
             )}
           </AnimatePresence>
         )}

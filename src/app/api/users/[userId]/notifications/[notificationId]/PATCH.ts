@@ -7,13 +7,9 @@ import { getServerUser } from '@/lib/getServerUser';
 import prisma from '@/lib/prisma/prisma';
 import { NextResponse } from 'next/server';
 
-export async function PATCH(
-  request: Request,
-  { params }: { params: { userId: string; notificationId: string } },
-) {
+export async function PATCH(request: Request, { params }: { params: { userId: string; notificationId: string } }) {
   const notificationId = parseInt(params.notificationId);
-  if (!verifyAccessToNotification(notificationId))
-    return NextResponse.json({}, { status: 403 });
+  if (!verifyAccessToNotification(notificationId)) return NextResponse.json({}, { status: 403 });
 
   await prisma.activity.update({
     where: {

@@ -27,13 +27,9 @@ export default function ProfileBlock({
               {name}
             </Link>
           </h2>
-          {type === 'comment' && (
-            <h2 className="text-sm text-muted-foreground/90">{time} ago</h2>
-          )}
+          {type === 'comment' && <h2 className="text-sm text-muted-foreground/90">{time} ago</h2>}
         </div>
-        {type === 'post' && (
-          <h2 className="text-sm text-muted-foreground/90">{time} ago</h2>
-        )}
+        {type === 'post' && <h2 className="text-sm text-muted-foreground/90">{time} ago</h2>}
       </div>
     </div>
   );

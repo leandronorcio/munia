@@ -16,8 +16,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const limit = parseInt(searchParams.get('limit') || '5');
   const cursor = parseInt(searchParams.get('cursor') || '0');
-  const sortDirection =
-    (searchParams.get('sort-direction') as 'asc' | 'desc') || 'desc';
+  const sortDirection = (searchParams.get('sort-direction') as 'asc' | 'desc') || 'desc';
 
   const selectUser = {
     select: {

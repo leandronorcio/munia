@@ -10,10 +10,7 @@ interface ToastRegionProps<T> extends AriaToastRegionProps {
   state: ToastState<T>;
 }
 
-export function ToastRegion<T extends ToastType>({
-  state,
-  ...props
-}: ToastRegionProps<T>) {
+export function ToastRegion<T extends ToastType>({ state, ...props }: ToastRegionProps<T>) {
   const ref = useRef(null);
   const { regionProps } = useToastRegion(props, state, ref);
 
@@ -21,8 +18,7 @@ export function ToastRegion<T extends ToastType>({
     <div
       {...regionProps}
       ref={ref}
-      className="fixed bottom-16 right-3 z-40 flex max-w-[320px] flex-col gap-3 focus:outline-none md:bottom-6 md:right-6"
-    >
+      className="fixed bottom-16 right-3 z-40 flex max-w-[320px] flex-col gap-3 focus:outline-none md:bottom-6 md:right-6">
       <AnimatePresence>
         {state.visibleToasts.map((toast) => (
           <motion.div
@@ -30,8 +26,7 @@ export function ToastRegion<T extends ToastType>({
             variants={toastVariants}
             initial="initial"
             animate="animate"
-            exit="exit"
-          >
+            exit="exit">
             <Toast key={toast.key} toast={toast} state={state} />
           </motion.div>
         ))}

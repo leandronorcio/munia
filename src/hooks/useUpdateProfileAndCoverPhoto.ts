@@ -27,19 +27,13 @@ export async function useUpdateProfileAndCoverPhoto({
   const file = formData.get('file') as Blob | null;
 
   if (!file) {
-    return NextResponse.json(
-      { error: 'File blob is required.' },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: 'File blob is required.' }, { status: 400 });
   }
 
   try {
     const fileExtension = file.type.split('/')[1];
     if (!ALLOWED_FILE_TYPES.includes(file.type)) {
-      return NextResponse.json(
-        { error: 'Unsupported file type.' },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: 'Unsupported file type.' }, { status: 400 });
     }
 
     // Upload image to S3
@@ -59,8 +53,7 @@ export async function useUpdateProfileAndCoverPhoto({
     await prisma.post.create({
       data: {
         userId,
-        content:
-          toUpdate === 'profilePhoto' ? '#NewProfilePhoto' : '#NewCoverPhoto',
+        content: toUpdate === 'profilePhoto' ? '#NewProfilePhoto' : '#NewCoverPhoto',
         visualMedia: {
           create: [
             {

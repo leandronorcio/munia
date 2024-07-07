@@ -15,18 +15,13 @@ export default function ProfilePhoto({
   name: string;
   photoUrl: string | null;
 }) {
-  const { inputFileRef, openInput, handleChange, isPending } =
-    useUpdateProfileAndCoverPhotoClient('profile');
+  const { inputFileRef, openInput, handleChange, isPending } = useUpdateProfileAndCoverPhotoClient('profile');
   const { showVisualMediaModal } = useVisualMediaModal();
 
   return (
-    <div className="absolute bottom-[-88px] h-44 w-44  border-white bg-cover">
+    <div className="absolute bottom-[-88px] h-44 w-44 border-white bg-cover">
       {photoUrl && (
-        <img
-          src={photoUrl}
-          alt="Profile photo"
-          className="absolute h-full w-full rounded-full border-4 object-cover"
-        />
+        <img src={photoUrl} alt="Profile photo" className="absolute h-full w-full rounded-full border-4 object-cover" />
       )}
       {photoUrl ? (
         <button
@@ -43,7 +38,7 @@ export default function ProfilePhoto({
             })
           }
           className="absolute h-full w-full cursor-pointer rounded-full bg-black/30 opacity-0 active:opacity-100"
-         />
+        />
       ) : (
         <FallbackProfilePhoto name={name} className="text-6xl" />
       )}
@@ -58,12 +53,7 @@ export default function ProfilePhoto({
               className="hidden"
               accept="image/png, image/jpg, image/jpeg"
             />
-            <Button
-              Icon={Camera}
-              onPress={openInput}
-              size="small"
-              loading={isPending}
-            />
+            <Button Icon={Camera} onPress={openInput} size="small" loading={isPending} />
           </div>
         </label>
       )}

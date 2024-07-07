@@ -34,10 +34,7 @@ export const Comment = memo(
     queryKey,
   }: GetComment & {
     isOwnComment: boolean;
-    setRepliesVisibility: (params: {
-      commentId: number;
-      shown: boolean;
-    }) => void;
+    setRepliesVisibility: (params: { commentId: number; shown: boolean }) => void;
     queryKey: QueryKey;
   }) => {
     const numberOfLikes = _count.commentLikes;
@@ -49,8 +46,7 @@ export const Comment = memo(
 
     const searchParams = useSearchParams();
     // Highlight comment if the `commentId` is equal to the `comment-id` search param
-    const shouldHighlight =
-      searchParams.get('comment-id') === commentId.toString();
+    const shouldHighlight = searchParams.get('comment-id') === commentId.toString();
 
     const toggleReplies = useCallback(
       () => setRepliesVisibility({ commentId, shown: !repliesShown }),
@@ -73,17 +69,9 @@ export const Comment = memo(
           );
         },
       });
-    }, [
-      author.name,
-      commentId,
-      createReplyMutation,
-      prompt,
-      repliesShown,
-      toggleReplies,
-    ]);
+    }, [author.name, commentId, createReplyMutation, prompt, repliesShown, toggleReplies]);
     const handleLikeToggle = useCallback(
-      (isSelected: boolean) =>
-        isSelected ? likeComment({ commentId }) : unLikeComment({ commentId }),
+      (isSelected: boolean) => (isSelected ? likeComment({ commentId }) : unLikeComment({ commentId })),
       [commentId, likeComment, unLikeComment],
     );
     const onDropdownAction = useCallback(
@@ -100,10 +88,8 @@ export const Comment = memo(
     // Show the replies if the comment to be highlighted is a reply to this comment
     useEffect(() => {
       setTimeout(() => {
-        const shouldOpenRepliesOnMount =
-          searchParams.get('comment-parent-id') === commentId.toString();
-        if (shouldOpenRepliesOnMount)
-          setRepliesVisibility({ commentId, shown: true });
+        const shouldOpenRepliesOnMount = searchParams.get('comment-parent-id') === commentId.toString();
+        if (shouldOpenRepliesOnMount) setRepliesVisibility({ commentId, shown: true });
       }, 1000);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -111,11 +97,7 @@ export const Comment = memo(
     return (
       <div className="flex gap-4">
         <div className="h-10 w-10 flex-shrink-0">
-          <ProfilePhoto
-            name={author.name}
-            username={author.username}
-            photoUrl={author.profilePhoto}
-          />
+          <ProfilePhoto name={author.name} username={author.username} photoUrl={author.profilePhoto} />
         </div>
 
         <div>
@@ -128,12 +110,7 @@ export const Comment = memo(
           />
 
           <div className="flex gap-2">
-            <ToggleStepper
-              isSelected={isLiked}
-              onChange={handleLikeToggle}
-              Icon={SvgHeart}
-              quantity={numberOfLikes}
-            />
+            <ToggleStepper isSelected={isLiked} onChange={handleLikeToggle} Icon={SvgHeart} quantity={numberOfLikes} />
             <Button
               onPress={handleCreateReply}
               Icon={SvgArrowReply}
@@ -145,8 +122,7 @@ export const Comment = memo(
               <DropdownMenuButton
                 key={`comments-${commentId}-options`}
                 label="Comment options"
-                onAction={onDropdownAction}
-              >
+                onAction={onDropdownAction}>
                 <Section>
                   <Item key="edit">Edit comment</Item>
                   <Item key="delete">Delete comment</Item>
@@ -159,11 +135,8 @@ export const Comment = memo(
           {numberOfReplies !== 0 && (
             <ButtonNaked
               onPress={toggleReplies}
-              className="my-1 cursor-pointer text-sm font-semibold text-muted-foreground hover:text-muted-foreground/70"
-            >
-              {!repliesShown
-                ? `Show ${numberOfReplies} replies...`
-                : 'Hide replies'}
+              className="my-1 cursor-pointer text-sm font-semibold text-muted-foreground hover:text-muted-foreground/70">
+              {!repliesShown ? `Show ${numberOfReplies} replies...` : 'Hide replies'}
             </ButtonNaked>
           )}
         </div>

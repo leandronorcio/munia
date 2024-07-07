@@ -24,16 +24,8 @@ export function CommentReplies({ parentId }: { parentId: number }) {
   const { likeComment, unLikeComment } = useLikeUnlikeComments({ queryKey });
   const { shouldAnimate } = useShouldAnimate();
 
-  if (isPending)
-    return (
-      <p className="text-sm font-semibold text-gray-500">Loading replies...</p>
-    );
-  if (isError)
-    return (
-      <p className="text-sm font-semibold text-gray-500">
-        Error loading replies.
-      </p>
-    );
+  if (isPending) return <p className="text-sm font-semibold text-gray-500">Loading replies...</p>;
+  if (isError) return <p className="text-sm font-semibold text-gray-500">Error loading replies.</p>;
 
   return (
     <div>
@@ -44,8 +36,7 @@ export function CommentReplies({ parentId }: { parentId: number }) {
             initial={shouldAnimate ? 'start' : false}
             animate="animate"
             exit="exit"
-            key={`comments-${parentId}-replies-${reply.id}`}
-          >
+            key={`comments-${parentId}-replies-${reply.id}`}>
             <CommentReply
               {...reply}
               {...{ handleEdit, handleDelete, likeComment, unLikeComment }}

@@ -11,12 +11,7 @@ interface MenuSectionProps<T> extends AriaMenuSectionProps {
   onClose: () => void;
 }
 
-export function DropdownMenuSection<T>({
-  section,
-  state,
-  onAction,
-  onClose,
-}: MenuSectionProps<T>) {
+export function DropdownMenuSection<T>({ section, state, onAction, onClose }: MenuSectionProps<T>) {
   const { itemProps, groupProps } = useMenuSection({
     heading: section.rendered,
     'aria-label': section['aria-label'],
@@ -29,21 +24,12 @@ export function DropdownMenuSection<T>({
   return (
     <>
       {section.key !== state.collection.getFirstKey() && (
-        <li
-          {...separatorProps}
-          className="mx-2 mb-1 mt-1 border-t border-gray-300"
-        />
+        <li {...separatorProps} className="mx-2 mb-1 mt-1 border-t border-gray-300" />
       )}
       <li {...itemProps}>
         <ul {...groupProps}>
           {[...section.childNodes].map((node) => (
-            <DropdownMenuItem
-              key={node.key}
-              item={node}
-              state={state}
-              onAction={onAction}
-              onClose={onClose}
-            />
+            <DropdownMenuItem key={node.key} item={node} state={state} onAction={onAction} onClose={onClose} />
           ))}
         </ul>
       </li>

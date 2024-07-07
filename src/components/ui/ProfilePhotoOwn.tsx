@@ -9,11 +9,5 @@ export function ProfilePhotoOwn() {
   if (!user) {
     return null;
   }
-  return (
-    <ProfilePhoto
-      name={user.name}
-      username={user.username}
-      photoUrl={user?.profilePhoto}
-    />
-  );
+  return <ProfilePhoto name={user.name} username={user.username} photoUrl={user?.profilePhoto} />;
 }

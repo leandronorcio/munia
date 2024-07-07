@@ -10,8 +10,7 @@ function SvgImage(props: SVGProps<SVGSVGElement>) {
       viewBox="0 0 20 18"
       width="1em"
       height="1em"
-      {...props}
-    >
+      {...props}>
       <path
         fill="currentColor"
         d="M13 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM7.565 7.423 4.5 14h11.518l-2.516-3.71L11 13 7.565 7.423Z"

@@ -1,9 +1,5 @@
 import { ACTIVITIES_PER_PAGE } from '@/constants';
-import {
-  InfiniteData,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { InfiniteData, useMutation, useQueryClient } from '@tanstack/react-query';
 import { chunk } from 'lodash';
 import { useSession } from 'next-auth/react';
 import { GetActivity } from '@/types/definitions';
@@ -16,12 +12,9 @@ export function useNotificationsReadStatusMutations() {
 
   const markAsReadMutation = useMutation({
     mutationFn: async ({ notificationId }: { notificationId: number }) => {
-      const res = await fetch(
-        `/api/users/${session?.user.id}/notifications/${notificationId}`,
-        {
-          method: 'PATCH',
-        },
-      );
+      const res = await fetch(`/api/users/${session?.user.id}/notifications/${notificationId}`, {
+        method: 'PATCH',
+      });
 
       if (!res.ok) {
         throw new Error('Error marking the notification as read.');
@@ -42,9 +35,7 @@ export function useNotificationsReadStatusMutations() {
         const oldNotifications = oldData.pages.flat();
 
         // Find the index of the notification to update
-        const index = oldNotifications.findIndex(
-          (oldNotification) => oldNotification.id === notificationId,
-        );
+        const index = oldNotifications.findIndex((oldNotification) => oldNotification.id === notificationId);
 
         // Save the value of the old notification
         const oldNotification = oldNotifications[index];
@@ -91,12 +82,10 @@ export function useNotificationsReadStatusMutations() {
         if (!oldData) return;
 
         // Flatten the old pages, then set each notification's `isNotificationRead` property to `true`
-        const newNotifications = oldData.pages
-          .flat()
-          .map((oldNotification) => ({
-            ...oldNotification,
-            isNotificationRead: true,
-          }));
+        const newNotifications = oldData.pages.flat().map((oldNotification) => ({
+          ...oldNotification,
+          isNotificationRead: true,
+        }));
 
         return {
           pages: chunk(newNotifications, ACTIVITIES_PER_PAGE),

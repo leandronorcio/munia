@@ -5,10 +5,7 @@ interface VisualMediaDialogProps extends AriaDialogProps {
   children: React.ReactNode;
 }
 
-export function VisualMediaDialog({
-  children,
-  ...rest
-}: VisualMediaDialogProps) {
+export function VisualMediaDialog({ children, ...rest }: VisualMediaDialogProps) {
   const ref = useRef(null);
   const { dialogProps } = useDialog(rest, ref);
 
