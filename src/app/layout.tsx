@@ -8,6 +8,7 @@ import { Poppins } from 'next/font/google';
 import { cn } from '@/lib/cn';
 import { Providers } from '@/components/Providers';
 import { auth } from '@/auth';
+import React from 'react';
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],

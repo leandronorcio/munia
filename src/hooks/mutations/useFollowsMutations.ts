@@ -3,14 +3,46 @@ import { GetUser } from '@/types/definitions';
 import { useSession } from 'next-auth/react';
 import { useToast } from '../useToast';
 
+const follow = async ({ userId, targetUserId }: { userId: string; targetUserId: string }) => {
+  const res = await fetch(`/api/users/${userId}/following`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ userIdToFollow: targetUserId }),
+  });
+
+  if (!res.ok) {
+    if (res.status === 409) return;
+    throw new Error('Failed to follow user.');
+  }
+};
+
+const unFollow = async ({ userId, targetUserId }: { userId: string; targetUserId: string }) => {
+  const res = await fetch(`/api/users/${userId}/following/${targetUserId}`, {
+    method: 'DELETE',
+  });
+
+  if (!res.ok) {
+    if (res.status === 409) return;
+    throw new Error('Failed to unfollow user.');
+  }
+};
+
 export function useFollowsMutations({ targetUserId }: { targetUserId: string }) {
   const qc = useQueryClient();
   const { data: session } = useSession();
+  const currentUserId = session?.user.id;
   const queryKey = ['users', targetUserId];
   const { showToast } = useToast();
 
   const followMutation = useMutation({
-    mutationFn: () => follow({ userId: session?.user.id!, targetUserId }),
+    mutationFn: () => {
+      if (currentUserId) {
+        return follow({ userId: currentUserId, targetUserId });
+      }
+      return Promise.reject(new Error('User not authenticated.'));
+    },
     onMutate: async () => {
       // Cancel outgoing queries and snapshot the prev value
       await qc.cancelQueries({ queryKey });
@@ -18,7 +50,7 @@ export function useFollowsMutations({ targetUserId }: { targetUserId: string }) 
 
       // Optimistically update the UI
       qc.setQueryData<GetUser>(queryKey, (oldTargetUser) => {
-        if (!oldTargetUser) return;
+        if (!oldTargetUser) return oldTargetUser;
         return {
           ...oldTargetUser,
           isFollowing: true,
@@ -40,7 +72,12 @@ export function useFollowsMutations({ targetUserId }: { targetUserId: string }) 
   });
 
   const unFollowMutation = useMutation({
-    mutationFn: () => unFollow({ userId: session?.user.id!, targetUserId }),
+    mutationFn: () => {
+      if (currentUserId) {
+        return unFollow({ userId: currentUserId, targetUserId });
+      }
+      return Promise.reject(new Error('User not authenticated.'));
+    },
     onMutate: async () => {
       // Cancel outgoing queries and snapshot the prev value
       await qc.cancelQueries({ queryKey });
@@ -48,7 +85,7 @@ export function useFollowsMutations({ targetUserId }: { targetUserId: string }) 
 
       // Optimistically update the UI
       qc.setQueryData<GetUser>(queryKey, (oldTargetUser) => {
-        if (!oldTargetUser) return;
+        if (!oldTargetUser) return oldTargetUser;
         return {
           ...oldTargetUser,
           isFollowing: false,
@@ -71,33 +108,3 @@ export function useFollowsMutations({ targetUserId }: { targetUserId: string }) 
 
   return { followMutation, unFollowMutation };
 }
-
-const follow = async ({ userId, targetUserId }: { userId: string; targetUserId: string }) => {
-  const res = await fetch(`/api/users/${userId}/following`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ userIdToFollow: targetUserId }),
-  });
-
-  if (!res.ok) {
-    if (res.status === 409) return;
-    throw new Error('Failed to follow user.');
-  }
-
-  return true;
-};
-
-const unFollow = async ({ userId, targetUserId }: { userId: string; targetUserId: string }) => {
-  const res = await fetch(`/api/users/${userId}/following/${targetUserId}`, {
-    method: 'DELETE',
-  });
-
-  if (!res.ok) {
-    if (res.status === 409) return;
-    throw new Error('Failed to unfollow user.');
-  }
-
-  return true;
-};

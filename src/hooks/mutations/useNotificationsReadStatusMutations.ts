@@ -29,7 +29,7 @@ export function useNotificationsReadStatusMutations() {
 
       // Optimistcally update the read status of the notification
       qc.setQueryData<InfiniteData<GetActivity[]>>(queryKey, (oldData) => {
-        if (!oldData) return;
+        if (!oldData) return oldData;
 
         // Flatten the old pages first
         const oldNotifications = oldData.pages.flat();
@@ -79,7 +79,7 @@ export function useNotificationsReadStatusMutations() {
 
       // Optimistcally update the read status of the notification
       qc.setQueryData<InfiniteData<GetActivity[]>>(queryKey, (oldData) => {
-        if (!oldData) return;
+        if (!oldData) return oldData;
 
         // Flatten the old pages, then set each notification's `isNotificationRead` property to `true`
         const newNotifications = oldData.pages.flat().map((oldNotification) => ({

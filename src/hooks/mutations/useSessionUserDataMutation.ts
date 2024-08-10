@@ -31,7 +31,7 @@ export function useSessionUserDataMutation() {
     },
     onSuccess: (updatedField) => {
       qc.setQueryData<GetUser>(['users', userId], (oldUserData) => {
-        if (!oldUserData) return;
+        if (!oldUserData) return oldUserData;
         return {
           ...oldUserData,
           ...updatedField,
@@ -64,7 +64,7 @@ export function useSessionUserDataMutation() {
     },
     onSuccess: ({ type, uploadedTo }) => {
       qc.setQueryData<GetUser>(['users', userId], (oldUserData) => {
-        if (!oldUserData) return;
+        if (!oldUserData) return oldUserData;
         return {
           ...oldUserData,
           [type]: uploadedTo,

@@ -29,7 +29,7 @@ export function useUpdateDeleteCommentMutations({ queryKey }: { queryKey: QueryK
 
       // Optimistically update the comment
       qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
-        if (!oldComments) return;
+        if (!oldComments) return oldComments;
 
         // Make a shallow copy of the `oldComments`
         const newComments = [...oldComments];
@@ -73,7 +73,7 @@ export function useUpdateDeleteCommentMutations({ queryKey }: { queryKey: QueryK
 
       // Optimistically remove the comment
       qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
-        if (!oldComments) return;
+        if (!oldComments) return oldComments;
 
         // Remove the deleted comment and return the new comments
         return oldComments.filter((comment) => comment.id !== commentId);

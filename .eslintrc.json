@@ -12,13 +12,7 @@
     "prettier"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": [
-    "@typescript-eslint",
-    "react",
-    "react-hooks",
-    "react-perf",
-    "import"
-  ],
+  "plugins": ["@typescript-eslint", "react", "react-hooks", "react-perf", "import"],
   "root": true,
   "parserOptions": {
     "project": "./tsconfig.json"
@@ -43,7 +37,8 @@
           "some": ["nesting", "id"]
         }
       }
-    ]
+    ],
+    "no-underscore-dangle": "off"
   },
   "settings": {
     "import/parsers": {

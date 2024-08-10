@@ -25,7 +25,7 @@ export function useCreateCommentMutations() {
     },
     onSuccess: (createdComment) => {
       qc.setQueryData<GetComment[]>(['posts', createdComment.postId, 'comments'], (oldComments) => {
-        if (!oldComments) return;
+        if (!oldComments) return oldComments;
         return [...oldComments, createdComment];
       });
       showToast({
@@ -56,7 +56,7 @@ export function useCreateCommentMutations() {
     },
     onSuccess: (createdReply) => {
       qc.setQueryData<GetComment[]>(['comments', createdReply.parentId, 'replies'], (oldReplies) => {
-        if (!oldReplies) return;
+        if (!oldReplies) return oldReplies;
         return [...oldReplies, createdReply];
       });
       showToast({

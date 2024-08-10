@@ -1,6 +1,15 @@
 'use client';
 
-import { Dispatch, SetStateAction, createContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useOverlayTriggerState } from 'react-stately';
 import Button from '@/components/ui/Button';
 import { TextInput } from '@/components/ui/TextInput';
@@ -13,7 +22,7 @@ interface BasicDialogType {
   type: 'alert' | 'confirm' | 'prompt';
   title: string;
   message: string;
-  onConfirm?: Function;
+  onConfirm?: () => void;
   promptLabel?: string;
   initialPromptValue?: string;
   promptType?: 'input' | 'textarea';
@@ -58,7 +67,7 @@ export function DialogsContextProvider({ children }: { children: React.ReactNode
     }
   }, [state.isOpen, dialog.promptType]);
 
-  const hide = () => {
+  const hide = useCallback(() => {
     state.close();
     setDialog({
       type: 'alert',
@@ -70,15 +79,15 @@ export function DialogsContextProvider({ children }: { children: React.ReactNode
     });
     setPromptValue('');
     setInputError('');
-  };
+  }, [state, setDialog]);
 
-  const handleAffirmative = () => {
+  const handleAffirmative = useCallback(() => {
     if (dialog.type === 'alert') {
       hide();
       return;
     }
     if (dialog.type === 'confirm') {
-      dialog.onConfirm && dialog.onConfirm();
+      dialog?.onConfirm?.();
       hide();
       return;
     }
@@ -87,10 +96,10 @@ export function DialogsContextProvider({ children }: { children: React.ReactNode
         setInputError('This cannot be empty.');
         return;
       }
-      dialog.onSubmit && dialog.onSubmit(promptValue);
+      dialog?.onSubmit?.(promptValue);
       hide();
     }
-  };
+  }, [dialog, hide, promptValue]);
 
   const affirmativeTexts = {
     alert: 'Okay',
@@ -119,11 +128,11 @@ export function DialogsContextProvider({ children }: { children: React.ReactNode
               <p className="text-center text-lg text-muted-foreground">{dialog.message}</p>
               <div className="w-full">
                 {dialog.type === 'prompt' && (
-                  <>
+                  <div>
                     {dialog.promptType === 'input' ? (
                       <TextInput
                         value={promptValue}
-                        onChange={(text) => setPromptValue(text)}
+                        onChange={setPromptValue}
                         placeholder={dialog.promptLabel || 'Input here'}
                         ref={inputRef}
                         errorMessage={inputError || undefined}
@@ -136,7 +145,7 @@ export function DialogsContextProvider({ children }: { children: React.ReactNode
                         errorMessage={inputError || undefined}
                       />
                     )}
-                  </>
+                  </div>
                 )}
               </div>
               <Button onPress={handleAffirmative} shape="pill" expand="half">

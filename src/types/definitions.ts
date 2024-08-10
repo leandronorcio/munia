@@ -1,4 +1,4 @@
-import { VisualMediaType, User, Follow, ActivityType, Gender, VisualMedia } from '@prisma/client';
+import { VisualMediaType, User, Follow, ActivityType, Gender, VisualMedia, RelationshipStatus } from '@prisma/client';
 
 type UserSummary = Pick<User, 'id' | 'username' | 'name' | 'profilePhoto'>;
 /**
@@ -41,6 +41,11 @@ export interface GetUser extends UserAfterSetUp {
 export interface GetVisualMedia {
   type: VisualMediaType;
   url: string;
+}
+
+export interface VisualMediaModalType {
+  visualMedia: GetVisualMedia[];
+  initialSlide: number;
 }
 
 // Use this type when finding a Post in prisma.
@@ -142,9 +147,11 @@ export interface GetComment {
   repliesShown?: boolean;
 }
 
+export type DiscoverFilterKeys = 'gender' | 'relationship-status';
+
 export interface DiscoverFilters {
-  gender?: 'MALE' | 'FEMALE' | 'NONBINARY';
-  relationshipStatus?: 'SINGLE' | 'IN_A_RELATIONSHIP' | 'ENGAGED' | 'MARRIED';
+  gender?: Gender;
+  'relationship-status'?: RelationshipStatus;
 }
 
 interface FindActivityResult {

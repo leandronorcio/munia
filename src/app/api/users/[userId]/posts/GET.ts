@@ -19,7 +19,7 @@ export async function GET(request: Request, { params }: { params: { userId: stri
   const [user] = await getServerUser();
   const { filters, limitAndOrderBy } = usePostsSorter(request.url);
 
-  const res = await prisma.post.findMany({
+  const rawPosts = await prisma.post.findMany({
     where: {
       userId: params.userId,
       ...filters,
@@ -28,7 +28,6 @@ export async function GET(request: Request, { params }: { params: { userId: stri
     select: selectPost(user?.id),
   });
 
-  const posts: GetPost[] = [];
-  for (const post of res) posts.push(await toGetPost(post));
+  const posts: GetPost[] = await Promise.all(rawPosts.map((post) => toGetPost(post)));
   return NextResponse.json<GetPost[] | null>(posts);
 }

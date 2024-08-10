@@ -54,7 +54,7 @@ export async function convertMentionUsernamesToIds({
 
   // Replace the matches with the id/username of the users
   const res = str.replace(pattern, (match, space, char, word) => {
-    const user = usersMentioned.find((user) => (!reverse ? user.username : user.id) === word);
+    const user = usersMentioned.find((um) => (!reverse ? um.username : um.id) === word);
     return `${space}${char}${user ? (!reverse ? user.id : user.username) : word}`;
   });
 

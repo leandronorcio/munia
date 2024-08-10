@@ -9,7 +9,7 @@ export function useCommentLikesMutations({ queryKey }: { queryKey: QueryKey }) {
 
   const likeUnlikeOptimisticSetter = ({ commentId, isLiked }: { commentId: number; isLiked: boolean }) => {
     qc.setQueryData<GetComment[]>(queryKey, (oldComments) => {
-      if (!oldComments) return;
+      if (!oldComments) return oldComments;
 
       // Make a shallow copy of `oldComments`
       const newComments = [...oldComments];
@@ -67,7 +67,7 @@ export function useCommentLikesMutations({ queryKey }: { queryKey: QueryKey }) {
       // Return a context object with the snapshotted value
       return { previousComments };
     },
-    onError: (err, { commentId }, context) => {
+    onError: (err, _, context) => {
       qc.setQueryData(queryKey, context?.previousComments);
     },
   });
@@ -103,7 +103,7 @@ export function useCommentLikesMutations({ queryKey }: { queryKey: QueryKey }) {
       // Return a context object with the snapshotted value
       return { previousComments };
     },
-    onError: (err, { commentId }, context) => {
+    onError: (err, _, context) => {
       qc.setQueryData(queryKey, context?.previousComments);
     },
   });

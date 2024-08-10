@@ -41,7 +41,7 @@ export function usePostLikesMutations({ postId }: { postId: number }) {
 
       // Optimistically the post
       qc.setQueryData<GetPost>(queryKey, (oldPost) => {
-        if (!oldPost) return;
+        if (!oldPost) return oldPost;
 
         return {
           ...oldPost,
@@ -89,7 +89,7 @@ export function usePostLikesMutations({ postId }: { postId: number }) {
 
       // Optimistically the post
       qc.setQueryData<GetPost>(queryKey, (oldPost) => {
-        if (!oldPost) return;
+        if (!oldPost) return oldPost;
 
         return {
           ...oldPost,

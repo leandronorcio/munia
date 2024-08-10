@@ -10,6 +10,8 @@ export function useUserQuery(userId?: string) {
   return useQuery({
     queryKey: ['users', userId],
     queryFn: () => getUser(userId),
+    enabled: !!userId,
+    staleTime: 60000 * 10,
     // staleTime: PROFILE_QUERY_STALE_TIME,
   });
 }
