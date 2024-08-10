@@ -1,4 +1,5 @@
 import SvgLoading from '@/svg_components/Loading';
+import React from 'react';
 
 export function GenericLoading({ children }: { children?: React.ReactNode }) {
   return (

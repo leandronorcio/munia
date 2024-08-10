@@ -15,7 +15,7 @@ interface SelectProps<T> extends AriaSelectProps<T> {
 }
 
 export const Select = forwardRef(
-  ({ Icon, ...props }: SelectProps<T>, forwardedRef: ForwardedRef<HTMLButtonElement>) => {
+  ({ Icon, ...props }: SelectProps<object>, forwardedRef: ForwardedRef<HTMLButtonElement>) => {
     // Create state based on the incoming props
     const state = useSelectState(props);
 

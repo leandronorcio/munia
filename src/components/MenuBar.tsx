@@ -42,8 +42,8 @@ export function MenuBar() {
           Icon: LogOutCircle,
           route: '/api/auth/signout',
         },
-      ].map((item, i) => (
-        <MenuBarItem key={i} {...item}>
+      ].map((item) => (
+        <MenuBarItem key={item.title} {...item}>
           {item.title}
         </MenuBarItem>
       ))}

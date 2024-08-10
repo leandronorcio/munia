@@ -171,6 +171,7 @@ export function TextAreaWithMentionsAndHashTags({
       if (['Enter', 'Tab'].includes(e.key)) {
         handleSelectUserToMention(data[focusedIndex].username!);
       }
+      return null;
     },
     onKeyUp: (e) => {
       if (e.key === 'Escape') return;
@@ -236,7 +237,7 @@ export function TextAreaWithMentionsAndHashTags({
       </div>
       {errorMessage !== undefined && (
         <p {...errorMessageProps} className="mt-4 font-semibold text-red-800">
-          {errorMessage}
+          {errorMessage as string}
         </p>
       )}
     </>

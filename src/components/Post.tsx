@@ -1,6 +1,6 @@
 'use client';
 
-import { memo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/cn';
 import formatDistanceStrict from 'date-fns/formatDistanceStrict';
@@ -18,7 +18,6 @@ import ProfileBlock from './ProfileBlock';
 import { HighlightedMentionsAndHashTags } from './HighlightedMentionsAndHashTags';
 import { PostOptions } from './PostOptions';
 
-const varx = ' ghaha';
 export const Post = memo(
   ({
     id: postId,
@@ -43,21 +42,40 @@ export const Post = memo(
       // staleTime: 60000 * 10,
     });
 
-    const likePost = () => likeMutation.mutate();
-    const unLikePost = () => unLikeMutation.mutate();
-
-    const handleLikeToggle = (isSelected: boolean) => {
-      isSelected ? likePost() : unLikePost();
-    };
-
-    const handleCommentsToggle = () => {
+    const likePost = useCallback(() => likeMutation.mutate(), [likeMutation]);
+    const unLikePost = useCallback(() => unLikeMutation.mutate(), [unLikeMutation]);
+    const handleLikeToggle = useCallback(
+      (isSelected: boolean) => {
+        if (isSelected) {
+          likePost();
+        } else {
+          unLikePost();
+        }
+      },
+      [likePost, unLikePost],
+    );
+    const handleCommentsToggle = useCallback(() => {
       toggleComments(postId);
-    };
+    }, [postId, toggleComments]);
+    const variants = useMemo(
+      () => ({
+        animate: {
+          height: 'auto',
+          overflow: 'visible',
+        },
+        exit: {
+          height: 0,
+          overflow: 'hidden',
+        },
+      }),
+      [],
+    );
 
     if (isPending) return <p>Loading...</p>;
     if (isError) return <p>Error loading post.</p>;
     if (!data) return <p>This post no longer exists.</p>;
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const { content, createdAt, user: author, visualMedia, isLiked, _count } = data;
     const isOwnPost = userId === author.id;
     const numberOfLikes = _count.postLikes;
@@ -107,11 +125,7 @@ export const Post = memo(
 
         <AnimatePresence>
           {commentsShown && (
-            <motion.div
-              key={`${postId}-comments`}
-              initial={false}
-              animate={{ height: 'auto', overflow: 'visible' }}
-              exit={{ height: 0, overflow: 'hidden' }}>
+            <motion.div key={`${postId}-comments`} variants={variants} initial={false} animate="animate" exit="exit">
               <Comments postId={postId} />
             </motion.div>
           )}
@@ -121,3 +135,5 @@ export const Post = memo(
   },
   (oldProps, newProps) => isEqual(oldProps, newProps),
 );
+
+Post.displayName = 'Post';

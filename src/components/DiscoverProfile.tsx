@@ -17,7 +17,7 @@ export const DiscoverProfile = memo(
 
     if (isPending) return <div>Loading...</div>;
     if (isError) return <div>Error loading profile.</div>;
-    if (!user) return <></>;
+    if (!user) return null;
 
     return (
       <div className="gap-4 drop-shadow-sm">
@@ -62,3 +62,5 @@ export const DiscoverProfile = memo(
   },
   (prevProps, nextProps) => prevProps.userId === nextProps.userId,
 );
+
+DiscoverProfile.displayName = 'DiscoverProfile';

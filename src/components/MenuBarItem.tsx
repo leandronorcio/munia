@@ -1,9 +1,11 @@
+'use client';
+
 import { useActiveRouteChecker } from '@/hooks/useActiveRouteChecker';
 import { useDialogs } from '@/hooks/useDialogs';
 import { cn } from '@/lib/cn';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { SVGProps, useEffect } from 'react';
+import React, { SVGProps, useCallback, useEffect } from 'react';
 import { Badge } from './ui/Badge';
 import { ButtonNaked } from './ui/ButtonNaked';
 
@@ -14,7 +16,6 @@ export function MenuBarItem({
   badge,
 }: {
   children: React.ReactNode;
-  className?: string;
   Icon: (props: SVGProps<SVGSVGElement>) => JSX.Element;
   route: string;
   badge?: number;
@@ -23,27 +24,28 @@ export function MenuBarItem({
   const [isActive] = useActiveRouteChecker(route);
   const { confirm } = useDialogs();
 
+  const onItemClick = useCallback(() => {
+    if (route === '/api/auth/signout') {
+      confirm({
+        title: 'Confirm Logout',
+        message: 'Do you really wish to logout?',
+        onConfirm: () => signOut({ callbackUrl: '/' }),
+      });
+    } else {
+      router.push(route);
+    }
+  }, [route, router, confirm]);
+
   useEffect(() => {
     if (route === '/api/auth/signout') return;
-
     router.prefetch(route);
-  }, []);
+  }, [route, router]);
 
   return (
     <ButtonNaked
       aria-label={children as string}
       className="group relative flex h-14 flex-1 cursor-pointer flex-row items-center justify-center px-4 hover:bg-primary-accent/30 md:mt-2 md:flex-none md:rounded-lg md:last:mt-auto"
-      onPress={() => {
-        if (route === '/api/auth/signout') {
-          confirm({
-            title: 'Confirm Logout',
-            message: 'Do you really wish to logout?',
-            onConfirm: () => signOut({ callbackUrl: '/' }),
-          });
-        } else {
-          router.push(route);
-        }
-      }}>
+      onPress={onItemClick}>
       <div
         className={cn(
           'absolute left-0 hidden h-10 w-[4px] origin-bottom scale-y-0 rounded-r-lg bg-primary transition-transform group-hover:origin-top group-hover:scale-y-100 md:block',

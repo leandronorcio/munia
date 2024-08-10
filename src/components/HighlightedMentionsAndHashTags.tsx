@@ -34,6 +34,7 @@ export function HighlightedMentionsAndHashTags({ text, shouldAddLinks }: { text:
             {domToReact(domNode.children)}
           </Link>
         );
+      return domNode;
     },
   }) as JSX.Element;
 }

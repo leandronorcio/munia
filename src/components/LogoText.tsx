@@ -1,4 +1,5 @@
 import { cn } from '@/lib/cn';
+import React from 'react';
 
 interface LogoTextProps extends React.HTMLAttributes<HTMLHeadElement> {}
 export function LogoText({ ...rest }: LogoTextProps) {

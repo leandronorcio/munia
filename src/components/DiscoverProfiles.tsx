@@ -5,7 +5,7 @@ import { AllCaughtUp } from '@/components/AllCaughtUp';
 import useOnScreen from '@/hooks/useOnScreen';
 import { InfiniteData, QueryKey, keepPreviousData, useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { GetUser } from '@/types/definitions';
 import { AnimatePresence, motion } from 'framer-motion';
 import { SomethingWentWrong } from '@/components/SometingWentWrong';
@@ -13,6 +13,7 @@ import { useShouldAnimate } from '@/hooks/useShouldAnimate';
 import { GenericLoading } from '@/components/GenericLoading';
 import { getDiscoverProfiles } from '@/lib/client_data_fetching/getDiscoverProfiles';
 import { DISCOVER_PROFILES_PER_PAGE } from '@/constants';
+import { cn } from '@/lib/cn';
 
 export function DiscoverProfiles({ followersOf, followingOf }: { followersOf?: string; followingOf?: string }) {
   const searchParams = useSearchParams();
@@ -38,7 +39,6 @@ export function DiscoverProfiles({ followersOf, followingOf }: { followersOf?: s
         followingOf,
       },
     ],
-    defaultPageParam: 0,
     queryFn: async ({ pageParam: offset }) => {
       const users = await getDiscoverProfiles({
         offset,
@@ -63,10 +63,31 @@ export function DiscoverProfiles({ followersOf, followingOf }: { followersOf?: s
       // This will serve as the offset, passed as `pageParam` to `queryFn`
       return pages.flat().length;
     },
+    defaultPageParam: 0,
     staleTime: 60000 * 10,
+    refetchOnWindowFocus: false,
     // https://tanstack.com/query/v5/docs/react/guides/paginated-queries
     placeholderData: keepPreviousData,
   });
+
+  const variants = useMemo(
+    () => ({
+      initial: (animate: boolean) => ({
+        scale: animate ? 0.8 : 1,
+        opacity: animate ? 0.2 : 1,
+      }),
+      animate: {
+        scale: 1,
+        x: 0,
+        opacity: 1,
+      },
+      exit: {
+        scale: 0.8,
+        opacity: 0,
+      },
+    }),
+    [],
+  );
 
   useEffect(() => {
     if (isBottomOnScreen && hasNextPage) fetchNextPage();
@@ -83,21 +104,11 @@ export function DiscoverProfiles({ followersOf, followingOf }: { followersOf?: s
           <AnimatePresence>
             {data?.pages.flat().map((profile) => (
               <motion.div
-                initial={
-                  shouldAnimate && {
-                    scale: 0.8,
-                    opacity: 0.2,
-                  }
-                }
-                animate={{
-                  scale: 1,
-                  x: 0,
-                  opacity: 1,
-                }}
-                exit={{
-                  scale: 0.8,
-                  opacity: 0,
-                }}
+                variants={variants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                custom={shouldAnimate}
                 key={profile.id}>
                 <DiscoverProfile userId={profile.id} />
               </motion.div>
@@ -106,13 +117,12 @@ export function DiscoverProfiles({ followersOf, followingOf }: { followersOf?: s
         </div>
       )}
       <div
-        className="h-6"
         ref={bottomElRef}
         /**
          * The first page will be initially loaded by React Query
          * so the bottom loader has to be hidden first
          */
-        style={{ display: data ? 'block' : 'none' }}
+        className={cn('h-6', data ? 'block' : 'hidden')}
       />
       {!isError && !isFetching && !isFetchingNextPage && !hasNextPage && <AllCaughtUp />}
     </>

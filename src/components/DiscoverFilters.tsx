@@ -5,7 +5,8 @@ import { Gender, RelationshipStatus } from '@prisma/client';
 import { kebabCase, lowerCase, snakeCase, startCase, toUpper } from 'lodash';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import { Item } from 'react-stately';
-import { DiscoverFilters } from '@/types/definitions';
+import { DiscoverFilterKeys, DiscoverFilters as TDiscoverFilters } from '@/types/definitions';
+import { Key, useCallback } from 'react';
 
 export function DiscoverFilters() {
   const router = useRouter();
@@ -16,26 +17,42 @@ export function DiscoverFilters() {
     gender: searchParams.get('gender') || undefined,
     relationshipStatus: searchParams.get('relationship-status') || undefined,
   };
-  const genderFilters: DiscoverFilters['gender'][] = ['MALE', 'FEMALE', 'NONBINARY'];
-  const relationshipStatusFilters: DiscoverFilters['relationshipStatus'][] = [
-    'SINGLE',
-    'IN_A_RELATIONSHIP',
-    'ENGAGED',
-    'MARRIED',
-  ];
+  const genderFilters: Gender[] = ['MALE', 'FEMALE', 'NONBINARY'];
+  const relationshipStatusFilters: RelationshipStatus[] = ['SINGLE', 'IN_A_RELATIONSHIP', 'ENGAGED', 'MARRIED'];
 
-  const updateParams = ({ title, value }: { title: string; value: DiscoverFilters[keyof DiscoverFilters] }) => {
-    const newSearchParams = new URLSearchParams(searchParams);
+  const updateParams = useCallback(
+    <T extends DiscoverFilterKeys>({ key, value }: { key: T; value: TDiscoverFilters[T] }) => {
+      const newSearchParams = new URLSearchParams(searchParams);
 
-    if (value === undefined) {
-      newSearchParams.delete(title);
-    } else {
-      newSearchParams.set(title, kebabCase(value));
-    }
+      if (value === undefined) {
+        newSearchParams.delete(key);
+      } else {
+        newSearchParams.set(key, kebabCase(value));
+      }
 
-    const url = `${pathname}?${newSearchParams.toString()}`;
-    router.push(url, { scroll: false });
-  };
+      const url = `${pathname}?${newSearchParams.toString()}`;
+      router.push(url, { scroll: false });
+    },
+    [pathname, router, searchParams],
+  );
+  const onSelectGender = useCallback(
+    (value: Key) => {
+      updateParams({
+        key: 'gender',
+        value: value as TDiscoverFilters['gender'],
+      });
+    },
+    [updateParams],
+  );
+  const onSelectRelationshipStatus = useCallback(
+    (value: Key) => {
+      updateParams({
+        key: 'relationship-status',
+        value: value as TDiscoverFilters['relationship-status'],
+      });
+    },
+    [updateParams],
+  );
 
   return (
     <div className="mb-6 flex flex-col gap-4 sm:flex-row">
@@ -43,12 +60,7 @@ export function DiscoverFilters() {
         <Select
           label="Filter by Gender"
           selectedKey={toUpper(snakeCase(filters.gender)) || null}
-          onSelectionChange={(key) => {
-            updateParams({
-              title: 'gender',
-              value: (key as Gender) || undefined,
-            });
-          }}>
+          onSelectionChange={onSelectGender}>
           {genderFilters.map((gender) => (
             <Item key={gender}>{startCase(lowerCase(gender))}</Item>
           ))}
@@ -58,12 +70,7 @@ export function DiscoverFilters() {
         <Select
           label="Filter by Status"
           selectedKey={toUpper(snakeCase(filters.relationshipStatus)) || null}
-          onSelectionChange={(key) => {
-            updateParams({
-              title: 'relationship-status',
-              value: (key as RelationshipStatus) || undefined,
-            });
-          }}>
+          onSelectionChange={onSelectRelationshipStatus}>
           {relationshipStatusFilters.map((relationship) => (
             <Item key={relationship}>{startCase(lowerCase(relationship))}</Item>
           ))}

@@ -154,14 +154,14 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
     }
   }, [isTopOnScreen, numberOfNewPostsLoaded]);
 
-  const viewNewlyLoadedPosts = () => {
+  const viewNewlyLoadedPosts = useCallback(() => {
     topElRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  }, []);
 
   const toggleComments = useCallback(
     async (postId: number) => {
       qc.setQueryData<InfiniteData<{ id: number; commentsShown: boolean }[]>>(queryKey, (oldData) => {
-        if (!oldData) return;
+        if (!oldData) return oldData;
 
         // Flatten the old pages
         const newPosts = oldData?.pages.flat();
@@ -187,6 +187,21 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
     [qc, queryKey],
   );
 
+  const newPostsLoadedButtonVariants = useMemo(
+    () => ({
+      hidden: { height: 0 },
+      visible: { height: 'auto' },
+    }),
+    [],
+  );
+  const postTransition = useCallback(
+    (i: number) => ({
+      delay: deductLowerMultiple(i, POSTS_PER_PAGE) * 0.115,
+    }),
+    [],
+  );
+  const bottomLoaderStyle = useMemo(() => ({ display: data ? 'block' : 'none' }), [data]);
+
   return (
     <>
       <div ref={topElRef} />
@@ -194,9 +209,11 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
         <AnimatePresence>
           {numberOfNewPostsLoaded !== 0 && (
             <motion.div
-              initial={{ height: 0 }}
-              animate={{ height: 'auto' }}
-              exit={{ height: 0 }}
+              // eslint-disable-next-line @typescript-eslint/no-use-before-define
+              variants={newPostsLoadedButtonVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
               className="sticky top-5 z-10 mx-auto overflow-hidden">
               <ButtonNaked
                 onPress={viewNewlyLoadedPosts}
@@ -222,9 +239,7 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
                   initial={shouldAnimate ? 'start' : false}
                   animate="animate"
                   exit="exit"
-                  transition={{
-                    delay: deductLowerMultiple(i, POSTS_PER_PAGE) * 0.115,
-                  }}
+                  transition={postTransition(i)}
                   key={post.id}>
                   <Post id={post.id} commentsShown={post.commentsShown} toggleComments={toggleComments} />
                 </motion.div>
@@ -241,7 +256,7 @@ export function Posts({ type, hashtag, userId }: PostsProps) {
          * The first page will be initially loaded by React Query
          * so the bottom loader has to be hidden first
          */
-        style={{ display: data ? 'block' : 'none' }}>
+        style={bottomLoaderStyle}>
         {isFetchingNextPage && <GenericLoading>Loading more posts...</GenericLoading>}
       </div>
       {isError && error.message !== NO_PREV_DATA_LOADED && <SomethingWentWrong />}

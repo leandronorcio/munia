@@ -9,6 +9,7 @@ import { ToastContextProvider } from '@/contexts/ToastContext';
 import { VisualMediaModalContextProvider } from '@/contexts/VisualMediaModalContext';
 import { SessionProvider } from 'next-auth/react';
 import type { Session } from 'next-auth';
+import React from 'react';
 
 export function Providers({ children, session }: { children: React.ReactNode; session: Session | null }) {
   return (

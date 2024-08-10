@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { AriaDialogProps, useDialog } from 'react-aria';
 import SvgClose from '@/svg_components/Close';
 import { ResponsiveContainer } from './ui/ResponsiveContainer';

@@ -1,10 +1,9 @@
 import { UserSummaryAfterSetUp } from '@/types/definitions';
 import { cn } from '@/lib/cn';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { ProfilePhoto } from './ui/ProfilePhoto';
 
 export function TextAreaMentionItem({
-  id,
   username,
   name,
   profilePhoto,
@@ -15,6 +14,7 @@ export function TextAreaMentionItem({
   focused?: boolean;
 }) {
   const ref = useRef<HTMLLIElement>(null);
+  const onClick = useCallback(() => handleSelectUserToMention(username!), [handleSelectUserToMention, username]);
 
   useEffect(() => {
     if (!focused) return;
@@ -27,8 +27,11 @@ export function TextAreaMentionItem({
 
   return (
     <li
+      role="option"
+      aria-selected={focused}
       ref={ref}
-      onClick={() => handleSelectUserToMention(username!)}
+      onClick={onClick}
+      onKeyDown={onClick}
       className={cn('flex cursor-pointer items-center gap-3 px-4 py-2 hover:bg-accent', focused && 'bg-accent')}>
       <div className="h-8 w-8">
         <ProfilePhoto photoUrl={profilePhoto} username={username} name={name} />
