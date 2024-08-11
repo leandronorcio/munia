@@ -78,7 +78,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
         ...prev,
         [provider]: false,
       }));
-      if (!signInResult?.ok) {
+      if (signInResult?.error) {
         showToast({ type: 'error', title: 'Something went wrong' });
       }
     },
