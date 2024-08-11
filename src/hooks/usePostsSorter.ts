@@ -6,8 +6,8 @@ import 'server-only';
  */
 export function usePostsSorter(url: string) {
   const { searchParams } = new URL(url);
-  const limit = parseInt(searchParams.get('limit') || '5');
-  const cursor = parseInt(searchParams.get('cursor') || '0');
+  const limit = parseInt(searchParams.get('limit') || '5', 10);
+  const cursor = parseInt(searchParams.get('cursor') || '0', 10);
   const sortDirection = (searchParams.get('sort-direction') as 'asc' | 'desc') || 'desc';
 
   /**

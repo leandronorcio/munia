@@ -29,7 +29,8 @@ export async function GET(request: Request, { params }: { params: { hashtag: str
     select: selectPost(user?.id),
   });
 
-  const posts: GetPost[] = [];
-  for (const post of res) posts.push(await toGetPost(post));
+  const postsPromises = res.map(toGetPost);
+  const posts = await Promise.all(postsPromises);
+
   return NextResponse.json<GetPost[] | null>(posts);
 }

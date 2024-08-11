@@ -1,7 +1,16 @@
 import { Feather } from '@/svg_components';
 import { LogoText } from '@/components/LogoText';
 import Link from 'next/link';
+import React from 'react';
 import { HomeMobileDropdownMenu } from './HomeMobileDropdownMenu';
+
+function HomeNavLink({ children, href }: { children: React.ReactNode; href: string }) {
+  return (
+    <h3 className="cursor-pointer px-4 py-3 text-lg font-semibold text-muted-foreground hover:text-primary">
+      <Link href={href}>{children}</Link>
+    </h3>
+  );
+}
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -29,13 +38,5 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </div>
     </div>
-  );
-}
-
-function HomeNavLink({ children, href }: { children: React.ReactNode; href: string }) {
-  return (
-    <h3 className="cursor-pointer px-4 py-3 text-lg font-semibold text-muted-foreground hover:text-primary">
-      <Link href={href}>{children}</Link>
-    </h3>
   );
 }

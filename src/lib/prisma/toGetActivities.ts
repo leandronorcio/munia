@@ -41,9 +41,7 @@ async function getContentFromPostOrComment(
 }
 
 export async function toGetActivities(findActivityResults: FindActivityResults): Promise<GetActivities> {
-  const notifications: GetActivities = [];
-
-  for (const activity of findActivityResults) {
+  const notificationsPromises = findActivityResults.map(async (activity) => {
     const { type, sourceId, targetId, sourceUser, targetUser } = activity;
 
     // The `name` and `username` are guaranteed to be filled after the user's registration,
@@ -62,22 +60,21 @@ export async function toGetActivities(findActivityResults: FindActivityResults):
     };
 
     if (type === 'CREATE_FOLLOW') {
-      notifications.push({
+      return {
         ...activity,
         sourceUser: sourceUserWithPhotoUrl,
         targetUser: targetUserWithPhotoUrl,
-      });
-      continue;
+      };
     }
 
     const content = await getContentFromPostOrComment(type, sourceId, targetId);
-    notifications.push({
+    return {
       ...activity,
       content,
       sourceUser: sourceUserWithPhotoUrl,
       targetUser: targetUserWithPhotoUrl,
-    });
-  }
+    };
+  });
 
-  return notifications;
+  return Promise.all(notificationsPromises);
 }

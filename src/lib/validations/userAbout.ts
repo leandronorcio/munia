@@ -10,11 +10,11 @@ export const userAboutSchema = z.object({
   // email: nonEmptyString.email(),
   name: nonEmptyString,
   phoneNumber: nonEmptyString
-    .regex(new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/), { message: 'Invalid phone number' })
+    .regex(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/, { message: 'Invalid phone number' })
     .nullable(),
   bio: nonEmptyString.nullable(),
   website: nonEmptyString
-    .regex(new RegExp(/^(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(?:\/[^\s]*)?$/), {
+    .regex(/^(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+\.[a-zA-Z]{2,})(?:\/[^\s]*)?$/, {
       message: 'Invalid website',
     })
     .nullable(),

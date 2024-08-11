@@ -1,4 +1,5 @@
 import { getServerUser } from '@/lib/getServerUser';
+import React from 'react';
 import { ProfileHeader } from './ProfileHeader';
 import { getProfile } from '../getProfile';
 

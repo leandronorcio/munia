@@ -27,7 +27,7 @@ export async function GET(request: Request, { params }: { params: { userId: stri
       followingId: true,
     },
   });
-  const followingIds = following.map((user) => user.followingId);
+  const followingIds = following.map((u) => u.followingId);
 
   const res = await prisma.post.findMany({
     where: {
@@ -40,7 +40,8 @@ export async function GET(request: Request, { params }: { params: { userId: stri
     select: selectPost(user.id),
   });
 
-  const posts: GetPost[] = [];
-  for (const post of res) posts.push(await toGetPost(post));
+  const postsPromises = res.map(toGetPost);
+  const posts = await Promise.all(postsPromises);
+
   return NextResponse.json<GetPost[]>(posts);
 }

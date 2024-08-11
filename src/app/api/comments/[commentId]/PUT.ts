@@ -19,7 +19,7 @@ export async function PUT(request: Request, { params }: { params: { commentId: s
   const [user] = await getServerUser();
   if (!user) return NextResponse.json({}, { status: 401 });
   const userId = user?.id;
-  const commentId = parseInt(params.commentId);
+  const commentId = parseInt(params.commentId, 10);
 
   if (!verifyAccessToComment(commentId)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });

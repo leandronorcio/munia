@@ -10,7 +10,7 @@ import { verifyAccessToComment } from './verifyAccessToComment';
 
 export async function DELETE(request: Request, { params }: { params: { commentId: string } }) {
   const [user] = await getServerUser();
-  const commentId = parseInt(params.commentId);
+  const commentId = parseInt(params.commentId, 10);
   if (!verifyAccessToComment(commentId)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
   }

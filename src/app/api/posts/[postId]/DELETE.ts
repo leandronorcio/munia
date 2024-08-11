@@ -9,7 +9,7 @@ import { deleteObject } from '@/lib/s3/deleteObject';
 import { verifyAccessToPost } from './verifyAccessToPost';
 
 export async function DELETE(request: Request, { params }: { params: { postId: string } }) {
-  const postId = parseInt(params.postId);
+  const postId = parseInt(params.postId, 10);
   if (!verifyAccessToPost(postId)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
   }
@@ -26,9 +26,8 @@ export async function DELETE(request: Request, { params }: { params: { postId: s
   });
 
   // Delete the associated `visualMedia` files from the S3 bucket
-  for (const { fileName } of res.visualMedia) {
-    await deleteObject(fileName);
-  }
+  const filenames = res.visualMedia.map((m) => m.fileName);
+  await Promise.all(filenames.map(deleteObject));
 
   return NextResponse.json({ id: res.id });
 }

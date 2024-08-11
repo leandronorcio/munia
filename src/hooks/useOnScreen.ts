@@ -14,7 +14,7 @@ const useOnScreen = (ref: RefObject<HTMLDivElement>, rootMargin = '0px') => {
     );
 
     const currentElement = ref?.current;
-    if (currentElement == null) return;
+    if (currentElement == null) return undefined;
 
     observer.observe(currentElement);
 

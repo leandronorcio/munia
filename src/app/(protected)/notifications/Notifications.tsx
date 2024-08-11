@@ -2,7 +2,7 @@
 
 import useOnScreen from '@/hooks/useOnScreen';
 import { InfiniteData, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
-import { useEffect, useRef } from 'react';
+import { Key, useCallback, useEffect, useMemo, useRef } from 'react';
 import { GetActivity } from '@/types/definitions';
 import { Activity } from '@/components/Activity';
 import { AllCaughtUp } from '@/components/AllCaughtUp';
@@ -72,7 +72,22 @@ export function Notifications({ userId }: { userId: string }) {
     return () => clearInterval(interval);
   }, [fetchPreviousPage]);
 
-  const markAllAsRead = () => markAllAsReadMutation.mutate();
+  const markAllAsRead = useCallback(
+    (key: Key) => {
+      if (key === 'mark-all') {
+        markAllAsReadMutation.mutate();
+      }
+    },
+    [markAllAsReadMutation],
+  );
+
+  const disabledKeys = useMemo(() => {
+    if (notificationCount === undefined || notificationCount === 0) {
+      return ['mark-all'];
+    }
+    return [];
+  }, [notificationCount]);
+  const bottomLoaderStyle = useMemo(() => ({ display: data ? 'block' : 'none' }), [data]);
 
   return (
     <div>
@@ -83,8 +98,8 @@ export function Notifications({ userId }: { userId: string }) {
         <DropdownMenuButton
           key="notifications-option"
           label="Notifications option"
-          onAction={(key) => key === 'mark-all' && markAllAsRead()}
-          disabledKeys={[...(notificationCount === undefined || notificationCount === 0 ? ['mark-all'] : [])]}>
+          onAction={markAllAsRead}
+          disabledKeys={disabledKeys}>
           <Section>
             <Item key="mark-all">Mark all as read</Item>
           </Section>
@@ -105,7 +120,7 @@ export function Notifications({ userId }: { userId: string }) {
          * The first page will be initially loaded by React Query
          * so the bottom loader has to be hidden first
          */
-        style={{ display: data ? 'block' : 'none' }}>
+        style={bottomLoaderStyle}>
         {isFetchingNextPage && <GenericLoading>Loading more notifications</GenericLoading>}
       </div>
       {isError && error.message !== NO_PREV_DATA_LOADED && <SomethingWentWrong />}

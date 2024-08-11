@@ -15,7 +15,7 @@ export default function Tabs({ isOwnProfile }: { isOwnProfile: boolean }) {
         { title: 'About', segment: `${parentLayoutSegment}/about` },
         ...[isOwnProfile ? { title: 'Activity', segment: `${parentLayoutSegment}/activity` } : undefined],
       ].map((item) => {
-        if (!item) return;
+        if (!item) return null;
         const { title, segment } = item;
         const isActive =
           (selectedSegment === null ? parentLayoutSegment : `${parentLayoutSegment}/${selectedSegment}`) === segment;

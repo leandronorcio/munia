@@ -6,7 +6,7 @@ import { useToast } from '@/hooks/useToast';
 import { AtSign, Facebook, Github, Google, LogInSquare } from '@/svg_components';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { z } from 'zod';
 
 const emailSchema = z.string().trim().email();
@@ -25,14 +25,18 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
   const callbackUrl = searchParams.get('from') || '/feed';
   const { showToast } = useToast();
 
-  const submitEmail = async () => {
+  const onEmailChange = useCallback((text: string) => {
+    setEmail(text);
+  }, []);
+
+  const submitEmail = useCallback(async () => {
     setLoading((prev) => ({
       ...prev,
       email: true,
     }));
 
-    const validate = emailSchema.safeParse(email);
-    if (validate.success) {
+    const validateEmail = emailSchema.safeParse(email);
+    if (validateEmail.success) {
       const signInResult = await signIn('email', {
         email: email.toLowerCase(),
         redirect: false,
@@ -44,7 +48,8 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
         email: false,
       }));
       if (!signInResult?.ok) {
-        return showToast({ type: 'error', title: 'Something went wrong' });
+        showToast({ type: 'error', title: 'Something went wrong' });
+        return;
       }
       showToast({
         type: 'success',
@@ -52,22 +57,40 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
         message: 'Please check your email to sign in.',
       });
     } else {
-      setInputError(validate.error.issues[0].message);
+      setInputError(validateEmail.error.issues[0].message);
       setLoading((prev) => ({
         ...prev,
         email: false,
       }));
     }
-  };
+  }, [email, callbackUrl, showToast]);
+
+  const signInWithProvider = useCallback(
+    (provider: 'github' | 'google' | 'facebook') => async () => {
+      setLoading((prev) => ({
+        ...prev,
+        [provider]: true,
+      }));
+      const signInResult = await signIn(provider, {
+        callbackUrl,
+      });
+      setLoading((prev) => ({
+        ...prev,
+        [provider]: false,
+      }));
+      if (!signInResult?.ok) {
+        showToast({ type: 'error', title: 'Something went wrong' });
+      }
+    },
+    [callbackUrl, showToast],
+  );
 
   return (
     <>
       <div className="mb-4">
         <TextInput
           value={email}
-          onChange={(text) => {
-            setEmail(text);
-          }}
+          onChange={onEmailChange}
           label="Email"
           errorMessage={inputError || undefined}
           Icon={AtSign}
@@ -94,15 +117,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
       </div>
       <div className="mb-4 flex flex-col gap-3">
         <Button
-          onPress={() => {
-            setLoading((prev) => ({
-              ...prev,
-              github: true,
-            }));
-            signIn('github', {
-              callbackUrl,
-            });
-          }}
+          onPress={signInWithProvider('github')}
           shape="pill"
           expand="full"
           mode="subtle"
@@ -113,15 +128,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
         </Button>
         <div className="flex gap-2">
           <Button
-            onPress={() => {
-              setLoading((prev) => ({
-                ...prev,
-                google: true,
-              }));
-              signIn('google', {
-                callbackUrl,
-              });
-            }}
+            onPress={signInWithProvider('google')}
             shape="pill"
             expand="full"
             mode="subtle"
@@ -131,15 +138,7 @@ export function UserAuthForm({ mode }: { mode: 'login' | 'register' }) {
             Google
           </Button>
           <Button
-            onPress={() => {
-              setLoading((prev) => ({
-                ...prev,
-                facebook: true,
-              }));
-              signIn('facebook', {
-                callbackUrl,
-              });
-            }}
+            onPress={signInWithProvider('facebook')}
             shape="pill"
             expand="full"
             mode="subtle"

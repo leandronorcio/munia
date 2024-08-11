@@ -3,7 +3,7 @@
 import { AllCaughtUp } from '@/components/AllCaughtUp';
 import useOnScreen from '@/hooks/useOnScreen';
 import { InfiniteData, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { GetActivity } from '@/types/definitions';
 import { Activity } from '@/components/Activity';
 import { SomethingWentWrong } from '@/components/SometingWentWrong';
@@ -41,6 +41,8 @@ export function Activities({ userId }: { userId: string }) {
     if (isBottomOnScreen && hasNextPage) fetchNextPage();
   }, [isBottomOnScreen, hasNextPage, fetchNextPage]);
 
+  const bottomLoaderStyle = useMemo(() => ({ display: data ? 'block' : 'none' }), [data]);
+
   return (
     <>
       {isPending ? (
@@ -58,7 +60,7 @@ export function Activities({ userId }: { userId: string }) {
          * The first page will be initially loaded by React Query
          * so the bottom loader has to be hidden first
          */
-        style={{ display: data ? 'block' : 'none' }}>
+        style={bottomLoaderStyle}>
         {hasNextPage && <GenericLoading>Loading more notifications</GenericLoading>}
       </div>
       {isError && <SomethingWentWrong />}

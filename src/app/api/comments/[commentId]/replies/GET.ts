@@ -8,7 +8,7 @@ import { includeToComment } from '@/lib/prisma/includeToComment';
 import prisma from '@/lib/prisma/prisma';
 import { toGetComment } from '@/lib/prisma/toGetComment';
 import { NextResponse } from 'next/server';
-import { FindCommentResult, GetComment } from '../../../../../types/definitions';
+import { FindCommentResult } from '@/types/definitions';
 
 export async function GET(request: Request, { params }: { params: { commentId: string } }) {
   /**
@@ -20,7 +20,7 @@ export async function GET(request: Request, { params }: { params: { commentId: s
 
   const res: FindCommentResult[] = await prisma.comment.findMany({
     where: {
-      parentId: parseInt(params.commentId),
+      parentId: parseInt(params.commentId, 10),
     },
     include: includeToComment(userId),
     orderBy: {
@@ -28,8 +28,8 @@ export async function GET(request: Request, { params }: { params: { commentId: s
     },
   });
 
-  const replies: GetComment[] = [];
-  for (const comment of res) replies.push(await toGetComment(comment));
+  const repliesPromises = res.map(toGetComment);
+  const replies = await Promise.all(repliesPromises);
 
   return NextResponse.json(replies);
 }

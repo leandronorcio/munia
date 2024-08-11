@@ -40,10 +40,10 @@ export async function GET(request: Request) {
     take: 10,
   });
 
-  const result = res.map((user) => ({
-    ...user,
+  const result = res.map((u) => ({
+    ...u,
     // Convert the `profilePhoto` file name to a full S3 URL
-    profilePhoto: fileNameToUrl(user.profilePhoto),
+    profilePhoto: fileNameToUrl(u.profilePhoto),
   }));
 
   return NextResponse.json(result);

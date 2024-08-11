@@ -19,7 +19,7 @@ export async function POST(request: Request, { params }: { params: { postId: str
   const [user] = await getServerUser();
   if (!user) return NextResponse.json({}, { status: 401 });
   const userId = user.id;
-  const postId = parseInt(params.postId);
+  const postId = parseInt(params.postId, 10);
 
   try {
     const body = await request.json();

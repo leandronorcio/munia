@@ -2,27 +2,26 @@
 import { PrismaClient } from '@prisma/client';
 
 declare global {
-  namespace NodeJS {
-    interface Global {
-      prisma: PrismaClient;
-    }
+  interface Global {
+    prisma: PrismaClient;
   }
 }
 
+// eslint-disable-next-line import/no-mutable-exports
 let prisma: PrismaClient;
 
 if (typeof window === 'undefined') {
   if (process.env.NODE_ENV === 'production') {
     prisma = new PrismaClient();
   } else {
-    // @ts-ignore
+    // @ts-expect-error `global` is a global object in the browser
     if (!global.prisma) {
-      // @ts-ignore
+      // @ts-expect-error `global` is a global object in the browser
       global.prisma = new PrismaClient();
     }
-    // @ts-ignore
+    // @ts-expect-error `global` is a global object in the browser
     prisma = global.prisma;
   }
 }
-// @ts-ignore
+// @ts-expect-error `global` is a global object in the browser
 export default prisma;

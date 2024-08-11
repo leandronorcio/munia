@@ -1,13 +1,13 @@
 'use client';
 
 import { Post } from '@/components/Post';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 export default function Page({ params }: { params: { postId: string } }) {
-  const postId = parseInt(params.postId);
+  const postId = parseInt(params.postId, 10);
   const [commentsShown, setCommentsShown] = useState(true);
 
-  const toggleComments = () => setCommentsShown((prev) => !prev);
+  const toggleComments = useCallback(() => setCommentsShown((prev) => !prev), []);
 
   return (
     <div className="m-4">

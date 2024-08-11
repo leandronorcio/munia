@@ -19,7 +19,7 @@ export async function GET(request: Request, { params }: { params: { postId: stri
 
   const res: FindCommentResult[] = await prisma.comment.findMany({
     where: {
-      postId: parseInt(params.postId),
+      postId: parseInt(params.postId, 10),
       parentId: null,
     },
     include: includeToComment(userId),
@@ -28,8 +28,8 @@ export async function GET(request: Request, { params }: { params: { postId: stri
     },
   });
 
-  const comments: GetComment[] = [];
-  for (const comment of res) comments.push(await toGetComment(comment));
+  const commentsPromises = res.map(toGetComment);
+  const comments = await Promise.all(commentsPromises);
 
   return NextResponse.json<GetComment[]>(comments);
 }

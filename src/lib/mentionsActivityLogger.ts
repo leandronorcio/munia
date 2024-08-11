@@ -31,10 +31,12 @@ export async function mentionsActivityLogger({
   // Return if there no mentioned users
   if (!usersMentioned) return;
 
-  // For each mentioned user, create a mention activity
-  for (const { id } of usersMentioned) {
-    await prisma.activity.create({
-      data: { ...activity, targetUserId: id },
-    });
-  }
+  const usersMentionedIds = usersMentioned.map(({ id }) => id);
+  await Promise.all(
+    usersMentionedIds.map((id) =>
+      prisma.activity.create({
+        data: { ...activity, targetUserId: id },
+      }),
+    ),
+  );
 }

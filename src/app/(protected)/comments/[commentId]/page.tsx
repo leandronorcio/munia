@@ -8,7 +8,7 @@ import { redirect } from 'next/navigation';
 export default async function Page({ params }: { params: { commentId: string } }) {
   const comment = await prisma.comment.findUnique({
     where: {
-      id: parseInt(params.commentId),
+      id: parseInt(params.commentId, 10),
     },
     select: {
       id: true,

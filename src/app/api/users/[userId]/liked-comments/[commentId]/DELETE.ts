@@ -12,7 +12,7 @@ export async function DELETE(request: Request, { params }: { params: { userId: s
   const [user] = await getServerUser();
   if (!user || params.userId !== user.id) return NextResponse.json({}, { status: 401 });
 
-  const commentId = parseInt(params.commentId);
+  const commentId = parseInt(params.commentId, 10);
 
   const isLiked = await prisma.commentLike.count({
     where: {

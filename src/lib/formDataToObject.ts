@@ -27,7 +27,8 @@
  * }
  */
 export function formDataToObject(formData: FormData) {
-  const object: any = {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const object: Record<string, any> = {};
 
   // Loop over each [key, value] pair
   for (const [key, value] of formData) {

@@ -21,8 +21,8 @@ export async function GET(request: Request) {
   const [user] = await getServerUser();
   const { searchParams } = new URL(request.url);
 
-  const limit = parseInt(searchParams.get('limit') || '4');
-  const offset = parseInt(searchParams.get('offset') || '0');
+  const limit = parseInt(searchParams.get('limit') || '4', 10);
+  const offset = parseInt(searchParams.get('offset') || '0', 10);
 
   const search = searchParams.get('search');
   const gender = toUpper(snakeCase(searchParams.get('gender') || undefined));

@@ -70,7 +70,6 @@ export async function useUpdateProfileAndCoverPhoto({
 
     return NextResponse.json({ uploadedTo });
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error: 'Server error.' }, { status: 500 });
   }
 }

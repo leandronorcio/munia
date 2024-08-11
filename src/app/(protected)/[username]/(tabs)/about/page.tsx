@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: { username: string 
 
 export default async function Page({ params }: { params: { username: string } }) {
   const profile = await getProfile(params.username);
-  if (!profile) return <></>;
+  if (!profile) return null;
 
   return (
     <div className="mt-4">

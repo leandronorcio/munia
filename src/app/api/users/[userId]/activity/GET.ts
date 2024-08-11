@@ -15,8 +15,8 @@ export async function GET(request: Request) {
   const userId = user.id;
 
   const { searchParams } = new URL(request.url);
-  const limit = parseInt(searchParams.get('limit') || '5');
-  const cursor = parseInt(searchParams.get('cursor') || '0');
+  const limit = parseInt(searchParams.get('limit') || '5', 10);
+  const cursor = parseInt(searchParams.get('cursor') || '0', 10);
 
   const selectUser = {
     select: {

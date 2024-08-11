@@ -18,7 +18,7 @@ export async function GET(request: Request, { params }: { params: { postId: stri
   const [user] = await getServerUser();
   const res = await prisma.post.findUnique({
     where: {
-      id: parseInt(params.postId),
+      id: parseInt(params.postId, 10),
     },
     select: selectPost(user?.id),
   });
