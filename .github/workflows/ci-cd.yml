@@ -21,8 +21,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
-        run: npm test
+      # 🟢 Removed "npm test" because your project has no test script
 
       - name: Build project
         run: npm run build
