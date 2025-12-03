@@ -1,0 +1,40 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - munia_dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build project
+        run: npm run build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Staging (munia_dev)
+        if: github.ref == 'refs/heads/munia_dev'
+        run: echo "Deploying to staging server ${{ secrets.STAGING_URL }}"
+
+      - name: Deploy to Production (main)
+        if: github.ref == 'refs/heads/main'
+        run: echo "Deploying to production server ${{ secrets.PROD_URL }}"
