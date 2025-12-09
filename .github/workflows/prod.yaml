@@ -1,14 +1,13 @@
-name: Munia foundation
+name: Munia Production
 
 on:
   push:
     branches:
-      - munia_dev
-
+      - main
 jobs:
-  munia-dev:
+  munia-production:
     runs-on: ubuntu-latest
 
     steps:
       - name: first-step
-        run: echo "Munia app workflow"
+        run: echo "hello munia"
