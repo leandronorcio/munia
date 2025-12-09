@@ -39,6 +39,14 @@ export interface GetUser extends UserAfterSetUp {
   followerCount: number | null;
   followingCount: number | null;
   isFollowing: boolean | null; // true when current user is following
+  // Optional fields for About section
+  email?: string | null;
+  birthDate?: string | null; // ISO string or Date
+  gender?: Gender | null;
+  relationshipStatus?: RelationshipStatus | null;
+  phoneNumber?: string | null;
+  website?: string | null;
+  address?: string | null;
 }
 
 /** Visual media types */
