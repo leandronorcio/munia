@@ -18,7 +18,7 @@ COPY . .
 # Generate Prisma client
 RUN npx prisma generate
 
-# Build Next.js (TS errors will be skipped automatically)
+
 RUN npm run build
 
 
@@ -28,7 +28,7 @@ FROM node:20
 
 WORKDIR /app
 
-# Copy build output + dependencies + prisma client
+
 COPY --from=builder /app ./
 
 # Expose port for hosting
