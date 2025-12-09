@@ -14,7 +14,7 @@ import { NextResponse } from 'next/server';
 import { FindUserResult, GetUser, Gender, RelationshipStatus } from '@/types/definitions';
 
 export async function GET(request: Request) {
-  // Get the current logged-in user
+  // Get the current logged-in userde
   const [user] = await getServerUser();
   const { searchParams } = new URL(request.url);
 
