@@ -1,7 +1,7 @@
 import { getServerUser } from '@/lib/getServerUser';
 import prisma from '@/lib/prisma/prisma';
 import { followPostSchema } from '@/lib/validations/follow';
-import { PrismaClientKnownRequestError } from '@prisma/client'; // correct import
+import { Prisma } from '@prisma/client'; // correct import
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -33,7 +33,7 @@ export async function POST(request: Request, { params }: { params: { userId: str
 
     return NextResponse.json({ followed: true }, { status: 200 });
   } catch (error: unknown) {
-    if (error instanceof PrismaClientKnownRequestError) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === 'P2002') {
         return NextResponse.json({ error: 'You are already following this user.' }, { status: 409 });
       }
