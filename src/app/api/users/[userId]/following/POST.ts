@@ -1,16 +1,7 @@
-/**
- * POST /api/users/:userId/following
- * - Allows an authenticated user to follow another user.
- *
- * JSON body: {
- *   userIdToFollow: string
- * }
- */
-
 import { getServerUser } from '@/lib/getServerUser';
 import prisma from '@/lib/prisma/prisma';
 import { followPostSchema } from '@/lib/validations/follow';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime'; // fix import
+import { PrismaClientKnownRequestError } from '@prisma/client'; // correct import
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
