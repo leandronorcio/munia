@@ -1,11 +1,18 @@
 version: '3.9'
 
 services:
-munia-app:
-  build: .
-  container_name: munia_app_container
-  env_file:
-    - env:dev.env
+  munia-app:
+    build: .
+    container_name: munia_app_container
 
-  ports:
-    - '3002:3002'
+    env_file:
+      - env/dev.env
+
+    ports:
+      - '3002:3002'
+
+    volumes:
+      - ./app:/app
+      - /app/node_modules
+
+    command: npm run dev
