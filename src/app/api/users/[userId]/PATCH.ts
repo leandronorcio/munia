@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { userAboutSchema } from '@/lib/validations/userAbout';
 import { toGetUser } from '@/lib/prisma/toGetUser';
 import { includeToUser } from '@/lib/prisma/includeToUser';
-import { Prisma } from '@prisma/client'; // <-- correct import
+import { Prisma } from '@prisma/client';
 
 type UserAbout = z.infer<typeof userAboutSchema>;
 
@@ -41,13 +41,11 @@ export async function PATCH(request: Request, { params }: { params: { userId: st
 
     return NextResponse.json(toGetUser(res));
   } catch (e: unknown) {
-    // Check for PrismaClientKnownRequestError using Prisma namespace
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      if (e.code === 'P2002' && e.meta) {
-        const field = (e.meta.target as string[])[0];
-        return NextResponse.json({ field, message: `This ${field} is already taken.` }, { status: 409 });
-      }
-      return NextResponse.json({ errorMessage: 'Database (Prisma) error.' }, { status: 502 });
+    // Modern runtime-safe Prisma error check
+    if (typeof e === 'object' && e !== null && 'code' in e && (e as any).code === 'P2002') {
+      const target = (e as any).meta?.target as string[] | undefined;
+      const field = target ? target[0] : 'field';
+      return NextResponse.json({ field, message: `This ${field} is already taken.` }, { status: 409 });
     }
 
     return NextResponse.json({ errorMessage: 'Unknown error occurred.' }, { status: 500 });
