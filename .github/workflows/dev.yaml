@@ -1,0 +1,14 @@
+name: Munia foundation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  munia-dev:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: first-step
+        run: echo "Munia app workflow"
