@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { userAboutSchema } from '@/lib/validations/userAbout';
 import { toGetUser } from '@/lib/prisma/toGetUser';
 import { includeToUser } from '@/lib/prisma/includeToUser';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime'; // <-- Correct import
+import { Prisma } from '@prisma/client'; // <-- correct import
 
 type UserAbout = z.infer<typeof userAboutSchema>;
 
@@ -41,7 +41,8 @@ export async function PATCH(request: Request, { params }: { params: { userId: st
 
     return NextResponse.json(toGetUser(res));
   } catch (e: unknown) {
-    if (e instanceof PrismaClientKnownRequestError) {
+    // Check for PrismaClientKnownRequestError using Prisma namespace
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === 'P2002' && e.meta) {
         const field = (e.meta.target as string[])[0];
         return NextResponse.json({ field, message: `This ${field} is already taken.` }, { status: 409 });
