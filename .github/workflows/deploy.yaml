@@ -13,6 +13,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: List files
+        run: ls -R
+
       - name: Configure AWS CLI
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -22,4 +25,4 @@ jobs:
 
       - name: Upload to S3
         run: |
-          aws s3 cp ./localfolder s3://munia-qa-bucket/ --recursive --region eu-north-1
+          aws s3 cp ./test-folder s3://munia-qa-bucket/ --recursive --region eu-north-1
