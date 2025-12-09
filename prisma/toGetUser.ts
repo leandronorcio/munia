@@ -7,15 +7,15 @@ import { FindUserResult, GetUser } from '@/types/definitions';
  * @returns A GetUser object.
  */
 export function toGetUser(user: FindUserResult, currentUserId?: string): GetUser {
-  // Ensure TypeScript that these fields exist
-  if (!user.username || !user.name) {
+  // Properly narrow types for TypeScript
+  if (user.username == null || user.name == null) {
     throw new Error('User is not fully set up');
   }
 
   return {
     id: user.id,
-    username: user.username, // non-null because of the check
-    name: user.name, // non-null because of the check
+    username: user.username, // TypeScript now knows this is string
+    name: user.name, // TypeScript now knows this is string
     profilePhoto: user.profilePhoto ?? null,
     followerCount: user._count.followers ?? 0,
     followingCount: user._count.following ?? 0,
