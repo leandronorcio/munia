@@ -6,9 +6,12 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma/prisma';
 import { Prisma } from '@prisma/client';
 import { getServerUser } from '@/lib/getServerUser';
-import { userAboutSchema, UserAboutSchemaType } from '@/lib/validations/userAbout';
+import { userAboutSchema } from '@/lib/validations/userAbout';
 import { toGetUser } from '@/lib/prisma/toGetUser';
 import { includeToUser } from '@/lib/prisma/includeToUser';
+
+// Derive the TypeScript type from your Zod schema
+type UserAbout = z.infer<typeof userAboutSchema>;
 
 export async function PATCH(request: Request, { params }: { params: { userId: string } }) {
   const [user] = await getServerUser();
@@ -28,7 +31,7 @@ export async function PATCH(request: Request, { params }: { params: { userId: st
     return NextResponse.json({ errorMessage: validate.error.issues[0].message }, { status: 400 });
   }
 
-  const data: UserAboutSchemaType = validate.data;
+  const data: UserAbout = validate.data;
 
   try {
     const res = await prisma.user.update({
