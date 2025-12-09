@@ -1,17 +1,12 @@
-/**
- * PATCH /api/users/:userId
- * Allows an authenticated user to update their information.
- */
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma/prisma';
-import { Prisma } from '@prisma/client';
-import { z } from 'zod'; // <-- ADD THIS
 import { getServerUser } from '@/lib/getServerUser';
+import { z } from 'zod';
 import { userAboutSchema } from '@/lib/validations/userAbout';
 import { toGetUser } from '@/lib/prisma/toGetUser';
 import { includeToUser } from '@/lib/prisma/includeToUser';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime'; // <-- Correct import
 
-// Derive the TypeScript type from your Zod schema
 type UserAbout = z.infer<typeof userAboutSchema>;
 
 export async function PATCH(request: Request, { params }: { params: { userId: string } }) {
@@ -46,7 +41,7 @@ export async function PATCH(request: Request, { params }: { params: { userId: st
 
     return NextResponse.json(toGetUser(res));
   } catch (e: unknown) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+    if (e instanceof PrismaClientKnownRequestError) {
       if (e.code === 'P2002' && e.meta) {
         const field = (e.meta.target as string[])[0];
         return NextResponse.json({ field, message: `This ${field} is already taken.` }, { status: 409 });
