@@ -40,7 +40,8 @@ export async function GET(request: Request) {
     take: 10,
   });
 
-  const result = res.map((u) => ({
+  // Explicitly type `u` to avoid implicit `any`
+  const result = res.map((u: { id: string; username: string; name: string; profilePhoto: string | null }) => ({
     ...u,
     // Convert the `profilePhoto` file name to a full S3 URL
     profilePhoto: fileNameToUrl(u.profilePhoto),

@@ -1,0 +1,13 @@
+name: Munia Production
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  munia-production:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: first-step
+        run: echo "hello munia"

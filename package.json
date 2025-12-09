@@ -44,6 +44,7 @@
     "clsx": "^1.2.1",
     "date-fns": "^2.30.0",
     "dompurify": "^3.0.5",
+    "dotenv": "^17.2.3",
     "eslint": "^8.38.0",
     "framer-motion": "^10.12.17",
     "html-react-parser": "^4.2.0",

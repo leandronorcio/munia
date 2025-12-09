@@ -27,7 +27,8 @@ export async function GET(request: Request, { params }: { params: { userId: stri
       followingId: true,
     },
   });
-  const followingIds = following.map((u) => u.followingId);
+  // Assuming `following` is an array of objects with a `followingId` property
+  const followingIds = following.map((u: { followingId: string }) => u.followingId);
 
   const res = await prisma.post.findMany({
     where: {
