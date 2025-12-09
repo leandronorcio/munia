@@ -7,11 +7,10 @@ import prisma from '@/lib/prisma/prisma';
 import { fileNameToUrl } from '@/lib/s3/fileNameToUrl';
 import { NextResponse } from 'next/server';
 import { GetVisualMedia } from '@/types/definitions';
-import { VisualMedia } from '@prisma/client'; // import Prisma type
 
 export async function GET(request: Request, { params }: { params: { userId: string } }) {
-  // Explicitly type the result from Prisma
-  const res: VisualMedia[] = await prisma.visualMedia.findMany({
+  // Let TypeScript infer the type from Prisma
+  const res = await prisma.visualMedia.findMany({
     where: {
       userId: params.userId,
     },
@@ -20,8 +19,8 @@ export async function GET(request: Request, { params }: { params: { userId: stri
     },
   });
 
-  // Explicitly type 'item' in map
-  const visualMedia: GetVisualMedia[] = res.map((item: VisualMedia) => ({
+  // Explicitly type 'item' in map based on Prisma return type
+  const visualMedia: GetVisualMedia[] = res.map((item) => ({
     type: item.type,
     url: fileNameToUrl(item.fileName)!,
   }));
