@@ -26,7 +26,7 @@ export function ProfileHeader({ isOwnProfile, initialProfileData }: ProfileHeade
       {/* Cover and Profile Photo */}
       <div className="relative mb-[88px] md:pt-6">
         <div className="h-60 overflow-hidden bg-muted/30 drop-shadow-xl md:rounded-3xl">
-          <CoverPhoto isOwnProfile={isOwnProfile} photoUrl={profile.coverPhoto} />
+          <CoverPhoto isOwnProfile={isOwnProfile} photoUrl={profile.coverPhoto ?? null} />
         </div>
         <ProfilePhoto isOwnProfile={isOwnProfile} photoUrl={profile.profilePhoto} name={profile.name} />
         <div className="absolute -bottom-20 right-2 md:right-0">
