@@ -1,11 +1,8 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
 
 dotenv.config({ path: path.resolve('env/dev.env') });
-
-console.log('NODE_ENV:', process.env.NODE_ENV);
 
 const s3 = new S3Client({
   region: process.env.AWS_REGION!,
@@ -15,27 +12,21 @@ const s3 = new S3Client({
   },
 });
 
-const uploadFile = async (filePath: string) => {
-  const resolvedPath = path.resolve(filePath);
-  if (!fs.existsSync(resolvedPath)) {
-    console.error('❌ File not found:', resolvedPath);
-    return;
-  }
-
-  const fileStream = fs.createReadStream(resolvedPath);
-
+export async function uploadObject(buffer: Buffer, fileName: string, fileExtension: string) {
   try {
     await s3.send(
       new PutObjectCommand({
         Bucket: process.env.AWS_S3_BUCKET!,
-        Key: path.basename(resolvedPath),
-        Body: fileStream,
+        Key: fileName,
+        Body: buffer,
+        ContentType: `image/${fileExtension}`,
       }),
     );
-    console.log('✔ File uploaded to AWS S3!');
-  } catch (err) {
-    console.error('❌ Upload failed:', err);
-  }
-};
 
-uploadFile('./sample.txt');
+    console.log('✔ Uploaded to AWS S3:', fileName);
+    return true;
+  } catch (error) {
+    console.error('❌ S3 Upload failed:', error);
+    throw error;
+  }
+}

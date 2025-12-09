@@ -1,4 +1,4 @@
-name: Deploy to S3
+name: CI/CD + Docker + S3
 
 on:
   push:
@@ -13,9 +13,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: List files
-        run: ls -R
-
       - name: Configure AWS CLI
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -23,6 +20,23 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Upload to S3
+      - name: Check Docker version
+        run: docker --version
+
+      - name: Build Docker image
+        run: docker build -t munia-app:latest .
+
+      - name: Run Docker Container
+        run: docker run -d -p 3002:3002 --name munia-app-test munia-app:latest
+
+      - name: List run docker container
+        run: docker ps
+
+      - name: upload docker folder to s3
+        run: aws s3 cp ./test-folder s3://munia-qa-bucket/ --recursive --region eu-north-1
+
+      - name: Stop docker container
+        if: always()
         run: |
-          aws s3 cp ./test-folder s3://munia-qa-bucket/ --recursive --region eu-north-1
+          docker stop munia-app-test || true
+          docker rm munia-app-test || true
