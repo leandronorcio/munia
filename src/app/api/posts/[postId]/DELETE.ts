@@ -7,7 +7,6 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma/prisma';
 import { deleteObject } from '@/lib/s3/deleteObject';
 import { verifyAccessToPost } from './verifyAccessToPost';
-import { VisualMedia } from '@prisma/client'; // import the type from Prisma
 
 export async function DELETE(request: Request, { params }: { params: { postId: string } }) {
   const postId = parseInt(params.postId, 10);
@@ -21,12 +20,14 @@ export async function DELETE(request: Request, { params }: { params: { postId: s
     where: { id: postId },
     select: {
       id: true,
-      visualMedia: true,
+      visualMedia: {
+        select: { fileName: true }, // select only fileName
+      },
     },
   });
 
   // Delete the associated visualMedia files from S3
-  const filenames = res.visualMedia.map((m: VisualMedia) => m.fileName);
+  const filenames = res.visualMedia.map((m: { fileName: string }) => m.fileName);
   await Promise.all(filenames.map(deleteObject));
 
   return NextResponse.json({ id: res.id });
