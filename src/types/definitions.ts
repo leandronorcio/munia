@@ -1,13 +1,9 @@
 import { VisualMediaType, User, Follow, ActivityType, Gender, VisualMedia, RelationshipStatus } from '@prisma/client';
 
-/**
- * Minimal user info from Prisma
- */
+/** Minimal user info from Prisma */
 export type UserSummary = Pick<User, 'id' | 'username' | 'name' | 'profilePhoto'>;
 
-/**
- * After initial setup, `username` and `name` are guaranteed non-null.
- */
+/** After initial setup, `username` and `name` are guaranteed non-null */
 export interface UserSummaryAfterSetUp {
   id: string;
   username: string;
@@ -15,9 +11,7 @@ export interface UserSummaryAfterSetUp {
   profilePhoto: string | null;
 }
 
-/**
- * Full user after setup (used for `GetUser` and API responses)
- */
+/** Full user after setup (used for `GetUser` and API responses) */
 export interface UserAfterSetUp {
   id: string;
   username: string;
@@ -25,10 +19,7 @@ export interface UserAfterSetUp {
   profilePhoto: string | null;
 }
 
-/**
- * Type returned by Prisma for `user.findMany` or `user.findFirst`
- * Include `_count` and `followers` for follow info
- */
+/** Type returned by Prisma for `user.findMany` or `user.findFirst` */
 export type FindUserResult = {
   id: string;
   username: string | null;
@@ -41,18 +32,16 @@ export type FindUserResult = {
   followers: { followerId: string }[];
 };
 
-/**
- * User API response
- */
+/** User API response */
 export interface GetUser extends UserAfterSetUp {
+  bio?: string | null;
+  coverPhoto?: string | null; // optional cover photo
   followerCount: number | null;
   followingCount: number | null;
   isFollowing: boolean | null; // true when current user is following
 }
 
-/**
- * Visual media types
- */
+/** Visual media types */
 export interface GetVisualMedia {
   type: VisualMediaType;
   url: string;
@@ -63,9 +52,7 @@ export interface VisualMediaModalType {
   initialSlide: number;
 }
 
-/**
- * Post types
- */
+/** Post types */
 export interface FindPostResult {
   id: number;
   content: string | null;
@@ -93,9 +80,7 @@ export interface PostId {
 
 export type PostIds = PostId[];
 
-/**
- * Comment types
- */
+/** Comment types */
 export interface FindCommentResult {
   id: number;
   content: string;
@@ -120,18 +105,14 @@ export interface GetComment {
   repliesShown?: boolean;
 }
 
-/**
- * Discover filters
- */
+/** Discover filters */
 export type DiscoverFilterKeys = 'gender' | 'relationship-status';
 export interface DiscoverFilters {
   gender?: Gender;
   'relationship-status'?: RelationshipStatus;
 }
 
-/**
- * Activity types
- */
+/** Activity types */
 export interface FindActivityResult {
   id: number;
   type: ActivityType;
