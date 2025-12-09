@@ -19,13 +19,17 @@ interface UserAfterSetUp extends User {
 }
 
 // Use this type when finding a User in prisma.
-export interface FindUserResult extends User {
-  followers: Follow[];
+export type FindUserResult = {
+  id: string;
+  username: string | null;
+  name: string | null;
+  profilePhoto: string | null;
   _count: {
-    following: number;
     followers: number;
+    following: number;
   };
-}
+  followers: { followerId: string }[];
+};
 
 /**
  * The <FindUserResult> shall be converted to <GetUser>, use
