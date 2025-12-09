@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - munia_dev
 
 jobs:
   munia-app-deploy:
