@@ -1,7 +1,14 @@
-import { VisualMediaType, User, Follow, ActivityType, Gender, VisualMedia, RelationshipStatus } from '@prisma/client';
-
 /** Minimal user info from Prisma */
-export type UserSummary = Pick<User, 'id' | 'username' | 'name' | 'profilePhoto'>;
+export type UserSummary = {
+  id: string;
+  username: string;
+  name: string;
+  profilePhoto: string | null;
+};
+
+/** Gender and relationship status enums (if not in Prisma) */
+export type Gender = 'MALE' | 'FEMALE' | 'OTHER';
+export type RelationshipStatus = 'SINGLE' | 'IN_RELATIONSHIP' | 'MARRIED' | 'COMPLICATED';
 
 /** After initial setup, `username` and `name` are guaranteed non-null */
 export interface UserSummaryAfterSetUp {
@@ -35,13 +42,12 @@ export type FindUserResult = {
 /** User API response */
 export interface GetUser extends UserAfterSetUp {
   bio?: string | null;
-  coverPhoto?: string | null; // optional cover photo
+  coverPhoto?: string | null;
   followerCount: number | null;
   followingCount: number | null;
-  isFollowing: boolean | null; // true when current user is following
-  // Optional fields for About section
+  isFollowing: boolean | null;
   email?: string | null;
-  birthDate?: string | null; // ISO string or Date
+  birthDate?: string | null;
   gender?: Gender | null;
   relationshipStatus?: RelationshipStatus | null;
   phoneNumber?: string | null;
@@ -50,6 +56,8 @@ export interface GetUser extends UserAfterSetUp {
 }
 
 /** Visual media types */
+export type VisualMediaType = 'PHOTO' | 'VIDEO'; // Replace missing Prisma enum
+
 export interface GetVisualMedia {
   type: VisualMediaType;
   url: string;
@@ -67,7 +75,7 @@ export interface FindPostResult {
   createdAt: Date;
   postLikes: { id: number }[];
   user: UserSummary;
-  visualMedia: VisualMedia[];
+  visualMedia: GetVisualMedia[]; // Use local type instead of Prisma VisualMedia
   _count: { postLikes: number; comments: number };
 }
 
@@ -123,7 +131,7 @@ export interface DiscoverFilters {
 /** Activity types */
 export interface FindActivityResult {
   id: number;
-  type: ActivityType;
+  type: string; // Replace Prisma enum if not available
   sourceId: number;
   targetId: number | null;
   createdAt: Date;
