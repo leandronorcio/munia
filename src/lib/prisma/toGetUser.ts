@@ -1,3 +1,5 @@
+import { FindUserResult, GetUser } from '@/types/definitions';
+
 export function toGetUser(user: FindUserResult, currentUserId?: string): GetUser {
   if (!user.username || !user.name) {
     throw new Error('User is not fully set up');
