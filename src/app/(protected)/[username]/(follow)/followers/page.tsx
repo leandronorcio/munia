@@ -2,9 +2,10 @@ import { DiscoverProfiles } from '@/components/DiscoverProfiles';
 import { DiscoverSearch } from '@/components/DiscoverSearch';
 import { DiscoverFilters } from '@/components/DiscoverFilters';
 import { getProfile } from '../../getProfile';
+import { GetUser } from '@/types/definitions'; // make sure this import points to the correct types
 
 export async function generateMetadata({ params }: { params: { username: string } }) {
-  const profile = await getProfile(params.username);
+  const profile: GetUser | null = await getProfile(params.username);
 
   return {
     title: profile ? `Followers | ${profile.name}` : 'Followers',
@@ -12,7 +13,7 @@ export async function generateMetadata({ params }: { params: { username: string 
 }
 
 export default async function Page({ params }: { params: { username: string } }) {
-  const profile = await getProfile(params.username);
+  const profile: GetUser | null = await getProfile(params.username);
 
   // Null check to prevent TypeScript errors
   if (!profile) {
