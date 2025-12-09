@@ -5,6 +5,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma/prisma';
 import { Prisma } from '@prisma/client';
+import { z } from 'zod'; // <-- ADD THIS
 import { getServerUser } from '@/lib/getServerUser';
 import { userAboutSchema } from '@/lib/validations/userAbout';
 import { toGetUser } from '@/lib/prisma/toGetUser';
