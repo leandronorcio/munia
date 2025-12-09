@@ -24,7 +24,7 @@ jobs:
         run: docker --version
 
       - name: Build Docker image
-        run: docker build -t munia-app:latest .
+        run: docker build -t munia-dep:latest .
 
       - name: Run Docker Container
         run: docker run -d -p 3002:3002 --name munia-app-test munia-app:latest
