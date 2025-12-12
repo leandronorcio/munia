@@ -8,7 +8,7 @@ WORKDIR /app
 ENV NEXT_DISABLE_TYPE_CHECKING=1
 
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 
 COPY . .
 
