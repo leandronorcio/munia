@@ -11,4 +11,6 @@ jobs:
 
     steps:
       - name: first-step
-        run: echo "Munia app workflow"
+        run: |
+          echo "Munia app workflow"
+          echo "Munia ci/cd"
