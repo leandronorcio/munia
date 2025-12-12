@@ -1,15 +1,11 @@
-/**
- * GET /api/users/:userId/photos
- * - Returns the visual media URLs of the specified user.
- */
-
 import prisma from '@/lib/prisma/prisma';
 import { fileNameToUrl } from '@/lib/s3/fileNameToUrl';
 import { NextResponse } from 'next/server';
 import { GetVisualMedia } from '@/types/definitions';
+import type { VisualMedia } from '@prisma/client'; // only type import
 
 export async function GET(request: Request, { params }: { params: { userId: string } }) {
-  const res = await prisma.visualMedia.findMany({
+  const res: VisualMedia[] = await prisma.visualMedia.findMany({
     where: {
       userId: params.userId,
     },
@@ -18,7 +14,7 @@ export async function GET(request: Request, { params }: { params: { userId: stri
     },
   });
 
-  const visualMedia: GetVisualMedia[] | null = res.map((item) => ({
+  const visualMedia: GetVisualMedia[] = res.map((item: VisualMedia) => ({
     type: item.type,
     url: fileNameToUrl(item.fileName)!,
   }));

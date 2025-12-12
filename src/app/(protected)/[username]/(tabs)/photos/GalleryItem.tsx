@@ -1,9 +1,17 @@
 import { cn } from '@/lib/cn';
 import { Play } from '@/svg_components';
-import { VisualMediaType } from '@prisma/client';
 import { mergeProps, useFocusRing, usePress } from 'react-aria';
 
-export function GalleryItem({ type, url, onClick }: { type: VisualMediaType; url: string; onClick: () => void }) {
+// Define the VisualMediaType locally to match your Prisma enum
+export type VisualMediaType = 'PHOTO' | 'VIDEO';
+
+interface GalleryItemProps {
+  type: VisualMediaType;
+  url: string;
+  onClick: () => void;
+}
+
+export function GalleryItem({ type, url, onClick }: GalleryItemProps) {
   const { pressProps, isPressed } = usePress({
     onPress: onClick,
   });

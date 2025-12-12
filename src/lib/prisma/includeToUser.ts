@@ -1,15 +1,15 @@
-export const includeToUser = (userId: string | undefined) => ({
-  // This `followers` here is used only for checking whether
-  // the requestee is following the user being rquested.
-  followers: {
-    where: {
-      followerId: userId,
+export function includeToUser(currentUserId?: string) {
+  return {
+    _count: {
+      select: {
+        followers: true,
+        following: true,
+      },
     },
-  },
-  _count: {
-    select: {
-      followers: true,
-      following: true,
+    followers: {
+      select: {
+        followerId: true,
+      },
     },
-  },
-});
+  };
+}
